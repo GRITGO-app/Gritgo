@@ -1,0 +1,17 @@
+{
+  "name": "GRITGO - Challenge Tracker",
+  "short_name": "GRITGO",
+  "start_url": "test.html",
+  "display": "standalone",
+  "background_color": "#0f1419",
+  "theme_color": "#0f1419",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
