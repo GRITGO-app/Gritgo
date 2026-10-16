@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GRITGO - Challenge Tracker</title>
 <link rel="manifest" href="manifest.json">
@@ -162,25 +161,20 @@ body {
 #streakStat {
   color: #ff6b4a !important;
 }
-
 #heatmap {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 4px;
+  gap: 16px;
   margin-bottom: 10px;
-  padding: 0 5px;
+  padding: 0;
 }
-
 .heatmap-cell {
   aspect-ratio: 1;
-  background-color: #1a1f2e;
-  border-radius: 10px;
-  cursor: pointer;
-  max-width: 28px;
   width: 100%;
-  margin: 0 auto;
+  background-color: #1a1f2e;
+  border-radius: 8px;
+  cursor: pointer;
 }
-
 .heatmap-hint {
   color: #9aa0a6;
   font-size: 12px;
@@ -369,6 +363,43 @@ body {
   border-color: #4a9eff;
 }
 
+/* ===== Date Placeholder Trick ===== */
+.date-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.date-placeholder {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9aa0a6;
+  font-size: 15px;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+.date-wrapper.has-value .date-placeholder {
+  opacity: 0;
+}
+
+.date-wrapper input[type="date"]:not(.has-value) {
+  color: transparent;
+}
+
+.date-wrapper:not(.has-value) input[type="date"]::-webkit-datetime-edit,
+.date-wrapper:not(.has-value) input[type="date"]::-webkit-datetime-edit-text,
+.date-wrapper:not(.has-value) input[type="date"]::-webkit-datetime-edit-month-field,
+.date-wrapper:not(.has-value) input[type="date"]::-webkit-datetime-edit-day-field,
+.date-wrapper:not(.has-value) input[type="date"]::-webkit-datetime-edit-year-field {
+  color: transparent;
+}
+
+.date-wrapper.has-value input[type="date"] {
+  color: #e8eaed;
+}
+
 .settings-buttons {
   display: flex;
   gap: 10px;
@@ -385,9 +416,11 @@ body {
   cursor: pointer;
 }
 
-#settingsCancel,
+#settresetCancel
 #addHabitCancel,
-#deleteCancel {
+#deleteCancel,
+#resetCancel,
+#dayModalClose {
   background-color: #2a3142;
   color: #e8eaed;
 }
@@ -398,7 +431,8 @@ body {
   color: white;
 }
 
-#deleteConfirm {
+#deleteConfirm,
+#resetConfirm {
   background: linear-gradient(135deg, #ff6b4a, #d35400);
   color: white;
 }
@@ -448,16 +482,19 @@ body {
     <p>Let's set up your challenge</p>
 
     <label>Challenge Name:</label>
-    <input type="text" id="setupTitle" placeholder="e.g. Winter Arc">
+    <input type="text" id="setupTitle" placeholder="Your Challenge Name">
 
     <label>Duration (days):</label>
-    <input type="number" id="setupDuration" placeholder="e.g. 90">
+    <input type="number" id="setupDuration" placeholder="Days Here">
 
     <label>Start Date:</label>
-    <input type="date" id="setupStartDate">
+    <div class="date-wrapper">
+      <input type="date" id="setupStartDate">
+      <span class="date-placeholder">Starting Date</span>
+    </div>
 
     <label>Motivation Text:</label>
-    <input type="text" id="setupMotivation" placeholder="e.g. Show up again.">
+    <input type="text" id="setupMotivation" placeholder="Any Motivational Text You Like">
 
     <button id="setupSaveButton">Start Challenge</button>
   </div>
@@ -548,6 +585,30 @@ body {
       </div>
     </div>
   </div>
+<div id="dayModal" class="modal-overlay">
+  <div class="modal-box">
+    <h2 id="dayModalTitle">Day</h2>
+    <p id="dayModalSubtitle" style="text-align:center; color:#9aa0a6; margin-bottom:15px; font-size:13px;">
+      0 / 0 habits done
+    </p>
+    <ul id="dayModalList" style="list-style:none; max-height:50vh; overflow-y:auto;"></ul>
+    <div class="settings-buttons">
+      <button id="dayModalClose">Close</button>
+    </div>
+  </div>
+</div>
+  <div id="resetModal" class="modal-overlay">
+    <div class="modal-box">
+      <h2>Reset All Data?</h2>
+      <p style="text-align:center; color:#9aa0a6; margin-bottom:10px;">
+        This will delete EVERYTHING permanently. Are you sure?
+      </p>
+      <div class="settings-buttons">
+        <button id="resetCancel">Cancel</button>
+        <button id="resetConfirm">Reset All</button>
+      </div>
+    </div>
+  </div>
 
   <div id="settingsModal" class="modal-overlay">
     <div class="modal-box">
@@ -560,7 +621,10 @@ body {
       <input type="number" id="settingsDuration">
 
       <label>Start Date:</label>
-      <input type="date" id="settingsStartDate">
+      <div class="date-wrapper">
+        <input type="date" id="settingsStartDate">
+        <span class="date-placeholder">Starting Date</span>
+      </div>
 
       <label>Motivation Text:</label>
       <input type="text" id="settingsMotivation">
@@ -620,6 +684,18 @@ function updateMotivation() {
     "Day " + dayNumber + " of " + challengeData.duration + ". " + challengeData.motivation;
 }
 
+// ===== Date Placeholder Update =====
+function updateDatePlaceholders() {
+  document.querySelectorAll(".date-wrapper").forEach(function(wrapper) {
+    const input = wrapper.querySelector("input");
+    if (input && input.value) {
+      wrapper.classList.add("has-value");
+    } else {
+      wrapper.classList.remove("has-value");
+    }
+  });
+}
+
 // ===== Toast =====
 function showToast(message) {
   const toast = document.createElement("div");
@@ -652,7 +728,6 @@ setupSaveButton.addEventListener("click", function () {
   if (!duration || duration < 1) { showToast("Please enter a valid duration"); return; }
   if (!startDate) { showToast("Please select a start date"); return; }
 
-  // Clamp if future
   const todayKey = getDateKey();
   if (startDate > todayKey) startDate = todayKey;
 
@@ -791,7 +866,7 @@ function updateTodayCount() {
   document.getElementById("todayCount").textContent = completed + " / " + challengeData.habits.length;
 }
 
-// ===== Add Habit Modal =====
+// ===== Add/Edit Habit Modal =====
 const addHabitModal = document.getElementById("addHabitModal");
 const addHabitModalTitle = document.getElementById("addHabitModalTitle");
 const addHabitModalInput = document.getElementById("addHabitModalInput");
@@ -905,7 +980,29 @@ deleteConfirm.addEventListener("click", function () {
   showToast("Habit deleted");
 });
 
-// ===== Edit Mode Add Habit (Inside Edit Mode) =====
+// ===== Reset Modal =====
+const resetModal = document.getElementById("resetModal");
+const resetCancel = document.getElementById("resetCancel");
+const resetConfirm = document.getElementById("resetConfirm");
+
+resetCancel.addEventListener("click", function () {
+  resetModal.classList.remove("active");
+  document.getElementById("settingsModal").classList.add("active");
+});
+
+resetModal.addEventListener("click", function (e) {
+  if (e.target === resetModal) {
+    resetModal.classList.remove("active");
+    document.getElementById("settingsModal").classList.add("active");
+  }
+});
+
+resetConfirm.addEventListener("click", function () {
+  localStorage.removeItem("challengeData");
+  location.reload();
+});
+
+// ===== Edit Mode Add Habit =====
 const addHabitBtn = document.getElementById("addHabitBtn");
 const newHabitInput = document.getElementById("newHabitInput");
 
@@ -949,7 +1046,101 @@ function closeEditMode() {
 
 doneEditingButton.addEventListener("click", closeEditMode);
 backButton.addEventListener("click", closeEditMode);
+// ===== Day Modal (Edit Past Days) =====
+const dayModal = document.getElementById("dayModal");
+const dayModalTitle = document.getElementById("dayModalTitle");
+const dayModalSubtitle = document.getElementById("dayModalSubtitle");
+const dayModalList = document.getElementById("dayModalList");
+const dayModalClose = document.getElementById("dayModalClose");
 
+let viewingDateKey = null;
+
+function formatDateDisplay(key) {
+  const d = new Date(key + "T00:00:00");
+  const options = { weekday: "short", day: "numeric", month: "short", year: "numeric" };
+  return d.toLocaleDateString("en-GB", options);
+}
+
+function openDayModal(dateKey) {
+  const todayKey = getDateKey();
+  if (dateKey > todayKey) {
+    showToast("Cannot edit future dates");
+    return;
+  }
+  if (challengeData.habits.length === 0) {
+    showToast("No habits added yet");
+    return;
+  }
+
+  viewingDateKey = dateKey;
+  dayModalTitle.textContent = formatDateDisplay(dateKey);
+
+  if (!challengeData.habitLogs[dateKey]) {
+    challengeData.habitLogs[dateKey] = [];
+  }
+
+  renderDayModalList();
+  dayModal.classList.add("active");
+}
+
+function renderDayModalList() {
+  dayModalList.innerHTML = "";
+
+  if (!challengeData.habitLogs[viewingDateKey]) {
+    challengeData.habitLogs[viewingDateKey] = [];
+  }
+  const log = challengeData.habitLogs[viewingDateKey];
+
+  const completed = log.filter(Boolean).length;
+  dayModalSubtitle.textContent = completed + " / " + challengeData.habits.length + " habits done";
+
+  challengeData.habits.forEach(function (habit, index) {
+    const li = document.createElement("li");
+    li.style.cssText = "display:flex;align-items:center;gap:10px;padding:12px;background:#0f1419;border-radius:10px;margin-bottom:8px;";
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = log[index] === true;
+    checkbox.style.cssText = "width:20px;height:20px;cursor:pointer;";
+
+    checkbox.addEventListener("change", function () {
+      if (!challengeData.habitLogs[viewingDateKey]) {
+        challengeData.habitLogs[viewingDateKey] = [];
+      }
+      challengeData.habitLogs[viewingDateKey][index] = checkbox.checked;
+      localStorage.setItem("challengeData", JSON.stringify(challengeData));
+
+      const newLog = challengeData.habitLogs[viewingDateKey] || [];
+      const done = newLog.filter(Boolean).length;
+      dayModalSubtitle.textContent = done + " / " + challengeData.habits.length + " habits done";
+
+      renderHeatmap();
+      updateStats();
+    });
+
+    const span = document.createElement("span");
+    span.textContent = habit;
+    span.style.flex = "1";
+    span.style.color = "#e8eaed";
+    span.style.fontSize = "14px";
+
+    li.appendChild(checkbox);
+    li.appendChild(span);
+    dayModalList.appendChild(li);
+  });
+}
+
+dayModalClose.addEventListener("click", function () {
+  dayModal.classList.remove("active");
+  viewingDateKey = null;
+});
+
+dayModal.addEventListener("click", function (e) {
+  if (e.target === dayModal) {
+    dayModal.classList.remove("active");
+    viewingDateKey = null;
+  }
+});
 // ===== Heatmap =====
 function renderHeatmap() {
   const heatmap = document.getElementById("heatmap");
@@ -989,7 +1180,10 @@ function renderHeatmap() {
       cell.style.setProperty("border", "2px solid #ffffff", "important");
       cell.style.setProperty("box-sizing", "border-box", "important");
     }
-
+cell.dataset.dateKey = dateKey;
+cell.addEventListener("click", function () {
+  openDayModal(dateKey);
+});
     heatmap.appendChild(cell);
     currentKey = nextDateKey(currentKey);
   }
@@ -1060,6 +1254,7 @@ settingsButton.addEventListener("click", function () {
   settingsStartDate.value = challengeData.startDate;
   settingsMotivation.value = challengeData.motivation;
   settingsModal.classList.add("active");
+  setTimeout(updateDatePlaceholders, 50);
 });
 
 settingsCancel.addEventListener("click", function () {
@@ -1104,10 +1299,8 @@ settingsSave.addEventListener("click", function () {
 });
 
 resetAllData.addEventListener("click", function () {
-  if (confirm("Are you sure? This will delete ALL your data!")) {
-    localStorage.removeItem("challengeData");
-    location.reload();
-  }
+  settingsModal.classList.remove("active");
+  resetModal.classList.add("active");
 });
 
 // ===== Auto-update day at midnight =====
@@ -1125,6 +1318,13 @@ setInterval(function () {
   }
 }, 60000);
 
+// ===== Date placeholder listeners =====
+document.querySelectorAll(".date-wrapper input").forEach(function(input) {
+  input.addEventListener("change", updateDatePlaceholders);
+  input.addEventListener("input", updateDatePlaceholders);
+  input.addEventListener("blur", updateDatePlaceholders);
+});
+
 // ===== Load on Start =====
 const saved = localStorage.getItem("challengeData");
 if (saved) {
@@ -1138,6 +1338,9 @@ if (saved) {
   
   startMainApp();
 }
+
+// ===== Initial placeholder update =====
+setTimeout(updateDatePlaceholders, 200);
 
 // ===== Service Worker =====
 if ("serviceWorker" in navigator) {
