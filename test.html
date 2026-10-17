@@ -891,6 +891,8 @@
       if (!duration || duration < 1) { showToast("Please enter a valid duration"); return; }
       if (!startDate) { showToast("Please select a start date"); return; }
 
+      // (ভবিষ্যতের তারিখ আটকে দেওয়ার লজিক এখান থেকে সরানো হয়েছে)
+
       challengeData.title = title;
       challengeData.duration = duration;
       challengeData.startDate = startDate;
@@ -1554,8 +1556,7 @@
       if (!duration || duration < 1) { showToast("Please enter a valid duration"); return; }
       if (!startDate) { showToast("Please select a start date"); return; }
 
-      const todayKey = getDateKey();
-      if (startDate > todayKey) startDate = todayKey;
+      // (ভবিষ্যতের তারিখ আটকে দেওয়ার লজিক এখান থেকে সরানো হয়েছে)
 
       challengeData.title = title;
       challengeData.duration = duration;
@@ -1757,13 +1758,7 @@
     const saved = localStorage.getItem("challengeData");
     if (saved) {
       challengeData = JSON.parse(saved);
-
-      const todayKey = getDateKey();
-      if (challengeData.startDate > todayKey) {
-        challengeData.startDate = todayKey;
-        localStorage.setItem("challengeData", JSON.stringify(challengeData));
-      }
-
+      // (ভবিষ্যতের তারিখ আটকে দেওয়ার লজিক এখান থেকেও সরানো হয়েছে)
       startMainApp();
     }
 
