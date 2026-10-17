@@ -1466,6 +1466,7 @@
 
       let currentKey = challengeData.startDate;
       
+      // FIX: If start date is in the future, but user checks today, start heatmap from today
       if (currentKey > todayKey) {
         currentKey = todayKey;
       }
@@ -1525,6 +1526,7 @@
       const dates = [];
       let currentKey = challengeData.startDate;
       
+      // FIX: If start date is in the future, start counting from today
       if (currentKey > todayKey) {
         currentKey = todayKey;
       }
@@ -1852,6 +1854,9 @@
       const now = new Date();
       const currentTime = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
       const todayDate = getDateKey(now);
+
+      // ⚠️ নতুন লজিক: আজকের তারিখ যদি চ্যালেঞ্জ শুরুর তারিখের আগে হয়, তবে নোটিফিকেশন আসবে না
+      if (todayDate < challengeData.startDate) return;
 
       if (currentTime === challengeData.dayStart && lastStartNotifiedDate !== todayDate) {
         lastStartNotifiedDate = todayDate;
