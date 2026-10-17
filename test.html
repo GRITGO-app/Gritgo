@@ -779,8 +779,6 @@
         <button id="settingsSave">Save Changes</button>
       </div>
 
-      <!-- Test Notification Button (Dynamically Added in JS) -->
-
       <button id="exportData" style="width:100%; margin-top:15px; padding:12px; background:#2a3142; color:#4a9eff; border:1px solid #4a9eff; border-radius:10px; font-weight:600; cursor:pointer;">📥 Backup Data (Export)</button>
       <button id="importData" style="width:100%; margin-top:10px; padding:12px; background:#2a3142; color:#4aaa4a; border:1px solid #4aaa4a; border-radius:10px; font-weight:600; cursor:pointer;">📤 Restore Data (Import)</button>
       <input type="file" id="importFileInput" accept=".json" style="display:none;">
@@ -1829,23 +1827,6 @@
         showNotification("Good Night 🌃", `Finish your Day with: ${lastHabit} 😊`);
       }
     }, 30000);
-
-    // ===== টেস্ট নোটিফিকেশন বাটন =====
-    const testNotifBtn = document.createElement("button");
-    testNotifBtn.textContent = "🔔 Test Notification";
-    testNotifBtn.style.cssText = "width:100%; margin-top:15px; padding:12px; background:#2a3142; color:#ffcc00; border:1px solid #ffcc00; border-radius:10px; font-weight:600; cursor:pointer;";
-    
-    document.querySelector("#settingsModal .modal-box").appendChild(testNotifBtn);
-
-    testNotifBtn.addEventListener("click", function() {
-      if (Notification.permission !== "granted") {
-        alert("Please allow notifications first!");
-        requestNotificationPermission();
-        return;
-      }
-      const firstHabit = challengeData.habits.length > 0 ? challengeData.habits[0] : "Your Habit";
-      showNotification("Test Notification 🚀", `This is a test! Start your day with: ${firstHabit}`);
-    });
 
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("service-worker.js").catch(function(err) {
