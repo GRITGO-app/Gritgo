@@ -563,6 +563,20 @@
     #exportModal {
       z-index: 1050; 
     }
+
+    /* ===== Lock Message Style ===== */
+    .lock-message {
+      display: none;
+      padding: 15px;
+      background: rgba(255, 107, 74, 0.1);
+      border: 1px solid #ff6b4a;
+      border-radius: 10px;
+      color: #ff6b4a;
+      text-align: center;
+      margin-bottom: 15px;
+      font-weight: 600;
+      font-size: 14px;
+    }
   </style>
 </head>
 <body>
@@ -635,6 +649,10 @@
         <h2>Today</h2>
         <span id="todayCount">0 / 0</span>
       </div>
+      
+      <!-- Lock Message Area -->
+      <div id="lockMessage" class="lock-message"></div>
+
       <p id="emptyMessage">No habits yet. Choose Edit habits and add your first one.</p>
 
       <div class="today-buttons">
@@ -891,8 +909,6 @@
       if (!duration || duration < 1) { showToast("Please enter a valid duration"); return; }
       if (!startDate) { showToast("Please select a start date"); return; }
 
-      // (ভবিষ্যতের তারিখ আটকে দেওয়ার লজিক এখান থেকে সরানো হয়েছে)
-
       challengeData.title = title;
       challengeData.duration = duration;
       challengeData.startDate = startDate;
@@ -965,6 +981,7 @@
 
       const emptyMessage = document.getElementById("emptyMessage");
       const todayCount = document.getElementById("todayCount");
+      const lockMessage = document.getElementById("lockMessage");
       const searchInput = document.getElementById("habitSearchInput");
       const searchTerm = searchInput ? searchInput.value.trim() : "";
 
@@ -972,10 +989,25 @@
         emptyMessage.style.display = "block";
         emptyMessage.textContent = "No habits yet. Choose Edit habits and add your first one.";
         todayCount.textContent = "0 / 0";
+        lockMessage.style.display = "none";
         return;
       }
 
       const todayKey = getDateKey();
+      const isFuture = challengeData.startDate > todayKey;
+
+      // Handle Lock Message
+      if (isFuture) {
+        lockMessage.style.display = "block";
+        // Format the date nicely
+        const d = new Date(challengeData.startDate + "T00:00:00");
+        const options = { day: "numeric", month: "short", year: "numeric" };
+        lockMessage.innerHTML = `🔒 Challenge starts on <b>${d.toLocaleDateString("en-GB", options)}</b>.<br>Come back then!`;
+        todayCount.textContent = "🔒 Locked";
+      } else {
+        lockMessage.style.display = "none";
+      }
+
       if (!challengeData.habitLogs[todayKey]) {
         challengeData.habitLogs[todayKey] = [];
       }
@@ -1016,28 +1048,36 @@
         checkboxWrapper.className = "custom-checkbox";
         if (todayLog[index] === true) checkboxWrapper.classList.add("checked");
 
+        // Lock the checkbox if it's a future date
+        if (isFuture) {
+          checkboxWrapper.style.opacity = "0.5";
+          checkboxWrapper.style.cursor = "not-allowed";
+        }
+
         const numberSpan = document.createElement("span");
         numberSpan.className = "checkbox-number";
         numberSpan.textContent = (index + 1);
         checkboxWrapper.appendChild(numberSpan);
 
-        checkboxWrapper.addEventListener("click", function () {
-          const isChecked = !checkboxWrapper.classList.contains("checked");
-          checkboxWrapper.classList.toggle("checked", isChecked);
-          
-          const key = getDateKey();
-          if (!challengeData.habitLogs[key]) challengeData.habitLogs[key] = [];
-          challengeData.habitLogs[key][index] = isChecked;
-          localStorage.setItem("challengeData", JSON.stringify(challengeData));
-          updateTodayCount();
-          renderHeatmap();
-          updateStats();
-        });
+        if (!isFuture) {
+          checkboxWrapper.addEventListener("click", function () {
+            const isChecked = !checkboxWrapper.classList.contains("checked");
+            checkboxWrapper.classList.toggle("checked", isChecked);
+            
+            const key = getDateKey();
+            if (!challengeData.habitLogs[key]) challengeData.habitLogs[key] = [];
+            challengeData.habitLogs[key][index] = isChecked;
+            localStorage.setItem("challengeData", JSON.stringify(challengeData));
+            updateTodayCount();
+            renderHeatmap();
+            updateStats();
+          });
+        }
 
         const span = document.createElement("span");
         span.textContent = habit; 
         span.style.flex = "1";
-        span.style.color = "#e8eaed";
+        span.style.color = isFuture ? "#6a7280" : "#e8eaed";
         span.style.fontWeight = "500";
 
         const deleteBtn = document.createElement("button");
@@ -1066,7 +1106,9 @@
       const todayButtons = document.querySelector(".today-buttons");
       todayButtons.parentNode.insertBefore(ul, todayButtons);
 
-      todayCount.textContent = completedCount + " / " + challengeData.habits.length;
+      if (!isFuture) {
+        todayCount.textContent = completedCount + " / " + challengeData.habits.length;
+      }
     }
 
     function updateTodayCount() {
@@ -1423,6 +1465,10 @@
       const totalHabits = challengeData.habits.length;
 
       let currentKey = challengeData.startDate;
+      
+      if (currentKey > todayKey) {
+        currentKey = todayKey;
+      }
 
       for (let i = 0; i < challengeData.duration; i++) {
         const dateKey = currentKey;
@@ -1478,6 +1524,11 @@
 
       const dates = [];
       let currentKey = challengeData.startDate;
+      
+      if (currentKey > todayKey) {
+        currentKey = todayKey;
+      }
+
       let safety = 0;
       while (currentKey <= todayKey && safety < 500) {
         dates.push(currentKey);
@@ -1555,8 +1606,6 @@
       if (!title) { showToast("Please enter a challenge name"); return; }
       if (!duration || duration < 1) { showToast("Please enter a valid duration"); return; }
       if (!startDate) { showToast("Please select a start date"); return; }
-
-      // (ভবিষ্যতের তারিখ আটকে দেওয়ার লজিক এখান থেকে সরানো হয়েছে)
 
       challengeData.title = title;
       challengeData.duration = duration;
@@ -1758,7 +1807,6 @@
     const saved = localStorage.getItem("challengeData");
     if (saved) {
       challengeData = JSON.parse(saved);
-      // (ভবিষ্যতের তারিখ আটকে দেওয়ার লজিক এখান থেকেও সরানো হয়েছে)
       startMainApp();
     }
 
@@ -1781,7 +1829,6 @@
     let lastStartNotifiedDate = "";
     let lastEndNotifiedDate = "";
 
-    // Service Worker দিয়ে নোটিফিকেশন দেখানোর ফাংশন
     function showNotification(title, body) {
       if (!("serviceWorker" in navigator)) {
          new Notification(title, { body: body });
@@ -1798,7 +1845,6 @@
       });
     }
 
-    // প্রতি ৩০ সেকেন্ডে চেক করবে
     setInterval(function() {
       if (!challengeData.startDate || challengeData.habits.length === 0) return;
       if (!("Notification" in window) || Notification.permission !== "granted") return;
