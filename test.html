@@ -383,7 +383,7 @@
       margin-top: 12px;
     }
 
-    .modal-box input {
+    .modal-box input, .modal-box textarea {
       width: 100%;
       padding: 12px 15px;
       background-color: #0f1419;
@@ -392,9 +392,11 @@
       color: #e8eaed;
       font-size: 15px;
       outline: none;
+      font-family: inherit;
+      resize: none;
     }
 
-    .modal-box input:focus {
+    .modal-box input:focus, .modal-box textarea:focus {
       border-color: #4a9eff;
     }
 
@@ -450,12 +452,12 @@
       cursor: pointer;
     }
 
-    #settingsCancel, #addHabitCancel, #deleteCancel, #resetCancel, #dayModalClose, #exportCancel {
+    #settingsCancel, #addHabitCancel, #deleteCancel, #resetCancel, #dayModalClose, #exportCancel, #feedbackCancel {
       background-color: #2a3142;
       color: #e8eaed;
     }
 
-    #settingsSave, #addHabitSave {
+    #settingsSave, #addHabitSave, #feedbackSubmit {
       background: linear-gradient(135deg, #4a9eff, #2a7fdb);
       color: white;
     }
@@ -724,6 +726,21 @@
 
       <div class="settings-buttons" style="margin-top: 10px;">
         <button id="exportCancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEW FEEDBACK MODAL -->
+  <div id="feedbackModal" class="modal-overlay">
+    <div class="modal-box">
+      <h2>Send Feedback 💬</h2>
+      <p style="text-align:center; color:#9aa0a6; margin-bottom:15px; font-size:13px;">
+        How is GRITGO going? Let me know!
+      </p>
+      <textarea id="feedbackText" rows="4" placeholder="Write your feedback here..."></textarea>
+      <div class="settings-buttons">
+        <button id="feedbackCancel">Cancel</button>
+        <button id="feedbackSubmit">Send</button>
       </div>
     </div>
   </div>
@@ -1541,21 +1558,72 @@
       resetModal.classList.add("active");
     });
 
-    // ===== Backup Options Modal Logic =====
+    // ===== NEW: Feedback Modal Logic =====
+    const commentButton = document.getElementById("commentButton");
+    const feedbackModal = document.getElementById("feedbackModal");
+    const feedbackCancel = document.getElementById("feedbackCancel");
+    const feedbackSubmit = document.getElementById("feedbackSubmit");
+    const feedbackText = document.getElementById("feedbackText");
+
+    // ক্যাট বাটনে ক্লিক করলে মডাল ওপেন হবে
+    commentButton.addEventListener("click", function() {
+      feedbackModal.classList.add("active");
+    });
+
+    // ক্যানসেল বাটনে ক্লিক করলে মডাল বন্ধ হবে
+    feedbackCancel.addEventListener("click", function() {
+      feedbackModal.classList.remove("active");
+      feedbackText.value = "";
+    });
+
+    // মডালের বাইরে ক্লিক করলেও বন্ধ হবে
+    feedbackModal.addEventListener("click", function(e) {
+      if (e.target === feedbackModal) {
+        feedbackModal.classList.remove("active");
+        feedbackText.value = "";
+      }
+    });
+
+    // সেন্ড বাটনে ক্লিক করলে
+    feedbackSubmit.addEventListener("click", function() {
+      if(!feedbackText.value.trim()) {
+        showToast("Please write something first!");
+        return;
+      }
+      showToast("Thanks for the feedback! 💙");
+      feedbackModal.classList.remove("active");
+      feedbackText.value = "";
+    });
+
+
+    // ===== NEW: Header Share Button Logic =====
+    const shareButton = document.getElementById("shareButton");
     const exportModal = document.getElementById("exportModal");
     const exportDataBtn = document.getElementById("exportData");
     const exportCancel = document.getElementById("exportCancel");
     const btnDownloadFile = document.getElementById("btnDownloadFile");
     const btnShareFile = document.getElementById("btnShareFile");
 
+    // টপবারের শেয়ার বাটনে ক্লিক করলে ডিরেক্ট Backup Modal ওপেন হবে
+    shareButton.addEventListener("click", function() {
+      exportModal.classList.add("active");
+      
+      // চেক করা হচ্ছে ব্রাউজার ফাইল শেয়ার সাপোর্ট করে কিনা
+      const testFile = new File(["{}"], "test.json", { type: "application/json" });
+      if (!navigator.canShare || !navigator.canShare({ files: [testFile] })) {
+        btnShareFile.style.display = "none";
+      } else {
+        btnShareFile.style.display = "flex";
+      }
+    });
+
+    // সেটিংস থেকে এক্সপোর্ট বাটনে ক্লিক করলেও একই মডাল ওপেন হবে
     exportDataBtn.addEventListener("click", function() {
       settingsModal.classList.remove("active");
       exportModal.classList.add("active");
 
-      // চেক করা হচ্ছে ব্রাউজার ফাইল শেয়ার সাপোর্ট করে কিনা
       const testFile = new File(["{}"], "test.json", { type: "application/json" });
       if (!navigator.canShare || !navigator.canShare({ files: [testFile] })) {
-        // সাপোর্ট না করলে শেয়ার বাটনটি লুকিয়ে ফেলা হবে
         btnShareFile.style.display = "none";
       } else {
         btnShareFile.style.display = "flex";
@@ -1564,6 +1632,7 @@
 
     exportCancel.addEventListener("click", function() {
       exportModal.classList.remove("active");
+      // যদি ইউজার সেটিংস থেকে আসে, তবে সেটিংসে ফিরে যাবে। না আসলে মেইন স্ক্রিন।
       settingsModal.classList.add("active");
     });
 
@@ -1574,7 +1643,7 @@
       }
     });
 
-    // অপশন ১: ডাউনলোড ফাইল (Blob ব্যবহার করে যাতে বিশাল লম্বা টেক্সট না আসে)
+    // ডাউনলোড ফাইল বাটন
     btnDownloadFile.addEventListener("click", function() {
       const dataStr = JSON.stringify(challengeData);
       const today = getDateKey();
@@ -1589,13 +1658,13 @@
       document.body.appendChild(downloadAnchorNode);
       downloadAnchorNode.click();
       downloadAnchorNode.remove();
-      URL.revokeObjectURL(url); // মেমোরি ক্লিয়ার করা
+      URL.revokeObjectURL(url);
       
       exportModal.classList.remove("active");
       showToast("Download Started!");
     });
 
-    // অপশন ২: ফোনের শেয়ার মেনু
+    // ফোনের শেয়ার মেনু বাটন
     btnShareFile.addEventListener("click", async function() {
       const dataStr = JSON.stringify(challengeData);
       const today = getDateKey();
