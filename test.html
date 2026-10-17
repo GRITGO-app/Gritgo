@@ -586,7 +586,6 @@
     <label>Motivation Text:</label>
     <input type="text" id="setupMotivation" placeholder="Any Motivational Text You Like">
 
-    <!-- নতুন যোগ করা টাইম ইনপুট -->
     <label>Day Start Time:</label>
     <input type="time" id="setupDayStart" value="06:00">
 
@@ -715,7 +714,6 @@
     </div>
   </div>
 
-  <!-- EXPORT OPTIONS MODAL -->
   <div id="exportModal" class="modal-overlay">
     <div class="modal-box">
       <h2>Backup Options</h2>
@@ -737,7 +735,6 @@
     </div>
   </div>
 
-  <!-- NEW FEEDBACK MODAL -->
   <div id="feedbackModal" class="modal-overlay">
     <div class="modal-box">
       <h2>Send Feedback 💬</h2>
@@ -771,7 +768,6 @@
       <label>Motivation Text:</label>
       <input type="text" id="settingsMotivation">
 
-      <!-- নতুন যোগ করা টাইম ইনপুট -->
       <label>Day Start Time:</label>
       <input type="time" id="settingsDayStart">
 
@@ -782,6 +778,8 @@
         <button id="settingsCancel">Cancel</button>
         <button id="settingsSave">Save Changes</button>
       </div>
+
+      <!-- Test Notification Button (Dynamically Added in JS) -->
 
       <button id="exportData" style="width:100%; margin-top:15px; padding:12px; background:#2a3142; color:#4a9eff; border:1px solid #4a9eff; border-radius:10px; font-weight:600; cursor:pointer;">📥 Backup Data (Export)</button>
       <button id="importData" style="width:100%; margin-top:10px; padding:12px; background:#2a3142; color:#4aaa4a; border:1px solid #4aaa4a; border-radius:10px; font-weight:600; cursor:pointer;">📤 Restore Data (Import)</button>
@@ -879,8 +877,8 @@
     const setupDuration = document.getElementById("setupDuration");
     const setupStartDate = document.getElementById("setupStartDate");
     const setupMotivation = document.getElementById("setupMotivation");
-    const setupDayStart = document.getElementById("setupDayStart"); // নতুন
-    const setupDayEnd = document.getElementById("setupDayEnd");     // নতুন
+    const setupDayStart = document.getElementById("setupDayStart");
+    const setupDayEnd = document.getElementById("setupDayEnd");
     const setupSaveButton = document.getElementById("setupSaveButton");
 
     setupSaveButton.addEventListener("click", function () {
@@ -888,8 +886,8 @@
       const duration = parseInt(setupDuration.value);
       let startDate = setupStartDate.value;
       const motivation = setupMotivation.value.trim();
-      const dayStart = setupDayStart.value || "06:00"; // নতুন
-      const dayEnd = setupDayEnd.value || "22:00";     // নতুন
+      const dayStart = setupDayStart.value || "06:00";
+      const dayEnd = setupDayEnd.value || "22:00";
 
       if (!title) { showToast("Please enter a challenge name"); return; }
       if (!duration || duration < 1) { showToast("Please enter a valid duration"); return; }
@@ -907,7 +905,7 @@
 
       localStorage.setItem("challengeData", JSON.stringify(challengeData));
       startMainApp();
-      requestNotificationPermission(); // নোটিফিকেশন পারমিশন চাওয়া
+      requestNotificationPermission();
     });
 
     function startMainApp() {
@@ -1522,8 +1520,8 @@
     const settingsDuration = document.getElementById("settingsDuration");
     const settingsStartDate = document.getElementById("settingsStartDate");
     const settingsMotivation = document.getElementById("settingsMotivation");
-    const settingsDayStart = document.getElementById("settingsDayStart"); // নতুন
-    const settingsDayEnd = document.getElementById("settingsDayEnd");     // নতুন
+    const settingsDayStart = document.getElementById("settingsDayStart");
+    const settingsDayEnd = document.getElementById("settingsDayEnd");
     const settingsCancel = document.getElementById("settingsCancel");
     const settingsSave = document.getElementById("settingsSave");
     const resetAllData = document.getElementById("resetAllData");
@@ -1533,8 +1531,8 @@
       settingsDuration.value = challengeData.duration;
       settingsStartDate.value = challengeData.startDate;
       settingsMotivation.value = challengeData.motivation;
-      settingsDayStart.value = challengeData.dayStart || "06:00"; // নতুন
-      settingsDayEnd.value = challengeData.dayEnd || "22:00";     // নতুন
+      settingsDayStart.value = challengeData.dayStart || "06:00";
+      settingsDayEnd.value = challengeData.dayEnd || "22:00";
       settingsModal.classList.add("active");
       setTimeout(updateDatePlaceholders, 50);
     });
@@ -1554,8 +1552,8 @@
       const duration = parseInt(settingsDuration.value);
       let startDate = settingsStartDate.value;
       const motivation = settingsMotivation.value.trim();
-      const dayStart = settingsDayStart.value || "06:00"; // নতুন
-      const dayEnd = settingsDayEnd.value || "22:00";     // নতুন
+      const dayStart = settingsDayStart.value || "06:00";
+      const dayEnd = settingsDayEnd.value || "22:00";
 
       if (!title) { showToast("Please enter a challenge name"); return; }
       if (!duration || duration < 1) { showToast("Please enter a valid duration"); return; }
@@ -1582,7 +1580,7 @@
 
       settingsModal.classList.remove("active");
       showToast("Settings saved!");
-      requestNotificationPermission(); // পারমিশন আবার চেক করা
+      requestNotificationPermission();
     });
 
     resetAllData.addEventListener("click", function () {
@@ -1590,25 +1588,22 @@
       resetModal.classList.add("active");
     });
 
-    // ===== NEW: Feedback Modal Logic =====
+    // ===== Feedback Modal Logic =====
     const commentButton = document.getElementById("commentButton");
     const feedbackModal = document.getElementById("feedbackModal");
     const feedbackCancel = document.getElementById("feedbackCancel");
     const feedbackSubmit = document.getElementById("feedbackSubmit");
     const feedbackText = document.getElementById("feedbackText");
 
-    // চ্যাট বাটনে ক্লিক করলে মডাল ওপেন হবে
     commentButton.addEventListener("click", function() {
       feedbackModal.classList.add("active");
     });
 
-    // ক্যানসেল বাটনে ক্লিক করলে মডাল বন্ধ হবে
     feedbackCancel.addEventListener("click", function() {
       feedbackModal.classList.remove("active");
       feedbackText.value = "";
     });
 
-    // মডালের বাইরে ক্লিক করলেও বন্ধ হবে
     feedbackModal.addEventListener("click", function(e) {
       if (e.target === feedbackModal) {
         feedbackModal.classList.remove("active");
@@ -1616,7 +1611,6 @@
       }
     });
 
-    // সেন্ড বাটনে ক্লিক করলে WhatsApp-এ মেসেজ যাবে
     feedbackSubmit.addEventListener("click", function() {
       const text = feedbackText.value.trim();
       
@@ -1625,23 +1619,17 @@
         return;
       }
       
-      // ⚠️ এখানে তোমার নিজের WhatsApp নম্বরটা বসাও (কান্ট্রি কোড সহ, কোনো + বা স্পেস ছাড়া)
       const myPhoneNumber = "8801888214016"; 
-      
-      // মেসেজটাকে WhatsApp লিংকে রূপান্তর করা
       const whatsappUrl = `https://wa.me/${myPhoneNumber}?text=${encodeURIComponent("GRITGO Feedback:\n\n" + text)}`;
       
-      // নতুন উইন্ডোতে WhatsApp ওপেন হবে
       window.open(whatsappUrl, "_blank");
       
-      // মডাল বন্ধ করা এবং বক্স খালি করা
       feedbackModal.classList.remove("active");
       feedbackText.value = "";
       showToast("Opening WhatsApp...");
     });
 
-
-    // ===== NEW: Header Share Button Logic =====
+    // ===== Header Share Button Logic =====
     const shareButton = document.getElementById("shareButton");
     const exportModal = document.getElementById("exportModal");
     const exportDataBtn = document.getElementById("exportData");
@@ -1649,11 +1637,9 @@
     const btnDownloadFile = document.getElementById("btnDownloadFile");
     const btnShareFile = document.getElementById("btnShareFile");
 
-    // টপবারের শেয়ার বাটনে ক্লিক করলে ডিরেক্ট Backup Modal ওপেন হবে
     shareButton.addEventListener("click", function() {
       exportModal.classList.add("active");
       
-      // চেক করা হচ্ছে ব্রাউজার ফাইল শেয়ার সাপোর্ট করে কিনা
       const testFile = new File(["{}"], "test.json", { type: "application/json" });
       if (!navigator.canShare || !navigator.canShare({ files: [testFile] })) {
         btnShareFile.style.display = "none";
@@ -1662,7 +1648,6 @@
       }
     });
 
-    // সেটিংস থেকে এক্সপোর্ট বাটনে ক্লিক করলেও একই মডাল ওপেন হবে
     exportDataBtn.addEventListener("click", function() {
       settingsModal.classList.remove("active");
       exportModal.classList.add("active");
@@ -1677,7 +1662,6 @@
 
     exportCancel.addEventListener("click", function() {
       exportModal.classList.remove("active");
-      // যদি ইউজার সেটিংস থেকে আসে, তবে সেটিংসে ফিরে যাবে। না আসলে মেইন স্ক্রিন।
       settingsModal.classList.add("active");
     });
 
@@ -1688,7 +1672,6 @@
       }
     });
 
-    // ডাউনলোড ফাইল বাটন
     btnDownloadFile.addEventListener("click", function() {
       const dataStr = JSON.stringify(challengeData);
       const today = getDateKey();
@@ -1709,7 +1692,6 @@
       showToast("Download Started!");
     });
 
-    // ফোনের শেয়ার মেনু বাটন
     btnShareFile.addEventListener("click", async function() {
       const dataStr = JSON.stringify(challengeData);
       const today = getDateKey();
@@ -1804,13 +1786,29 @@
       }
     }
     
-    // অ্যাপ ওপেন হলেই পারমিশন চাইবে
     requestNotificationPermission();
 
     let lastStartNotifiedDate = "";
     let lastEndNotifiedDate = "";
 
-    // প্রতি ৩০ সেকেন্ডে চেক করবে সময় হয়েছে কিনা
+    // Service Worker দিয়ে নোটিফিকেশন দেখানোর ফাংশন
+    function showNotification(title, body) {
+      if (!("serviceWorker" in navigator)) {
+         new Notification(title, { body: body });
+         return;
+      }
+      
+      navigator.serviceWorker.ready.then(function(registration) {
+        registration.showNotification(title, {
+          body: body,
+          icon: "icon-192.png", 
+          vibrate: [200, 100, 200],
+          requireInteraction: true 
+        });
+      });
+    }
+
+    // প্রতি ৩০ সেকেন্ডে চেক করবে
     setInterval(function() {
       if (!challengeData.startDate || challengeData.habits.length === 0) return;
       if (!("Notification" in window) || Notification.permission !== "granted") return;
@@ -1819,30 +1817,35 @@
       const currentTime = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
       const todayDate = getDateKey(now);
 
-      // ১. Day Start Notification
       if (currentTime === challengeData.dayStart && lastStartNotifiedDate !== todayDate) {
         lastStartNotifiedDate = todayDate;
         const firstHabit = challengeData.habits[0];
-        
-        new Notification("Good Morning 🛏🌅", {
-          body: `Start your Day with: ${firstHabit} 😊`,
-          icon: "icon-192.png", // তোমার manifest এর আইকনের নাম দাও
-          vibrate: [200, 100, 200]
-        });
+        showNotification("Good Morning 🛏🌅", `Start your Day with: ${firstHabit} 😊`);
       }
 
-      // ২. Day End Notification
       if (currentTime === challengeData.dayEnd && lastEndNotifiedDate !== todayDate) {
         lastEndNotifiedDate = todayDate;
         const lastHabit = challengeData.habits[challengeData.habits.length - 1];
-        
-        new Notification("Good Night 🌃", {
-          body: `Finish your Day with: ${lastHabit} 😊`,
-          icon: "icon-192.png",
-          vibrate: [200, 100, 200]
-        });
+        showNotification("Good Night 🌃", `Finish your Day with: ${lastHabit} 😊`);
       }
     }, 30000);
+
+    // ===== টেস্ট নোটিফিকেশন বাটন =====
+    const testNotifBtn = document.createElement("button");
+    testNotifBtn.textContent = "🔔 Test Notification";
+    testNotifBtn.style.cssText = "width:100%; margin-top:15px; padding:12px; background:#2a3142; color:#ffcc00; border:1px solid #ffcc00; border-radius:10px; font-weight:600; cursor:pointer;";
+    
+    document.querySelector("#settingsModal .modal-box").appendChild(testNotifBtn);
+
+    testNotifBtn.addEventListener("click", function() {
+      if (Notification.permission !== "granted") {
+        alert("Please allow notifications first!");
+        requestNotificationPermission();
+        return;
+      }
+      const firstHabit = challengeData.habits.length > 0 ? challengeData.habits[0] : "Your Habit";
+      showNotification("Test Notification 🚀", `This is a test! Start your day with: ${firstHabit}`);
+    });
 
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("service-worker.js").catch(function(err) {
