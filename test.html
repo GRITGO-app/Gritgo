@@ -586,6 +586,13 @@
     <label>Motivation Text:</label>
     <input type="text" id="setupMotivation" placeholder="Any Motivational Text You Like">
 
+    <!-- নতুন যোগ করা টাইম ইনপুট -->
+    <label>Day Start Time:</label>
+    <input type="time" id="setupDayStart" value="06:00">
+
+    <label>Day End Time:</label>
+    <input type="time" id="setupDayEnd" value="22:00">
+
     <button id="setupSaveButton">Start Challenge</button>
   </div>
 
@@ -764,6 +771,13 @@
       <label>Motivation Text:</label>
       <input type="text" id="settingsMotivation">
 
+      <!-- নতুন যোগ করা টাইম ইনপুট -->
+      <label>Day Start Time:</label>
+      <input type="time" id="settingsDayStart">
+
+      <label>Day End Time:</label>
+      <input type="time" id="settingsDayEnd">
+
       <div class="settings-buttons">
         <button id="settingsCancel">Cancel</button>
         <button id="settingsSave">Save Changes</button>
@@ -785,7 +799,9 @@
       startDate: "",
       motivation: "",
       habits: [],
-      habitLogs: {}
+      habitLogs: {},
+      dayStart: "06:00",
+      dayEnd: "22:00"
     };
 
     // ===== SVG Delete Icon =====
@@ -863,6 +879,8 @@
     const setupDuration = document.getElementById("setupDuration");
     const setupStartDate = document.getElementById("setupStartDate");
     const setupMotivation = document.getElementById("setupMotivation");
+    const setupDayStart = document.getElementById("setupDayStart"); // নতুন
+    const setupDayEnd = document.getElementById("setupDayEnd");     // নতুন
     const setupSaveButton = document.getElementById("setupSaveButton");
 
     setupSaveButton.addEventListener("click", function () {
@@ -870,6 +888,8 @@
       const duration = parseInt(setupDuration.value);
       let startDate = setupStartDate.value;
       const motivation = setupMotivation.value.trim();
+      const dayStart = setupDayStart.value || "06:00"; // নতুন
+      const dayEnd = setupDayEnd.value || "22:00";     // নতুন
 
       if (!title) { showToast("Please enter a challenge name"); return; }
       if (!duration || duration < 1) { showToast("Please enter a valid duration"); return; }
@@ -882,9 +902,12 @@
       challengeData.duration = duration;
       challengeData.startDate = startDate;
       challengeData.motivation = motivation || "Show up again.";
+      challengeData.dayStart = dayStart;
+      challengeData.dayEnd = dayEnd;
 
       localStorage.setItem("challengeData", JSON.stringify(challengeData));
       startMainApp();
+      requestNotificationPermission(); // নোটিফিকেশন পারমিশন চাওয়া
     });
 
     function startMainApp() {
@@ -1499,6 +1522,8 @@
     const settingsDuration = document.getElementById("settingsDuration");
     const settingsStartDate = document.getElementById("settingsStartDate");
     const settingsMotivation = document.getElementById("settingsMotivation");
+    const settingsDayStart = document.getElementById("settingsDayStart"); // নতুন
+    const settingsDayEnd = document.getElementById("settingsDayEnd");     // নতুন
     const settingsCancel = document.getElementById("settingsCancel");
     const settingsSave = document.getElementById("settingsSave");
     const resetAllData = document.getElementById("resetAllData");
@@ -1508,6 +1533,8 @@
       settingsDuration.value = challengeData.duration;
       settingsStartDate.value = challengeData.startDate;
       settingsMotivation.value = challengeData.motivation;
+      settingsDayStart.value = challengeData.dayStart || "06:00"; // নতুন
+      settingsDayEnd.value = challengeData.dayEnd || "22:00";     // নতুন
       settingsModal.classList.add("active");
       setTimeout(updateDatePlaceholders, 50);
     });
@@ -1527,6 +1554,8 @@
       const duration = parseInt(settingsDuration.value);
       let startDate = settingsStartDate.value;
       const motivation = settingsMotivation.value.trim();
+      const dayStart = settingsDayStart.value || "06:00"; // নতুন
+      const dayEnd = settingsDayEnd.value || "22:00";     // নতুন
 
       if (!title) { showToast("Please enter a challenge name"); return; }
       if (!duration || duration < 1) { showToast("Please enter a valid duration"); return; }
@@ -1539,6 +1568,8 @@
       challengeData.duration = duration;
       challengeData.startDate = startDate;
       challengeData.motivation = motivation || "Show up again.";
+      challengeData.dayStart = dayStart;
+      challengeData.dayEnd = dayEnd;
 
       localStorage.setItem("challengeData", JSON.stringify(challengeData));
 
@@ -1551,6 +1582,7 @@
 
       settingsModal.classList.remove("active");
       showToast("Settings saved!");
+      requestNotificationPermission(); // পারমিশন আবার চেক করা
     });
 
     resetAllData.addEventListener("click", function () {
@@ -1594,7 +1626,6 @@
       }
       
       // ⚠️ এখানে তোমার নিজের WhatsApp নম্বরটা বসাও (কান্ট্রি কোড সহ, কোনো + বা স্পেস ছাড়া)
-      // উদাহরণ: বাংলাদেশের নম্বর 01712345678 হলে, লিখবে 8801712345678
       const myPhoneNumber = "8801888214016"; 
       
       // মেসেজটাকে WhatsApp লিংকে রূপান্তর করা
@@ -1763,6 +1794,55 @@
       updateDatePlaceholders();
       attachSearchListener();
     }, 200);
+
+    // ===== NOTIFICATION SYSTEM =====
+    function requestNotificationPermission() {
+      if ("Notification" in window) {
+        if (Notification.permission !== "granted" && Notification.permission !== "denied") {
+          Notification.requestPermission();
+        }
+      }
+    }
+    
+    // অ্যাপ ওপেন হলেই পারমিশন চাইবে
+    requestNotificationPermission();
+
+    let lastStartNotifiedDate = "";
+    let lastEndNotifiedDate = "";
+
+    // প্রতি ৩০ সেকেন্ডে চেক করবে সময় হয়েছে কিনা
+    setInterval(function() {
+      if (!challengeData.startDate || challengeData.habits.length === 0) return;
+      if (!("Notification" in window) || Notification.permission !== "granted") return;
+
+      const now = new Date();
+      const currentTime = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
+      const todayDate = getDateKey(now);
+
+      // ১. Day Start Notification
+      if (currentTime === challengeData.dayStart && lastStartNotifiedDate !== todayDate) {
+        lastStartNotifiedDate = todayDate;
+        const firstHabit = challengeData.habits[0];
+        
+        new Notification("Good Morning 🛏🌅", {
+          body: `Start your Day with: ${firstHabit} 😊`,
+          icon: "icon-192.png", // তোমার manifest এর আইকনের নাম দাও
+          vibrate: [200, 100, 200]
+        });
+      }
+
+      // ২. Day End Notification
+      if (currentTime === challengeData.dayEnd && lastEndNotifiedDate !== todayDate) {
+        lastEndNotifiedDate = todayDate;
+        const lastHabit = challengeData.habits[challengeData.habits.length - 1];
+        
+        new Notification("Good Night 🌃", {
+          body: `Finish your Day with: ${lastHabit} 😊`,
+          icon: "icon-192.png",
+          vibrate: [200, 100, 200]
+        });
+      }
+    }, 30000);
 
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("service-worker.js").catch(function(err) {
