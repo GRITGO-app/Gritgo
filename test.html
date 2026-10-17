@@ -891,9 +891,6 @@
       if (!duration || duration < 1) { showToast("Please enter a valid duration"); return; }
       if (!startDate) { showToast("Please select a start date"); return; }
 
-      const todayKey = getDateKey();
-      if (startDate > todayKey) startDate = todayKey;
-
       challengeData.title = title;
       challengeData.duration = duration;
       challengeData.startDate = startDate;
