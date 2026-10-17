@@ -70,6 +70,35 @@
       border-color: #4a9eff;
     }
 
+    /* ===== Time Picker CSS ===== */
+    .time-picker-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 5px;
+    }
+    
+    .time-picker-row select {
+      background-color: #1a1f2e;
+      border: 1px solid #2a3142;
+      border-radius: 10px;
+      color: #e8eaed;
+      font-size: 15px;
+      padding: 12px 10px;
+      outline: none;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      text-align: center;
+    }
+    
+    .time-picker-row select:focus {
+      border-color: #4a9eff;
+    }
+    
+    .time-hour { flex: 1; }
+    .time-minute { flex: 1; }
+    .time-ampm { flex: 1.2; font-weight: bold; color: #4a9eff !important; }
+
     #setupSaveButton {
       margin-top: 25px;
       width: 100%;
@@ -577,15 +606,6 @@
       font-weight: 600;
       font-size: 14px;
     }
-
-    /* ===== Time Display Helper ===== */
-    .time-display {
-      display: block;
-      color: #4a9eff;
-      font-size: 13px;
-      margin-top: 5px;
-      font-weight: 600;
-    }
   </style>
 </head>
 <body>
@@ -610,12 +630,24 @@
     <input type="text" id="setupMotivation" placeholder="Any Motivational Text You Like">
 
     <label>Day Start Time:</label>
-    <input type="time" id="setupDayStart" value="06:00">
-    <span class="time-display" id="setupDayStartDisplay"></span>
+    <div class="time-picker-row">
+      <select class="time-hour" id="setupDayStartHour"></select>
+      <select class="time-minute" id="setupDayStartMinute"></select>
+      <select class="time-ampm" id="setupDayStartAmPm">
+        <option value="AM">AM</option>
+        <option value="PM">PM</option>
+      </select>
+    </div>
 
     <label>Day End Time:</label>
-    <input type="time" id="setupDayEnd" value="22:00">
-    <span class="time-display" id="setupDayEndDisplay"></span>
+    <div class="time-picker-row">
+      <select class="time-hour" id="setupDayEndHour"></select>
+      <select class="time-minute" id="setupDayEndMinute"></select>
+      <select class="time-ampm" id="setupDayEndAmPm">
+        <option value="AM">AM</option>
+        <option value="PM">PM</option>
+      </select>
+    </div>
 
     <button id="setupSaveButton">Start Challenge</button>
   </div>
@@ -661,7 +693,6 @@
         <span id="todayCount">0 / 0</span>
       </div>
       
-      <!-- Lock Message Area -->
       <div id="lockMessage" class="lock-message"></div>
 
       <p id="emptyMessage">No habits yet. Choose Edit habits and add your first one.</p>
@@ -798,12 +829,24 @@
       <input type="text" id="settingsMotivation">
 
       <label>Day Start Time:</label>
-      <input type="time" id="settingsDayStart">
-      <span class="time-display" id="settingsDayStartDisplay"></span>
+      <div class="time-picker-row">
+        <select class="time-hour" id="settingsDayStartHour"></select>
+        <select class="time-minute" id="settingsDayStartMinute"></select>
+        <select class="time-ampm" id="settingsDayStartAmPm">
+          <option value="AM">AM</option>
+          <option value="PM">PM</option>
+        </select>
+      </div>
 
       <label>Day End Time:</label>
-      <input type="time" id="settingsDayEnd">
-      <span class="time-display" id="settingsDayEndDisplay"></span>
+      <div class="time-picker-row">
+        <select class="time-hour" id="settingsDayEndHour"></select>
+        <select class="time-minute" id="settingsDayEndMinute"></select>
+        <select class="time-ampm" id="settingsDayEndAmPm">
+          <option value="AM">AM</option>
+          <option value="PM">PM</option>
+        </select>
+      </div>
 
       <div class="settings-buttons">
         <button id="settingsCancel">Cancel</button>
@@ -899,35 +942,55 @@
       }, 2500);
     }
 
-    // ===== Time Display Formatter =====
-    function formatTimeDisplay(timeStr) {
-      if (!timeStr) return "";
-      const parts = timeStr.split(":");
-      let hour = parseInt(parts[0]);
-      const minute = parts[1];
-      const ampm = hour >= 12 ? "PM" : "AM";
-      hour = hour % 12;
-      hour = hour ? hour : 12; // 0 becomes 12
-      return `Selected: ${String(hour).padStart(2, '0')}:${minute} ${ampm}`;
+    // ===== Custom Time Picker Logic =====
+    function populateTimeSelects() {
+      const hours = [];
+      for (let i = 1; i <= 12; i++) hours.push(String(i).padStart(2, '0'));
+      
+      const mins = [];
+      for (let i = 0; i < 60; i++) mins.push(String(i).padStart(2, '0'));
+
+      const hourSelectors = ["setupDayStartHour", "setupDayEndHour", "settingsDayStartHour", "settingsDayEndHour"];
+      const minSelectors = ["setupDayStartMinute", "setupDayEndMinute", "settingsDayStartMinute", "settingsDayEndMinute"];
+
+      hourSelectors.forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.innerHTML = hours.map(h => `<option value="${h}">${h}</option>`).join("");
+      });
+      minSelectors.forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.innerHTML = mins.map(m => `<option value="${m}">${m}</option>`).join("");
+      });
     }
 
-    function updateTimeDisplays() {
-      const sStart = document.getElementById("setupDayStart");
-      const sEnd = document.getElementById("setupDayEnd");
-      const stStart = document.getElementById("settingsDayStart");
-      const stEnd = document.getElementById("settingsDayEnd");
+    // Convert UI (12hr) to DB (24hr string "HH:MM")
+    function getTimeFromSelects(prefix) { 
+      const h12 = parseInt(document.getElementById(prefix + "Hour").value);
+      const m = document.getElementById(prefix + "Minute").value;
+      const ampm = document.getElementById(prefix + "AmPm").value;
 
-      if(sStart) document.getElementById("setupDayStartDisplay").textContent = formatTimeDisplay(sStart.value);
-      if(sEnd) document.getElementById("setupDayEndDisplay").textContent = formatTimeDisplay(sEnd.value);
-      if(stStart) document.getElementById("settingsDayStartDisplay").textContent = formatTimeDisplay(stStart.value);
-      if(stEnd) document.getElementById("settingsDayEndDisplay").textContent = formatTimeDisplay(stEnd.value);
+      let h24 = h12;
+      if (ampm === "AM" && h12 === 12) h24 = 0;
+      if (ampm === "PM" && h12 !== 12) h24 = h12 + 12;
+
+      return String(h24).padStart(2, '0') + ":" + m;
     }
 
-    // Add event listeners for time inputs
-    ["setupDayStart", "setupDayEnd", "settingsDayStart", "settingsDayEnd"].forEach(function(id) {
-      const el = document.getElementById(id);
-      if(el) el.addEventListener("input", updateTimeDisplays);
-    });
+    // Convert DB (24hr string "HH:MM") to UI (12hr)
+    function setSelectsFromTime(prefix, timeStr) { 
+      if(!timeStr) timeStr = "06:00";
+      let [h24, m] = timeStr.split(":").map(Number);
+      let ampm = h24 >= 12 ? "PM" : "AM";
+      let h12 = h24 % 12;
+      if(h12 === 0) h12 = 12;
+
+      document.getElementById(prefix + "Hour").value = String(h12).padStart(2, '0');
+      document.getElementById(prefix + "Minute").value = String(m).padStart(2, '0');
+      document.getElementById(prefix + "AmPm").value = ampm;
+    }
+
+    // Initialize on page load
+    populateTimeSelects();
 
 
     // ===== Setup Logic =====
@@ -937,8 +1000,6 @@
     const setupDuration = document.getElementById("setupDuration");
     const setupStartDate = document.getElementById("setupStartDate");
     const setupMotivation = document.getElementById("setupMotivation");
-    const setupDayStart = document.getElementById("setupDayStart");
-    const setupDayEnd = document.getElementById("setupDayEnd");
     const setupSaveButton = document.getElementById("setupSaveButton");
 
     setupSaveButton.addEventListener("click", function () {
@@ -946,8 +1007,9 @@
       const duration = parseInt(setupDuration.value);
       let startDate = setupStartDate.value;
       const motivation = setupMotivation.value.trim();
-      const dayStart = setupDayStart.value || "06:00";
-      const dayEnd = setupDayEnd.value || "22:00";
+      
+      const dayStart = getTimeFromSelects("setupDayStart");
+      const dayEnd = getTimeFromSelects("setupDayEnd");
 
       if (!title) { showToast("Please enter a challenge name"); return; }
       if (!duration || duration < 1) { showToast("Please enter a valid duration"); return; }
@@ -978,7 +1040,6 @@
       renderHeatmap();
       updateStats();
       attachSearchListener();
-      updateTimeDisplays();
     }
 
     // ===== Render Habits (Edit Mode) =====
@@ -1044,7 +1105,6 @@
       // Handle Lock Message
       if (isFuture) {
         lockMessage.style.display = "block";
-        // Format the date nicely
         const d = new Date(challengeData.startDate + "T00:00:00");
         const options = { day: "numeric", month: "short", year: "numeric" };
         lockMessage.innerHTML = `🔒 Challenge starts on <b>${d.toLocaleDateString("en-GB", options)}</b>.<br>Come back then!`;
@@ -1093,7 +1153,6 @@
         checkboxWrapper.className = "custom-checkbox";
         if (todayLog[index] === true) checkboxWrapper.classList.add("checked");
 
-        // Lock the checkbox if it's a future date
         if (isFuture) {
           checkboxWrapper.style.opacity = "0.5";
           checkboxWrapper.style.cursor = "not-allowed";
@@ -1373,7 +1432,6 @@
     function openDayModal(dateKey) {
       const todayKey = getDateKey();
       
-      // 🛑 Bug Fix: Don't allow opening future dates OR dates before start date
       if (dateKey > todayKey) {
         showToast("Cannot edit future dates");
         return;
@@ -1620,8 +1678,6 @@
     const settingsDuration = document.getElementById("settingsDuration");
     const settingsStartDate = document.getElementById("settingsStartDate");
     const settingsMotivation = document.getElementById("settingsMotivation");
-    const settingsDayStart = document.getElementById("settingsDayStart");
-    const settingsDayEnd = document.getElementById("settingsDayEnd");
     const settingsCancel = document.getElementById("settingsCancel");
     const settingsSave = document.getElementById("settingsSave");
     const resetAllData = document.getElementById("resetAllData");
@@ -1631,11 +1687,12 @@
       settingsDuration.value = challengeData.duration;
       settingsStartDate.value = challengeData.startDate;
       settingsMotivation.value = challengeData.motivation;
-      settingsDayStart.value = challengeData.dayStart || "06:00";
-      settingsDayEnd.value = challengeData.dayEnd || "22:00";
+      
+      setSelectsFromTime("settingsDayStart", challengeData.dayStart || "06:00");
+      setSelectsFromTime("settingsDayEnd", challengeData.dayEnd || "22:00");
+      
       settingsModal.classList.add("active");
       setTimeout(updateDatePlaceholders, 50);
-      updateTimeDisplays();
     });
 
     settingsCancel.addEventListener("click", function () {
@@ -1653,8 +1710,9 @@
       const duration = parseInt(settingsDuration.value);
       let startDate = settingsStartDate.value;
       const motivation = settingsMotivation.value.trim();
-      const dayStart = settingsDayStart.value || "06:00";
-      const dayEnd = settingsDayEnd.value || "22:00";
+      
+      const dayStart = getTimeFromSelects("settingsDayStart");
+      const dayEnd = getTimeFromSelects("settingsDayEnd");
 
       if (!title) { showToast("Please enter a challenge name"); return; }
       if (!duration || duration < 1) { showToast("Please enter a valid duration"); return; }
@@ -1866,7 +1924,6 @@
     setTimeout(function () {
       updateDatePlaceholders();
       attachSearchListener();
-      updateTimeDisplays();
     }, 200);
 
     // ===== NOTIFICATION SYSTEM =====
