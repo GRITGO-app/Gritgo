@@ -1565,7 +1565,7 @@
     const feedbackSubmit = document.getElementById("feedbackSubmit");
     const feedbackText = document.getElementById("feedbackText");
 
-    // ক্যাট বাটনে ক্লিক করলে মডাল ওপেন হবে
+    // চ্যাট বাটনে ক্লিক করলে মডাল ওপেন হবে
     commentButton.addEventListener("click", function() {
       feedbackModal.classList.add("active");
     });
@@ -1584,15 +1584,29 @@
       }
     });
 
-    // সেন্ড বাটনে ক্লিক করলে
+    // সেন্ড বাটনে ক্লিক করলে WhatsApp-এ মেসেজ যাবে
     feedbackSubmit.addEventListener("click", function() {
-      if(!feedbackText.value.trim()) {
+      const text = feedbackText.value.trim();
+      
+      if(!text) {
         showToast("Please write something first!");
         return;
       }
-      showToast("Thanks for the feedback! 💙");
+      
+      // ⚠️ এখানে তোমার নিজের WhatsApp নম্বরটা বসাও (কান্ট্রি কোড সহ, কোনো + বা স্পেস ছাড়া)
+      // উদাহরণ: বাংলাদেশের নম্বর 01712345678 হলে, লিখবে 8801712345678
+      const myPhoneNumber = "8801888214016"; 
+      
+      // মেসেজটাকে WhatsApp লিংকে রূপান্তর করা
+      const whatsappUrl = `https://wa.me/${myPhoneNumber}?text=${encodeURIComponent("GRITGO Feedback:\n\n" + text)}`;
+      
+      // নতুন উইন্ডোতে WhatsApp ওপেন হবে
+      window.open(whatsappUrl, "_blank");
+      
+      // মডাল বন্ধ করা এবং বক্স খালি করা
       feedbackModal.classList.remove("active");
       feedbackText.value = "";
+      showToast("Opening WhatsApp...");
     });
 
 
@@ -1604,11 +1618,11 @@
     const btnDownloadFile = document.getElementById("btnDownloadFile");
     const btnShareFile = document.getElementById("btnShareFile");
 
-    // টপবারের শেয়ার বাটনে ক্লিক করলে ডিরেক্ট Backup Modal ওপেন হবে
+    // টপবারের শেয়ার বাটনে ক্লিক করলে ডিরেক্ট Backup Modal ওপেন হবে
     shareButton.addEventListener("click", function() {
       exportModal.classList.add("active");
       
-      // চেক করা হচ্ছে ব্রাউজার ফাইল শেয়ার সাপোর্ট করে কিনা
+      // চেক করা হচ্ছে ব্রাউজার ফাইল শেয়ার সাপোর্ট করে কিনা
       const testFile = new File(["{}"], "test.json", { type: "application/json" });
       if (!navigator.canShare || !navigator.canShare({ files: [testFile] })) {
         btnShareFile.style.display = "none";
@@ -1664,7 +1678,7 @@
       showToast("Download Started!");
     });
 
-    // ফোনের শেয়ার মেনু বাটন
+    // ফোনের শেয়ার মেনু বাটন
     btnShareFile.addEventListener("click", async function() {
       const dataStr = JSON.stringify(challengeData);
       const today = getDateKey();
