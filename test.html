@@ -577,6 +577,15 @@
       font-weight: 600;
       font-size: 14px;
     }
+
+    /* ===== Time Display Helper ===== */
+    .time-display {
+      display: block;
+      color: #4a9eff;
+      font-size: 13px;
+      margin-top: 5px;
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
@@ -602,9 +611,11 @@
 
     <label>Day Start Time:</label>
     <input type="time" id="setupDayStart" value="06:00">
+    <span class="time-display" id="setupDayStartDisplay"></span>
 
     <label>Day End Time:</label>
     <input type="time" id="setupDayEnd" value="22:00">
+    <span class="time-display" id="setupDayEndDisplay"></span>
 
     <button id="setupSaveButton">Start Challenge</button>
   </div>
@@ -788,9 +799,11 @@
 
       <label>Day Start Time:</label>
       <input type="time" id="settingsDayStart">
+      <span class="time-display" id="settingsDayStartDisplay"></span>
 
       <label>Day End Time:</label>
       <input type="time" id="settingsDayEnd">
+      <span class="time-display" id="settingsDayEndDisplay"></span>
 
       <div class="settings-buttons">
         <button id="settingsCancel">Cancel</button>
@@ -886,6 +899,37 @@
       }, 2500);
     }
 
+    // ===== Time Display Formatter =====
+    function formatTimeDisplay(timeStr) {
+      if (!timeStr) return "";
+      const parts = timeStr.split(":");
+      let hour = parseInt(parts[0]);
+      const minute = parts[1];
+      const ampm = hour >= 12 ? "PM" : "AM";
+      hour = hour % 12;
+      hour = hour ? hour : 12; // 0 becomes 12
+      return `Selected: ${String(hour).padStart(2, '0')}:${minute} ${ampm}`;
+    }
+
+    function updateTimeDisplays() {
+      const sStart = document.getElementById("setupDayStart");
+      const sEnd = document.getElementById("setupDayEnd");
+      const stStart = document.getElementById("settingsDayStart");
+      const stEnd = document.getElementById("settingsDayEnd");
+
+      if(sStart) document.getElementById("setupDayStartDisplay").textContent = formatTimeDisplay(sStart.value);
+      if(sEnd) document.getElementById("setupDayEndDisplay").textContent = formatTimeDisplay(sEnd.value);
+      if(stStart) document.getElementById("settingsDayStartDisplay").textContent = formatTimeDisplay(stStart.value);
+      if(stEnd) document.getElementById("settingsDayEndDisplay").textContent = formatTimeDisplay(stEnd.value);
+    }
+
+    // Add event listeners for time inputs
+    ["setupDayStart", "setupDayEnd", "settingsDayStart", "settingsDayEnd"].forEach(function(id) {
+      const el = document.getElementById(id);
+      if(el) el.addEventListener("input", updateTimeDisplays);
+    });
+
+
     // ===== Setup Logic =====
     const setupScreen = document.getElementById("setupScreen");
     const mainApp = document.getElementById("mainApp");
@@ -934,6 +978,7 @@
       renderHeatmap();
       updateStats();
       attachSearchListener();
+      updateTimeDisplays();
     }
 
     // ===== Render Habits (Edit Mode) =====
@@ -1327,10 +1372,17 @@
 
     function openDayModal(dateKey) {
       const todayKey = getDateKey();
+      
+      // 🛑 Bug Fix: Don't allow opening future dates OR dates before start date
       if (dateKey > todayKey) {
         showToast("Cannot edit future dates");
         return;
       }
+      if (dateKey < challengeData.startDate) {
+        showToast("Challenge hasn't started yet!");
+        return;
+      }
+
       if (challengeData.habits.length === 0) {
         showToast("No habits added yet");
         return;
@@ -1466,7 +1518,6 @@
 
       let currentKey = challengeData.startDate;
       
-      // FIX: If start date is in the future, but user checks today, start heatmap from today
       if (currentKey > todayKey) {
         currentKey = todayKey;
       }
@@ -1526,7 +1577,6 @@
       const dates = [];
       let currentKey = challengeData.startDate;
       
-      // FIX: If start date is in the future, start counting from today
       if (currentKey > todayKey) {
         currentKey = todayKey;
       }
@@ -1585,6 +1635,7 @@
       settingsDayEnd.value = challengeData.dayEnd || "22:00";
       settingsModal.classList.add("active");
       setTimeout(updateDatePlaceholders, 50);
+      updateTimeDisplays();
     });
 
     settingsCancel.addEventListener("click", function () {
@@ -1815,6 +1866,7 @@
     setTimeout(function () {
       updateDatePlaceholders();
       attachSearchListener();
+      updateTimeDisplays();
     }, 200);
 
     // ===== NOTIFICATION SYSTEM =====
@@ -1855,7 +1907,6 @@
       const currentTime = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
       const todayDate = getDateKey(now);
 
-      // ⚠️ নতুন লজিক: আজকের তারিখ যদি চ্যালেঞ্জ শুরুর তারিখের আগে হয়, তবে নোটিফিকেশন আসবে না
       if (todayDate < challengeData.startDate) return;
 
       if (currentTime === challengeData.dayStart && lastStartNotifiedDate !== todayDate) {
