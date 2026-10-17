@@ -1,0 +1,1691 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GRITGO - Challenge Tracker</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0f1419">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background-color: #0f1419;
+      color: #e8eaed;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ===== Setup Screen ===== */
+    #setupScreen {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    #setupScreen h1 {
+      color: #ffffff;
+      font-size: 28px;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    #setupScreen > p {
+      color: #9aa0a6;
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 15px;
+    }
+
+    #setupScreen label {
+      display: block;
+      color: #9aa0a6;
+      font-size: 14px;
+      margin-bottom: 6px;
+      margin-top: 15px;
+    }
+
+    #setupScreen input {
+      width: 100%;
+      padding: 12px 15px;
+      background-color: #1a1f2e;
+      border: 1px solid #2a3142;
+      border-radius: 10px;
+      color: #e8eaed;
+      font-size: 15px;
+      outline: none;
+    }
+
+    #setupScreen input:focus {
+      border-color: #4a9eff;
+    }
+
+    #setupSaveButton {
+      margin-top: 25px;
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #4a9eff, #2a7fdb);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    /* ===== Main App ===== */
+    #mainApp {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 15px;
+      min-height: 100vh;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 5px;
+      margin-bottom: 20px;
+    }
+
+    .header button {
+      background: none;
+      border: none;
+      color: #e8eaed;
+      font-size: 20px;
+      cursor: pointer;
+      padding: 5px 10px;
+    }
+
+    .header span {
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .title-section {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    #mainTitle {
+      color: #ffffff;
+      font-size: 42px;
+      font-weight: 800;
+      margin-bottom: 6px;
+      letter-spacing: -1px;
+    }
+
+    #motivationText {
+      color: #9aa0a6;
+      font-size: 14px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .stat-card {
+      background-color: #1a1f2e;
+      border-radius: 14px;
+      padding: 15px 8px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .stat-card span:first-child {
+      color: #ffffff;
+      font-size: 26px;
+      font-weight: 700;
+    }
+
+    .stat-card span:last-child {
+      color: #9aa0a6;
+      font-size: 11px;
+      text-transform: lowercase;
+    }
+
+    #streakStat {
+      color: #ff6b4a !important;
+    }
+
+    /* ===== Heatmap CSS ===== */
+    #heatmap {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 5px;
+      margin-bottom: 10px;
+      padding: 0;
+    }
+
+    .heatmap-cell {
+      aspect-ratio: 1;
+      width: 100%;
+      background-color: #1a1f2e;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .heatmap-hint {
+      color: #9aa0a6;
+      font-size: 12px;
+      margin-bottom: 25px;
+      text-align: center;
+    }
+
+    /* ===== Search Section ===== */
+    .search-section {
+      margin-bottom: 15px;
+    }
+
+    #habitSearchInput {
+      width: 100%;
+      padding: 12px 15px;
+      background-color: #1a1f2e;
+      border: 1px solid #2a3142;
+      border-radius: 10px;
+      color: #e8eaed;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    #habitSearchInput:focus {
+      border-color: #4a9eff;
+    }
+
+    #habitSearchInput::placeholder {
+      color: #6a7280;
+    }
+
+    /* ===== Today Section ===== */
+    .today-section {
+      margin-bottom: 20px;
+    }
+
+    .today-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .today-header h2 {
+      color: #ffffff;
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    #todayCount {
+      color: #4a9eff;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    #emptyMessage {
+      color: #9aa0a6;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .today-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .today-buttons button {
+      flex: 1;
+      padding: 14px;
+      background-color: #1a1f2e;
+      color: #e8eaed;
+      border: 1px solid #2a3142;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* ===== Edit Mode ===== */
+    #editMode {
+      margin-top: 20px;
+    }
+
+    .edit-buttons {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .edit-buttons button {
+      flex: 1;
+      padding: 14px;
+      background-color: #1a1f2e;
+      color: #e8eaed;
+      border: 1px solid #2a3142;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .add-habit-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    #newHabitInput {
+      flex: 1;
+      padding: 12px 15px;
+      background-color: #1a1f2e;
+      border: 1px solid #2a3142;
+      border-radius: 10px;
+      color: #e8eaed;
+      font-size: 14px;
+      outline: none;
+    }
+
+    #addHabitBtn {
+      padding: 12px 18px;
+      background-color: #1a1f2e;
+      color: #e8eaed;
+      border: 1px solid #2a3142;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    #habitsList {
+      list-style: none;
+      margin-top: 15px;
+    }
+
+    #habitsList li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      background-color: #1a1f2e;
+      border-radius: 10px;
+      margin-bottom: 8px;
+      color: #e8eaed;
+    }
+
+    .footer-text {
+      color: #6a7280;
+      font-size: 12px;
+      text-align: center;
+      margin-top: 25px;
+      margin-bottom: 20px;
+    }
+
+    /* ===== Modals ===== */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-box {
+      background-color: #1a1f2e;
+      border-radius: 16px;
+      padding: 25px;
+      width: 100%;
+      max-width: 400px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-box h2 {
+      color: #ffffff;
+      margin-bottom: 20px;
+      font-size: 22px;
+      text-align: center;
+    }
+
+    .modal-box label {
+      display: block;
+      color: #9aa0a6;
+      font-size: 13px;
+      margin-bottom: 6px;
+      margin-top: 12px;
+    }
+
+    .modal-box input {
+      width: 100%;
+      padding: 12px 15px;
+      background-color: #0f1419;
+      border: 1px solid #2a3142;
+      border-radius: 10px;
+      color: #e8eaed;
+      font-size: 15px;
+      outline: none;
+    }
+
+    .modal-box input:focus {
+      border-color: #4a9eff;
+    }
+
+    .date-wrapper {
+      position: relative;
+      width: 100%;
+    }
+
+    .date-placeholder {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #9aa0a6;
+      font-size: 15px;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+
+    .date-wrapper.has-value .date-placeholder {
+      opacity: 0;
+    }
+
+    .date-wrapper input[type="date"]:not(.has-value) {
+      color: transparent;
+    }
+
+    .date-wrapper:not(.has-value) input[type="date"]::-webkit-datetime-edit,
+    .date-wrapper:not(.has-value) input[type="date"]::-webkit-datetime-edit-text,
+    .date-wrapper:not(.has-value) input[type="date"]::-webkit-datetime-edit-month-field,
+    .date-wrapper:not(.has-value) input[type="date"]::-webkit-datetime-edit-day-field,
+    .date-wrapper:not(.has-value) input[type="date"]::-webkit-datetime-edit-year-field {
+      color: transparent;
+    }
+
+    .date-wrapper.has-value input[type="date"] {
+      color: #e8eaed;
+    }
+
+    .settings-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .settings-buttons button {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #settingsCancel, #addHabitCancel, #deleteCancel, #resetCancel, #dayModalClose, #exportCancel {
+      background-color: #2a3142;
+      color: #e8eaed;
+    }
+
+    #settingsSave, #addHabitSave {
+      background: linear-gradient(135deg, #4a9eff, #2a7fdb);
+      color: white;
+    }
+
+    #deleteConfirm, #resetConfirm {
+      background: linear-gradient(135deg, #ff6b4a, #d35400);
+      color: white;
+    }
+
+    #resetAllData {
+      width: 100%;
+      margin-top: 15px;
+      padding: 12px;
+      background: transparent;
+      color: #ff6b4a;
+      border: 1px solid #ff6b4a;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* ===== Toast ===== */
+    .toast {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-100px);
+      background: linear-gradient(135deg, #ff6b4a, #d35400);
+      color: white;
+      padding: 14px 24px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 8px 25px rgba(255, 107, 74, 0.4);
+      z-index: 9999;
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      max-width: 90%;
+      text-align: center;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* ===== Custom Checkbox CSS ===== */
+    .custom-checkbox {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background-color: #2a3142;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .custom-checkbox .checkbox-number {
+      color: #9aa0a6;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .custom-checkbox.checked {
+      background-color: #4a9eff;
+    }
+
+    .custom-checkbox.checked .checkbox-number {
+      display: none;
+    }
+
+    .custom-checkbox.checked::after {
+      content: "✓";
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    /* ===== SVG Delete Button Style ===== */
+    .delete-btn {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #6a7280;
+      transition: color 0.2s ease, transform 0.1s ease;
+      flex-shrink: 0;
+    }
+    
+    .delete-btn:hover, .delete-btn:active {
+      color: #ff6b4a;
+      transform: scale(1.1);
+    }
+
+    /* Export Modal Z-Index */
+    #exportModal {
+      z-index: 1050; 
+    }
+  </style>
+</head>
+<body>
+
+  <div id="setupScreen">
+    <h1>Welcome to GRITGO</h1>
+    <p>Let's set up your challenge</p>
+
+    <label>Challenge Name:</label>
+    <input type="text" id="setupTitle" placeholder="Your Challenge Name">
+
+    <label>Duration (days):</label>
+    <input type="number" id="setupDuration" placeholder="Days Here">
+
+    <label>Start Date:</label>
+    <div class="date-wrapper">
+      <input type="date" id="setupStartDate">
+      <span class="date-placeholder">Starting Date</span>
+    </div>
+
+    <label>Motivation Text:</label>
+    <input type="text" id="setupMotivation" placeholder="Any Motivational Text You Like">
+
+    <button id="setupSaveButton">Start Challenge</button>
+  </div>
+
+  <div id="mainApp" style="display:none;">
+    <div class="header">
+      <button id="settingsButton">⚙️</button>
+      <span id="headerTitle">GRITGO</span>
+      <button id="commentButton">💬</button>
+      <button id="shareButton">📤</button>
+    </div>
+
+    <div class="title-section">
+      <h1 id="mainTitle">Challenge</h1>
+      <p id="motivationText">Day 1 of 90.</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat-card">
+        <span id="streakStat">0</span>
+        <span>day streak</span>
+      </div>
+      <div class="stat-card">
+        <span id="perfectStat">0</span>
+        <span>perfect days</span>
+      </div>
+      <div class="stat-card">
+        <span id="overallStat">0%</span>
+        <span>overall</span>
+      </div>
+    </div>
+
+    <div id="heatmap"></div>
+    <p class="heatmap-hint">Darker means more habits done.</p>
+
+    <div class="search-section">
+      <input type="text" id="habitSearchInput" placeholder="🔍 Search by number or name..." autocomplete="off">
+    </div>
+
+    <div class="today-section">
+      <div class="today-header">
+        <h2>Today</h2>
+        <span id="todayCount">0 / 0</span>
+      </div>
+      <p id="emptyMessage">No habits yet. Choose Edit habits and add your first one.</p>
+
+      <div class="today-buttons">
+        <button id="quickAddHabitButton">+ Add Habit</button>
+        <button id="editHabitsButton">Edit habits</button>
+      </div>
+    </div>
+
+    <div id="editMode" style="display:none;">
+      <div class="edit-buttons">
+        <button id="doneEditingButton">Done editing</button>
+        <button id="backButton">Back to today</button>
+      </div>
+
+      <div class="add-habit-row">
+        <input type="text" id="newHabitInput" placeholder="Type a new habit...">
+        <button id="addHabitBtn">Add</button>
+      </div>
+
+      <ul id="habitsList"></ul>
+    </div>
+
+    <p class="footer-text">Progress saves in this browser only.</p>
+  </div>
+
+  <div id="addHabitModal" class="modal-overlay">
+    <div class="modal-box">
+      <h2 id="addHabitModalTitle">Add New Habit</h2>
+      <label>Habit Name:</label>
+      <input type="text" id="addHabitModalInput" placeholder="Type habit..." autocomplete="off">
+      <div class="settings-buttons">
+        <button id="addHabitCancel">Cancel</button>
+        <button id="addHabitSave">Add Habit</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="deleteModal" class="modal-overlay">
+    <div class="modal-box">
+      <h2>Delete Habit?</h2>
+      <p id="deleteModalText" style="text-align:center; color:#9aa0a6; margin-bottom:10px;">
+        Are you sure?
+      </p>
+      <div class="settings-buttons">
+        <button id="deleteCancel">Cancel</button>
+        <button id="deleteConfirm">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="resetModal" class="modal-overlay">
+    <div class="modal-box">
+      <h2>Reset All Data?</h2>
+      <p style="text-align:center; color:#9aa0a6; margin-bottom:10px;">
+        This will delete EVERYTHING permanently. Are you sure?
+      </p>
+      <div class="settings-buttons">
+        <button id="resetCancel">Cancel</button>
+        <button id="resetConfirm">Reset All</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="dayModal" class="modal-overlay">
+    <div class="modal-box">
+      <h2 id="dayModalTitle">Day</h2>
+      
+      <input type="text" id="dayModalSearchInput" placeholder="🔍 Search habit by number or name..." autocomplete="off" style="margin-bottom: 15px;">
+      
+      <p id="dayModalSubtitle" style="text-align:center; color:#9aa0a6; margin-bottom:15px; font-size:13px;">
+        0 / 0 habits done
+      </p>
+      <ul id="dayModalList" style="list-style:none; max-height:50vh; overflow-y:auto;"></ul>
+      <div class="settings-buttons">
+        <button id="dayModalClose">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPORT OPTIONS MODAL -->
+  <div id="exportModal" class="modal-overlay">
+    <div class="modal-box">
+      <h2>Backup Options</h2>
+      <p style="text-align:center; color:#9aa0a6; margin-bottom:20px; font-size:14px;">
+        Choose how you want to save your backup file.
+      </p>
+      
+      <button id="btnDownloadFile" style="width:100%; padding:14px; background:linear-gradient(135deg, #4a9eff, #2a7fdb); color:white; border:none; border-radius:10px; font-weight:bold; font-size:15px; margin-bottom:12px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;">
+        <span>📥</span> Download File
+      </button>
+      
+      <button id="btnShareFile" style="width:100%; padding:14px; background:#2a3142; color:#e8eaed; border:1px solid #4aaa4a; border-radius:10px; font-weight:bold; font-size:15px; margin-bottom:12px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;">
+        <span>📤</span> Share to Apps (Drive, WhatsApp)
+      </button>
+
+      <div class="settings-buttons" style="margin-top: 10px;">
+        <button id="exportCancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="settingsModal" class="modal-overlay">
+    <div class="modal-box">
+      <h2>Settings</h2>
+
+      <label>Challenge Name:</label>
+      <input type="text" id="settingsTitle">
+
+      <label>Duration (days):</label>
+      <input type="number" id="settingsDuration">
+
+      <label>Start Date:</label>
+      <div class="date-wrapper">
+        <input type="date" id="settingsStartDate">
+        <span class="date-placeholder">Starting Date</span>
+      </div>
+
+      <label>Motivation Text:</label>
+      <input type="text" id="settingsMotivation">
+
+      <div class="settings-buttons">
+        <button id="settingsCancel">Cancel</button>
+        <button id="settingsSave">Save Changes</button>
+      </div>
+
+      <button id="exportData" style="width:100%; margin-top:15px; padding:12px; background:#2a3142; color:#4a9eff; border:1px solid #4a9eff; border-radius:10px; font-weight:600; cursor:pointer;">📥 Backup Data (Export)</button>
+      <button id="importData" style="width:100%; margin-top:10px; padding:12px; background:#2a3142; color:#4aaa4a; border:1px solid #4aaa4a; border-radius:10px; font-weight:600; cursor:pointer;">📤 Restore Data (Import)</button>
+      <input type="file" id="importFileInput" accept=".json" style="display:none;">
+
+      <button id="resetAllData">⚠️ Reset All Data</button>
+    </div>
+  </div>
+
+  <script>
+    // ===== State =====
+    let challengeData = {
+      title: "",
+      duration: 0,
+      startDate: "",
+      motivation: "",
+      habits: [],
+      habitLogs: {}
+    };
+
+    // ===== SVG Delete Icon =====
+    const trashIconSVG = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="3 6 5 6 21 6"></polyline>
+        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+        <line x1="10" y1="11" x2="10" y2="17"></line>
+        <line x1="14" y1="11" x2="14" y2="17"></line>
+      </svg>
+    `;
+
+    // ===== Helpers =====
+    function getDateKey(date) {
+      const d = date || new Date();
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return year + "-" + month + "-" + day;
+    }
+
+    function nextDateKey(key) {
+      const d = new Date(key + "T00:00:00");
+      d.setDate(d.getDate() + 1);
+      return getDateKey(d);
+    }
+
+    function getCurrentDayNumber() {
+      const todayKey = getDateKey();
+      if (!challengeData.startDate) return 1;
+      let current = challengeData.startDate;
+      let dayNum = 1;
+      let safety = 0;
+      while (current < todayKey && safety < 500) {
+        current = nextDateKey(current);
+        dayNum++;
+        safety++;
+      }
+      return Math.max(1, Math.min(dayNum, challengeData.duration));
+    }
+
+    function updateMotivation() {
+      const dayNumber = getCurrentDayNumber();
+      document.getElementById("motivationText").textContent =
+        "Day " + dayNumber + " of " + challengeData.duration + ". " + challengeData.motivation;
+    }
+
+    function updateDatePlaceholders() {
+      document.querySelectorAll(".date-wrapper").forEach(function(wrapper) {
+        const input = wrapper.querySelector("input");
+        if (input && input.value) {
+          wrapper.classList.add("has-value");
+        } else {
+          wrapper.classList.remove("has-value");
+        }
+      });
+    }
+
+    function showToast(message) {
+      const toast = document.createElement("div");
+      toast.className = "toast";
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      setTimeout(function () { toast.classList.add("show"); }, 10);
+      setTimeout(function () {
+        toast.classList.remove("show");
+        setTimeout(function () { toast.remove(); }, 400);
+      }, 2500);
+    }
+
+    // ===== Setup Logic =====
+    const setupScreen = document.getElementById("setupScreen");
+    const mainApp = document.getElementById("mainApp");
+    const setupTitle = document.getElementById("setupTitle");
+    const setupDuration = document.getElementById("setupDuration");
+    const setupStartDate = document.getElementById("setupStartDate");
+    const setupMotivation = document.getElementById("setupMotivation");
+    const setupSaveButton = document.getElementById("setupSaveButton");
+
+    setupSaveButton.addEventListener("click", function () {
+      const title = setupTitle.value.trim();
+      const duration = parseInt(setupDuration.value);
+      let startDate = setupStartDate.value;
+      const motivation = setupMotivation.value.trim();
+
+      if (!title) { showToast("Please enter a challenge name"); return; }
+      if (!duration || duration < 1) { showToast("Please enter a valid duration"); return; }
+      if (!startDate) { showToast("Please select a start date"); return; }
+
+      const todayKey = getDateKey();
+      if (startDate > todayKey) startDate = todayKey;
+
+      challengeData.title = title;
+      challengeData.duration = duration;
+      challengeData.startDate = startDate;
+      challengeData.motivation = motivation || "Show up again.";
+
+      localStorage.setItem("challengeData", JSON.stringify(challengeData));
+      startMainApp();
+    });
+
+    function startMainApp() {
+      setupScreen.style.display = "none";
+      mainApp.style.display = "block";
+
+      document.getElementById("headerTitle").textContent = challengeData.title + " Tracker";
+      document.getElementById("mainTitle").textContent = challengeData.title;
+
+      updateMotivation();
+      renderHabits();
+      renderTodayHabits();
+      renderHeatmap();
+      updateStats();
+      attachSearchListener();
+    }
+
+    // ===== Render Habits (Edit Mode) =====
+    function renderHabits() {
+      const habitsList = document.getElementById("habitsList");
+      habitsList.innerHTML = "";
+
+      if (challengeData.habits.length === 0) {
+        const li = document.createElement("li");
+        li.textContent = "No habits yet. Add one above.";
+        li.style.color = "#9aa0a6";
+        li.style.justifyContent = "center";
+        habitsList.appendChild(li);
+        return;
+      }
+
+      challengeData.habits.forEach(function (habit, index) {
+        const li = document.createElement("li");
+
+        const span = document.createElement("span");
+        span.textContent = (index + 1) + ". " + habit;
+        span.style.flex = "1";
+
+        const editBtn = document.createElement("button");
+        editBtn.textContent = "✏️";
+        editBtn.style.cssText = "background:transparent;border:none;cursor:pointer;font-size:16px;padding:5px;";
+        editBtn.addEventListener("click", function () { openEditModal(index); });
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.innerHTML = trashIconSVG;
+        deleteBtn.className = "delete-btn";
+        deleteBtn.addEventListener("click", function () { openDeleteModal(index); });
+
+        li.appendChild(span);
+        li.appendChild(editBtn);
+        li.appendChild(deleteBtn);
+        habitsList.appendChild(li);
+      });
+    }
+
+    // ===== Render Today Habits =====
+    function renderTodayHabits() {
+      const oldList = document.getElementById("todayHabitList");
+      if (oldList) oldList.remove();
+
+      const emptyMessage = document.getElementById("emptyMessage");
+      const todayCount = document.getElementById("todayCount");
+      const searchInput = document.getElementById("habitSearchInput");
+      const searchTerm = searchInput ? searchInput.value.trim() : "";
+
+      if (challengeData.habits.length === 0) {
+        emptyMessage.style.display = "block";
+        emptyMessage.textContent = "No habits yet. Choose Edit habits and add your first one.";
+        todayCount.textContent = "0 / 0";
+        return;
+      }
+
+      const todayKey = getDateKey();
+      if (!challengeData.habitLogs[todayKey]) {
+        challengeData.habitLogs[todayKey] = [];
+      }
+      const todayLog = challengeData.habitLogs[todayKey];
+
+      const isNumberSearch = /^\d+$/.test(searchTerm);
+      const searchNumber = isNumberSearch ? searchTerm : "";
+      const searchText = isNumberSearch ? "" : searchTerm.toLowerCase();
+
+      const ul = document.createElement("ul");
+      ul.id = "todayHabitList";
+      ul.style.listStyle = "none";
+      ul.style.marginTop = "15px";
+
+      let completedCount = 0;
+      let shownCount = 0;
+
+      todayLog.forEach(function (val) {
+        if (val === true) completedCount++;
+      });
+
+      challengeData.habits.forEach(function (habit, index) {
+        const habitNumber = String(index + 1);
+        const habitLower = habit.toLowerCase();
+
+        if (searchNumber) {
+          if (habitNumber !== searchNumber) return;
+        } else if (searchText) {
+          if (!habitLower.includes(searchText)) return;
+        }
+
+        shownCount++;
+
+        const li = document.createElement("li");
+        li.style.cssText = "display:flex;align-items:center;gap:12px;padding:12px;background:#1a1f2e;border-radius:10px;margin-bottom:8px;";
+
+        const checkboxWrapper = document.createElement("div");
+        checkboxWrapper.className = "custom-checkbox";
+        if (todayLog[index] === true) checkboxWrapper.classList.add("checked");
+
+        const numberSpan = document.createElement("span");
+        numberSpan.className = "checkbox-number";
+        numberSpan.textContent = (index + 1);
+        checkboxWrapper.appendChild(numberSpan);
+
+        checkboxWrapper.addEventListener("click", function () {
+          const isChecked = !checkboxWrapper.classList.contains("checked");
+          checkboxWrapper.classList.toggle("checked", isChecked);
+          
+          const key = getDateKey();
+          if (!challengeData.habitLogs[key]) challengeData.habitLogs[key] = [];
+          challengeData.habitLogs[key][index] = isChecked;
+          localStorage.setItem("challengeData", JSON.stringify(challengeData));
+          updateTodayCount();
+          renderHeatmap();
+          updateStats();
+        });
+
+        const span = document.createElement("span");
+        span.textContent = habit; 
+        span.style.flex = "1";
+        span.style.color = "#e8eaed";
+        span.style.fontWeight = "500";
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.innerHTML = trashIconSVG;
+        deleteBtn.className = "delete-btn";
+        
+        deleteBtn.addEventListener("click", function(e) {
+          e.stopPropagation();
+          openDeleteModal(index);
+        });
+
+        li.appendChild(checkboxWrapper);
+        li.appendChild(span);
+        li.appendChild(deleteBtn);
+        ul.appendChild(li);
+      });
+
+      if (shownCount === 0) {
+        emptyMessage.style.display = "block";
+        emptyMessage.textContent = "No habits match your search 🔍";
+        return;
+      }
+
+      emptyMessage.style.display = "none";
+
+      const todayButtons = document.querySelector(".today-buttons");
+      todayButtons.parentNode.insertBefore(ul, todayButtons);
+
+      todayCount.textContent = completedCount + " / " + challengeData.habits.length;
+    }
+
+    function updateTodayCount() {
+      const todayKey = getDateKey();
+      const todayLog = challengeData.habitLogs[todayKey] || [];
+      const completed = todayLog.filter(Boolean).length;
+      document.getElementById("todayCount").textContent = completed + " / " + challengeData.habits.length;
+    }
+
+    function attachSearchListener() {
+      const searchInput = document.getElementById("habitSearchInput");
+      if (searchInput && !searchInput.dataset.listenerAttached) {
+        searchInput.addEventListener("input", function () {
+          renderTodayHabits();
+        });
+        searchInput.dataset.listenerAttached = "true";
+      }
+    }
+
+    // ===== Add/Edit Modal =====
+    const addHabitModal = document.getElementById("addHabitModal");
+    const addHabitModalTitle = document.getElementById("addHabitModalTitle");
+    const addHabitModalInput = document.getElementById("addHabitModalInput");
+    const addHabitCancel = document.getElementById("addHabitCancel");
+    const addHabitSave = document.getElementById("addHabitSave");
+    const quickAddHabitButton = document.getElementById("quickAddHabitButton");
+
+    let editingIndex = null;
+
+    function openAddModal() {
+      editingIndex = null;
+      addHabitModalTitle.textContent = "Add New Habit";
+      addHabitSave.textContent = "Add Habit";
+      addHabitModalInput.value = "";
+      addHabitModal.classList.add("active");
+      setTimeout(function () { addHabitModalInput.focus(); }, 100);
+    }
+
+    function openEditModal(index) {
+      editingIndex = index;
+      addHabitModalTitle.textContent = "Edit Habit";
+      addHabitSave.textContent = "Save Changes";
+      addHabitModalInput.value = challengeData.habits[index];
+      addHabitModal.classList.add("active");
+      setTimeout(function () { addHabitModalInput.focus(); }, 100);
+    }
+
+    quickAddHabitButton.addEventListener("click", openAddModal);
+
+    addHabitCancel.addEventListener("click", function () {
+      addHabitModal.classList.remove("active");
+      editingIndex = null;
+    });
+
+    addHabitModal.addEventListener("click", function (e) {
+      if (e.target === addHabitModal) {
+        addHabitModal.classList.remove("active");
+        editingIndex = null;
+      }
+    });
+
+    addHabitSave.addEventListener("click", function () {
+      const habitText = addHabitModalInput.value.trim();
+      if (!habitText) {
+        showToast("Please enter a habit");
+        return;
+      }
+
+      if (editingIndex !== null) {
+        challengeData.habits[editingIndex] = habitText;
+        showToast("Habit updated!");
+        editingIndex = null;
+      } else {
+        challengeData.habits.push(habitText);
+        showToast("Habit added!");
+      }
+
+      localStorage.setItem("challengeData", JSON.stringify(challengeData));
+      addHabitModalInput.value = "";
+      addHabitModal.classList.remove("active");
+
+      renderHabits();
+      renderTodayHabits();
+      renderHeatmap();
+      updateStats();
+    });
+
+    addHabitModalInput.addEventListener("keypress", function (e) {
+      if (e.key === "Enter") addHabitSave.click();
+    });
+
+    // ===== Delete Modal =====
+    const deleteModal = document.getElementById("deleteModal");
+    const deleteModalText = document.getElementById("deleteModalText");
+    const deleteCancel = document.getElementById("deleteCancel");
+    const deleteConfirm = document.getElementById("deleteConfirm");
+
+    let deletingIndex = null;
+
+    function openDeleteModal(index) {
+      deletingIndex = index;
+      deleteModalText.textContent = '"' + (index + 1) + '. ' + challengeData.habits[index] + '" — delete this habit?';
+      deleteModal.classList.add("active");
+    }
+
+    deleteCancel.addEventListener("click", function () {
+      deleteModal.classList.remove("active");
+      deletingIndex = null;
+    });
+
+    deleteModal.addEventListener("click", function (e) {
+      if (e.target === deleteModal) {
+        deleteModal.classList.remove("active");
+        deletingIndex = null;
+      }
+    });
+
+    deleteConfirm.addEventListener("click", function () {
+      if (deletingIndex === null) return;
+
+      challengeData.habits.splice(deletingIndex, 1);
+      localStorage.setItem("challengeData", JSON.stringify(challengeData));
+
+      deletingIndex = null;
+      deleteModal.classList.remove("active");
+
+      renderHabits();
+      renderTodayHabits();
+      renderHeatmap();
+      updateStats();
+      showToast("Habit deleted");
+    });
+
+    // ===== Reset Modal =====
+    const resetModal = document.getElementById("resetModal");
+    const resetCancel = document.getElementById("resetCancel");
+    const resetConfirm = document.getElementById("resetConfirm");
+
+    resetCancel.addEventListener("click", function () {
+      resetModal.classList.remove("active");
+      document.getElementById("settingsModal").classList.add("active");
+    });
+
+    resetModal.addEventListener("click", function (e) {
+      if (e.target === resetModal) {
+        resetModal.classList.remove("active");
+        document.getElementById("settingsModal").classList.add("active");
+      }
+    });
+
+    resetConfirm.addEventListener("click", function () {
+      localStorage.removeItem("challengeData");
+      location.reload();
+    });
+
+    // ===== Edit Mode Add Habit =====
+    const addHabitBtn = document.getElementById("addHabitBtn");
+    const newHabitInput = document.getElementById("newHabitInput");
+
+    addHabitBtn.addEventListener("click", function () {
+      const habitText = newHabitInput.value.trim();
+      if (!habitText) {
+        showToast("Please enter a habit");
+        return;
+      }
+      challengeData.habits.push(habitText);
+      localStorage.setItem("challengeData", JSON.stringify(challengeData));
+      newHabitInput.value = "";
+      renderHabits();
+      renderTodayHabits();
+      renderHeatmap();
+      updateStats();
+    });
+
+    newHabitInput.addEventListener("keypress", function (e) {
+      if (e.key === "Enter") addHabitBtn.click();
+    });
+
+    // ===== Edit Mode Toggle =====
+    const editMode = document.getElementById("editMode");
+    const todaySection = document.querySelector(".today-section");
+    const editHabitsButton = document.getElementById("editHabitsButton");
+    const doneEditingButton = document.getElementById("doneEditingButton");
+    const backButton = document.getElementById("backButton");
+
+    editHabitsButton.addEventListener("click", function () {
+      editMode.style.display = "block";
+      todaySection.style.display = "none";
+      renderHabits();
+    });
+
+    function closeEditMode() {
+      editMode.style.display = "none";
+      todaySection.style.display = "block";
+      renderTodayHabits();
+    }
+
+    doneEditingButton.addEventListener("click", closeEditMode);
+    backButton.addEventListener("click", closeEditMode);
+
+    // ===== Day Modal (Past Day Edit) =====
+    const dayModal = document.getElementById("dayModal");
+    const dayModalTitle = document.getElementById("dayModalTitle");
+    const dayModalSubtitle = document.getElementById("dayModalSubtitle");
+    const dayModalList = document.getElementById("dayModalList");
+    const dayModalClose = document.getElementById("dayModalClose");
+    const dayModalSearchInput = document.getElementById("dayModalSearchInput");
+
+    let viewingDateKey = null;
+
+    function formatDateDisplay(key) {
+      const d = new Date(key + "T00:00:00");
+      const options = { weekday: "short", day: "numeric", month: "short", year: "numeric" };
+      return d.toLocaleDateString("en-GB", options);
+    }
+
+    function openDayModal(dateKey) {
+      const todayKey = getDateKey();
+      if (dateKey > todayKey) {
+        showToast("Cannot edit future dates");
+        return;
+      }
+      if (challengeData.habits.length === 0) {
+        showToast("No habits added yet");
+        return;
+      }
+
+      viewingDateKey = dateKey;
+      dayModalTitle.textContent = formatDateDisplay(dateKey);
+      dayModalSearchInput.value = ""; 
+
+      if (!challengeData.habitLogs[dateKey]) {
+        challengeData.habitLogs[dateKey] = [];
+      }
+
+      renderDayModalList();
+      dayModal.classList.add("active");
+    }
+
+    function renderDayModalList() {
+      dayModalList.innerHTML = "";
+
+      if (!challengeData.habitLogs[viewingDateKey]) {
+        challengeData.habitLogs[viewingDateKey] = [];
+      }
+      const log = challengeData.habitLogs[viewingDateKey];
+
+      const completed = log.filter(Boolean).length;
+      dayModalSubtitle.textContent = completed + " / " + challengeData.habits.length + " habits done";
+
+      const searchTerm = dayModalSearchInput.value.trim();
+      const isNumberSearch = /^\d+$/.test(searchTerm);
+      const searchNumber = isNumberSearch ? searchTerm : "";
+      const searchText = isNumberSearch ? "" : searchTerm.toLowerCase();
+
+      let shownCount = 0;
+
+      challengeData.habits.forEach(function (habit, index) {
+        const habitNumber = String(index + 1);
+        const habitLower = habit.toLowerCase();
+
+        if (searchNumber) {
+          if (habitNumber !== searchNumber) return;
+        } else if (searchText) {
+          if (!habitLower.includes(searchText)) return;
+        }
+
+        shownCount++;
+
+        const li = document.createElement("li");
+        li.style.cssText = "display:flex;align-items:center;gap:12px;padding:12px;background:#0f1419;border-radius:10px;margin-bottom:8px;";
+
+        const checkboxWrapper = document.createElement("div");
+        checkboxWrapper.className = "custom-checkbox";
+        if (log[index] === true) checkboxWrapper.classList.add("checked");
+
+        const numberSpan = document.createElement("span");
+        numberSpan.className = "checkbox-number";
+        numberSpan.textContent = (index + 1);
+        checkboxWrapper.appendChild(numberSpan);
+
+        checkboxWrapper.addEventListener("click", function () {
+          const isChecked = !checkboxWrapper.classList.contains("checked");
+          checkboxWrapper.classList.toggle("checked", isChecked);
+
+          if (!challengeData.habitLogs[viewingDateKey]) {
+            challengeData.habitLogs[viewingDateKey] = [];
+          }
+          challengeData.habitLogs[viewingDateKey][index] = isChecked;
+          localStorage.setItem("challengeData", JSON.stringify(challengeData));
+
+          const newLog = challengeData.habitLogs[viewingDateKey] || [];
+          const done = newLog.filter(Boolean).length;
+          dayModalSubtitle.textContent = done + " / " + challengeData.habits.length + " habits done";
+
+          renderHeatmap();
+          updateStats();
+        });
+
+        const span = document.createElement("span");
+        span.textContent = habit; 
+        span.style.flex = "1";
+        span.style.color = "#e8eaed";
+        span.style.fontSize = "14px";
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.innerHTML = trashIconSVG;
+        deleteBtn.className = "delete-btn";
+        deleteBtn.addEventListener("click", function(e) {
+          e.stopPropagation();
+          openDeleteModal(index);
+        });
+
+        li.appendChild(checkboxWrapper);
+        li.appendChild(span);
+        li.appendChild(deleteBtn); 
+        dayModalList.appendChild(li);
+      });
+
+      if (shownCount === 0) {
+        const li = document.createElement("li");
+        li.textContent = "No habits match your search 🔍";
+        li.style.color = "#9aa0a6";
+        li.style.textAlign = "center";
+        li.style.padding = "10px";
+        dayModalList.appendChild(li);
+      }
+    }
+
+    dayModalSearchInput.addEventListener("input", function() {
+      renderDayModalList();
+    });
+
+    dayModalClose.addEventListener("click", function () {
+      dayModal.classList.remove("active");
+      viewingDateKey = null;
+    });
+
+    dayModal.addEventListener("click", function (e) {
+      if (e.target === dayModal) {
+        dayModal.classList.remove("active");
+        viewingDateKey = null;
+      }
+    });
+
+    // ===== Heatmap =====
+    function renderHeatmap() {
+      const heatmap = document.getElementById("heatmap");
+      heatmap.innerHTML = "";
+
+      if (!challengeData.startDate || !challengeData.duration) return;
+
+      const todayKey = getDateKey();
+      const totalHabits = challengeData.habits.length;
+
+      let currentKey = challengeData.startDate;
+
+      for (let i = 0; i < challengeData.duration; i++) {
+        const dateKey = currentKey;
+        const dayLog = challengeData.habitLogs[dateKey] || [];
+        const completedCount = dayLog.filter(Boolean).length;
+
+        const cell = document.createElement("div");
+        cell.className = "heatmap-cell";
+
+        if (completedCount > 0 && totalHabits > 0) {
+          const percent = completedCount / totalHabits;
+
+          if (percent >= 1) {
+            cell.style.setProperty("background", "linear-gradient(135deg, #00e5ff, #00b8d4)", "important");
+            cell.style.setProperty("box-shadow", "0 0 12px rgba(0, 229, 255, 0.8)", "important");
+          } else if (percent >= 0.66) {
+            cell.style.setProperty("background-color", "#4aaa4a", "important");
+          } else if (percent >= 0.33) {
+            cell.style.setProperty("background-color", "#3a7a3a", "important");
+          } else {
+            cell.style.setProperty("background-color", "#2a4a2a", "important");
+          }
+        }
+
+        if (dateKey === todayKey) {
+          cell.style.setProperty("border", "2px solid #ffffff", "important");
+          cell.style.setProperty("box-sizing", "border-box", "important");
+        }
+
+        cell.dataset.dateKey = dateKey;
+        cell.addEventListener("click", function () {
+          openDayModal(dateKey);
+        });
+
+        heatmap.appendChild(cell);
+        currentKey = nextDateKey(currentKey);
+      }
+    }
+
+    // ===== Stats =====
+    function updateStats() {
+      const todayKey = getDateKey();
+      const todayLog = challengeData.habitLogs[todayKey] || [];
+      const completedToday = todayLog.filter(Boolean).length;
+      const totalHabits = challengeData.habits.length;
+
+      if (totalHabits === 0) {
+        document.getElementById("streakStat").textContent = 0;
+        document.getElementById("perfectStat").textContent = 0;
+        document.getElementById("overallStat").textContent = "0%";
+        return;
+      }
+
+      const dates = [];
+      let currentKey = challengeData.startDate;
+      let safety = 0;
+      while (currentKey <= todayKey && safety < 500) {
+        dates.push(currentKey);
+        currentKey = nextDateKey(currentKey);
+        safety++;
+      }
+
+      let perfectDays = 0;
+      dates.forEach(function (key) {
+        const log = challengeData.habitLogs[key] || [];
+        const completed = log.filter(Boolean).length;
+        if (completed === totalHabits) perfectDays++;
+      });
+
+      let streak = 0;
+      for (let i = dates.length - 1; i >= 0; i--) {
+        const key = dates[i];
+        const log = challengeData.habitLogs[key] || [];
+        const completed = log.filter(Boolean).length;
+        if (completed === totalHabits) {
+          streak++;
+        } else {
+          break;
+        }
+      }
+
+      document.getElementById("streakStat").textContent = streak;
+      document.getElementById("perfectStat").textContent = perfectDays;
+      document.getElementById("overallStat").textContent =
+        Math.round((completedToday / totalHabits) * 100) + "%";
+    }
+
+    // ===== Settings Modal =====
+    const settingsModal = document.getElementById("settingsModal");
+    const settingsButton = document.getElementById("settingsButton");
+    const settingsTitle = document.getElementById("settingsTitle");
+    const settingsDuration = document.getElementById("settingsDuration");
+    const settingsStartDate = document.getElementById("settingsStartDate");
+    const settingsMotivation = document.getElementById("settingsMotivation");
+    const settingsCancel = document.getElementById("settingsCancel");
+    const settingsSave = document.getElementById("settingsSave");
+    const resetAllData = document.getElementById("resetAllData");
+
+    settingsButton.addEventListener("click", function () {
+      settingsTitle.value = challengeData.title;
+      settingsDuration.value = challengeData.duration;
+      settingsStartDate.value = challengeData.startDate;
+      settingsMotivation.value = challengeData.motivation;
+      settingsModal.classList.add("active");
+      setTimeout(updateDatePlaceholders, 50);
+    });
+
+    settingsCancel.addEventListener("click", function () {
+      settingsModal.classList.remove("active");
+    });
+
+    settingsModal.addEventListener("click", function (e) {
+      if (e.target === settingsModal) {
+        settingsModal.classList.remove("active");
+      }
+    });
+
+    settingsSave.addEventListener("click", function () {
+      const title = settingsTitle.value.trim();
+      const duration = parseInt(settingsDuration.value);
+      let startDate = settingsStartDate.value;
+      const motivation = settingsMotivation.value.trim();
+
+      if (!title) { showToast("Please enter a challenge name"); return; }
+      if (!duration || duration < 1) { showToast("Please enter a valid duration"); return; }
+      if (!startDate) { showToast("Please select a start date"); return; }
+
+      const todayKey = getDateKey();
+      if (startDate > todayKey) startDate = todayKey;
+
+      challengeData.title = title;
+      challengeData.duration = duration;
+      challengeData.startDate = startDate;
+      challengeData.motivation = motivation || "Show up again.";
+
+      localStorage.setItem("challengeData", JSON.stringify(challengeData));
+
+      document.getElementById("headerTitle").textContent = challengeData.title + " Tracker";
+      document.getElementById("mainTitle").textContent = challengeData.title;
+      updateMotivation();
+      renderHeatmap();
+      renderTodayHabits();
+      updateStats();
+
+      settingsModal.classList.remove("active");
+      showToast("Settings saved!");
+    });
+
+    resetAllData.addEventListener("click", function () {
+      settingsModal.classList.remove("active");
+      resetModal.classList.add("active");
+    });
+
+    // ===== Backup Options Modal Logic =====
+    const exportModal = document.getElementById("exportModal");
+    const exportDataBtn = document.getElementById("exportData");
+    const exportCancel = document.getElementById("exportCancel");
+    const btnDownloadFile = document.getElementById("btnDownloadFile");
+    const btnShareFile = document.getElementById("btnShareFile");
+
+    exportDataBtn.addEventListener("click", function() {
+      settingsModal.classList.remove("active");
+      exportModal.classList.add("active");
+
+      // চেক করা হচ্ছে ব্রাউজার ফাইল শেয়ার সাপোর্ট করে কিনা
+      const testFile = new File(["{}"], "test.json", { type: "application/json" });
+      if (!navigator.canShare || !navigator.canShare({ files: [testFile] })) {
+        // সাপোর্ট না করলে শেয়ার বাটনটি লুকিয়ে ফেলা হবে
+        btnShareFile.style.display = "none";
+      } else {
+        btnShareFile.style.display = "flex";
+      }
+    });
+
+    exportCancel.addEventListener("click", function() {
+      exportModal.classList.remove("active");
+      settingsModal.classList.add("active");
+    });
+
+    exportModal.addEventListener("click", function(e) {
+      if (e.target === exportModal) {
+        exportModal.classList.remove("active");
+        settingsModal.classList.add("active");
+      }
+    });
+
+    // অপশন ১: ডাউনলোড ফাইল (Blob ব্যবহার করে যাতে বিশাল লম্বা টেক্সট না আসে)
+    btnDownloadFile.addEventListener("click", function() {
+      const dataStr = JSON.stringify(challengeData);
+      const today = getDateKey();
+      const fileName = "GRITGO_Backup_" + today + ".json";
+      
+      const blob = new Blob([dataStr], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      
+      const downloadAnchorNode = document.createElement('a');
+      downloadAnchorNode.setAttribute("href", url);
+      downloadAnchorNode.setAttribute("download", fileName);
+      document.body.appendChild(downloadAnchorNode);
+      downloadAnchorNode.click();
+      downloadAnchorNode.remove();
+      URL.revokeObjectURL(url); // মেমোরি ক্লিয়ার করা
+      
+      exportModal.classList.remove("active");
+      showToast("Download Started!");
+    });
+
+    // অপশন ২: ফোনের শেয়ার মেনু
+    btnShareFile.addEventListener("click", async function() {
+      const dataStr = JSON.stringify(challengeData);
+      const today = getDateKey();
+      const fileName = "GRITGO_Backup_" + today + ".json";
+      
+      const file = new File([dataStr], fileName, { type: "application/json" });
+
+      try {
+        await navigator.share({
+          files: [file],
+          title: 'GRITGO Backup',
+          text: 'Save this file to restore your data later.'
+        });
+        exportModal.classList.remove("active");
+        showToast("Backup shared successfully!");
+      } catch (error) {
+        console.log('Share failed or cancelled', error);
+      }
+    });
+
+    // ===== Restore Logic =====
+    document.getElementById("importData").addEventListener("click", function() {
+      document.getElementById("importFileInput").click();
+    });
+
+    document.getElementById("importFileInput").addEventListener("change", function(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const importedData = JSON.parse(e.target.result);
+          if (importedData && importedData.title) {
+            challengeData = importedData;
+            localStorage.setItem("challengeData", JSON.stringify(challengeData));
+            showToast("Data Imported Successfully!");
+            setTimeout(() => location.reload(), 1500);
+          } else {
+            showToast("Invalid backup file!");
+          }
+        } catch (err) {
+          showToast("Error reading file!");
+        }
+      };
+      reader.readAsText(file);
+    });
+
+    // ===== Auto-update day at midnight =====
+    let lastKnownDate = getDateKey();
+    setInterval(function () {
+      const currentDate = getDateKey();
+      if (currentDate !== lastKnownDate) {
+        lastKnownDate = currentDate;
+        updateMotivation();
+        renderTodayHabits();
+        renderHeatmap();
+        updateStats();
+        showToast("New day started! Day " + getCurrentDayNumber());
+      }
+    }, 60000);
+
+    document.querySelectorAll(".date-wrapper input").forEach(function(input) {
+      input.addEventListener("change", updateDatePlaceholders);
+      input.addEventListener("input", updateDatePlaceholders);
+      input.addEventListener("blur", updateDatePlaceholders);
+    });
+
+    const saved = localStorage.getItem("challengeData");
+    if (saved) {
+      challengeData = JSON.parse(saved);
+
+      const todayKey = getDateKey();
+      if (challengeData.startDate > todayKey) {
+        challengeData.startDate = todayKey;
+        localStorage.setItem("challengeData", JSON.stringify(challengeData));
+      }
+
+      startMainApp();
+    }
+
+    setTimeout(function () {
+      updateDatePlaceholders();
+      attachSearchListener();
+    }, 200);
+
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("service-worker.js").catch(function(err) {
+        console.log("SW registration failed:", err);
+      });
+    }
+  </script>
+</body>
+</html>
