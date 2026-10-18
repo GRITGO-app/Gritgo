@@ -82,9 +82,18 @@
       }
 
       micBtn.addEventListener('click', () => {
-        if (isListening) recognition.stop();
-        else recognition.start();
-      });
+  if (isListening) {
+    recognition.stop();
+  } else {
+    try {
+      recognition.start();
+    } catch (error) {
+      // যদি মাইক আগে থেকেই চালু থাকে, তবে তাকে থামিয়ে দেবে
+      console.log("Recognition already started, stopping it.");
+      recognition.stop();
+    }
+  }
+});
 
       recognition.onstart = () => {
         isListening = true;
