@@ -215,11 +215,11 @@
               jarvisTextDiv.textContent = aiResponse;
               speak(aiResponse);
             } else {
-              // যদি Key না থাকে বা ভুল থাকে, এই মেসেজটা আসবে
-              console.log("API Response Error:", data);
-              jarvisTextDiv.textContent = "AI Brain offline. (API Key Missing)";
-              speak("My AI brain is offline. Please provide an API key.");
-            }
+  let errorDetails = data.error ? data.error.message : "Unknown Error";
+  alert("Google API says: " + errorDetails);
+  jarvisTextDiv.textContent = "Error: " + errorDetails;
+  speak("I couldn't get a response from the AI.");
+}
           } catch (error) {
             console.error("Gemini Error:", error);
             jarvisTextDiv.textContent = "Connection to AI failed.";
