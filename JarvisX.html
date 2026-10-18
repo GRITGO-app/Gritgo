@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>J.A.R.V.I.S X - AI Assistant</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Courier New', Courier, monospace; }
+    body { background-color: #05080f; color: #00e5ff; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
+    
+    /* Arc Reactor Animation */
+    .reactor-container { position: relative; width: 200px; height: 200px; display: flex; align-items: center; justify-content: center; margin-bottom: 40px; }
+    .circle { position: absolute; border-radius: 50%; border: 3px solid transparent; border-top-color: #00e5ff; border-bottom-color: #0088cc; animation: rotate 2s linear infinite; }
+    .circle1 { width: 200px; height: 200px; animation-duration: 3s; border-left-color: #00e5ff; box-shadow: 0 0 20px rgba(0, 229, 255, 0.5); }
+    .circle2 { width: 160px; height: 160px; animation-direction: reverse; animation-duration: 2s; border-right-color: #00e5ff; }
+    .circle3 { width: 120px; height: 120px; animation-duration: 1s; border-top-color: #ffffff; }
+    .core { width: 80px; height: 80px; background: radial-gradient(circle, #e0ffff, #00e5ff, #0055ff); border-radius: 50%; box-shadow: 0 0 30px #00e5ff, inset 0 0 20px #ffffff; animation: pulse 1.5s ease-in-out infinite alternate; }
+    
+    @keyframes rotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    @keyframes pulse { 0% { transform: scale(0.9); box-shadow: 0 0 20px #00e5ff; } 100% { transform: scale(1.1); box-shadow: 0 0 50px #00e5ff, 0 0 10px #ffffff; } }
+    
+    /* UI Elements */
+    #statusText { font-size: 18px; letter-spacing: 2px; margin-bottom: 10px; text-transform: uppercase; text-shadow: 0 0 10px #00e5ff; }
+    .chat-area { width: 90%; max-width: 400px; text-align: center; margin-bottom: 20px; }
+    #userText { color: #ffffff; font-size: 16px; margin-bottom: 10px; min-height: 24px; }
+    #jarvisText { color: #00e5ff; font-size: 16px; font-weight: bold; min-height: 24px; }
+    
+    /* Mic Button */
+    #micBtn { position: absolute; bottom: 50px; background: #00e5ff; color: #05080f; border: none; padding: 15px 30px; font-size: 18px; font-weight: bold; border-radius: 30px; box-shadow: 0 0 20px rgba(0, 229, 255, 0.5); cursor: pointer; transition: 0.3s; }
+    #micBtn.listening { background: #ff3333; color: white; box-shadow: 0 0 20px rgba(255, 51, 51, 0.5); animation: pulseBtn 1s infinite alternate; }
+    @keyframes pulseBtn { from { transform: scale(1); } to { transform: scale(1.05); } }
+  </style>
+</head>
+<body>
+  <div class="reactor-container">
+    <div class="circle circle1"></div>
+    <div class="circle circle2"></div>
+    <div class="circle circle3"></div>
+    <div class="core"></div>
+  </div>
+  
+  <div id="statusText">System Ready</div>
+  
+  <div class="chat-area">
+    <div id="userText">...</div>
+    <div id="jarvisText">Awaiting your command, Sir.</div>
+  </div>
+  
+  <button id="micBtn">🎤 Tap to Speak</button>
+
+  <script>
+    // কনসোল এরর ধরার জন্য
+    window.onerror = function(msg, url, line) { alert("Code Error: " + msg + "\nLine: " + line); };
+
+    const micBtn = document.getElementById('micBtn');
+    const statusText = document.getElementById('statusText');
+    const userTextDiv = document.getElementById('userText');
+    const jarvisTextDiv = document.getElementById('jarvisText');
+
+    // 🔑 এখানে তোমার Groq API Key (gsk_...) বসাও 👇
+    const GROQ_API_KEY = "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"; 
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    
+    if (!SpeechRecognition) {
+      alert("Your browser does not support Speech Recognition. Please use Google Chrome.");
+    } else {
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'bn-BD'; 
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+      recognition.continuous = true;
+
+      let isListening = false;
+
+      recognition.onerror = (event) => {
+        if (event.error === 'not-allowed') { alert("Microphone blocked! Please allow mic permission."); }
+        statusText.textContent = "Error!";
+        jarvisTextDiv.textContent = "Microphone error, Sir.";
+        isListening = false;
+        micBtn.classList.remove('listening');
+        micBtn.textContent = "🎤 Tap to Speak";
+      };
+
+      function speak(text) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'bn-BD'; 
+        utterance.rate = 1.0;
+        utterance.pitch = 0.9;
+        window.speechSynthesis.speak(utterance);
+      }
+
+      micBtn.addEventListener('click', () => {
+        if (isListening) {
+          recognition.stop();
+        } else {
+          try {
+            recognition.start();
+          } catch (error) {
+            recognition.stop();
+          }
+        }
+      });
+
+      recognition.onstart = () => {
+        isListening = true;
+        micBtn.classList.add('listening');
+        micBtn.textContent = "🔴 Listening...";
+        statusText.textContent = "Listening...";
+        jarvisTextDiv.textContent = "I'm listening, Sir.";
+      };
+
+      recognition.onend = () => {
+        isListening = false;
+        micBtn.classList.remove('listening');
+        micBtn.textContent = "🎤 Tap to Speak";
+        statusText.textContent = "System Ready";
+      };
+
+      recognition.onresult = (event) => {
+        const lastResultIndex = event.results.length - 1;
+        const transcript = event.results[lastResultIndex][0].transcript.toLowerCase().trim();
+        userTextDiv.textContent = `"${transcript}"`;
+        processCommand(transcript);
+      };
+
+      async function processCommand(command) {
+        statusText.textContent = "Processing...";
+
+        // ১. বেসিক কমান্ডসমূহ
+        if (command.includes("lost") || command.includes("go home") || command.includes("হারিয়ে")) {
+          jarvisTextDiv.textContent = "Navigating you home, Sir.";
+          speak("Navigating you home, Sir.");
+          setTimeout(() => { window.location.href = "https://www.google.com/maps/dir/?api=1&destination=home"; }, 3000);
+        }
+        else if (command.includes("open youtube") && command.includes("search")) {
+          let parts = command.split("search");
+          let query = parts[1] ? parts[1].trim() : "";
+          if (query) {
+            jarvisTextDiv.textContent = `Searching YouTube for ${query}...`;
+            speak(`Searching YouTube for ${query}`);
+            setTimeout(() => { window.location.href = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`; }, 2500);
+          }
+        }
+        else if (command.includes("open youtube")) {
+          jarvisTextDiv.textContent = "Opening YouTube.";
+          speak("Opening YouTube, Sir.");
+          setTimeout(() => { window.location.href = "https://www.youtube.com"; }, 2000);
+        }
+        else if (command.includes("open whatsapp")) {
+          jarvisTextDiv.textContent = "Opening WhatsApp.";
+          speak("Opening WhatsApp, Sir.");
+          setTimeout(() => { window.location.href = "whatsapp://"; setTimeout(() => { window.location.href = "https://web.whatsapp.com/"; }, 1000); }, 2000);
+        }
+        else if (command.includes("open instagram")) {
+          jarvisTextDiv.textContent = "Opening Instagram.";
+          speak("Opening Instagram, Sir.");
+          setTimeout(() => { window.location.href = "instagram://app"; setTimeout(() => { window.location.href = "https://www.instagram.com/"; }, 1000); }, 2000);
+        }
+        else if (command.includes("set timer") || command.includes("টাইমার")) {
+          let minutes = 1;
+          let match = command.match(/(\d+)\s*minute/);
+          if (match) minutes = parseInt(match[1]);
+          jarvisTextDiv.textContent = `Timer set for ${minutes} minutes.`;
+          speak(`Timer set for ${minutes} minutes, Sir.`);
+          setTimeout(() => { speak(`Sir, your ${minutes} minute timer is up.`); alert(`Timer Finished!`); }, minutes * 60000);
+        }
+        else if (command.includes("time") && !command.includes("timer")) {
+          const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+          jarvisTextDiv.textContent = `The current time is ${time}`;
+          speak(`The current time is ${time}`);
+        }
+        
+        // ২. Groq AI এর সাথে কথা বলা (Fallback)
+        else {
+          jarvisTextDiv.textContent = "Thinking...";
+          speak("Let me think about that, Sir.");
+          
+          try {
+            const response = await fetch(`https://api.groq.com/openai/v1/chat/completions`, {
+              method: 'POST',
+              headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${GROQ_API_KEY}` 
+              },
+              body: JSON.stringify({
+                model: "llama3-8b-8192", 
+                messages: [
+                  { role: "system", content: "You are JARVIS, a highly advanced AI assistant created by a 13-year-old genius. Address the user as 'Sir'. Keep your answers short, smart, and helpful. You can speak in Bengali or English based on the user's input." },
+                  { role: "user", content: command }
+                ]
+              })
+            });
+
+            const data = await response.json();
+            
+            if (data.choices && data.choices[0].message.content) {
+              let aiResponse = data.choices[0].message.content;
+              aiResponse = aiResponse.replace(/\*/g, "").replace(/\n/g, " "); 
+              jarvisTextDiv.textContent = aiResponse;
+              speak(aiResponse);
+            } else {
+              let errorDetails = data.error ? data.error.message : "Unknown Error";
+              alert("Groq API says: " + errorDetails); // এরর আসলে পপ-আপে দেখাবে
+              jarvisTextDiv.textContent = "Error: " + errorDetails;
+            }
+          } catch (error) {
+            console.error("Groq Error:", error);
+            jarvisTextDiv.textContent = "Connection to AI failed.";
+            speak("I am having trouble connecting to my brain.");
+          }
+        }
+        statusText.textContent = "System Ready";
+      }
+    }
+  </script>
+</body>
+</html>
