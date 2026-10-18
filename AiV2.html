@@ -39,13 +39,20 @@
   <button id="micBtn">🎤 Tap to Speak</button>
 
   <script>
+    // ✅ কোডে কোনো ভুল থাকলে স্ক্রিনে অ্যালার্ট দেখাবে
+    window.onerror = function(msg, url, line) {
+      alert("Code Error: " + msg + "\nLine: " + line);
+    };
+
     const micBtn = document.getElementById('micBtn');
     const statusText = document.getElementById('statusText');
     const userTextDiv = document.getElementById('userText');
     const jarvisTextDiv = document.getElementById('jarvisText');
 
-    // 🔑 এখানে তোমার Gemini API Key বসাও
-    AQ.Ab8RN6Imsa_zzVAZl8xx9ellQkQjfwYxw3WtFx3p_EFqOQgGEg
+    // 👇👇👇 এখানে তোমার API Key বসাও (পরে কখনো চাইলে) 👇👇👇
+    // ⚠️ কী-এর আগে এবং পরে অবশ্যই ডাবল কোটেশন (" ") থাকতে হবে!
+    const GEMINI_API_KEY = "AQ.Ab8RN6Iv2yoUrXn6MbTdWXdEAXnA_G_seGHTIZPCrKfUzFcgAg"; 
+    // 👆👆👆 এখানে তোমার API Key বসাও 👆👆👆
 
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     
@@ -53,10 +60,7 @@
       alert("Your browser does not support Speech Recognition. Please use Google Chrome.");
     } else {
       const recognition = new SpeechRecognition();
-      
-      // 🌐 ভাষা পরিবর্তন: বাংলার জন্য 'bn-BD', ইংরেজির জন্য 'en-US'
       recognition.lang = 'bn-BD'; 
-      
       recognition.interimResults = false;
       recognition.maxAlternatives = 1;
       recognition.continuous = true;
@@ -77,10 +81,7 @@
       function speak(text) {
         window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(text);
-        
-        // 🌐 ভাষা পরিবর্তন: জারভিসের কথা বলার ভাষা
         utterance.lang = 'bn-BD'; 
-        
         utterance.rate = 1.0;
         utterance.pitch = 0.9;
         window.speechSynthesis.speak(utterance);
@@ -146,9 +147,7 @@
         else if (command.includes("open youtube")) {
           jarvisTextDiv.textContent = "Opening YouTube.";
           speak("Opening YouTube, Sir.");
-          setTimeout(() => {
-            window.location.href = "https://www.youtube.com";
-          }, 2000);
+          setTimeout(() => { window.location.href = "https://www.youtube.com"; }, 2000);
         }
 
         // 4. Open WhatsApp
@@ -193,7 +192,7 @@
           speak(`The current time is ${time}`);
         }
 
-        // 8. ASK GEMINI AI (Default Fallback)
+        // 🤖 8. ASK GEMINI AI (Default Fallback)
         else {
           jarvisTextDiv.textContent = "Thinking...";
           speak("Let me think about that, Sir.");
@@ -216,8 +215,10 @@
               jarvisTextDiv.textContent = aiResponse;
               speak(aiResponse);
             } else {
-              jarvisTextDiv.textContent = "I couldn't get a response from the AI.";
-              speak("I couldn't get a response.");
+              // যদি Key না থাকে বা ভুল থাকে, এই মেসেজটা আসবে
+              console.log("API Response Error:", data);
+              jarvisTextDiv.textContent = "AI Brain offline. (API Key Missing)";
+              speak("My AI brain is offline. Please provide an API key.");
             }
           } catch (error) {
             console.error("Gemini Error:", error);
