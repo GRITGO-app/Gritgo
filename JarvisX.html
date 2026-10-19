@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>J.A.R.V.I.S X - AI Assistant</title>
   
-  <!-- ✅ নতুন ম্যানিফেস্ট ফাইল লিংক -->
+  <!-- ✅ এই লাইনটা নতুন যোগ করা হয়েছে (PWABuilder এর জন্য) -->
   <link rel="manifest" href="manifest-jarvis.json">
   <meta name="theme-color" content="#05080f">
   
@@ -59,7 +59,7 @@
     const jarvisTextDiv = document.getElementById('jarvisText');
 
     // 🔑 এখানে তোমার Groq API Key (gsk_...) বসাও 👇
-    const GROQ_API_KEY = "তোমার_gsk_ওয়ালা_Key_এখানে_বসাও"; 
+    const GROQ_API_KEY = "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"; 
 
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     
@@ -70,7 +70,7 @@
       recognition.lang = 'bn-IN'; 
       recognition.interimResults = false;
       recognition.maxAlternatives = 1;
-      recognition.continuous = false; // একবার শুনবে, তারপর বন্ধ হবে
+      recognition.continuous = false; 
 
       let isListening = false;
 
@@ -92,7 +92,6 @@
         window.speechSynthesis.speak(utterance);
       }
 
-      // সাধারণ বাটন ক্লিক (যা আগে কাজ করছিল)
       micBtn.addEventListener('click', () => {
         if (isListening) {
           recognition.stop();
@@ -211,14 +210,17 @@
         statusText.textContent = "System Ready";
       }
     }
- // ✅ Jarvis App Install korar jonno Service Worker
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("sw-jarvis.js").then(function(registration) {
-    console.log("Jarvis SW registered successfully");
-  }).catch(function(err) {
-    console.log("SW registration failed:", err);
-  });
-}
+  </script>
+
+  <!-- ✅ এই স্ক্রিপ্টটা নতুন যোগ করা হয়েছে (PWABuilder এর জন্য) -->
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("sw-jarvis.js").then(function(registration) {
+        console.log("Jarvis Service Worker registered!");
+      }).catch(function(err) {
+        console.log("SW registration failed:", err);
+      });
+    }
   </script>
 </body>
 </html>
