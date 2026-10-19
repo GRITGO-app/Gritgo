@@ -114,10 +114,19 @@
     .modal-box input, .modal-box textarea { width: 100%; padding: 12px 15px; background-color: #0f1419; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 15px; outline: none; }
     .modal-box input:focus, .modal-box textarea:focus { border-color: #4a9eff; }
 
+    /* Date Fix */
     .date-wrapper { position: relative; width: 100%; }
-    .date-placeholder { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #9aa0a6; font-size: 15px; pointer-events: none; transition: opacity 0.2s; }
+    .date-placeholder { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #9aa0a6; font-size: 15px; pointer-events: none; transition: opacity 0.2s; z-index: 10; }
     .date-wrapper.has-value .date-placeholder { opacity: 0; }
-    .date-wrapper input[type="date"]:not(.has-value) { color: transparent; }
+    
+    .date-wrapper:not(.has-value) input[type="date"]::-webkit-datetime-edit,
+    .date-wrapper:not(.has-value) input[type="date"]::-webkit-datetime-edit-text,
+    .date-wrapper:not(.has-value) input[type="date"]::-webkit-datetime-edit-month-field,
+    .date-wrapper:not(.has-value) input[type="date"]::-webkit-datetime-edit-day-field,
+    .date-wrapper:not(.has-value) input[type="date"]::-webkit-datetime-edit-year-field {
+      color: transparent !important;
+      opacity: 0 !important;
+    }
     .date-wrapper.has-value input[type="date"] { color: #e8eaed; }
 
     .settings-buttons { display: flex; gap: 10px; margin-top: 20px; }
@@ -158,6 +167,11 @@
     .day-box.active { border-color: #00e5ff; box-shadow: 0 0 10px rgba(0, 229, 255, 0.3); color: #00e5ff; font-weight: bold; }
     .day-box.done { background: rgba(0, 229, 255, 0.1); border-color: #00e5ff; color: #00e5ff; }
     .day-box .check-mark { display: block; font-size: 12px; margin-top: 4px; }
+
+    /* NEW: Sleep Hours Grid */
+    .hours-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 15px; }
+    .hour-btn { background: #1a1f2e; color: #e8eaed; border: 1px solid #2a3142; padding: 12px 0; border-radius: 10px; font-weight: bold; font-size: 14px; cursor: pointer; transition: 0.2s; text-align: center; }
+    .hour-btn.selected { background: #00e5ff; color: #05080f; border-color: #00e5ff; box-shadow: 0 0 15px rgba(0, 229, 255, 0.4); }
 
     /* Weekly Progress Bars */
     .weekly-bar-container { margin-bottom: 12px; }
@@ -227,7 +241,7 @@
       <div class="stat-card"><span id="overallStat">0%</span><span>overall</span></div>
     </div>
 
-    <!-- NEW TRACKER BUTTON -->
+    <!-- TRACKER BUTTON -->
     <button id="openTrackerBtn" class="tracker-btn">
       📊 Open Weekly Progress & Sleep Tracker
     </button>
@@ -275,7 +289,7 @@
         Here is how to use your ultimate discipline tracker:<br><br>
         ✅ <b>Habits:</b> Add your daily habits and check them off to build a streak.<br><br>
         🔥 <b>Heatmap:</b> See your overall progress over the challenge.<br><br>
-        🌙 <b>Sleep Tracker:</b> Log your sleep. 8+ hours gives you a glowing Fresh Brain 🧠✨, while less sleep gives a Tired Brain 🧠😴.<br><br>
+        🌙 <b>Sleep Tracker:</b> Select hours slept. 8+ hours gives you a glowing Fresh Brain 🧠✨, while less sleep gives a Tired Brain 🧠😴.<br><br>
         📈 <b>Weekly Progress:</b> Track your habit completion bars for the last 7 days.<br><br>
         After a 7-day sleep cycle, you will get a Weekly Report!
       </p>
@@ -301,8 +315,24 @@
         </div>
 
         <div id="sleepInputSection">
-          <label style="margin-top: 0;">Hours Slept (e.g., 7.5):</label>
-          <input type="number" id="sleepHoursInput" step="0.5" min="0" max="24" placeholder="8" style="margin-bottom: 10px;">
+          <label style="margin-top: 0; margin-bottom: 10px; display: block; color: #9aa0a6; font-size: 13px;">Select Hours Slept:</label>
+          
+          <!-- New Grid of Hour Buttons -->
+          <div class="hours-grid" id="hoursGrid">
+            <button class="hour-btn" data-val="1">1h</button>
+            <button class="hour-btn" data-val="2">2h</button>
+            <button class="hour-btn" data-val="3">3h</button>
+            <button class="hour-btn" data-val="4">4h</button>
+            <button class="hour-btn" data-val="5">5h</button>
+            <button class="hour-btn" data-val="6">6h</button>
+            <button class="hour-btn" data-val="7">7h</button>
+            <button class="hour-btn" data-val="8">8h</button>
+            <button class="hour-btn" data-val="9">9h</button>
+            <button class="hour-btn" data-val="10">10h</button>
+            <button class="hour-btn" data-val="11">11h</button>
+            <button class="hour-btn" data-val="12">12h</button>
+          </div>
+
           <button id="saveSleepBtn" style="width:100%; padding:12px; border:none; border-radius:10px; font-weight:bold; cursor:pointer;">Save Today's Sleep</button>
         </div>
       </div>
@@ -328,7 +358,7 @@
       <div id="reportIcon" style="font-size: 50px; margin-bottom: 15px;">🌟</div>
       <h3 id="reportTitle" style="color: #e8eaed; margin-bottom: 10px;">Good Job!</h3>
       <p id="reportText" style="color: #9aa0a6; font-size: 14px; margin-bottom: 20px;">
-        You had a great week of sleep! Your average was 8 hours.
+        You had a great week of sleep!
       </p>
       <button id="reportClose" style="width: 100%; padding: 14px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; background: #4a9eff; color: white;">Start New Week</button>
     </div>
@@ -570,7 +600,8 @@
     document.getElementById("openTrackerBtn").addEventListener("click", () => {
       trackerModal.classList.add("active");
       renderSleepTracker();
-      renderWeeklyProgress(); // New function call
+      renderWeeklyProgress();
+      resetSleepButtons(); // Reset selected hours on open
     });
 
     document.getElementById("trackerClose").addEventListener("click", () => trackerModal.classList.remove("active"));
@@ -661,26 +692,41 @@
         sleepInputSection.style.display = "none";
       } else {
         sleepInputSection.style.display = "block";
-        document.getElementById("sleepHoursInput").value = "";
+        resetSleepButtons(); // Reset when opening for a new day
       }
     }
 
+    // Sleep Grid Logic
+    let selectedSleepHours = null;
+    function resetSleepButtons() {
+      document.querySelectorAll(".hour-btn").forEach(btn => btn.classList.remove("selected"));
+      selectedSleepHours = null;
+    }
+
+    document.getElementById("hoursGrid").addEventListener("click", (e) => {
+      if (e.target.classList.contains("hour-btn")) {
+        document.querySelectorAll(".hour-btn").forEach(btn => btn.classList.remove("selected"));
+        e.target.classList.add("selected");
+        selectedSleepHours = parseFloat(e.target.dataset.val);
+      }
+    });
+
     document.getElementById("saveSleepBtn").addEventListener("click", () => {
-      const hours = parseFloat(document.getElementById("sleepHoursInput").value);
-      if (isNaN(hours) || hours < 0 || hours > 24) { showToast("Enter a valid number."); return; }
+      if (selectedSleepHours === null) { showToast("Please select your sleep hours."); return; }
+      
       const today = getDateKey();
       const start = new Date(sleepState.weekStartDate + "T00:00:00");
       const now = new Date(today + "T00:00:00");
       const diffDays = Math.floor(Math.abs(now - start) / (1000 * 60 * 60 * 24));
       const currentIndex = Math.min(diffDays, 6);
 
-      sleepState.days[currentIndex] = hours;
+      sleepState.days[currentIndex] = selectedSleepHours;
       localStorage.setItem("gritgo_sleep_state", JSON.stringify(sleepState));
       showToast("Sleep data saved!");
       renderSleepTracker();
     });
 
-    // NEW: Weekly Progress Logic
+    // Weekly Progress Logic
     function renderWeeklyProgress() {
       const list = document.getElementById("weeklyProgressList");
       list.innerHTML = "";
@@ -794,7 +840,7 @@
             challengeData.habitLogs[getDateKey()][index] = isChecked;
             localStorage.setItem("challengeData", JSON.stringify(challengeData));
             updateTodayCount(); renderHeatmap(); updateStats();
-            renderWeeklyProgress(); // Update weekly bars if modal is open later
+            renderWeeklyProgress(); 
           };
         }
 
