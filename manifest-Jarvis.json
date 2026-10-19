@@ -1,0 +1,16 @@
+{
+  "name": "Jarvis X - AI Assistant",
+  "short_name": "Jarvis X",
+  "start_url": "./JarvisX.html",
+  "display": "standalone",
+  "background_color": "#05080f",
+  "theme_color": "#00e5ff",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
