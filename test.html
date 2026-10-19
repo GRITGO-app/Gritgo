@@ -218,6 +218,25 @@
       text-align: center;
     }
 
+    /* ===== New Tracker Button ===== */
+    .tracker-btn {
+      width: 100%;
+      padding: 15px;
+      background: #1a1f2e;
+      color: #4a9eff;
+      border: 1px solid #4a9eff;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .tracker-btn:active { background: #2a3142; }
+
     /* ===== Search Section ===== */
     .search-section {
       margin-bottom: 15px;
@@ -292,320 +311,75 @@
     }
 
     /* ===== Edit Mode ===== */
-    #editMode {
-      margin-top: 20px;
-    }
+    #editMode { margin-top: 20px; }
+    .edit-buttons { display: flex; gap: 10px; margin-bottom: 15px; }
+    .edit-buttons button { flex: 1; padding: 14px; background-color: #1a1f2e; color: #e8eaed; border: 1px solid #2a3142; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; }
+    .add-habit-row { display: flex; gap: 8px; margin-bottom: 10px; }
+    #newHabitInput { flex: 1; padding: 12px 15px; background-color: #1a1f2e; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 14px; outline: none; }
+    #addHabitBtn { padding: 12px 18px; background-color: #1a1f2e; color: #e8eaed; border: 1px solid #2a3142; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+    #habitsList { list-style: none; margin-top: 15px; }
+    #habitsList li { display: flex; align-items: center; gap: 10px; padding: 12px; background-color: #1a1f2e; border-radius: 10px; margin-bottom: 8px; color: #e8eaed; }
 
-    .edit-buttons {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 15px;
-    }
-
-    .edit-buttons button {
-      flex: 1;
-      padding: 14px;
-      background-color: #1a1f2e;
-      color: #e8eaed;
-      border: 1px solid #2a3142;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .add-habit-row {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-
-    #newHabitInput {
-      flex: 1;
-      padding: 12px 15px;
-      background-color: #1a1f2e;
-      border: 1px solid #2a3142;
-      border-radius: 10px;
-      color: #e8eaed;
-      font-size: 14px;
-      outline: none;
-    }
-
-    #addHabitBtn {
-      padding: 12px 18px;
-      background-color: #1a1f2e;
-      color: #e8eaed;
-      border: 1px solid #2a3142;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    #habitsList {
-      list-style: none;
-      margin-top: 15px;
-    }
-
-    #habitsList li {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 12px;
-      background-color: #1a1f2e;
-      border-radius: 10px;
-      margin-bottom: 8px;
-      color: #e8eaed;
-    }
-
-    .footer-text {
-      color: #6a7280;
-      font-size: 12px;
-      text-align: center;
-      margin-top: 25px;
-      margin-bottom: 20px;
-    }
+    .footer-text { color: #6a7280; font-size: 12px; text-align: center; margin-top: 25px; margin-bottom: 20px; }
 
     /* ===== Modals ===== */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      z-index: 1000;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      box-sizing: border-box;
-    }
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
+    .modal-overlay.active { display: flex; }
+    .modal-box { background-color: #1a1f2e; border-radius: 16px; padding: 25px; width: 100%; max-width: 400px; max-height: 90vh; overflow-y: auto; }
+    .modal-box h2 { color: #ffffff; margin-bottom: 20px; font-size: 22px; text-align: center; }
+    .modal-box label { display: block; color: #9aa0a6; font-size: 13px; margin-bottom: 6px; margin-top: 12px; }
+    .modal-box input, .modal-box textarea { width: 100%; padding: 12px 15px; background-color: #0f1419; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 15px; outline: none; font-family: inherit; resize: none; }
+    .modal-box input:focus, .modal-box textarea:focus { border-color: #4a9eff; }
 
-    .modal-overlay.active {
-      display: flex;
-    }
+    .date-wrapper { position: relative; width: 100%; }
+    .date-placeholder { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #9aa0a6; font-size: 15px; pointer-events: none; transition: opacity 0.2s; }
+    .date-wrapper.has-value .date-placeholder { opacity: 0; }
+    .date-wrapper input[type="date"]:not(.has-value) { color: transparent; }
+    .date-wrapper:not(.has-value) input[type="date"]::-webkit-datetime-edit { color: transparent; }
+    .date-wrapper.has-value input[type="date"] { color: #e8eaed; }
 
-    .modal-box {
-      background-color: #1a1f2e;
-      border-radius: 16px;
-      padding: 25px;
-      width: 100%;
-      max-width: 400px;
-      max-height: 90vh;
-      overflow-y: auto;
-    }
+    .settings-buttons { display: flex; gap: 10px; margin-top: 20px; }
+    .settings-buttons button { flex: 1; padding: 12px; border: none; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer; }
 
-    .modal-box h2 {
-      color: #ffffff;
-      margin-bottom: 20px;
-      font-size: 22px;
-      text-align: center;
+    #settingsCancel, #addHabitCancel, #deleteCancel, #resetCancel, #dayModalClose, #exportCancel, #feedbackCancel, #trackerClose {
+      background-color: #2a3142; color: #e8eaed;
     }
-
-    .modal-box label {
-      display: block;
-      color: #9aa0a6;
-      font-size: 13px;
-      margin-bottom: 6px;
-      margin-top: 12px;
-    }
-
-    .modal-box input, .modal-box textarea {
-      width: 100%;
-      padding: 12px 15px;
-      background-color: #0f1419;
-      border: 1px solid #2a3142;
-      border-radius: 10px;
-      color: #e8eaed;
-      font-size: 15px;
-      outline: none;
-      font-family: inherit;
-      resize: none;
-    }
-
-    .modal-box input:focus, .modal-box textarea:focus {
-      border-color: #4a9eff;
-    }
-
-    .date-wrapper {
-      position: relative;
-      width: 100%;
-    }
-
-    .date-placeholder {
-      position: absolute;
-      left: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #9aa0a6;
-      font-size: 15px;
-      pointer-events: none;
-      transition: opacity 0.2s;
-    }
-
-    .date-wrapper.has-value .date-placeholder {
-      opacity: 0;
-    }
-
-    .date-wrapper input[type="date"]:not(.has-value) {
-      color: transparent;
-    }
-
-    .date-wrapper:not(.has-value) input[type="date"]::-webkit-datetime-edit,
-    .date-wrapper:not(.has-value) input[type="date"]::-webkit-datetime-edit-text,
-    .date-wrapper:not(.has-value) input[type="date"]::-webkit-datetime-edit-month-field,
-    .date-wrapper:not(.has-value) input[type="date"]::-webkit-datetime-edit-day-field,
-    .date-wrapper:not(.has-value) input[type="date"]::-webkit-datetime-edit-year-field {
-      color: transparent;
-    }
-
-    .date-wrapper.has-value input[type="date"] {
-      color: #e8eaed;
-    }
-
-    .settings-buttons {
-      display: flex;
-      gap: 10px;
-      margin-top: 20px;
-    }
-
-    .settings-buttons button {
-      flex: 1;
-      padding: 12px;
-      border: none;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    #settingsCancel, #addHabitCancel, #deleteCancel, #resetCancel, #dayModalClose, #exportCancel, #feedbackCancel {
-      background-color: #2a3142;
-      color: #e8eaed;
-    }
-
-    #settingsSave, #addHabitSave, #feedbackSubmit {
-      background: linear-gradient(135deg, #4a9eff, #2a7fdb);
-      color: white;
-    }
-
-    #deleteConfirm, #resetConfirm {
-      background: linear-gradient(135deg, #ff6b4a, #d35400);
-      color: white;
-    }
-
-    #resetAllData {
-      width: 100%;
-      margin-top: 15px;
-      padding: 12px;
-      background: transparent;
-      color: #ff6b4a;
-      border: 1px solid #ff6b4a;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-    }
+    #settingsSave, #addHabitSave, #feedbackSubmit, #saveSleepBtn { background: linear-gradient(135deg, #4a9eff, #2a7fdb); color: white; }
+    #deleteConfirm, #resetConfirm { background: linear-gradient(135deg, #ff6b4a, #d35400); color: white; }
+    #resetAllData { width: 100%; margin-top: 15px; padding: 12px; background: transparent; color: #ff6b4a; border: 1px solid #ff6b4a; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; }
 
     /* ===== Toast ===== */
-    .toast {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%) translateY(-100px);
-      background: linear-gradient(135deg, #ff6b4a, #d35400);
-      color: white;
-      padding: 14px 24px;
-      border-radius: 12px;
-      font-size: 14px;
-      font-weight: 600;
-      box-shadow: 0 8px 25px rgba(255, 107, 74, 0.4);
-      z-index: 9999;
-      opacity: 0;
-      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-      max-width: 90%;
-      text-align: center;
-    }
-
-    .toast.show {
-      transform: translateX(-50%) translateY(0);
-      opacity: 1;
-    }
+    .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px); background: linear-gradient(135deg, #ff6b4a, #d35400); color: white; padding: 14px 24px; border-radius: 12px; font-size: 14px; font-weight: 600; box-shadow: 0 8px 25px rgba(255, 107, 74, 0.4); z-index: 9999; opacity: 0; transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); max-width: 90%; text-align: center; }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
     /* ===== Custom Checkbox CSS ===== */
-    .custom-checkbox {
-      width: 28px;
-      height: 28px;
-      border-radius: 6px;
-      background-color: #2a3142;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      flex-shrink: 0;
-    }
-
-    .custom-checkbox .checkbox-number {
-      color: #9aa0a6;
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    .custom-checkbox.checked {
-      background-color: #4a9eff;
-    }
-
-    .custom-checkbox.checked .checkbox-number {
-      display: none;
-    }
-
-    .custom-checkbox.checked::after {
-      content: "✓";
-      color: #ffffff;
-      font-size: 16px;
-      font-weight: bold;
-    }
+    .custom-checkbox { width: 28px; height: 28px; border-radius: 6px; background-color: #2a3142; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; flex-shrink: 0; }
+    .custom-checkbox .checkbox-number { color: #9aa0a6; font-size: 14px; font-weight: 600; }
+    .custom-checkbox.checked { background-color: #4a9eff; }
+    .custom-checkbox.checked .checkbox-number { display: none; }
+    .custom-checkbox.checked::after { content: "✓"; color: #ffffff; font-size: 16px; font-weight: bold; }
 
     /* ===== SVG Delete Button Style ===== */
-    .delete-btn {
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      padding: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #6a7280;
-      transition: color 0.2s ease, transform 0.1s ease;
-      flex-shrink: 0;
-    }
-    
-    .delete-btn:hover, .delete-btn:active {
-      color: #ff6b4a;
-      transform: scale(1.1);
-    }
-
-    /* Export Modal Z-Index */
-    #exportModal {
-      z-index: 1050; 
-    }
+    .delete-btn { background: transparent; border: none; cursor: pointer; padding: 6px; display: flex; align-items: center; justify-content: center; color: #6a7280; transition: color 0.2s ease, transform 0.1s ease; flex-shrink: 0; }
+    .delete-btn:hover, .delete-btn:active { color: #ff6b4a; transform: scale(1.1); }
+    #exportModal { z-index: 1050; }
 
     /* ===== Lock Message Style ===== */
-    .lock-message {
-      display: none;
-      padding: 15px;
-      background: rgba(255, 107, 74, 0.1);
-      border: 1px solid #ff6b4a;
-      border-radius: 10px;
-      color: #ff6b4a;
-      text-align: center;
-      margin-bottom: 15px;
-      font-weight: 600;
-      font-size: 14px;
-    }
+    .lock-message { display: none; padding: 15px; background: rgba(255, 107, 74, 0.1); border: 1px solid #ff6b4a; border-radius: 10px; color: #ff6b4a; text-align: center; margin-bottom: 15px; font-weight: 600; font-size: 14px; }
+
+    /* ===== Sleep & Progress Modal CSS ===== */
+    .tracker-section { background: #0f1419; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #2a3142; }
+    .tracker-section h3 { font-size: 16px; color: #e8eaed; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+    
+    .sleep-inputs { display: flex; gap: 10px; margin-bottom: 12px; }
+    .sleep-inputs div { flex: 1; }
+    
+    .weekly-bar-container { margin-bottom: 10px; }
+    .weekly-bar-label { display: flex; justify-content: space-between; font-size: 12px; color: #9aa0a6; margin-bottom: 4px; }
+    .weekly-bar-bg { background: #2a3142; height: 8px; border-radius: 4px; overflow: hidden; }
+    .weekly-bar-fill { height: 100%; background: linear-gradient(90deg, #4a9eff, #00e5ff); border-radius: 4px; }
+    .sleep-result-text { text-align: center; color: #4aaa4a; font-weight: bold; font-size: 14px; margin-top: 10px; }
+
   </style>
 </head>
 <body>
@@ -680,6 +454,11 @@
       </div>
     </div>
 
+    <!-- NEW TRACKER BUTTON -->
+    <button id="openTrackerBtn" class="tracker-btn">
+      📊 Sleep & Weekly Progress
+    </button>
+
     <div id="heatmap"></div>
     <p class="heatmap-hint">Darker means more habits done.</p>
 
@@ -720,6 +499,42 @@
     <p class="footer-text">Progress saves in this browser only.</p>
   </div>
 
+  <!-- ===== NEW TRACKER MODAL ===== -->
+  <div id="trackerModal" class="modal-overlay">
+    <div class="modal-box">
+      <h2>Sleep & Progress 📊</h2>
+      
+      <!-- Sleep Section -->
+      <div class="tracker-section">
+        <h3>😴 Sleep Tracker</h3>
+        <div class="sleep-inputs">
+          <div>
+            <label>Bedtime</label>
+            <input type="time" id="sleepBedtime">
+          </div>
+          <div>
+            <label>Wake Up</label>
+            <input type="time" id="sleepWakeup">
+          </div>
+        </div>
+        <button id="saveSleepBtn" style="width:100%; padding:12px; border:none; border-radius:10px; font-weight:bold; cursor:pointer;">Save Sleep Data</button>
+        <div id="sleepResultText" class="sleep-result-text">No sleep data saved for today.</div>
+      </div>
+
+      <!-- Weekly Progress Section -->
+      <div class="tracker-section">
+        <h3>📈 Last 7 Days Progress</h3>
+        <div id="weeklyProgressList">
+          <!-- JS will populate this -->
+        </div>
+      </div>
+
+      <div class="settings-buttons">
+        <button id="trackerClose">Close</button>
+      </div>
+    </div>
+  </div>
+
   <div id="addHabitModal" class="modal-overlay">
     <div class="modal-box">
       <h2 id="addHabitModalTitle">Add New Habit</h2>
@@ -735,9 +550,7 @@
   <div id="deleteModal" class="modal-overlay">
     <div class="modal-box">
       <h2>Delete Habit?</h2>
-      <p id="deleteModalText" style="text-align:center; color:#9aa0a6; margin-bottom:10px;">
-        Are you sure?
-      </p>
+      <p id="deleteModalText" style="text-align:center; color:#9aa0a6; margin-bottom:10px;">Are you sure?</p>
       <div class="settings-buttons">
         <button id="deleteCancel">Cancel</button>
         <button id="deleteConfirm">Delete</button>
@@ -748,9 +561,7 @@
   <div id="resetModal" class="modal-overlay">
     <div class="modal-box">
       <h2>Reset All Data?</h2>
-      <p style="text-align:center; color:#9aa0a6; margin-bottom:10px;">
-        This will delete EVERYTHING permanently. Are you sure?
-      </p>
+      <p style="text-align:center; color:#9aa0a6; margin-bottom:10px;">This will delete EVERYTHING permanently. Are you sure?</p>
       <div class="settings-buttons">
         <button id="resetCancel">Cancel</button>
         <button id="resetConfirm">Reset All</button>
@@ -761,12 +572,8 @@
   <div id="dayModal" class="modal-overlay">
     <div class="modal-box">
       <h2 id="dayModalTitle">Day</h2>
-      
       <input type="text" id="dayModalSearchInput" placeholder="🔍 Search habit by number or name..." autocomplete="off" style="margin-bottom: 15px;">
-      
-      <p id="dayModalSubtitle" style="text-align:center; color:#9aa0a6; margin-bottom:15px; font-size:13px;">
-        0 / 0 habits done
-      </p>
+      <p id="dayModalSubtitle" style="text-align:center; color:#9aa0a6; margin-bottom:15px; font-size:13px;">0 / 0 habits done</p>
       <ul id="dayModalList" style="list-style:none; max-height:50vh; overflow-y:auto;"></ul>
       <div class="settings-buttons">
         <button id="dayModalClose">Close</button>
@@ -777,18 +584,13 @@
   <div id="exportModal" class="modal-overlay">
     <div class="modal-box">
       <h2>Backup Options</h2>
-      <p style="text-align:center; color:#9aa0a6; margin-bottom:20px; font-size:14px;">
-        Choose how you want to save your backup file.
-      </p>
-      
+      <p style="text-align:center; color:#9aa0a6; margin-bottom:20px; font-size:14px;">Choose how you want to save your backup file.</p>
       <button id="btnDownloadFile" style="width:100%; padding:14px; background:linear-gradient(135deg, #4a9eff, #2a7fdb); color:white; border:none; border-radius:10px; font-weight:bold; font-size:15px; margin-bottom:12px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;">
         <span>📥</span> Download File
       </button>
-      
       <button id="btnShareFile" style="width:100%; padding:14px; background:#2a3142; color:#e8eaed; border:1px solid #4aaa4a; border-radius:10px; font-weight:bold; font-size:15px; margin-bottom:12px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;">
         <span>📤</span> Share to Apps (Drive, WhatsApp)
       </button>
-
       <div class="settings-buttons" style="margin-top: 10px;">
         <button id="exportCancel">Cancel</button>
       </div>
@@ -798,9 +600,7 @@
   <div id="feedbackModal" class="modal-overlay">
     <div class="modal-box">
       <h2>Send Feedback 💬</h2>
-      <p style="text-align:center; color:#9aa0a6; margin-bottom:15px; font-size:13px;">
-        How is GRITGO going? Let me know!
-      </p>
+      <p style="text-align:center; color:#9aa0a6; margin-bottom:15px; font-size:13px;">How is GRITGO going? Let me know!</p>
       <textarea id="feedbackText" rows="4" placeholder="Write your feedback here..."></textarea>
       <div class="settings-buttons">
         <button id="feedbackCancel">Cancel</button>
@@ -812,22 +612,17 @@
   <div id="settingsModal" class="modal-overlay">
     <div class="modal-box">
       <h2>Settings</h2>
-
       <label>Challenge Name:</label>
       <input type="text" id="settingsTitle">
-
       <label>Duration (days):</label>
       <input type="number" id="settingsDuration">
-
       <label>Start Date:</label>
       <div class="date-wrapper">
         <input type="date" id="settingsStartDate">
         <span class="date-placeholder">Starting Date</span>
       </div>
-
       <label>Motivation Text:</label>
       <input type="text" id="settingsMotivation">
-
       <label>Day Start Time:</label>
       <div class="time-picker-row">
         <select class="time-hour" id="settingsDayStartHour"></select>
@@ -837,7 +632,6 @@
           <option value="PM">PM</option>
         </select>
       </div>
-
       <label>Day End Time:</label>
       <div class="time-picker-row">
         <select class="time-hour" id="settingsDayEndHour"></select>
@@ -847,16 +641,13 @@
           <option value="PM">PM</option>
         </select>
       </div>
-
       <div class="settings-buttons">
         <button id="settingsCancel">Cancel</button>
         <button id="settingsSave">Save Changes</button>
       </div>
-
       <button id="exportData" style="width:100%; margin-top:15px; padding:12px; background:#2a3142; color:#4a9eff; border:1px solid #4a9eff; border-radius:10px; font-weight:600; cursor:pointer;">📥 Backup Data (Export)</button>
       <button id="importData" style="width:100%; margin-top:10px; padding:12px; background:#2a3142; color:#4aaa4a; border:1px solid #4aaa4a; border-radius:10px; font-weight:600; cursor:pointer;">📤 Restore Data (Import)</button>
       <input type="file" id="importFileInput" accept=".json" style="display:none;">
-
       <button id="resetAllData">⚠️ Reset All Data</button>
     </div>
   </div>
@@ -873,6 +664,9 @@
       dayStart: "06:00",
       dayEnd: "22:00"
     };
+
+    // Sleep Data Store
+    let sleepData = JSON.parse(localStorage.getItem("gritgo_sleep_data") || "{}");
 
     // ===== SVG Delete Icon =====
     const trashIconSVG = `
@@ -946,7 +740,6 @@
     function populateTimeSelects() {
       const hours = [];
       for (let i = 1; i <= 12; i++) hours.push(String(i).padStart(2, '0'));
-      
       const mins = [];
       for (let i = 0; i < 60; i++) mins.push(String(i).padStart(2, '0'));
 
@@ -963,7 +756,6 @@
       });
     }
 
-    // Convert UI (12hr) to DB (24hr string "HH:MM")
     function getTimeFromSelects(prefix) { 
       const h12 = parseInt(document.getElementById(prefix + "Hour").value);
       const m = document.getElementById(prefix + "Minute").value;
@@ -976,7 +768,6 @@
       return String(h24).padStart(2, '0') + ":" + m;
     }
 
-    // Convert DB (24hr string "HH:MM") to UI (12hr)
     function setSelectsFromTime(prefix, timeStr) { 
       if(!timeStr) timeStr = "06:00";
       let [h24, m] = timeStr.split(":").map(Number);
@@ -989,9 +780,7 @@
       document.getElementById(prefix + "AmPm").value = ampm;
     }
 
-    // Initialize on page load
     populateTimeSelects();
-
 
     // ===== Setup Logic =====
     const setupScreen = document.getElementById("setupScreen");
@@ -1040,9 +829,121 @@
       renderHeatmap();
       updateStats();
       attachSearchListener();
+      loadSleepDataForToday();
+    }
+
+    // ===== NEW: Sleep & Progress Logic =====
+    const trackerModal = document.getElementById("trackerModal");
+    const openTrackerBtn = document.getElementById("openTrackerBtn");
+    const trackerClose = document.getElementById("trackerClose");
+
+    openTrackerBtn.addEventListener("click", () => {
+      trackerModal.classList.add("active");
+      loadSleepDataForToday();
+      renderWeeklyProgress();
+    });
+
+    trackerClose.addEventListener("click", () => {
+      trackerModal.classList.remove("active");
+    });
+
+    trackerModal.addEventListener("click", (e) => {
+      if (e.target === trackerModal) trackerModal.classList.remove("active");
+    });
+
+    // 1. Sleep Tracker Logic
+    const sleepBedtime = document.getElementById("sleepBedtime");
+    const sleepWakeup = document.getElementById("sleepWakeup");
+    const saveSleepBtn = document.getElementById("saveSleepBtn");
+    const sleepResultText = document.getElementById("sleepResultText");
+
+    function loadSleepDataForToday() {
+      const todayKey = getDateKey();
+      if (sleepData[todayKey]) {
+        sleepBedtime.value = sleepData[todayKey].bedtime;
+        sleepWakeup.value = sleepData[todayKey].wakeup;
+        sleepResultText.textContent = `You slept for ${sleepData[todayKey].hours} hours! 😴`;
+        sleepResultText.style.color = "#4aaa4a";
+      } else {
+        sleepBedtime.value = "";
+        sleepWakeup.value = "";
+        sleepResultText.textContent = "No sleep data saved for today.";
+        sleepResultText.style.color = "#9aa0a6";
+      }
+    }
+
+    saveSleepBtn.addEventListener("click", () => {
+      const bed = sleepBedtime.value;
+      const wake = sleepWakeup.value;
+
+      if (!bed || !wake) {
+        showToast("Please enter both bedtime and wake up time.");
+        return;
+      }
+
+      // Calculate hours
+      let bedDate = new Date(`1970-01-01T${bed}:00`);
+      let wakeDate = new Date(`1970-01-01T${wake}:00`);
+
+      if (wakeDate < bedDate) {
+        // Slept overnight
+        wakeDate.setDate(wakeDate.getDate() + 1);
+      }
+
+      const diffMs = wakeDate - bedDate;
+      const hours = (diffMs / (1000 * 60 * 60)).toFixed(1);
+
+      const todayKey = getDateKey();
+      sleepData[todayKey] = { bedtime: bed, wakeup: wake, hours: hours };
+      localStorage.setItem("gritgo_sleep_data", JSON.stringify(sleepData));
+
+      showToast("Sleep data saved!");
+      loadSleepDataForToday();
+    });
+
+    // 2. Weekly Progress Logic
+    function renderWeeklyProgress() {
+      const list = document.getElementById("weeklyProgressList");
+      list.innerHTML = "";
+
+      const totalHabits = challengeData.habits.length;
+      if (totalHabits === 0) {
+        list.innerHTML = `<p style="color:#9aa0a6; font-size:13px; text-align:center;">No habits to track yet.</p>`;
+        return;
+      }
+
+      // Last 7 days (including today)
+      for (let i = 6; i >= 0; i--) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        const dateKey = getDateKey(d);
+        const displayDate = d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric' });
+
+        const log = challengeData.habitLogs[dateKey] || [];
+        const completed = log.filter(Boolean).length;
+        const percent = Math.round((completed / totalHabits) * 100);
+
+        // If date is before challenge start, show 0%
+        let displayPercent = percent;
+        if (dateKey < challengeData.startDate) displayPercent = 0;
+
+        const barHTML = `
+          <div class="weekly-bar-container">
+            <div class="weekly-bar-label">
+              <span>${displayDate}</span>
+            </div>
+            <div class="weekly-bar-bg" style="position:relative;">
+              <div class="weekly-bar-fill" style="width: ${displayPercent}%;"></div>
+              <span style="position:absolute; right:5px; top:-15px; font-size:10px; color:#4a9eff; font-weight:bold;">${displayPercent}%</span>
+            </div>
+          </div>
+        `;
+        list.insertAdjacentHTML("beforeend", barHTML);
+      }
     }
 
     // ===== Render Habits (Edit Mode) =====
+    // ... (Existing Code)
     function renderHabits() {
       const habitsList = document.getElementById("habitsList");
       habitsList.innerHTML = "";
@@ -1081,6 +982,7 @@
     }
 
     // ===== Render Today Habits =====
+    // ... (Existing Code)
     function renderTodayHabits() {
       const oldList = document.getElementById("todayHabitList");
       if (oldList) oldList.remove();
@@ -1102,7 +1004,6 @@
       const todayKey = getDateKey();
       const isFuture = challengeData.startDate > todayKey;
 
-      // Handle Lock Message
       if (isFuture) {
         lockMessage.style.display = "block";
         const d = new Date(challengeData.startDate + "T00:00:00");
@@ -1233,6 +1134,7 @@
     }
 
     // ===== Add/Edit Modal =====
+    // ... (Existing Code)
     const addHabitModal = document.getElementById("addHabitModal");
     const addHabitModalTitle = document.getElementById("addHabitModalTitle");
     const addHabitModalInput = document.getElementById("addHabitModalInput");
@@ -1305,6 +1207,7 @@
     });
 
     // ===== Delete Modal =====
+    // ... (Existing Code)
     const deleteModal = document.getElementById("deleteModal");
     const deleteModalText = document.getElementById("deleteModalText");
     const deleteCancel = document.getElementById("deleteCancel");
@@ -1347,6 +1250,7 @@
     });
 
     // ===== Reset Modal =====
+    // ... (Existing Code)
     const resetModal = document.getElementById("resetModal");
     const resetCancel = document.getElementById("resetCancel");
     const resetConfirm = document.getElementById("resetConfirm");
@@ -1369,6 +1273,7 @@
     });
 
     // ===== Edit Mode Add Habit =====
+    // ... (Existing Code)
     const addHabitBtn = document.getElementById("addHabitBtn");
     const newHabitInput = document.getElementById("newHabitInput");
 
@@ -1392,6 +1297,7 @@
     });
 
     // ===== Edit Mode Toggle =====
+    // ... (Existing Code)
     const editMode = document.getElementById("editMode");
     const todaySection = document.querySelector(".today-section");
     const editHabitsButton = document.getElementById("editHabitsButton");
@@ -1414,6 +1320,7 @@
     backButton.addEventListener("click", closeEditMode);
 
     // ===== Day Modal (Past Day Edit) =====
+    // ... (Existing Code)
     const dayModal = document.getElementById("dayModal");
     const dayModalTitle = document.getElementById("dayModalTitle");
     const dayModalSubtitle = document.getElementById("dayModalSubtitle");
@@ -1565,6 +1472,7 @@
     });
 
     // ===== Heatmap =====
+    // ... (Existing Code)
     function renderHeatmap() {
       const heatmap = document.getElementById("heatmap");
       heatmap.innerHTML = "";
@@ -1619,6 +1527,7 @@
     }
 
     // ===== Stats =====
+    // ... (Existing Code)
     function updateStats() {
       const todayKey = getDateKey();
       const todayLog = challengeData.habitLogs[todayKey] || [];
@@ -1672,6 +1581,7 @@
     }
 
     // ===== Settings Modal =====
+    // ... (Existing Code)
     const settingsModal = document.getElementById("settingsModal");
     const settingsButton = document.getElementById("settingsButton");
     const settingsTitle = document.getElementById("settingsTitle");
@@ -1745,6 +1655,7 @@
     });
 
     // ===== Feedback Modal Logic =====
+    // ... (Existing Code)
     const commentButton = document.getElementById("commentButton");
     const feedbackModal = document.getElementById("feedbackModal");
     const feedbackCancel = document.getElementById("feedbackCancel");
@@ -1786,6 +1697,7 @@
     });
 
     // ===== Header Share Button Logic =====
+    // ... (Existing Code)
     const shareButton = document.getElementById("shareButton");
     const exportModal = document.getElementById("exportModal");
     const exportDataBtn = document.getElementById("exportData");
@@ -1869,6 +1781,7 @@
     });
 
     // ===== Restore Logic =====
+    // ... (Existing Code)
     document.getElementById("importData").addEventListener("click", function() {
       document.getElementById("importFileInput").click();
     });
@@ -1896,6 +1809,7 @@
     });
 
     // ===== Auto-update day at midnight =====
+    // ... (Existing Code)
     let lastKnownDate = getDateKey();
     setInterval(function () {
       const currentDate = getDateKey();
@@ -1927,6 +1841,7 @@
     }, 200);
 
     // ===== NOTIFICATION SYSTEM =====
+    // ... (Existing Code)
     function requestNotificationPermission() {
       if ("Notification" in window) {
         if (Notification.permission !== "granted" && Notification.permission !== "denied") {
