@@ -512,7 +512,8 @@
   <script>
     window.onerror = function(msg, url, line) { console.error("Code Error: " + msg + " at line " + line); };
 
-    history.pushState({ page: "main" }, "");
+    // FIXED BACK BUTTON / POPSTATE LOGIC
+    history.replaceState({ page: "main" }, "");
     window.addEventListener("popstate", function(event) {
       const openModals = document.querySelectorAll('.modal-overlay.active');
       if (openModals.length > 0) {
