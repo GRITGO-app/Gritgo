@@ -126,34 +126,20 @@
     .lock-message { display: none; padding: 15px; background: rgba(255, 107, 74, 0.1); border: 1px solid #ff6b4a; border-radius: 10px; color: #ff6b4a; text-align: center; margin-bottom: 15px; font-weight: 600; font-size: 14px; }
 
     /* ===== Confetti Animation ===== */
-    .confetti-piece {
-      position: fixed; width: 10px; height: 10px; z-index: 99999;
-      animation: fall 3s linear forwards;
-    }
-    @keyframes fall {
-      0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-    }
+    .confetti-piece { position: fixed; width: 10px; height: 10px; z-index: 99999; animation: fall 3s linear forwards; }
+    @keyframes fall { 0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
 
     /* ===== Extras Modal Specific ===== */
     .extras-section { background: #0f1419; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #2a3142; }
     .extras-section h3 { font-size: 16px; color: #e8eaed; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-    
-    /* Progress Bar */
     .progress-bar-bg { background: #2a3142; height: 12px; border-radius: 6px; overflow: hidden; position: relative; margin-bottom: 5px;}
     .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #4a9eff, #00e5ff); border-radius: 6px; transition: width 1s ease; }
-    
-    /* Quote */
     .quote-text { font-style: italic; color: #d6a1f0; font-size: 14px; text-align: center; padding: 10px; border-left: 3px solid #d6a1f0; background: rgba(214, 161, 240, 0.1); border-radius: 5px; }
-
-    /* Badges */
     .badges-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
     .badge-card { background: #1a1f2e; padding: 10px 5px; border-radius: 10px; text-align: center; border: 1px solid #2a3142; opacity: 0.3; filter: grayscale(1); transition: all 0.3s; }
     .badge-card.unlocked { opacity: 1; filter: grayscale(0); border-color: #00e5ff; box-shadow: 0 0 10px rgba(0, 229, 255, 0.2); }
     .badge-icon { font-size: 24px; margin-bottom: 5px; display: block; }
     .badge-name { font-size: 9px; color: #e8eaed; font-weight: bold; }
-
-    /* Mini Calendar */
     .mini-calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
     .cal-header { font-size: 10px; color: #9aa0a6; font-weight: bold; margin-bottom: 5px; }
     .cal-day { font-size: 11px; padding: 6px 0; border-radius: 4px; background: #2a3142; color: #9aa0a6; }
@@ -308,9 +294,7 @@
       <!-- Mini Calendar -->
       <div class="extras-section">
         <h3>📅 This Month</h3>
-        <div class="mini-calendar" id="miniCalendar">
-          <!-- JS will populate -->
-        </div>
+        <div class="mini-calendar" id="miniCalendar"></div>
       </div>
 
       <!-- Daily Notes -->
@@ -621,7 +605,6 @@
       let perfectCount = 0;
       let streak = parseInt(document.getElementById("streakStat").textContent) || 0;
       
-      // Calculate perfect days quickly
       const dates = []; let curr = normalizeDate(challengeData.startDate); let safety = 0;
       const todayKey = getDateKey();
       while (curr <= todayKey && safety < 500) { dates.push(curr); curr = nextDateKey(curr); safety++; }
@@ -659,9 +642,11 @@
       document.getElementById("dailyNoteInput").value = challengeData.notes[noteKey] || "";
     }
 
+    // Fixed: Prevent saving empty notes
     document.getElementById("saveNoteBtn").addEventListener("click", () => {
       const noteText = document.getElementById("dailyNoteInput").value.trim();
       const noteKey = getDateKey();
+      if (!noteText) { showToast("Please write something first!"); return; }
       if (!challengeData.notes) challengeData.notes = {};
       challengeData.notes[noteKey] = noteText;
       localStorage.setItem("challengeData", JSON.stringify(challengeData));
@@ -686,10 +671,11 @@
         habitsList.innerHTML = `<li style="color: #9aa0a6; justify-content: center;">No habits yet. Add one above.</li>`; return;
       }
       challengeData.habits.forEach((habit, index) => {
+        const habitName = habit.name || habit;
         const li = document.createElement("li");
         const moveUp = document.createElement("button"); moveUp.className = "move-btn"; moveUp.textContent = "↑"; moveUp.onclick = () => moveHabit(index, 'up');
         const moveDown = document.createElement("button"); moveDown.className = "move-btn"; moveDown.textContent = "↓"; moveDown.onclick = () => moveHabit(index, 'down');
-        const span = document.createElement("span"); span.textContent = (index + 1) + ". " + habit; span.style.flex = "1";
+        const span = document.createElement("span"); span.textContent = (index + 1) + ". " + habitName; span.style.flex = "1";
         const editBtn = document.createElement("button"); editBtn.textContent = "✏️"; editBtn.style.cssText = "background:transparent;border:none;cursor:pointer;font-size:16px;padding:5px;"; editBtn.onclick = () => openEditModal(index);
         const deleteBtn = document.createElement("button"); deleteBtn.innerHTML = trashIconSVG; deleteBtn.className = "delete-btn"; deleteBtn.onclick = () => openDeleteModal(index);
         
@@ -731,10 +717,12 @@
 
       todayLog.forEach(val => { if (val === true) completedCount++; });
 
-      challengeData.habits.forEach((habit, index) => {
+      challengeData.habits.forEach((habitObj, index) => {
+        const habit = habitObj.name || habitObj; // Support both object and string
         const habitNumber = String(index + 1);
+        
         if (searchNumber && habitNumber !== searchNumber) return;
-        if (searchText && !habit.toLowerCase().includes(searchText)) return;
+        if (searchText && !habit.toLowerCase().includes(searchText)) return; // Fixed: habit.toLowerCase() bug
         shownCount++;
 
         const li = document.createElement("li");
@@ -754,14 +742,12 @@
             challengeData.habitLogs[todayKey][index] = isChecked;
             localStorage.setItem("challengeData", JSON.stringify(challengeData));
             
-            // Update stats
             updateTodayCount();
             renderHeatmap();
             updateStats(); 
             if(document.getElementById("trackerModal").classList.contains("active")) renderWeeklyProgress();
             if(document.getElementById("extrasModal").classList.contains("active")) renderExtras();
 
-            // CONFETTI TRIGGER
             const newCompleted = challengeData.habitLogs[todayKey].filter(Boolean).length;
             if (isChecked && newCompleted === challengeData.habits.length) {
               showConfetti();
@@ -784,32 +770,123 @@
     function attachSearchListener() { const input = document.getElementById("habitSearchInput"); if (input && !input.dataset.l) { input.addEventListener("input", renderTodayHabits); input.dataset.l = "true"; } }
     function updateTodayCount() { const todayKey = getDateKey(); const todayLog = challengeData.habitLogs[todayKey] || []; document.getElementById("todayCount").textContent = todayLog.filter(Boolean).length + " / " + challengeData.habits.length; }
 
+    // ===== FIXED: MISSING openDayModal function for Heatmap =====
+    const dayModal = document.getElementById("dayModal"); 
+    let viewingDateKey = null;
+
+    function openDayModal(dateKey) {
+      const todayKey = getDateKey();
+      if (dateKey > todayKey) { showToast("Cannot edit future dates"); return; }
+      const startKey = normalizeDate(challengeData.startDate);
+      if (dateKey < startKey) { showToast("Challenge hasn't started yet!"); return; }
+      if (challengeData.habits.length === 0) { showToast("No habits added yet"); return; }
+      
+      viewingDateKey = dateKey; 
+      document.getElementById("dayModalTitle").textContent = new Date(dateKey + "T00:00:00").toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", year: "numeric" });
+      document.getElementById("dayModalSearchInput").value = "";
+      if (!challengeData.habitLogs[dateKey]) challengeData.habitLogs[dateKey] = [];
+      renderDayModalList(); 
+      dayModal.classList.add("active");
+    }
+
+    function renderDayModalList() {
+      const list = document.getElementById("dayModalList"); list.innerHTML = "";
+      const log = challengeData.habitLogs[viewingDateKey] || [];
+      document.getElementById("dayModalSubtitle").textContent = `${log.filter(Boolean).length} / ${challengeData.habits.length} habits done`;
+
+      const searchTerm = document.getElementById("dayModalSearchInput").value.trim();
+      const isNumberSearch = /^\d+$/.test(searchTerm);
+      const searchNumber = isNumberSearch ? searchTerm : "";
+      const searchText = isNumberSearch ? "" : searchTerm.toLowerCase();
+
+      let shownCount = 0;
+
+      challengeData.habits.forEach((habitObj, index) => {
+        const habit = habitObj.name || habitObj;
+        const habitNumber = String(index + 1);
+        
+        if (searchNumber && habitNumber !== searchNumber) return;
+        if (searchText && !habit.toLowerCase().includes(searchText)) return;
+        shownCount++;
+
+        const li = document.createElement("li"); 
+        li.style.cssText = "display:flex;align-items:center;gap:12px;padding:12px;background:#0f1419;border-radius:10px;margin-bottom:8px;";
+        
+        const cb = document.createElement("div"); 
+        cb.className = "custom-checkbox"; 
+        if (log[index] === true) cb.classList.add("checked");
+        
+        const ns = document.createElement("span"); 
+        ns.className = "checkbox-number"; 
+        ns.textContent = (index + 1); 
+        cb.appendChild(ns);
+        
+        cb.onclick = () => {
+          const isChecked = !cb.classList.contains("checked"); 
+          cb.classList.toggle("checked", isChecked);
+          if (!challengeData.habitLogs[viewingDateKey]) challengeData.habitLogs[viewingDateKey] = [];
+          challengeData.habitLogs[viewingDateKey][index] = isChecked; 
+          localStorage.setItem("challengeData", JSON.stringify(challengeData));
+          
+          document.getElementById("dayModalSubtitle").textContent = `${challengeData.habitLogs[viewingDateKey].filter(Boolean).length} / ${challengeData.habits.length} habits done`;
+          renderHeatmap(); updateStats(); 
+          if(document.getElementById("extrasModal").classList.contains("active")) renderExtras();
+        };
+
+        const sp = document.createElement("span"); 
+        sp.textContent = habit; 
+        sp.style.flex = "1"; 
+        sp.style.color = "#e8eaed"; 
+        sp.style.fontSize = "14px";
+        
+        li.appendChild(cb); 
+        li.appendChild(sp); 
+        list.appendChild(li);
+      });
+
+      if (shownCount === 0) {
+        const li = document.createElement("li");
+        li.textContent = "No habits match your search 🔍";
+        li.style.color = "#9aa0a6";
+        li.style.textAlign = "center";
+        li.style.padding = "10px";
+        list.appendChild(li);
+      }
+    }
+
+    document.getElementById("dayModalSearchInput").addEventListener("input", renderDayModalList);
+    document.getElementById("dayModalClose").addEventListener("click", () => { dayModal.classList.remove("active"); viewingDateKey = null; });
+
     // Modals logic (Add, Edit, Delete)
     const addHabitModal = document.getElementById("addHabitModal");
     let editingIndex = null;
 
     document.getElementById("quickAddHabitButton").onclick = () => { editingIndex = null; document.getElementById("addHabitModalTitle").textContent = "Add New Habit"; document.getElementById("addHabitModalInput").value = ""; addHabitModal.classList.add("active"); };
-    function openEditModal(index) { editingIndex = index; document.getElementById("addHabitModalTitle").textContent = "Edit Habit"; document.getElementById("addHabitModalInput").value = challengeData.habits[index]; addHabitModal.classList.add("active"); }
+    function openEditModal(index) { editingIndex = index; document.getElementById("addHabitModalTitle").textContent = "Edit Habit"; document.getElementById("addHabitModalInput").value = challengeData.habits[index].name || challengeData.habits[index]; addHabitModal.classList.add("active"); }
     document.getElementById("addHabitCancel").onclick = () => { addHabitModal.classList.remove("active"); editingIndex = null; };
     
     document.getElementById("addHabitSave").onclick = () => {
       const text = document.getElementById("addHabitModalInput").value.trim();
       if (!text) { showToast("Please enter a habit"); return; }
-      if (editingIndex !== null) { challengeData.habits[editingIndex] = text; showToast("Habit updated!"); editingIndex = null; }
-      else { challengeData.habits.push(text); showToast("Habit added!"); }
+      if (editingIndex !== null) { 
+        if(typeof challengeData.habits[editingIndex] === 'object') challengeData.habits[editingIndex].name = text;
+        else challengeData.habits[editingIndex] = text;
+        showToast("Habit updated!"); editingIndex = null; 
+      }
+      else { challengeData.habits.push({ name: text, target: 1, days: [0,1,2,3,4,5,6] }); showToast("Habit added!"); }
       localStorage.setItem("challengeData", JSON.stringify(challengeData));
       addHabitModal.classList.remove("active"); renderHabits(); renderTodayHabits(); renderHeatmap(); updateStats();
     };
 
     const deleteModal = document.getElementById("deleteModal"); let deletingIndex = null;
-    function openDeleteModal(index) { deletingIndex = index; document.getElementById("deleteModalText").textContent = `"${challengeData.habits[index]}" — delete this habit?`; deleteModal.classList.add("active"); }
+    function openDeleteModal(index) { deletingIndex = index; const name = challengeData.habits[index].name || challengeData.habits[index]; document.getElementById("deleteModalText").textContent = `"${name}" — delete this habit?`; deleteModal.classList.add("active"); }
     document.getElementById("deleteCancel").onclick = () => { deleteModal.classList.remove("active"); deletingIndex = null; };
     document.getElementById("deleteConfirm").onclick = () => { if (deletingIndex === null) return; challengeData.habits.splice(deletingIndex, 1); localStorage.setItem("challengeData", JSON.stringify(challengeData)); deletingIndex = null; deleteModal.classList.remove("active"); renderHabits(); renderTodayHabits(); renderHeatmap(); updateStats(); showToast("Habit deleted"); };
 
     document.getElementById("editHabitsButton").onclick = () => { document.getElementById("editMode").style.display = "block"; document.querySelector(".today-section").style.display = "none"; renderHabits(); };
     document.getElementById("doneEditingButton").onclick = closeEditMode; document.getElementById("backButton").onclick = closeEditMode;
     function closeEditMode() { document.getElementById("editMode").style.display = "none"; document.querySelector(".today-section").style.display = "block"; renderTodayHabits(); }
-    document.getElementById("addHabitBtn").onclick = () => { const text = document.getElementById("newHabitInput").value.trim(); if (!text) return; challengeData.habits.push(text); localStorage.setItem("challengeData", JSON.stringify(challengeData)); document.getElementById("newHabitInput").value = ""; renderHabits(); renderTodayHabits(); };
+    document.getElementById("addHabitBtn").onclick = () => { const text = document.getElementById("newHabitInput").value.trim(); if (!text) return; challengeData.habits.push({ name: text, target: 1, days: [0,1,2,3,4,5,6] }); localStorage.setItem("challengeData", JSON.stringify(challengeData)); document.getElementById("newHabitInput").value = ""; renderHabits(); renderTodayHabits(); };
 
     // Heatmap
     function renderHeatmap() {
@@ -966,7 +1043,7 @@
     document.getElementById("shareButton").onclick = () => document.getElementById("exportModal").classList.add("active");
     document.getElementById("exportCancel").onclick = () => document.getElementById("exportModal").classList.remove("active");
     document.getElementById("btnDownloadFile").onclick = () => { const blob = new Blob([JSON.stringify(challengeData)], { type: "application/json" }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `GRITGO_Backup_${getDateKey()}.json`; a.click(); document.getElementById("exportModal").classList.remove("active"); };
-    document.getElementById("btnDownloadCSV").onclick = () => { let csv = "Date,Habit Name,Completed\n"; for (let date in challengeData.habitLogs) { challengeData.habits.forEach((h, i) => { const val = challengeData.habitLogs[date][i]; if (val) csv += `${date},"${h}",Done\n`; }); } const blob = new Blob([csv], { type: "text/csv" }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `GRITGO_Data_${getDateKey()}.csv`; a.click(); document.getElementById("exportModal").classList.remove("active"); };
+    document.getElementById("btnDownloadCSV").onclick = () => { let csv = "Date,Habit Name,Completed\n"; for (let date in challengeData.habitLogs) { challengeData.habits.forEach((h, i) => { const val = challengeData.habitLogs[date][i]; if (val) csv += `${date},"${h.name || h}",Done\n`; }); } const blob = new Blob([csv], { type: "text/csv" }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `GRITGO_Data_${getDateKey()}.csv`; a.click(); document.getElementById("exportModal").classList.remove("active"); };
 
     document.getElementById("commentButton").onclick = () => document.getElementById("feedbackModal").classList.add("active");
     document.getElementById("feedbackCancel").onclick = () => document.getElementById("feedbackModal").classList.remove("active");
