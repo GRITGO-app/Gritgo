@@ -308,7 +308,6 @@
       <h2 style="color: #00e5ff; font-size: 24px; text-align: center; margin-bottom: 15px;">Welcome to GRITGO! 🌟</h2>
       <p style="color: #9aa0a6; font-size: 13px; text-align: center; margin-bottom: 20px;">Here is your complete guide on how to use the app:</p>
       
-      <!-- 1. Habits -->
       <div style="background: #0f1419; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #2a3142;">
         <h3 style="color: #e8eaed; font-size: 15px; margin-bottom: 10px;">✅ 1. Daily Habits</h3>
         <p style="color: #9aa0a6; font-size: 13px; line-height: 1.6;">
@@ -318,7 +317,6 @@
         </p>
       </div>
 
-      <!-- 2. Heatmap -->
       <div style="background: #0f1419; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #2a3142;">
         <h3 style="color: #e8eaed; font-size: 15px; margin-bottom: 10px;">🔥 2. Heatmap & Past Dates</h3>
         <p style="color: #9aa0a6; font-size: 13px; line-height: 1.6;">
@@ -327,7 +325,6 @@
         </p>
       </div>
 
-      <!-- 3. Stats & Progress -->
       <div style="background: #0f1419; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #2a3142;">
         <h3 style="color: #e8eaed; font-size: 15px; margin-bottom: 10px;">📊 3. Stats & Progress</h3>
         <p style="color: #9aa0a6; font-size: 13px; line-height: 1.6;">
@@ -337,7 +334,6 @@
         </p>
       </div>
 
-      <!-- 4. Extras -->
       <div style="background: #0f1419; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #2a3142;">
         <h3 style="color: #e8eaed; font-size: 15px; margin-bottom: 10px;">✨ 4. Extras & Insights</h3>
         <p style="color: #9aa0a6; font-size: 13px; line-height: 1.6;">
@@ -346,7 +342,6 @@
         </p>
       </div>
 
-      <!-- 5. Sleep & Backup -->
       <div style="background: #0f1419; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #2a3142;">
         <h3 style="color: #e8eaed; font-size: 15px; margin-bottom: 10px;">🌙 5. Sleep & Backup</h3>
         <p style="color: #9aa0a6; font-size: 13px; line-height: 1.6;">
@@ -512,12 +507,16 @@
   <script>
     window.onerror = function(msg, url, line) { console.error("Code Error: " + msg + " at line " + line); };
 
-    // FIXED BACK BUTTON / POPSTATE LOGIC
-    history.replaceState({ page: "main" }, "");
+    // ===== FIXED BACK BUTTON LOGIC =====
+    // Push a state so the app doesn't close immediately on back press
+    history.pushState({ page: "main" }, "");
+
     window.addEventListener("popstate", function(event) {
       const openModals = document.querySelectorAll('.modal-overlay.active');
       if (openModals.length > 0) {
+        // Close the modals
         openModals.forEach(modal => modal.classList.remove('active'));
+        // Push state again to keep the user in the app
         history.pushState({ page: "main" }, "");
       }
     });
