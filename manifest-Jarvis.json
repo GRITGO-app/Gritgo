@@ -1,8 +1,8 @@
 {
   "name": "Jarvis X - AI Assistant",
-  "short_name": "Jarvis X",
-  "description": "A personal AI assistant created by a 13-year-old developer.",
-  "start_url": "./JarvisX.html",
+  "short_name": "Jarvis",
+  "description": "My Personal AI Assistant",
+  "start_url": "JarvisX.html",
   "display": "standalone",
   "background_color": "#05080f",
   "theme_color": "#00e5ff",
