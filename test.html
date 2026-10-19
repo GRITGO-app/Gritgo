@@ -9,54 +9,26 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <style>
     * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+      margin: 0; padding: 0; box-sizing: border-box;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      
       -webkit-tap-highlight-color: transparent;
       -webkit-touch-callout: none;
-      -webkit-user-select: none;
-      -khtml-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
+      -webkit-user-select: none; user-select: none;
     }
-
-    input, textarea {
-      -webkit-user-select: auto;
-      user-select: auto;
-    }
-
-    body {
-      background-color: #0f1419;
-      color: #e8eaed;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
+    input, textarea, select { -webkit-user-select: auto; user-select: auto; }
+    body { background-color: #0f1419; color: #e8eaed; min-height: 100vh; overflow-x: hidden; }
 
     /* ===== Setup Screen ===== */
-    #setupScreen {
-      max-width: 500px;
-      margin: 0 auto;
-      padding: 40px 20px;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
+    #setupScreen { max-width: 500px; margin: 0 auto; padding: 40px 20px; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; }
     #setupScreen h1 { color: #ffffff; font-size: 28px; margin-bottom: 8px; text-align: center; }
     #setupScreen > p { color: #9aa0a6; text-align: center; margin-bottom: 30px; font-size: 15px; }
     #setupScreen label { display: block; color: #9aa0a6; font-size: 14px; margin-bottom: 6px; margin-top: 15px; }
     #setupScreen input { width: 100%; padding: 12px 15px; background-color: #1a1f2e; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 15px; outline: none; }
     #setupScreen input:focus { border-color: #4a9eff; }
-
     .time-picker-row { display: flex; gap: 8px; margin-bottom: 5px; }
-    .time-picker-row select { background-color: #1a1f2e; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 15px; padding: 12px 10px; outline: none; cursor: pointer; appearance: none; text-align: center; }
+    .time-picker-row select { background-color: #1a1f2e; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 15px; padding: 12px 10px; outline: none; cursor: pointer; text-align: center; }
     .time-picker-row select:focus { border-color: #4a9eff; }
     .time-hour { flex: 1; } .time-minute { flex: 1; } .time-ampm { flex: 1.2; font-weight: bold; color: #4a9eff !important; }
-
     #setupSaveButton { margin-top: 25px; width: 100%; padding: 14px; background: linear-gradient(135deg, #4a9eff, #2a7fdb); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; }
 
     /* ===== Main App ===== */
@@ -79,21 +51,18 @@
     .heatmap-cell { aspect-ratio: 1; width: 100%; background-color: #1a1f2e; border-radius: 4px; cursor: pointer; }
     .heatmap-hint { color: #9aa0a6; font-size: 12px; margin-bottom: 25px; text-align: center; }
 
+    /* New Buttons */
+    .btn-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
     .tracker-btn { 
-      display: block;
-      width: fit-content;
-      margin: 0 auto 20px auto;
-      padding: 12px 20px; 
-      background: #1e1b2e; 
-      color: #d6a1f0; 
-      border: 1px solid #9b59b6; 
-      border-radius: 10px; 
-      font-size: 14px; 
-      font-weight: bold; 
-      cursor: pointer; 
-      box-shadow: 0 0 15px rgba(155, 89, 182, 0.2); 
+      display: flex; align-items: center; justify-content: center; width: 100%; padding: 12px 20px; 
+      background: #1e1b2e; color: #d6a1f0; border: 1px solid #9b59b6; border-radius: 10px; 
+      font-size: 14px; font-weight: bold; cursor: pointer; box-shadow: 0 0 15px rgba(155, 89, 182, 0.2); 
     }
-    .tracker-btn:active { background: #2d2645; }
+    .extras-btn { 
+      display: flex; align-items: center; justify-content: center; width: 100%; padding: 12px 20px; 
+      background: #1a1f2e; color: #00e5ff; border: 1px solid #00e5ff; border-radius: 10px; 
+      font-size: 14px; font-weight: bold; cursor: pointer; box-shadow: 0 0 15px rgba(0, 229, 255, 0.1); 
+    }
 
     .search-section { margin-bottom: 15px; }
     #habitSearchInput { width: 100%; padding: 12px 15px; background-color: #1a1f2e; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 14px; outline: none; }
@@ -112,9 +81,13 @@
     .edit-buttons button { flex: 1; padding: 14px; background-color: #1a1f2e; color: #e8eaed; border: 1px solid #2a3142; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; }
     .add-habit-row { display: flex; gap: 8px; margin-bottom: 10px; }
     #newHabitInput { flex: 1; padding: 12px 15px; background-color: #1a1f2e; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 14px; outline: none; }
-    #addHabitBtn { padding: 12px 18px; background-color: #1a1f2e; color: #e8eaed; border: 1px solid #2a3142; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; }
+    #addHabitBtn { padding: 12px 18px; background-color: #4a9eff; color: white; border: none; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer; }
+    
     #habitsList { list-style: none; margin-top: 15px; }
     #habitsList li { display: flex; align-items: center; gap: 10px; padding: 12px; background-color: #1a1f2e; border-radius: 10px; margin-bottom: 8px; color: #e8eaed; }
+    .habit-score-badge { font-size: 11px; color: #00e5ff; background: rgba(0, 229, 255, 0.1); padding: 3px 8px; border-radius: 10px; margin-left: 10px; }
+    .move-btn { background: transparent; border: none; color: #9aa0a6; font-size: 16px; cursor: pointer; padding: 5px; }
+
     .footer-text { color: #6a7280; font-size: 12px; text-align: center; margin-top: 25px; margin-bottom: 20px; }
 
     /* ===== Modals ===== */
@@ -126,124 +99,127 @@
     .modal-box input, .modal-box textarea { width: 100%; padding: 12px 15px; background-color: #0f1419; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 15px; outline: none; }
     .modal-box input:focus, .modal-box textarea:focus { border-color: #4a9eff; }
 
-    /* Date Fix */
     .date-wrapper { position: relative; width: 100%; }
     .date-placeholder { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #9aa0a6; font-size: 15px; pointer-events: none; transition: opacity 0.2s; z-index: 10; }
     .date-wrapper.has-value .date-placeholder { opacity: 0; }
-    
-    .date-wrapper:not(.has-value) input[type="date"]::-webkit-datetime-edit,
-    .date-wrapper:not(.has-value) input[type="date"]::-webkit-datetime-edit-text,
-    .date-wrapper:not(.has-value) input[type="date"]::-webkit-datetime-edit-month-field,
-    .date-wrapper:not(.has-value) input[type="date"]::-webkit-datetime-edit-day-field,
-    .date-wrapper:not(.has-value) input[type="date"]::-webkit-datetime-edit-year-field {
-      color: transparent !important;
-      opacity: 0 !important;
-    }
+    .date-wrapper:not(.has-value) input[type="date"]::-webkit-datetime-edit { color: transparent !important; }
     .date-wrapper.has-value input[type="date"] { color: #e8eaed; }
 
     .settings-buttons { display: flex; gap: 10px; margin-top: 20px; }
     .settings-buttons button { flex: 1; padding: 14px; border: none; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer; }
-    #settingsCancel, #addHabitCancel, #deleteCancel, #resetCancel, #dayModalClose, #exportCancel, #feedbackCancel, #trackerClose, #introClose { background-color: #2a3142; color: #e8eaed; }
-    #settingsSave, #addHabitSave, #feedbackSubmit, #saveSleepBtn { background: linear-gradient(135deg, #4a9eff, #2a7fdb); color: white; }
+    #settingsCancel, #addHabitCancel, #deleteCancel, #resetCancel, #dayModalClose, #exportCancel, #feedbackCancel, #trackerClose, #introClose, #extrasClose { background-color: #2a3142; color: #e8eaed; }
+    #settingsSave, #addHabitSave, #feedbackSubmit, #saveSleepBtn, #saveNoteBtn { background: linear-gradient(135deg, #4a9eff, #2a7fdb); color: white; }
     #deleteConfirm, #resetConfirm { background: linear-gradient(135deg, #ff6b4a, #d35400); color: white; }
     #resetAllData { width: 100%; margin-top: 15px; padding: 12px; background: transparent; color: #ff6b4a; border: 1px solid #ff6b4a; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; }
 
     .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px); background: linear-gradient(135deg, #00e5ff, #0088cc); color: #05080f; padding: 14px 24px; border-radius: 12px; font-size: 14px; font-weight: bold; box-shadow: 0 8px 25px rgba(0, 229, 255, 0.4); z-index: 9999; opacity: 0; transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); text-align: center; }
     .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-    .custom-checkbox { width: 28px; height: 28px; border-radius: 8px; background-color: #2a3142; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; flex-shrink: 0; }
+    .custom-checkbox { width: 32px; height: 32px; border-radius: 8px; background-color: #2a3142; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; flex-shrink: 0; position: relative; }
     .custom-checkbox .checkbox-number { color: #9aa0a6; font-size: 14px; font-weight: 600; }
     .custom-checkbox.checked { background-color: #4a9eff; box-shadow: 0 0 10px rgba(74, 158, 255, 0.5); }
     .custom-checkbox.checked .checkbox-number { display: none; }
-    .custom-checkbox.checked::after { content: "✓"; color: #ffffff; font-size: 16px; font-weight: bold; }
-
+    .custom-checkbox.checked::after { content: "✓"; color: #ffffff; font-size: 18px; font-weight: bold; }
+    
     .delete-btn { background: transparent; border: none; cursor: pointer; padding: 6px; display: flex; align-items: center; justify-content: center; color: #6a7280; flex-shrink: 0; }
     .delete-btn:hover { color: #ff6b4a; }
-
     .lock-message { display: none; padding: 15px; background: rgba(255, 107, 74, 0.1); border: 1px solid #ff6b4a; border-radius: 10px; color: #ff6b4a; text-align: center; margin-bottom: 15px; font-weight: 600; font-size: 14px; }
 
-    /* ===== SLEEP TRACKER & WEEKLY PROGRESS ===== */
+    /* ===== Confetti Animation ===== */
+    .confetti-piece {
+      position: fixed; width: 10px; height: 10px; z-index: 99999;
+      animation: fall 3s linear forwards;
+    }
+    @keyframes fall {
+      0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+
+    /* ===== Extras Modal Specific ===== */
+    .extras-section { background: #0f1419; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #2a3142; }
+    .extras-section h3 { font-size: 16px; color: #e8eaed; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+    
+    /* Progress Bar */
+    .progress-bar-bg { background: #2a3142; height: 12px; border-radius: 6px; overflow: hidden; position: relative; margin-bottom: 5px;}
+    .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #4a9eff, #00e5ff); border-radius: 6px; transition: width 1s ease; }
+    
+    /* Quote */
+    .quote-text { font-style: italic; color: #d6a1f0; font-size: 14px; text-align: center; padding: 10px; border-left: 3px solid #d6a1f0; background: rgba(214, 161, 240, 0.1); border-radius: 5px; }
+
+    /* Badges */
+    .badges-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .badge-card { background: #1a1f2e; padding: 10px 5px; border-radius: 10px; text-align: center; border: 1px solid #2a3142; opacity: 0.3; filter: grayscale(1); transition: all 0.3s; }
+    .badge-card.unlocked { opacity: 1; filter: grayscale(0); border-color: #00e5ff; box-shadow: 0 0 10px rgba(0, 229, 255, 0.2); }
+    .badge-icon { font-size: 24px; margin-bottom: 5px; display: block; }
+    .badge-name { font-size: 9px; color: #e8eaed; font-weight: bold; }
+
+    /* Mini Calendar */
+    .mini-calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+    .cal-header { font-size: 10px; color: #9aa0a6; font-weight: bold; margin-bottom: 5px; }
+    .cal-day { font-size: 11px; padding: 6px 0; border-radius: 4px; background: #2a3142; color: #9aa0a6; }
+    .cal-day.done { background: #4a9eff; color: white; font-weight: bold; }
+    .cal-day.today { border: 1px solid #ffffff; }
+
+    /* Sleep Tracker Styles */
     .tracker-section { background: #0f1419; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #2a3142; }
     .tracker-section h3 { font-size: 16px; color: #e8eaed; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-    
     .sleep-brain-container { text-align: center; margin-bottom: 20px; position: relative; height: 140px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
     .brain-circle { width: 100px; height: 100px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 50px; transition: all 0.5s ease; position: relative; }
-    
-    .brain-tired { background: radial-gradient(circle, rgba(255,107,74,0.2) 0%, rgba(255,107,74,0) 70%); box-shadow: 0 0 30px rgba(255, 107, 74, 0.3), inset 0 0 20px rgba(255, 107, 74, 0.1); animation: pulseTired 3s infinite alternate; filter: grayscale(0.3); }
-    .brain-better { background: radial-gradient(circle, rgba(241,196,15,0.2) 0%, rgba(241,196,15,0) 70%); box-shadow: 0 0 30px rgba(241, 196, 15, 0.3), inset 0 0 20px rgba(241, 196, 15, 0.1); animation: pulseBetter 2.5s infinite alternate; }
-    .brain-fresh { background: radial-gradient(circle, rgba(0,229,255,0.2) 0%, rgba(0,229,255,0) 70%); box-shadow: 0 0 40px rgba(0, 229, 255, 0.4), inset 0 0 20px rgba(0, 229, 255, 0.2); animation: pulseFresh 2s infinite alternate; }
-    .brain-fresher { background: radial-gradient(circle, rgba(0,229,255,0.4) 0%, rgba(0,229,255,0) 70%); box-shadow: 0 0 60px rgba(0, 229, 255, 0.6), inset 0 0 30px rgba(0, 229, 255, 0.3); animation: pulseFresher 1.5s infinite alternate; }
-    .brain-jammed-1 { background: radial-gradient(circle, rgba(155,89,182,0.3) 0%, rgba(155,89,182,0) 70%); box-shadow: 0 0 40px rgba(155, 89, 182, 0.5), inset 0 0 20px rgba(155, 89, 182, 0.2); animation: pulseJammed 2s infinite alternate; }
-    .brain-jammed-2 { background: radial-gradient(circle, rgba(142,68,173,0.4) 0%, rgba(142,68,173,0) 70%); box-shadow: 0 0 50px rgba(142, 68, 173, 0.6), inset 0 0 25px rgba(142, 68, 173, 0.3); animation: pulseJammed 1.5s infinite alternate; }
-    .brain-over { background: radial-gradient(circle, rgba(149,165,166,0.3) 0%, rgba(149,165,166,0) 70%); box-shadow: 0 0 30px rgba(149, 165, 166, 0.4), inset 0 0 20px rgba(149, 165, 166, 0.2); animation: pulseOver 3s infinite alternate; }
-
-    @keyframes pulseTired { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(1.02); opacity: 1; } }
-    @keyframes pulseBetter { 0% { transform: scale(1); box-shadow: 0 0 20px rgba(241,196,15,0.2); } 100% { transform: scale(1.03); box-shadow: 0 0 40px rgba(241,196,15,0.5); } }
-    @keyframes pulseFresh { 0% { transform: scale(1); box-shadow: 0 0 30px rgba(0, 229, 255, 0.3); } 100% { transform: scale(1.05); box-shadow: 0 0 60px rgba(0, 229, 255, 0.7), inset 0 0 30px rgba(0, 229, 255, 0.3); } }
-    @keyframes pulseFresher { 0% { transform: scale(1); box-shadow: 0 0 40px rgba(0, 229, 255, 0.5); } 100% { transform: scale(1.08); box-shadow: 0 0 80px rgba(0, 229, 255, 0.9), inset 0 0 40px rgba(0, 229, 255, 0.5); } }
+    .brain-tired { background: radial-gradient(circle, rgba(255,107,74,0.2) 0%, rgba(255,107,74,0) 70%); box-shadow: 0 0 30px rgba(255, 107, 74, 0.3); animation: pulseTired 3s infinite alternate; filter: grayscale(0.3); }
+    .brain-better { background: radial-gradient(circle, rgba(241,196,15,0.2) 0%, rgba(241,196,15,0) 70%); box-shadow: 0 0 30px rgba(241, 196, 15, 0.3); animation: pulseBetter 2.5s infinite alternate; }
+    .brain-fresh { background: radial-gradient(circle, rgba(0,229,255,0.2) 0%, rgba(0,229,255,0) 70%); box-shadow: 0 0 40px rgba(0, 229, 255, 0.4); animation: pulseFresh 2s infinite alternate; }
+    .brain-fresher { background: radial-gradient(circle, rgba(0,229,255,0.4) 0%, rgba(0,229,255,0) 70%); box-shadow: 0 0 60px rgba(0, 229, 255, 0.6); animation: pulseFresher 1.5s infinite alternate; }
+    .brain-jammed-1 { background: radial-gradient(circle, rgba(155,89,182,0.3) 0%, rgba(155,89,182,0) 70%); box-shadow: 0 0 40px rgba(155, 89, 182, 0.5); animation: pulseJammed 2s infinite alternate; }
+    .brain-jammed-2 { background: radial-gradient(circle, rgba(142,68,173,0.4) 0%, rgba(142,68,173,0) 70%); box-shadow: 0 0 50px rgba(142, 68, 173, 0.6); animation: pulseJammed 1.5s infinite alternate; }
+    .brain-over { background: radial-gradient(circle, rgba(149,165,166,0.3) 0%, rgba(149,165,166,0) 70%); box-shadow: 0 0 30px rgba(149, 165, 166, 0.4); animation: pulseOver 3s infinite alternate; }
+    @keyframes pulseTired { 0% { transform: scale(1); } 100% { transform: scale(1.02); } }
+    @keyframes pulseBetter { 0% { transform: scale(1); } 100% { transform: scale(1.03); } }
+    @keyframes pulseFresh { 0% { transform: scale(1); } 100% { transform: scale(1.05); } }
+    @keyframes pulseFresher { 0% { transform: scale(1); } 100% { transform: scale(1.08); } }
     @keyframes pulseJammed { 0% { transform: scale(1); } 100% { transform: scale(1.03) rotate(2deg); } }
-    @keyframes pulseOver { 0% { transform: scale(1); opacity: 0.7; } 100% { transform: scale(1.02); opacity: 1; filter: blur(1px); } }
-
+    @keyframes pulseOver { 0% { transform: scale(1); opacity: 0.7; } 100% { transform: scale(1.02); opacity: 1; } }
     .brain-text { margin-top: 10px; font-size: 14px; font-weight: bold; color: #e8eaed; letter-spacing: 1px; }
-
     .week-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-bottom: 15px; text-align: center; }
     .day-box { background: #1a1f2e; border: 1px solid #2a3142; border-radius: 8px; padding: 8px 4px; font-size: 10px; color: #9aa0a6; transition: all 0.3s; }
     .day-box.active { border-color: #00e5ff; box-shadow: 0 0 10px rgba(0, 229, 255, 0.3); color: #00e5ff; font-weight: bold; }
     .day-box.done { background: rgba(0, 229, 255, 0.1); border-color: #00e5ff; color: #00e5ff; }
     .day-box .check-mark { display: block; font-size: 12px; margin-top: 4px; }
-
     .hours-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 15px; }
     .hour-btn { background: #1a1f2e; color: #e8eaed; border: 1px solid #2a3142; padding: 12px 0; border-radius: 10px; font-weight: bold; font-size: 14px; cursor: pointer; transition: 0.2s; text-align: center; }
     .hour-btn.selected { background: #00e5ff; color: #05080f; border-color: #00e5ff; box-shadow: 0 0 15px rgba(0, 229, 255, 0.4); }
-
-    .weekly-bar-container { margin-bottom: 12px; }
-    .weekly-bar-label { display: flex; justify-content: space-between; font-size: 12px; color: #9aa0a6; margin-bottom: 4px; }
-    .weekly-bar-bg { background: #2a3142; height: 8px; border-radius: 4px; overflow: hidden; position: relative; }
-    .weekly-bar-fill { height: 100%; background: linear-gradient(90deg, #d6a1f0, #9b59b6); border-radius: 4px; }
-    .weekly-percent-text { position: absolute; right: 5px; top: -16px; font-size: 10px; color: #d6a1f0; font-weight: bold; }
-
   </style>
 </head>
 <body>
 
-  <!-- Setup Screen -->
   <div id="setupScreen">
     <h1>Welcome to GRITGO</h1>
     <p>Let's set up your challenge</p>
-
     <label>Challenge Name:</label>
     <input type="text" id="setupTitle" placeholder="Your Challenge Name">
-
     <label>Duration (days):</label>
     <input type="number" id="setupDuration" placeholder="Days Here">
-
     <label>Start Date:</label>
     <div class="date-wrapper">
       <input type="date" id="setupStartDate" required>
       <span class="date-placeholder">Starting Date</span>
     </div>
-
     <label>Motivation Text:</label>
     <input type="text" id="setupMotivation" placeholder="Any Motivational Text You Like">
-
     <label>Day Start Time:</label>
     <div class="time-picker-row">
       <select class="time-hour" id="setupDayStartHour"></select>
       <select class="time-minute" id="setupDayStartMinute"></select>
       <select class="time-ampm" id="setupDayStartAmPm"><option value="AM">AM</option><option value="PM">PM</option></select>
     </div>
-
     <label>Day End Time:</label>
     <div class="time-picker-row">
       <select class="time-hour" id="setupDayEndHour"></select>
       <select class="time-minute" id="setupDayEndMinute"></select>
       <select class="time-ampm" id="setupDayEndAmPm"><option value="AM">AM</option><option value="PM">PM</option></select>
     </div>
-
     <button id="setupSaveButton">Start Challenge</button>
   </div>
 
-  <!-- Main App -->
   <div id="mainApp" style="display:none;">
     <div class="header">
       <button id="settingsButton">⚙️</button>
@@ -251,22 +227,20 @@
       <button id="commentButton">💬</button>
       <button id="shareButton">📤</button>
     </div>
-
     <div class="title-section">
       <h1 id="mainTitle">Challenge</h1>
       <p id="motivationText">Day 1 of 90.</p>
     </div>
-
     <div class="stats">
       <div class="stat-card"><span id="streakStat">0</span><span>day streak</span></div>
       <div class="stat-card"><span id="perfectStat">0</span><span>perfect days</span></div>
       <div class="stat-card"><span id="overallStat">0%</span><span>overall</span></div>
     </div>
 
-    <!-- TRACKER BUTTON -->
-    <button id="openTrackerBtn" class="tracker-btn">
-      📊 Open Weekly Progress & Sleep Tracker
-    </button>
+    <div class="btn-group">
+      <button id="openTrackerBtn" class="tracker-btn">📊 Open Weekly Progress & Sleep Tracker</button>
+      <button id="openExtrasBtn" class="extras-btn">✨ Extras & Insights</button>
+    </div>
 
     <div id="heatmap"></div>
     <p class="heatmap-hint">Darker means more habits done.</p>
@@ -299,93 +273,74 @@
       </div>
       <ul id="habitsList"></ul>
     </div>
-
     <p class="footer-text">Progress saves in this browser only.</p>
   </div>
 
-  <!-- ===== INTRO MODAL ===== -->
+  <!-- EXTRAS MODAL (Mega Button Content) -->
+  <div id="extrasModal" class="modal-overlay">
+    <div class="modal-box">
+      <h2>Extras & Insights ✨</h2>
+      
+      <!-- Progress Bar -->
+      <div class="extras-section">
+        <h3>📊 Challenge Progress</h3>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="overallProgressFill" style="width: 0%;"></div></div>
+        <p style="text-align: right; font-size: 12px; color: #00e5ff; margin-top: 5px;" id="overallProgressText">0% Completed</p>
+      </div>
+
+      <!-- Quote -->
+      <div class="extras-section">
+        <h3>💡 Daily Motivation</h3>
+        <div class="quote-text" id="dailyQuoteText">Loading...</div>
+      </div>
+
+      <!-- Badges -->
+      <div class="extras-section">
+        <h3>🏅 Achievements</h3>
+        <div class="badges-grid" id="badgesGrid">
+          <div class="badge-card" id="badge-first"><span class="badge-icon">⭐</span><span class="badge-name">First Step</span></div>
+          <div class="badge-card" id="badge-streak7"><span class="badge-icon">🔥</span><span class="badge-name">7 Day Streak</span></div>
+          <div class="badge-card" id="badge-streak30"><span class="badge-icon">💎</span><span class="badge-name">30 Day Streak</span></div>
+          <div class="badge-card" id="badge-perfect10"><span class="badge-icon">🏆</span><span class="badge-name">10 Perfect</span></div>
+        </div>
+      </div>
+
+      <!-- Mini Calendar -->
+      <div class="extras-section">
+        <h3>📅 This Month</h3>
+        <div class="mini-calendar" id="miniCalendar">
+          <!-- JS will populate -->
+        </div>
+      </div>
+
+      <!-- Daily Notes -->
+      <div class="extras-section">
+        <h3>📝 Today's Note</h3>
+        <textarea id="dailyNoteInput" rows="3" placeholder="How was your day?" style="margin-bottom: 10px;"></textarea>
+        <button id="saveNoteBtn" style="width: 100%; padding: 10px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer;">Save Note</button>
+      </div>
+
+      <div class="settings-buttons">
+        <button id="extrasClose">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Other Modals -->
   <div id="introModal" class="modal-overlay">
     <div class="modal-box" style="text-align: center;">
       <h2 style="color: #00e5ff; font-size: 26px;">Welcome to GRITGO! 🌟</h2>
       <p style="color: #e8eaed; font-size: 14px; margin-bottom: 20px; line-height: 1.6; text-align: left;">
         Here is how to use your ultimate discipline tracker:<br><br>
-        ✅ <b>Habits:</b> Add your daily habits and check them off to build a streak.<br><br>
-        🔥 <b>Heatmap:</b> See your overall progress over the challenge.<br><br>
-        🌙 <b>Sleep Tracker:</b> Select hours slept. See how your Brain changes from Tired to Super Fresh, or even Jammed if you over-sleep! 🧠<br><br>
-        📈 <b>Weekly Progress:</b> Track your habit completion bars for the last 7 days.<br><br>
-        After a 7-day sleep cycle, you will get a Weekly Report!
+        ✅ <b>Habits:</b> Add daily habits.<br><br>
+        🔥 <b>Heatmap:</b> See your overall progress.<br><br>
+        🌙 <b>Sleep Tracker:</b> Track your sleep to see your Brain state.<br><br>
+        ✨ <b>Extras:</b> View badges, quotes, notes, and monthly progress!
       </p>
       <button id="introClose" style="width: 100%; padding: 14px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; background: linear-gradient(135deg, #00e5ff, #0088cc); color: #05080f;">Got It! Let's Start</button>
     </div>
   </div>
 
-  <!-- ===== TRACKER MODAL (Sleep + Weekly Progress) ===== -->
-  <div id="trackerModal" class="modal-overlay">
-    <div class="modal-box" style="padding-top: 15px;">
-      <h2>Progress Dashboard 📊</h2>
-      
-      <!-- SLEEP TRACKER SECTION -->
-      <div class="tracker-section">
-        <h3>😴 Sleep Tracker</h3>
-        <div class="sleep-brain-container">
-          <div id="brainCircle" class="brain-circle brain-tired">😴</div>
-          <div id="brainText" class="brain-text">No Sleep Data Yet</div>
-        </div>
-
-        <div class="week-grid" id="weekGrid">
-          <!-- JS will populate 7 days here -->
-        </div>
-
-        <div id="sleepInputSection">
-          <label style="margin-top: 0; margin-bottom: 10px; display: block; color: #9aa0a6; font-size: 13px;">Select Hours Slept:</label>
-          
-          <div class="hours-grid" id="hoursGrid">
-            <button class="hour-btn" data-val="1">1h</button>
-            <button class="hour-btn" data-val="2">2h</button>
-            <button class="hour-btn" data-val="3">3h</button>
-            <button class="hour-btn" data-val="4">4h</button>
-            <button class="hour-btn" data-val="5">5h</button>
-            <button class="hour-btn" data-val="6">6h</button>
-            <button class="hour-btn" data-val="7">7h</button>
-            <button class="hour-btn" data-val="8">8h</button>
-            <button class="hour-btn" data-val="9">9h</button>
-            <button class="hour-btn" data-val="10">10h</button>
-            <button class="hour-btn" data-val="11">11h</button>
-            <button class="hour-btn" data-val="12">12h</button>
-          </div>
-
-          <button id="saveSleepBtn" style="width:100%; padding:12px; border:none; border-radius:10px; font-weight:bold; cursor:pointer;">Save Today's Sleep</button>
-        </div>
-      </div>
-
-      <!-- WEEKLY PROGRESS SECTION -->
-      <div class="tracker-section">
-        <h3>📈 Last 7 Days Habits</h3>
-        <div id="weeklyProgressList">
-          <!-- JS will populate this -->
-        </div>
-      </div>
-
-      <div class="settings-buttons">
-        <button id="trackerClose">Close</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== WEEKLY REPORT MODAL ===== -->
-  <div id="weeklyReportModal" class="modal-overlay">
-    <div class="modal-box" style="text-align: center;">
-      <h2 style="color: #00e5ff;">Weekly Sleep Report 📊</h2>
-      <div id="reportIcon" style="font-size: 50px; margin-bottom: 15px;">🌟</div>
-      <h3 id="reportTitle" style="color: #e8eaed; margin-bottom: 10px;">Good Job!</h3>
-      <p id="reportText" style="color: #9aa0a6; font-size: 14px; margin-bottom: 20px;">
-        You had a great week of sleep!
-      </p>
-      <button id="reportClose" style="width: 100%; padding: 14px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; background: #4a9eff; color: white;">Start New Week</button>
-    </div>
-  </div>
-
-  <!-- Other Modals -->
   <div id="addHabitModal" class="modal-overlay">
     <div class="modal-box">
       <h2 id="addHabitModalTitle">Add New Habit</h2>
@@ -436,8 +391,8 @@
     <div class="modal-box">
       <h2>Backup Options</h2>
       <p style="text-align:center; color:#9aa0a6; margin-bottom:20px; font-size:14px;">Choose how you want to save your backup file.</p>
-      <button id="btnDownloadFile" style="width:100%; padding:14px; background:linear-gradient(135deg, #4a9eff, #2a7fdb); color:white; border:none; border-radius:10px; font-weight:bold; font-size:15px; margin-bottom:12px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;"><span>📥</span> Download File</button>
-      <button id="btnShareFile" style="width:100%; padding:14px; background:#2a3142; color:#e8eaed; border:1px solid #4aaa4a; border-radius:10px; font-weight:bold; font-size:15px; margin-bottom:12px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;"><span>📤</span> Share to Apps (Drive, WhatsApp)</button>
+      <button id="btnDownloadFile" style="width:100%; padding:14px; background:linear-gradient(135deg, #4a9eff, #2a7fdb); color:white; border:none; border-radius:10px; font-weight:bold; font-size:15px; margin-bottom:12px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;"><span>📥</span> Download JSON</button>
+      <button id="btnDownloadCSV" style="width:100%; padding:14px; background:linear-gradient(135deg, #4aaa4a, #2d8a2d); color:white; border:none; border-radius:10px; font-weight:bold; font-size:15px; margin-bottom:12px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;"><span>📊</span> Export to Excel (CSV)</button>
       <div class="settings-buttons" style="margin-top: 10px;">
         <button id="exportCancel">Cancel</button>
       </div>
@@ -456,16 +411,11 @@
     </div>
   </div>
 
-  <!-- ===== SETTINGS MODAL ===== -->
   <div id="settingsModal" class="modal-overlay">
     <div class="modal-box">
-      
-      <!-- ✅ NEW: Title and Tiny Guide Button at Top Right -->
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
         <h2 style="margin-bottom: 0; text-align: left;">Settings</h2>
-        <button id="showGuideBtn" style="width: 35px; height: 35px; display: flex; justify-content: center; align-items: center; background: #2a3142; color: #d6a1f0; border: 1px solid #d6a1f0; border-radius: 8px; font-size: 16px; cursor: pointer; padding: 0; box-shadow: 0 0 10px rgba(214, 161, 240, 0.2);">
-          📖
-        </button>
+        <button id="showGuideBtn" style="width: 35px; height: 35px; display: flex; justify-content: center; align-items: center; background: #2a3142; color: #d6a1f0; border: 1px solid #d6a1f0; border-radius: 8px; font-size: 16px; cursor: pointer; padding: 0; box-shadow: 0 0 10px rgba(214, 161, 240, 0.2);">📖</button>
       </div>
 
       <label>Challenge Name:</label>
@@ -503,12 +453,48 @@
     </div>
   </div>
 
+  <div id="trackerModal" class="modal-overlay">
+    <div class="modal-box" style="padding-top: 15px;">
+      <h2>Progress Dashboard 📊</h2>
+      <div class="tracker-section">
+        <h3>😴 Sleep Tracker</h3>
+        <div class="sleep-brain-container">
+          <div id="brainCircle" class="brain-circle brain-tired">😴</div>
+          <div id="brainText" class="brain-text">No Sleep Data Yet</div>
+        </div>
+        <div class="week-grid" id="weekGrid"></div>
+        <div id="sleepInputSection">
+          <label style="margin-top: 0; margin-bottom: 10px; display: block; color: #9aa0a6; font-size: 13px;">Select Hours Slept:</label>
+          <div class="hours-grid" id="hoursGrid">
+            <button class="hour-btn" data-val="1">1h</button><button class="hour-btn" data-val="2">2h</button><button class="hour-btn" data-val="3">3h</button><button class="hour-btn" data-val="4">4h</button><button class="hour-btn" data-val="5">5h</button><button class="hour-btn" data-val="6">6h</button><button class="hour-btn" data-val="7">7h</button><button class="hour-btn" data-val="8">8h</button><button class="hour-btn" data-val="9">9h</button><button class="hour-btn" data-val="10">10h</button><button class="hour-btn" data-val="11">11h</button><button class="hour-btn" data-val="12">12h</button>
+          </div>
+          <button id="saveSleepBtn" style="width:100%; padding:12px; border:none; border-radius:10px; font-weight:bold; cursor:pointer;">Save Today's Sleep</button>
+        </div>
+      </div>
+      <div class="tracker-section">
+        <h3>📈 Last 7 Days Habits</h3>
+        <div id="weeklyProgressList"></div>
+      </div>
+      <div class="settings-buttons">
+        <button id="trackerClose">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="weeklyReportModal" class="modal-overlay">
+    <div class="modal-box" style="text-align: center;">
+      <h2 style="color: #00e5ff;">Weekly Sleep Report 📊</h2>
+      <div id="reportIcon" style="font-size: 50px; margin-bottom: 15px;">🌟</div>
+      <h3 id="reportTitle" style="color: #e8eaed; margin-bottom: 10px;">Good Job!</h3>
+      <p id="reportText" style="color: #9aa0a6; font-size: 14px; margin-bottom: 20px;">You had a great week of sleep!</p>
+      <button id="reportClose" style="width: 100%; padding: 14px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; background: #4a9eff; color: white;">Start New Week</button>
+    </div>
+  </div>
+
   <script>
     window.onerror = function(msg, url, line) { alert("Code Error: " + msg + "\nLine: " + line); };
 
-    // ✅ HISTORY STATE SETUP (For Android Back Button)
     history.pushState({ page: "main" }, "");
-
     window.addEventListener("popstate", function(event) {
       const openModals = document.querySelectorAll('.modal-overlay.active');
       if (openModals.length > 0) {
@@ -517,31 +503,32 @@
       }
     });
 
-    // ===== State =====
-    let challengeData = {
-      title: "", duration: 0, startDate: "", motivation: "",
-      habits: [], habitLogs: {}, dayStart: "06:00", dayEnd: "22:00"
-    };
-
-    let sleepState = {
-      weekStartDate: getDateKey(),
-      days: [null, null, null, null, null, null, null]
-    };
+    let challengeData = { title: "", duration: 0, startDate: "", motivation: "", habits: [], habitLogs: {}, notes: {}, dayStart: "06:00", dayEnd: "22:00" };
+    let sleepState = { weekStartDate: getDateKey(), days: [null, null, null, null, null, null, null] };
 
     const savedSleep = localStorage.getItem("gritgo_sleep_state");
     if (savedSleep) sleepState = JSON.parse(savedSleep);
 
     const trashIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>`;
 
-    // ===== Helpers =====
+    // Motivational Quotes
+    const quotes = [
+      "Discipline is the bridge between goals and accomplishment.",
+      "We are what we repeatedly do. Excellence, then, is not an act, but a habit.",
+      "The secret of getting ahead is getting started.",
+      "It always seems impossible until it's done.",
+      "Don't watch the clock; do what it does. Keep going.",
+      "Your only limit is you.",
+      "Small steps in the right direction can turn out to be the biggest step of your life.",
+      "Push yourself, because no one else is going to do it for you."
+    ];
+
     function normalizeDate(dateStr) {
       if (!dateStr) return "";
       if (dateStr.includes("/")) {
         const parts = dateStr.split("/");
         if (parts.length === 3) {
-          let year = parts[2];
-          let month = parts[1];
-          let day = parts[0];
+          let year = parts[2], month = parts[1], day = parts[0];
           if (parts[0].length === 4) { year = parts[0]; month = parts[1]; day = parts[2]; }
           return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
         }
@@ -549,389 +536,175 @@
       return dateStr;
     }
 
-    function getDateKey(date) {
-      const d = date || new Date();
-      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    function getDateKey(date) { const d = date || new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; }
+    function nextDateKey(key) { if (!key || key.includes("NaN")) return key; const d = new Date(key + "T00:00:00"); if (isNaN(d.getTime())) return key; d.setDate(d.getDate() + 1); return getDateKey(d); }
+    function updateDatePlaceholders() { document.querySelectorAll(".date-wrapper").forEach(w => { const i = w.querySelector("input"); if (i && i.value) w.classList.add("has-value"); else w.classList.remove("has-value"); }); }
+    document.querySelectorAll(".date-wrapper input").forEach(i => { i.addEventListener("change", updateDatePlaceholders); i.addEventListener("input", updateDatePlaceholders); i.addEventListener("blur", updateDatePlaceholders); });
+
+    function showToast(message) { const t = document.createElement("div"); t.className = "toast"; t.textContent = message; document.body.appendChild(t); setTimeout(() => t.classList.add("show"), 10); setTimeout(() => { t.classList.remove("show"); setTimeout(() => t.remove(), 400); }, 2500); }
+
+    function requestNotificationPermission() {
+      if ("Notification" in window) {
+        if (Notification.permission !== "granted" && Notification.permission !== "denied") Notification.requestPermission();
+      }
     }
 
-    function nextDateKey(key) {
-      if (!key || key.includes("NaN")) return key; 
-      const d = new Date(key + "T00:00:00"); 
-      if (isNaN(d.getTime())) return key;
-      d.setDate(d.getDate() + 1); 
-      return getDateKey(d);
-    }
-
-    function updateDatePlaceholders() {
-      document.querySelectorAll(".date-wrapper").forEach(function(wrapper) {
-        const input = wrapper.querySelector("input");
-        if (input && input.value) wrapper.classList.add("has-value");
-        else wrapper.classList.remove("has-value");
-      });
-    }
-
-    document.querySelectorAll(".date-wrapper input").forEach(function(input) {
-      input.addEventListener("change", updateDatePlaceholders);
-      input.addEventListener("input", updateDatePlaceholders);
-      input.addEventListener("blur", updateDatePlaceholders);
-    });
-
-    function showToast(message) {
-      const toast = document.createElement("div"); toast.className = "toast"; toast.textContent = message;
-      document.body.appendChild(toast);
-      setTimeout(() => toast.classList.add("show"), 10);
-      setTimeout(() => { toast.classList.remove("show"); setTimeout(() => toast.remove(), 400); }, 2500);
-    }
-
-    // Time Pickers
     function populateTimeSelects() {
       const hours = Array.from({length: 12}, (_, i) => String(i + 1).padStart(2, '0'));
       const mins = Array.from({length: 60}, (_, i) => String(i).padStart(2, '0'));
-      ["setupDayStartHour", "setupDayEndHour", "settingsDayStartHour", "settingsDayEndHour"].forEach(id => {
-        const el = document.getElementById(id); if(el) el.innerHTML = hours.map(h => `<option value="${h}">${h}</option>`).join("");
-      });
-      ["setupDayStartMinute", "setupDayEndMinute", "settingsDayStartMinute", "settingsDayEndMinute"].forEach(id => {
-        const el = document.getElementById(id); if(el) el.innerHTML = mins.map(m => `<option value="${m}">${m}</option>`).join("");
-      });
+      ["setupDayStartHour", "setupDayEndHour", "settingsDayStartHour", "settingsDayEndHour"].forEach(id => { const el = document.getElementById(id); if(el) el.innerHTML = hours.map(h => `<option value="${h}">${h}</option>`).join(""); });
+      ["setupDayStartMinute", "setupDayEndMinute", "settingsDayStartMinute", "settingsDayEndMinute"].forEach(id => { const el = document.getElementById(id); if(el) el.innerHTML = mins.map(m => `<option value="${m}">${m}</option>`).join(""); });
     }
-
-    function getTimeFromSelects(prefix) { 
-      const h12 = parseInt(document.getElementById(prefix + "Hour").value);
-      const m = document.getElementById(prefix + "Minute").value;
-      const ampm = document.getElementById(prefix + "AmPm").value;
-      let h24 = h12;
-      if (ampm === "AM" && h12 === 12) h24 = 0;
-      if (ampm === "PM" && h12 !== 12) h24 = h12 + 12;
-      return String(h24).padStart(2, '0') + ":" + m;
-    }
-
-    function setSelectsFromTime(prefix, timeStr) { 
-      if(!timeStr) timeStr = "06:00";
-      let [h24, m] = timeStr.split(":").map(Number);
-      let ampm = h24 >= 12 ? "PM" : "AM";
-      let h12 = h24 % 12; if(h12 === 0) h12 = 12;
-      document.getElementById(prefix + "Hour").value = String(h12).padStart(2, '0');
-      document.getElementById(prefix + "Minute").value = String(m).padStart(2, '0');
-      document.getElementById(prefix + "AmPm").value = ampm;
-    }
+    function getTimeFromSelects(prefix) { const h12 = parseInt(document.getElementById(prefix + "Hour").value); const m = document.getElementById(prefix + "Minute").value; const ampm = document.getElementById(prefix + "AmPm").value; let h24 = h12; if (ampm === "AM" && h12 === 12) h24 = 0; if (ampm === "PM" && h12 !== 12) h24 = h12 + 12; return String(h24).padStart(2, '0') + ":" + m; }
+    function setSelectsFromTime(prefix, timeStr) { if(!timeStr) timeStr = "06:00"; let [h24, m] = timeStr.split(":").map(Number); let ampm = h24 >= 12 ? "PM" : "AM"; let h12 = h24 % 12; if(h12 === 0) h12 = 12; document.getElementById(prefix + "Hour").value = String(h12).padStart(2, '0'); document.getElementById(prefix + "Minute").value = String(m).padStart(2, '0'); document.getElementById(prefix + "AmPm").value = ampm; }
     populateTimeSelects();
 
-    function updateMotivation() {
-      const dayNumber = getCurrentDayNumber();
-      document.getElementById("motivationText").textContent = `Day ${dayNumber} of ${challengeData.duration}. ${challengeData.motivation}`;
-    }
+    function updateMotivation() { document.getElementById("motivationText").textContent = `Day ${getCurrentDayNumber()} of ${challengeData.duration}. ${challengeData.motivation}`; }
+    function getCurrentDayNumber() { const todayKey = getDateKey(); if (!challengeData.startDate) return 1; let current = challengeData.startDate, dayNum = 1, safety = 0; while (current < todayKey && safety < 500) { current = nextDateKey(current); dayNum++; safety++; } return Math.max(1, Math.min(dayNum, challengeData.duration)); }
 
-    // Setup Logic
-    const setupScreen = document.getElementById("setupScreen");
-    const mainApp = document.getElementById("mainApp");
-    const setupSaveButton = document.getElementById("setupSaveButton");
-
-    setupSaveButton.addEventListener("click", function () {
+    document.getElementById("setupSaveButton").addEventListener("click", function () {
       const title = document.getElementById("setupTitle").value.trim();
       const duration = parseInt(document.getElementById("setupDuration").value);
       let startDate = normalizeDate(document.getElementById("setupStartDate").value);
       const motivation = document.getElementById("setupMotivation").value.trim();
-      
       if (!title || !duration || !startDate) { showToast("Please fill required fields"); return; }
-
-      challengeData = {
-        title, duration, startDate, motivation: motivation || "Show up again.",
-        habits: [], habitLogs: {}, dayStart: getTimeFromSelects("setupDayStart"), dayEnd: getTimeFromSelects("setupDayEnd")
-      };
+      challengeData = { title, duration, startDate, motivation: motivation || "Show up again.", habits: [], habitLogs: {}, notes: {}, dayStart: getTimeFromSelects("setupDayStart"), dayEnd: getTimeFromSelects("setupDayEnd") };
       localStorage.setItem("challengeData", JSON.stringify(challengeData));
       startMainApp();
-      requestNotificationPermission();
     });
 
     function startMainApp() {
-      setupScreen.style.display = "none";
-      mainApp.style.display = "block";
+      document.getElementById("setupScreen").style.display = "none";
+      document.getElementById("mainApp").style.display = "block";
       document.getElementById("headerTitle").textContent = challengeData.title + " Tracker";
       document.getElementById("mainTitle").textContent = challengeData.title;
-      
-      updateMotivation();
-      renderHabits(); renderTodayHabits(); renderHeatmap(); updateStats(); attachSearchListener();
-      checkSleepWeek(); 
+      updateMotivation(); renderHabits(); renderTodayHabits(); renderHeatmap(); updateStats(); attachSearchListener(); checkSleepWeek(); 
+      requestNotificationPermission();
     }
 
-    function getCurrentDayNumber() {
-      const todayKey = getDateKey();
-      if (!challengeData.startDate) return 1;
-      let current = challengeData.startDate; let dayNum = 1; let safety = 0;
-      while (current < todayKey && safety < 500) { current = nextDateKey(current); dayNum++; safety++; }
-      return Math.max(1, Math.min(dayNum, challengeData.duration));
-    }
-
-    // ✅ Feedback Modal Logic
-    const commentButton = document.getElementById("commentButton");
-    const feedbackModal = document.getElementById("feedbackModal");
-    const feedbackCancel = document.getElementById("feedbackCancel");
-    const feedbackSubmit = document.getElementById("feedbackSubmit");
-    const feedbackText = document.getElementById("feedbackText");
-
-    commentButton.addEventListener("click", function() {
-      feedbackModal.classList.add("active");
-    });
-
-    feedbackCancel.addEventListener("click", function() {
-      feedbackModal.classList.remove("active");
-      feedbackText.value = "";
-    });
-
-    feedbackModal.addEventListener("click", function(e) {
-      if (e.target === feedbackModal) {
-        feedbackModal.classList.remove("active");
-        feedbackText.value = "";
-      }
-    });
-
-    feedbackSubmit.addEventListener("click", function() {
-      const text = feedbackText.value.trim();
-      if(!text) { showToast("Please write something first!"); return; }
-      
-      const myPhoneNumber = "8801888214016"; 
-      const whatsappUrl = `https://wa.me/${myPhoneNumber}?text=${encodeURIComponent("GRITGO Feedback:\n\n" + text)}`;
-      
-      window.open(whatsappUrl, "_blank");
-      feedbackModal.classList.remove("active");
-      feedbackText.value = "";
-      showToast("Opening WhatsApp...");
-    });
-
-
-    // ===== TRACKER LOGIC (Sleep + Weekly Progress) =====
-    const trackerModal = document.getElementById("trackerModal");
-    const introModal = document.getElementById("introModal");
-    const weeklyReportModal = document.getElementById("weeklyReportModal");
-
-    if (!localStorage.getItem("gritgo_intro_seen")) introModal.classList.add("active");
-    document.getElementById("introClose").addEventListener("click", () => {
-      introModal.classList.remove("active");
-      localStorage.setItem("gritgo_intro_seen", "true");
-    });
-
-    document.getElementById("openTrackerBtn").addEventListener("click", () => {
-      trackerModal.classList.add("active");
-      renderSleepTracker();
-      renderWeeklyProgress();
-      resetSleepButtons(); 
-    });
-
-    document.getElementById("trackerClose").addEventListener("click", () => trackerModal.classList.remove("active"));
-    trackerModal.addEventListener("click", (e) => { if(e.target === trackerModal) trackerModal.classList.remove("active"); });
-
-    function checkSleepWeek() {
-      const today = getDateKey();
-      const start = new Date(sleepState.weekStartDate + "T00:00:00");
-      const now = new Date(today + "T00:00:00");
-      const diffTime = Math.abs(now - start);
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-      if (diffDays >= 7) {
-        let totalHours = 0; let validDays = 0;
-        sleepState.days.forEach(h => { if(h !== null) { totalHours += h; validDays++; } });
-        let avg = validDays > 0 ? (totalHours / validDays).toFixed(1) : 0;
-        
-        const reportTitle = document.getElementById("reportTitle");
-        const reportText = document.getElementById("reportText");
-        const reportIcon = document.getElementById("reportIcon");
-
-        if (avg >= 7.5) {
-          reportTitle.textContent = "Excellent Sleep! 🌟";
-          reportTitle.style.color = "#00e5ff";
-          reportText.textContent = `You averaged ${avg} hours this week. Your brain is fresh and ready!`;
-          reportIcon.textContent = "🧠✨";
-        } else {
-          reportTitle.textContent = "Warning: Sleep Deprived! ⚠️";
-          reportTitle.style.color = "#ff6b4a";
-          reportText.textContent = `You only averaged ${avg} hours this week. Try to sleep earlier!`;
-          reportIcon.textContent = "🧠💤";
-        }
-        weeklyReportModal.classList.add("active");
-        sleepState = { weekStartDate: getDateKey(), days: [null, null, null, null, null, null, null] };
-        localStorage.setItem("gritgo_sleep_state", JSON.stringify(sleepState));
+    // ===== CONFETTI LOGIC =====
+    function showConfetti() {
+      const colors = ['#00e5ff', '#4a9eff', '#ff6b4a', '#d6a1f0', '#4aaa4a', '#f1c40f'];
+      for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti-piece');
+        confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+        confetti.style.animationDelay = Math.random() * 0.5 + 's';
+        document.body.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 4000);
       }
     }
 
-    document.getElementById("reportClose").addEventListener("click", () => {
-      weeklyReportModal.classList.remove("active");
-      renderSleepTracker();
+    // ===== EXTRAS MODAL LOGIC =====
+    const extrasModal = document.getElementById("extrasModal");
+    document.getElementById("openExtrasBtn").addEventListener("click", () => {
+      extrasModal.classList.add("active");
+      renderExtras();
     });
+    document.getElementById("extrasClose").addEventListener("click", () => extrasModal.classList.remove("active"));
 
-    // Brain Preview Function (Multi-State)
-    function updateBrainPreview(hours) {
-      const brainCircle = document.getElementById("brainCircle");
-      const brainText = document.getElementById("brainText");
-      
-      if (hours === null) {
-        brainCircle.className = "brain-circle brain-tired";
-        brainCircle.textContent = "🧠";
-        brainText.textContent = "No Sleep Data Yet";
-        brainText.style.color = "#e8eaed";
-      } else if (hours <= 6) {
-        brainCircle.className = "brain-circle brain-tired";
-        brainCircle.textContent = "😴";
-        brainText.textContent = `Tired Brain (${hours}h)`;
-        brainText.style.color = "#ff6b4a"; 
-      } else if (hours === 7) {
-        brainCircle.className = "brain-circle brain-better";
-        brainCircle.textContent = "😐";
-        brainText.textContent = `Better Brain (${hours}h)`;
-        brainText.style.color = "#f1c40f"; 
-      } else if (hours === 8) {
-        brainCircle.className = "brain-circle brain-fresh";
-        brainCircle.textContent = "✨";
-        brainText.textContent = `Fresh Brain (${hours}h)`;
-        brainText.style.color = "#00e5ff"; 
-      } else if (hours === 9) {
-        brainCircle.className = "brain-circle brain-fresher";
-        brainCircle.textContent = "😎";
-        brainText.textContent = `Super Fresh (${hours}h)`;
-        brainText.style.color = "#00b8d4"; 
-      } else if (hours === 10) {
-        brainCircle.className = "brain-circle brain-jammed-1";
-        brainCircle.textContent = "😵‍💫";
-        brainText.textContent = `A Bit Jammed (${hours}h)`;
-        brainText.style.color = "#9b59b6"; 
-      } else if (hours === 11) {
-        brainCircle.className = "brain-circle brain-jammed-2";
-        brainCircle.textContent = "🤯";
-        brainText.textContent = `Too Jammed (${hours}h)`;
-        brainText.style.color = "#8e44ad"; 
-      } else if (hours === 12) {
-        brainCircle.className = "brain-circle brain-over";
-        brainCircle.textContent = "💤";
-        brainText.textContent = `Over Sleep (${hours}h)`;
-        brainText.style.color = "#95a5a6"; 
-      }
-    }
+    function renderExtras() {
+      // 1. Progress Bar
+      const currentDay = getCurrentDayNumber();
+      const progressPercent = Math.min(Math.round((currentDay / challengeData.duration) * 100), 100);
+      document.getElementById("overallProgressFill").style.width = progressPercent + "%";
+      document.getElementById("overallProgressText").textContent = `${progressPercent}% Completed (Day ${currentDay} / ${challengeData.duration})`;
 
-    function renderSleepTracker() {
-      const today = getDateKey();
-      const start = new Date(sleepState.weekStartDate + "T00:00:00");
-      const now = new Date(today + "T00:00:00");
-      const diffDays = Math.floor(Math.abs(now - start) / (1000 * 60 * 60 * 24));
-      const currentIndex = Math.min(diffDays, 6);
+      // 2. Daily Quote
+      const dayOfMonth = new Date().getDate();
+      document.getElementById("dailyQuoteText").textContent = `"${quotes[dayOfMonth % quotes.length]}"`;
 
-      let displayHours = sleepState.days[currentIndex] !== null ? sleepState.days[currentIndex] : (currentIndex > 0 ? sleepState.days[currentIndex - 1] : null);
-      updateBrainPreview(displayHours);
-
-      const weekGrid = document.getElementById("weekGrid");
-      weekGrid.innerHTML = "";
-      for (let i = 0; i < 7; i++) {
-        const box = document.createElement("div");
-        box.className = "day-box";
-        if (i === currentIndex && sleepState.days[i] === null) {
-          box.classList.add("active");
-          box.innerHTML = `Day ${i + 1}`;
-        } else if (sleepState.days[i] !== null) {
-          box.classList.add("done");
-          box.innerHTML = `Day ${i + 1}<span class="check-mark">✅</span>`;
-        } else {
-          box.innerHTML = `Day ${i + 1}`;
-        }
-        weekGrid.appendChild(box);
-      }
-
-      const sleepInputSection = document.getElementById("sleepInputSection");
-      if (sleepState.days[currentIndex] !== null) {
-        sleepInputSection.style.display = "none";
-      } else {
-        sleepInputSection.style.display = "block";
-        resetSleepButtons(); 
-      }
-    }
-
-    let selectedSleepHours = null;
-    function resetSleepButtons() {
-      document.querySelectorAll(".hour-btn").forEach(btn => btn.classList.remove("selected"));
-      selectedSleepHours = null;
-    }
-
-    document.getElementById("hoursGrid").addEventListener("click", (e) => {
-      if (e.target.classList.contains("hour-btn")) {
-        document.querySelectorAll(".hour-btn").forEach(btn => btn.classList.remove("selected"));
-        e.target.classList.add("selected");
-        selectedSleepHours = parseFloat(e.target.dataset.val);
-        updateBrainPreview(selectedSleepHours);
-      }
-    });
-
-    document.getElementById("saveSleepBtn").addEventListener("click", () => {
-      if (selectedSleepHours === null) { showToast("Please select your sleep hours."); return; }
-      
-      const today = getDateKey();
-      const start = new Date(sleepState.weekStartDate + "T00:00:00");
-      const now = new Date(today + "T00:00:00");
-      const diffDays = Math.floor(Math.abs(now - start) / (1000 * 60 * 60 * 24));
-      const currentIndex = Math.min(diffDays, 6);
-
-      sleepState.days[currentIndex] = selectedSleepHours;
-      localStorage.setItem("gritgo_sleep_state", JSON.stringify(sleepState));
-      showToast("Sleep data saved!");
-      renderSleepTracker();
-    });
-
-    function renderWeeklyProgress() {
-      const list = document.getElementById("weeklyProgressList");
-      list.innerHTML = "";
+      // 3. Badges
       const totalHabits = challengeData.habits.length;
+      let perfectCount = 0;
+      let streak = parseInt(document.getElementById("streakStat").textContent) || 0;
       
-      if (totalHabits === 0) {
-        list.innerHTML = `<p style="color:#9aa0a6; font-size:13px; text-align:center;">No habits to track yet.</p>`;
-        return;
+      // Calculate perfect days quickly
+      const dates = []; let curr = normalizeDate(challengeData.startDate); let safety = 0;
+      const todayKey = getDateKey();
+      while (curr <= todayKey && safety < 500) { dates.push(curr); curr = nextDateKey(curr); safety++; }
+      dates.forEach(key => { if ((challengeData.habitLogs[key] || []).filter(Boolean).length === totalHabits && totalHabits > 0) perfectCount++; });
+
+      document.getElementById("badge-first").classList.toggle("unlocked", perfectCount >= 1);
+      document.getElementById("badge-streak7").classList.toggle("unlocked", streak >= 7);
+      document.getElementById("badge-streak30").classList.toggle("unlocked", streak >= 30);
+      document.getElementById("badge-perfect10").classList.toggle("unlocked", perfectCount >= 10);
+
+      // 4. Mini Calendar
+      const calendarDiv = document.getElementById("miniCalendar");
+      calendarDiv.innerHTML = "";
+      const d = new Date();
+      const month = d.getMonth(); const year = d.getFullYear();
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      
+      const headers = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+      headers.forEach(h => { const el = document.createElement("div"); el.className = "cal-header"; el.textContent = h; calendarDiv.appendChild(el); });
+      
+      for (let i = 0; i < firstDay; i++) { const el = document.createElement("div"); calendarDiv.appendChild(el); }
+      
+      for (let i = 1; i <= daysInMonth; i++) {
+        const el = document.createElement("div"); el.className = "cal-day"; el.textContent = i;
+        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+        const log = challengeData.habitLogs[dateStr] || [];
+        if (totalHabits > 0 && log.filter(Boolean).length === totalHabits) el.classList.add("done");
+        if (dateStr === todayKey) el.classList.add("today");
+        calendarDiv.appendChild(el);
       }
 
-      for (let i = 6; i >= 0; i--) {
-        const d = new Date(); d.setDate(d.getDate() - i);
-        const dateKey = getDateKey(d);
-        const displayDate = d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric' });
-        const log = challengeData.habitLogs[dateKey] || [];
-        const completed = log.filter(Boolean).length;
-        const percent = Math.round((completed / totalHabits) * 100);
-        
-        let displayPercent = percent;
-        if (dateKey < challengeData.startDate) displayPercent = 0;
-
-        const barHTML = `
-          <div class="weekly-bar-container">
-            <div class="weekly-bar-label"><span>${displayDate}</span></div>
-            <div class="weekly-bar-bg">
-              <div class="weekly-bar-fill" style="width: ${displayPercent}%;"></div>
-              <span class="weekly-percent-text">${displayPercent}%</span>
-            </div>
-          </div>
-        `;
-        list.insertAdjacentHTML("beforeend", barHTML);
-      }
+      // 5. Daily Notes
+      const noteKey = getDateKey();
+      document.getElementById("dailyNoteInput").value = challengeData.notes[noteKey] || "";
     }
 
-    setInterval(checkSleepWeek, 60000);
+    document.getElementById("saveNoteBtn").addEventListener("click", () => {
+      const noteText = document.getElementById("dailyNoteInput").value.trim();
+      const noteKey = getDateKey();
+      if (!challengeData.notes) challengeData.notes = {};
+      challengeData.notes[noteKey] = noteText;
+      localStorage.setItem("challengeData", JSON.stringify(challengeData));
+      showToast("Note saved!");
+    });
 
-    // ==========================================
-    // ===== REMAINING GRITGO LOGIC =====
-    // ==========================================
+    // ===== HABIT REORDER LOGIC (Drag & Drop Alternative) =====
+    function moveHabit(index, direction) {
+      if (direction === 'up' && index > 0) {
+        [challengeData.habits[index - 1], challengeData.habits[index]] = [challengeData.habits[index], challengeData.habits[index - 1]];
+      } else if (direction === 'down' && index < challengeData.habits.length - 1) {
+        [challengeData.habits[index + 1], challengeData.habits[index]] = [challengeData.habits[index], challengeData.habits[index + 1]];
+      }
+      localStorage.setItem("challengeData", JSON.stringify(challengeData));
+      renderHabits(); renderTodayHabits();
+    }
+
+    // ===== RENDER HABITS =====
     function renderHabits() {
       const habitsList = document.getElementById("habitsList"); habitsList.innerHTML = "";
       if (challengeData.habits.length === 0) {
-        const li = document.createElement("li"); li.textContent = "No habits yet. Add one above."; li.style.color = "#9aa0a6"; li.style.justifyContent = "center"; habitsList.appendChild(li); return;
+        habitsList.innerHTML = `<li style="color: #9aa0a6; justify-content: center;">No habits yet. Add one above.</li>`; return;
       }
       challengeData.habits.forEach((habit, index) => {
         const li = document.createElement("li");
+        const moveUp = document.createElement("button"); moveUp.className = "move-btn"; moveUp.textContent = "↑"; moveUp.onclick = () => moveHabit(index, 'up');
+        const moveDown = document.createElement("button"); moveDown.className = "move-btn"; moveDown.textContent = "↓"; moveDown.onclick = () => moveHabit(index, 'down');
         const span = document.createElement("span"); span.textContent = (index + 1) + ". " + habit; span.style.flex = "1";
         const editBtn = document.createElement("button"); editBtn.textContent = "✏️"; editBtn.style.cssText = "background:transparent;border:none;cursor:pointer;font-size:16px;padding:5px;"; editBtn.onclick = () => openEditModal(index);
         const deleteBtn = document.createElement("button"); deleteBtn.innerHTML = trashIconSVG; deleteBtn.className = "delete-btn"; deleteBtn.onclick = () => openDeleteModal(index);
+        
+        li.appendChild(moveUp); li.appendChild(moveDown);
         li.appendChild(span); li.appendChild(editBtn); li.appendChild(deleteBtn); habitsList.appendChild(li);
       });
     }
 
+    // ===== RENDER TODAY HABITS =====
     function renderTodayHabits() {
       const oldList = document.getElementById("todayHabitList"); if (oldList) oldList.remove();
       const emptyMessage = document.getElementById("emptyMessage");
       const todayCount = document.getElementById("todayCount");
       const lockMessage = document.getElementById("lockMessage");
-      const searchInput = document.getElementById("habitSearchInput");
-      const searchTerm = searchInput ? searchInput.value.trim() : "";
+      const searchTerm = document.getElementById("habitSearchInput").value.trim();
 
       if (challengeData.habits.length === 0) {
         emptyMessage.style.display = "block"; emptyMessage.textContent = "No habits yet. Choose Edit habits and add your first one.";
@@ -942,8 +715,7 @@
       const isFuture = challengeData.startDate > todayKey;
 
       if (isFuture) {
-        lockMessage.style.display = "block";
-        const d = new Date(challengeData.startDate + "T00:00:00");
+        lockMessage.style.display = "block"; const d = new Date(challengeData.startDate + "T00:00:00");
         lockMessage.innerHTML = `🔒 Challenge starts on <b>${d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}</b>.<br>Come back then!`;
         todayCount.textContent = "🔒 Locked";
       } else { lockMessage.style.display = "none"; }
@@ -955,14 +727,14 @@
       const searchText = isNumberSearch ? "" : searchTerm.toLowerCase();
 
       const ul = document.createElement("ul"); ul.id = "todayHabitList"; ul.style.listStyle = "none"; ul.style.marginTop = "15px";
-      let completedCount = 0; let shownCount = 0;
+      let completedCount = 0, shownCount = 0;
 
       todayLog.forEach(val => { if (val === true) completedCount++; });
 
       challengeData.habits.forEach((habit, index) => {
-        const habitNumber = String(index + 1); const habitLower = habit.toLowerCase();
+        const habitNumber = String(index + 1);
         if (searchNumber && habitNumber !== searchNumber) return;
-        if (searchText && !habitLower.includes(searchText)) return;
+        if (searchText && !habit.toLowerCase().includes(searchText)) return;
         shownCount++;
 
         const li = document.createElement("li");
@@ -979,10 +751,21 @@
           checkboxWrapper.onclick = () => {
             const isChecked = !checkboxWrapper.classList.contains("checked");
             checkboxWrapper.classList.toggle("checked", isChecked);
-            challengeData.habitLogs[getDateKey()][index] = isChecked;
+            challengeData.habitLogs[todayKey][index] = isChecked;
             localStorage.setItem("challengeData", JSON.stringify(challengeData));
-            updateTodayCount(); renderHeatmap(); updateStats();
-            renderWeeklyProgress(); 
+            
+            // Update stats
+            updateTodayCount();
+            renderHeatmap();
+            updateStats(); 
+            if(document.getElementById("trackerModal").classList.contains("active")) renderWeeklyProgress();
+            if(document.getElementById("extrasModal").classList.contains("active")) renderExtras();
+
+            // CONFETTI TRIGGER
+            const newCompleted = challengeData.habitLogs[todayKey].filter(Boolean).length;
+            if (isChecked && newCompleted === challengeData.habits.length) {
+              showConfetti();
+            }
           };
         }
 
@@ -998,301 +781,200 @@
       if (!isFuture) todayCount.textContent = completedCount + " / " + challengeData.habits.length;
     }
 
-    function updateTodayCount() {
-      const todayKey = getDateKey(); const todayLog = challengeData.habitLogs[todayKey] || [];
-      const completed = todayLog.filter(Boolean).length;
-      document.getElementById("todayCount").textContent = completed + " / " + challengeData.habits.length;
-    }
+    function attachSearchListener() { const input = document.getElementById("habitSearchInput"); if (input && !input.dataset.l) { input.addEventListener("input", renderTodayHabits); input.dataset.l = "true"; } }
+    function updateTodayCount() { const todayKey = getDateKey(); const todayLog = challengeData.habitLogs[todayKey] || []; document.getElementById("todayCount").textContent = todayLog.filter(Boolean).length + " / " + challengeData.habits.length; }
 
-    function attachSearchListener() {
-      const searchInput = document.getElementById("habitSearchInput");
-      if (searchInput && !searchInput.dataset.listenerAttached) {
-        searchInput.addEventListener("input", renderTodayHabits); searchInput.dataset.listenerAttached = "true";
-      }
-    }
-
+    // Modals logic (Add, Edit, Delete)
     const addHabitModal = document.getElementById("addHabitModal");
-    const addHabitCancel = document.getElementById("addHabitCancel");
-    const addHabitSave = document.getElementById("addHabitSave");
     let editingIndex = null;
 
-    document.getElementById("quickAddHabitButton").onclick = () => {
-      editingIndex = null; document.getElementById("addHabitModalTitle").textContent = "Add New Habit";
-      addHabitSave.textContent = "Add Habit"; document.getElementById("addHabitModalInput").value = "";
-      addHabitModal.classList.add("active");
-    };
-
-    function openEditModal(index) {
-      editingIndex = index; document.getElementById("addHabitModalTitle").textContent = "Edit Habit";
-      addHabitSave.textContent = "Save Changes"; document.getElementById("addHabitModalInput").value = challengeData.habits[index];
-      addHabitModal.classList.add("active");
-    }
-
-    addHabitCancel.onclick = () => { addHabitModal.classList.remove("active"); editingIndex = null; };
-    addHabitSave.onclick = () => {
+    document.getElementById("quickAddHabitButton").onclick = () => { editingIndex = null; document.getElementById("addHabitModalTitle").textContent = "Add New Habit"; document.getElementById("addHabitModalInput").value = ""; addHabitModal.classList.add("active"); };
+    function openEditModal(index) { editingIndex = index; document.getElementById("addHabitModalTitle").textContent = "Edit Habit"; document.getElementById("addHabitModalInput").value = challengeData.habits[index]; addHabitModal.classList.add("active"); }
+    document.getElementById("addHabitCancel").onclick = () => { addHabitModal.classList.remove("active"); editingIndex = null; };
+    
+    document.getElementById("addHabitSave").onclick = () => {
       const text = document.getElementById("addHabitModalInput").value.trim();
       if (!text) { showToast("Please enter a habit"); return; }
       if (editingIndex !== null) { challengeData.habits[editingIndex] = text; showToast("Habit updated!"); editingIndex = null; }
       else { challengeData.habits.push(text); showToast("Habit added!"); }
       localStorage.setItem("challengeData", JSON.stringify(challengeData));
-      addHabitModal.classList.remove("active");
-      renderHabits(); renderTodayHabits(); renderHeatmap(); updateStats();
+      addHabitModal.classList.remove("active"); renderHabits(); renderTodayHabits(); renderHeatmap(); updateStats();
     };
 
-    const deleteModal = document.getElementById("deleteModal");
-    let deletingIndex = null;
-    function openDeleteModal(index) {
-      deletingIndex = index; document.getElementById("deleteModalText").textContent = `"${index + 1}. ${challengeData.habits[index]}" — delete this habit?`;
-      deleteModal.classList.add("active");
-    }
+    const deleteModal = document.getElementById("deleteModal"); let deletingIndex = null;
+    function openDeleteModal(index) { deletingIndex = index; document.getElementById("deleteModalText").textContent = `"${challengeData.habits[index]}" — delete this habit?`; deleteModal.classList.add("active"); }
     document.getElementById("deleteCancel").onclick = () => { deleteModal.classList.remove("active"); deletingIndex = null; };
-    document.getElementById("deleteConfirm").onclick = () => {
-      if (deletingIndex === null) return;
-      challengeData.habits.splice(deletingIndex, 1);
-      localStorage.setItem("challengeData", JSON.stringify(challengeData));
-      deletingIndex = null; deleteModal.classList.remove("active");
-      renderHabits(); renderTodayHabits(); renderHeatmap(); updateStats(); showToast("Habit deleted");
-    };
+    document.getElementById("deleteConfirm").onclick = () => { if (deletingIndex === null) return; challengeData.habits.splice(deletingIndex, 1); localStorage.setItem("challengeData", JSON.stringify(challengeData)); deletingIndex = null; deleteModal.classList.remove("active"); renderHabits(); renderTodayHabits(); renderHeatmap(); updateStats(); showToast("Habit deleted"); };
 
-    const editMode = document.getElementById("editMode"); const todaySection = document.querySelector(".today-section");
-    document.getElementById("editHabitsButton").onclick = () => { editMode.style.display = "block"; todaySection.style.display = "none"; renderHabits(); };
-    function closeEditMode() { editMode.style.display = "none"; todaySection.style.display = "block"; renderTodayHabits(); }
-    document.getElementById("doneEditingButton").onclick = closeEditMode;
-    document.getElementById("backButton").onclick = closeEditMode;
+    document.getElementById("editHabitsButton").onclick = () => { document.getElementById("editMode").style.display = "block"; document.querySelector(".today-section").style.display = "none"; renderHabits(); };
+    document.getElementById("doneEditingButton").onclick = closeEditMode; document.getElementById("backButton").onclick = closeEditMode;
+    function closeEditMode() { document.getElementById("editMode").style.display = "none"; document.querySelector(".today-section").style.display = "block"; renderTodayHabits(); }
+    document.getElementById("addHabitBtn").onclick = () => { const text = document.getElementById("newHabitInput").value.trim(); if (!text) return; challengeData.habits.push(text); localStorage.setItem("challengeData", JSON.stringify(challengeData)); document.getElementById("newHabitInput").value = ""; renderHabits(); renderTodayHabits(); };
 
-    document.getElementById("addHabitBtn").onclick = () => {
-      const text = document.getElementById("newHabitInput").value.trim();
-      if (!text) { showToast("Please enter a habit"); return; }
-      challengeData.habits.push(text); localStorage.setItem("challengeData", JSON.stringify(challengeData));
-      document.getElementById("newHabitInput").value = "";
-      renderHabits(); renderTodayHabits(); renderHeatmap(); updateStats();
-    };
-
-    const dayModal = document.getElementById("dayModal"); let viewingDateKey = null;
-    function openDayModal(dateKey) {
-      const todayKey = getDateKey();
-      if (dateKey > todayKey) { showToast("Cannot edit future dates"); return; }
-      
-      const startKey = normalizeDate(challengeData.startDate);
-      if (dateKey < startKey) { showToast("Challenge hasn't started yet!"); return; }
-      
-      if (challengeData.habits.length === 0) { showToast("No habits added yet"); return; }
-      
-      viewingDateKey = dateKey; 
-      document.getElementById("dayModalTitle").textContent = new Date(dateKey + "T00:00:00").toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", year: "numeric" });
-      document.getElementById("dayModalSearchInput").value = "";
-      if (!challengeData.habitLogs[dateKey]) challengeData.habitLogs[dateKey] = [];
-      renderDayModalList(); dayModal.classList.add("active");
-    }
-
-    function renderDayModalList() {
-      const list = document.getElementById("dayModalList"); list.innerHTML = "";
-      const log = challengeData.habitLogs[viewingDateKey];
-      document.getElementById("dayModalSubtitle").textContent = `${log.filter(Boolean).length} / ${challengeData.habits.length} habits done`;
-
-      challengeData.habits.forEach((habit, index) => {
-        const li = document.createElement("li"); li.style.cssText = "display:flex;align-items:center;gap:12px;padding:12px;background:#0f1419;border-radius:10px;margin-bottom:8px;";
-        const cb = document.createElement("div"); cb.className = "custom-checkbox"; if (log[index] === true) cb.classList.add("checked");
-        const ns = document.createElement("span"); ns.className = "checkbox-number"; ns.textContent = (index + 1); cb.appendChild(ns);
-        
-        cb.onclick = () => {
-          const isChecked = !cb.classList.contains("checked"); cb.classList.toggle("checked", isChecked);
-          challengeData.habitLogs[viewingDateKey][index] = isChecked; localStorage.setItem("challengeData", JSON.stringify(challengeData));
-          document.getElementById("dayModalSubtitle").textContent = `${challengeData.habitLogs[viewingDateKey].filter(Boolean).length} / ${challengeData.habits.length} habits done`;
-          renderHeatmap(); updateStats(); renderWeeklyProgress();
-        };
-
-        const sp = document.createElement("span"); sp.textContent = habit; sp.style.flex = "1"; sp.style.color = "#e8eaed"; sp.style.fontSize = "14px";
-        li.appendChild(cb); li.appendChild(sp); list.appendChild(li);
-      });
-    }
-    document.getElementById("dayModalClose").onclick = () => { dayModal.classList.remove("active"); viewingDateKey = null; };
-
-    // Heatmap (FIXED: Strict Start Date)
+    // Heatmap
     function renderHeatmap() {
       const heatmap = document.getElementById("heatmap"); heatmap.innerHTML = "";
       if (!challengeData.startDate || !challengeData.duration) return;
-      const todayKey = getDateKey(); const totalHabits = challengeData.habits.length;
-      const startKey = normalizeDate(challengeData.startDate);
-      
-      let currentKey = startKey; 
-
+      const todayKey = getDateKey(), startKey = normalizeDate(challengeData.startDate);
+      let currentKey = startKey;
       for (let i = 0; i < challengeData.duration; i++) {
         const dayLog = challengeData.habitLogs[currentKey] || [];
         const completedCount = dayLog.filter(Boolean).length;
         const cell = document.createElement("div"); cell.className = "heatmap-cell";
 
-        if (completedCount > 0 && totalHabits > 0) {
-          const p = completedCount / totalHabits;
+        if (completedCount > 0 && challengeData.habits.length > 0) {
+          const p = completedCount / challengeData.habits.length;
           if (p >= 1) { cell.style.setProperty("background", "linear-gradient(135deg, #00e5ff, #00b8d4)", "important"); cell.style.setProperty("box-shadow", "0 0 12px rgba(0, 229, 255, 0.8)", "important"); }
           else if (p >= 0.66) cell.style.setProperty("background-color", "#4aaa4a", "important");
           else if (p >= 0.33) cell.style.setProperty("background-color", "#3a7a3a", "important");
           else cell.style.setProperty("background-color", "#2a4a2a", "important");
         }
         if (currentKey === todayKey) { cell.style.setProperty("border", "2px solid #ffffff", "important"); cell.style.setProperty("box-sizing", "border-box", "important"); }
-        
-        const cellDateKey = currentKey; 
-        cell.onclick = () => openDayModal(cellDateKey);
-        
+        const cellKey = currentKey; cell.onclick = () => openDayModal(cellKey);
         heatmap.appendChild(cell); currentKey = nextDateKey(currentKey);
       }
     }
 
+    // Stats
     function updateStats() {
       const todayKey = getDateKey(); const todayLog = challengeData.habitLogs[todayKey] || [];
       const completedToday = todayLog.filter(Boolean).length; const totalHabits = challengeData.habits.length;
+      if (totalHabits === 0) { document.getElementById("streakStat").textContent = 0; document.getElementById("perfectStat").textContent = 0; document.getElementById("overallStat").textContent = "0%"; return; }
 
-      if (totalHabits === 0) {
-        document.getElementById("streakStat").textContent = 0;
-        document.getElementById("perfectStat").textContent = 0;
-        document.getElementById("overallStat").textContent = "0%"; return;
-      }
-
-      const dates = []; let currentKey = normalizeDate(challengeData.startDate);
-      if (currentKey > todayKey) currentKey = todayKey;
-      let safety = 0;
-      while (currentKey <= todayKey && safety < 500) { dates.push(currentKey); currentKey = nextDateKey(currentKey); safety++; }
+      const dates = []; let curr = normalizeDate(challengeData.startDate); let safety = 0;
+      while (curr <= todayKey && safety < 500) { dates.push(curr); curr = nextDateKey(curr); safety++; }
 
       let perfectDays = 0;
       dates.forEach(key => { if ((challengeData.habitLogs[key] || []).filter(Boolean).length === totalHabits) perfectDays++; });
 
       let streak = 0;
       for (let i = dates.length - 1; i >= 0; i--) {
-        if ((challengeData.habitLogs[dates[i]] || []).filter(Boolean).length === totalHabits) streak++;
-        else break;
+        if ((challengeData.habitLogs[dates[i]] || []).filter(Boolean).length === totalHabits) streak++; else break;
       }
-
       document.getElementById("streakStat").textContent = streak;
       document.getElementById("perfectStat").textContent = perfectDays;
       document.getElementById("overallStat").textContent = Math.round((completedToday / totalHabits) * 100) + "%";
     }
 
-    // Settings Modal
-    const settingsModal = document.getElementById("settingsModal");
-    document.getElementById("settingsButton").onclick = () => {
-      document.getElementById("settingsTitle").value = challengeData.title;
-      document.getElementById("settingsDuration").value = challengeData.duration;
-      document.getElementById("settingsStartDate").value = normalizeDate(challengeData.startDate);
-      document.getElementById("settingsMotivation").value = challengeData.motivation;
-      setSelectsFromTime("settingsDayStart", challengeData.dayStart || "06:00");
-      setSelectsFromTime("settingsDayEnd", challengeData.dayEnd || "22:00");
-      settingsModal.classList.add("active"); setTimeout(updateDatePlaceholders, 50);
-    };
-    document.getElementById("settingsCancel").onclick = () => settingsModal.classList.remove("active");
-    
-    // ✅ NEW: Show Guide Button Logic (Top Right)
-    document.getElementById("showGuideBtn").onclick = () => {
-      settingsModal.classList.remove("active"); // Close settings
-      introModal.classList.add("active");       // Open guide modal
-    };
+    // Sleep Tracker Logic
+    const trackerModal = document.getElementById("trackerModal");
+    const introModal = document.getElementById("introModal");
+    const weeklyReportModal = document.getElementById("weeklyReportModal");
 
-    document.getElementById("settingsSave").onclick = () => {
-      try {
-        const title = document.getElementById("settingsTitle").value.trim();
-        const duration = parseInt(document.getElementById("settingsDuration").value);
-        let startDate = normalizeDate(document.getElementById("settingsStartDate").value);
-        const motivation = document.getElementById("settingsMotivation").value.trim();
-        
-        if (!title || !duration || !startDate) { showToast("Please fill all required fields"); return; }
-        
-        challengeData.title = title; 
-        challengeData.duration = duration; 
-        challengeData.startDate = startDate;
-        challengeData.motivation = motivation || "Show up again.";
-        challengeData.dayStart = getTimeFromSelects("settingsDayStart");
-        challengeData.dayEnd = getTimeFromSelects("settingsDayEnd");
+    if (!localStorage.getItem("gritgo_intro_seen")) introModal.classList.add("active");
+    document.getElementById("introClose").addEventListener("click", () => { introModal.classList.remove("active"); localStorage.setItem("gritgo_intro_seen", "true"); });
+    document.getElementById("openTrackerBtn").addEventListener("click", () => { trackerModal.classList.add("active"); renderSleepTracker(); renderWeeklyProgress(); resetSleepButtons(); });
+    document.getElementById("trackerClose").addEventListener("click", () => trackerModal.classList.remove("active"));
+    trackerModal.addEventListener("click", (e) => { if(e.target === trackerModal) trackerModal.classList.remove("active"); });
+    document.getElementById("reportClose").addEventListener("click", () => { weeklyReportModal.classList.remove("active"); renderSleepTracker(); });
 
-        localStorage.setItem("challengeData", JSON.stringify(challengeData));
-        document.getElementById("headerTitle").textContent = challengeData.title + " Tracker";
-        document.getElementById("mainTitle").textContent = challengeData.title;
+    function checkSleepWeek() {
+      const today = getDateKey(); const start = new Date(sleepState.weekStartDate + "T00:00:00"); const now = new Date(today + "T00:00:00");
+      const diffTime = Math.abs(now - start); const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      if (diffDays >= 7) {
+        let totalHours = 0; let validDays = 0;
+        sleepState.days.forEach(h => { if(h !== null) { totalHours += h; validDays++; } });
+        let avg = validDays > 0 ? (totalHours / validDays).toFixed(1) : 0;
         
-        updateMotivation(); 
-        renderHeatmap(); 
-        renderTodayHabits(); 
-        updateStats();
-        
-        settingsModal.classList.remove("active"); 
-        showToast("Settings saved!"); 
-        requestNotificationPermission();
-      } catch (error) {
-        alert("Save Error: " + error.message);
+        const reportTitle = document.getElementById("reportTitle"); const reportText = document.getElementById("reportText"); const reportIcon = document.getElementById("reportIcon");
+        if (avg >= 7.5) { reportTitle.textContent = "Excellent Sleep! 🌟"; reportTitle.style.color = "#00e5ff"; reportText.textContent = `You averaged ${avg} hours this week. Your brain is fresh!`; reportIcon.textContent = "🧠✨"; }
+        else { reportTitle.textContent = "Warning: Sleep Deprived! ⚠️"; reportTitle.style.color = "#ff6b4a"; reportText.textContent = `You only averaged ${avg} hours. Try to sleep earlier!`; reportIcon.textContent = "🧠💤"; }
+        weeklyReportModal.classList.add("active");
+        sleepState = { weekStartDate: getDateKey(), days: [null, null, null, null, null, null, null] };
+        localStorage.setItem("gritgo_sleep_state", JSON.stringify(sleepState));
       }
-    };
+    }
 
-    document.getElementById("resetAllData").onclick = () => { settingsModal.classList.remove("active"); document.getElementById("resetModal").classList.add("active"); };
-    document.getElementById("resetCancel").onclick = () => { document.getElementById("resetModal").classList.remove("active"); settingsModal.classList.add("active"); };
-    
-    document.getElementById("resetConfirm").onclick = () => { 
-      localStorage.removeItem("challengeData"); 
-      localStorage.removeItem("gritgo_sleep_state");
-      localStorage.removeItem("gritgo_intro_seen");
-      location.reload(); 
-    };
+    function updateBrainPreview(hours) {
+      const brainCircle = document.getElementById("brainCircle"); const brainText = document.getElementById("brainText");
+      if (hours === null) { brainCircle.className = "brain-circle brain-tired"; brainCircle.textContent = "🧠"; brainText.textContent = "No Sleep Data Yet"; brainText.style.color = "#e8eaed"; }
+      else if (hours <= 6) { brainCircle.className = "brain-circle brain-tired"; brainCircle.textContent = "😴"; brainText.textContent = `Tired Brain (${hours}h)`; brainText.style.color = "#ff6b4a"; }
+      else if (hours === 7) { brainCircle.className = "brain-circle brain-better"; brainCircle.textContent = "😐"; brainText.textContent = `Better Brain (${hours}h)`; brainText.style.color = "#f1c40f"; }
+      else if (hours === 8) { brainCircle.className = "brain-circle brain-fresh"; brainCircle.textContent = "✨"; brainText.textContent = `Fresh Brain (${hours}h)`; brainText.style.color = "#00e5ff"; }
+      else if (hours === 9) { brainCircle.className = "brain-circle brain-fresher"; brainCircle.textContent = "😎"; brainText.textContent = `Super Fresh (${hours}h)`; brainText.style.color = "#00b8d4"; }
+      else if (hours === 10) { brainCircle.className = "brain-circle brain-jammed-1"; brainCircle.textContent = "😵‍💫"; brainText.textContent = `A Bit Jammed (${hours}h)`; brainText.style.color = "#9b59b6"; }
+      else if (hours === 11) { brainCircle.className = "brain-circle brain-jammed-2"; brainCircle.textContent = "🤯"; brainText.textContent = `Too Jammed (${hours}h)`; brainText.style.color = "#8e44ad"; }
+      else if (hours === 12) { brainCircle.className = "brain-circle brain-over"; brainCircle.textContent = "💤"; brainText.textContent = `Over Sleep (${hours}h)`; brainText.style.color = "#95a5a6"; }
+    }
 
-    // Backup/Restore
+    function renderSleepTracker() {
+      const today = getDateKey(); const start = new Date(sleepState.weekStartDate + "T00:00:00"); const now = new Date(today + "T00:00:00");
+      const diffDays = Math.floor(Math.abs(now - start) / (1000 * 60 * 60 * 24)); const currentIndex = Math.min(diffDays, 6);
+      let displayHours = sleepState.days[currentIndex] !== null ? sleepState.days[currentIndex] : (currentIndex > 0 ? sleepState.days[currentIndex - 1] : null);
+      updateBrainPreview(displayHours);
+
+      const weekGrid = document.getElementById("weekGrid"); weekGrid.innerHTML = "";
+      for (let i = 0; i < 7; i++) {
+        const box = document.createElement("div"); box.className = "day-box";
+        if (i === currentIndex && sleepState.days[i] === null) { box.classList.add("active"); box.innerHTML = `Day ${i + 1}`; }
+        else if (sleepState.days[i] !== null) { box.classList.add("done"); box.innerHTML = `Day ${i + 1}<span class="check-mark">✅</span>`; }
+        else { box.innerHTML = `Day ${i + 1}`; }
+        weekGrid.appendChild(box);
+      }
+      document.getElementById("sleepInputSection").style.display = sleepState.days[currentIndex] !== null ? "none" : "block";
+      resetSleepButtons(); 
+    }
+
+    let selectedSleepHours = null;
+    function resetSleepButtons() { document.querySelectorAll(".hour-btn").forEach(btn => btn.classList.remove("selected")); selectedSleepHours = null; }
+    document.getElementById("hoursGrid").addEventListener("click", (e) => {
+      if (e.target.classList.contains("hour-btn")) {
+        document.querySelectorAll(".hour-btn").forEach(btn => btn.classList.remove("selected"));
+        e.target.classList.add("selected"); selectedSleepHours = parseFloat(e.target.dataset.val); updateBrainPreview(selectedSleepHours);
+      }
+    });
+
+    document.getElementById("saveSleepBtn").addEventListener("click", () => {
+      if (selectedSleepHours === null) { showToast("Please select your sleep hours."); return; }
+      const today = getDateKey(); const start = new Date(sleepState.weekStartDate + "T00:00:00"); const now = new Date(today + "T00:00:00");
+      const diffDays = Math.floor(Math.abs(now - start) / (1000 * 60 * 60 * 24)); const currentIndex = Math.min(diffDays, 6);
+      sleepState.days[currentIndex] = selectedSleepHours; localStorage.setItem("gritgo_sleep_state", JSON.stringify(sleepState));
+      showToast("Sleep data saved!"); renderSleepTracker();
+    });
+
+    function renderWeeklyProgress() {
+      const list = document.getElementById("weeklyProgressList"); list.innerHTML = "";
+      const totalHabits = challengeData.habits.length;
+      if (totalHabits === 0) { list.innerHTML = `<p style="color:#9aa0a6; font-size:13px; text-align:center;">No habits to track yet.</p>`; return; }
+
+      for (let i = 6; i >= 0; i--) {
+        const d = new Date(); d.setDate(d.getDate() - i); const dateKey = getDateKey(d);
+        const displayDate = d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric' });
+        const log = challengeData.habitLogs[dateKey] || []; const completed = log.filter(Boolean).length;
+        const percent = Math.round((completed / totalHabits) * 100); let displayPercent = (dateKey < challengeData.startDate) ? 0 : percent;
+
+        list.insertAdjacentHTML("beforeend", `
+          <div class="weekly-bar-container">
+            <div class="weekly-bar-label"><span>${displayDate}</span></div>
+            <div class="weekly-bar-bg"><div class="weekly-bar-fill" style="width: ${displayPercent}%;"></div><span class="weekly-percent-text">${displayPercent}%</span></div>
+          </div>
+        `);
+      }
+    }
+
+    setInterval(checkSleepWeek, 60000);
+
+    // Settings & Init
+    document.getElementById("settingsButton").onclick = () => { document.getElementById("settingsTitle").value = challengeData.title; document.getElementById("settingsDuration").value = challengeData.duration; document.getElementById("settingsStartDate").value = normalizeDate(challengeData.startDate); document.getElementById("settingsMotivation").value = challengeData.motivation; setSelectsFromTime("settingsDayStart", challengeData.dayStart); setSelectsFromTime("settingsDayEnd", challengeData.dayEnd); document.getElementById("settingsModal").classList.add("active"); setTimeout(updateDatePlaceholders, 50); };
+    document.getElementById("settingsCancel").onclick = () => document.getElementById("settingsModal").classList.remove("active");
+    document.getElementById("settingsSave").onclick = () => { try { const t = document.getElementById("settingsTitle").value.trim(); const d = parseInt(document.getElementById("settingsDuration").value); const s = normalizeDate(document.getElementById("settingsStartDate").value); const m = document.getElementById("settingsMotivation").value.trim(); if(!t||!d||!s) { showToast("Fill required fields"); return; } challengeData.title = t; challengeData.duration = d; challengeData.startDate = s; challengeData.motivation = m || "Show up again."; challengeData.dayStart = getTimeFromSelects("settingsDayStart"); challengeData.dayEnd = getTimeFromSelects("settingsDayEnd"); localStorage.setItem("challengeData", JSON.stringify(challengeData)); document.getElementById("headerTitle").textContent = t + " Tracker"; document.getElementById("mainTitle").textContent = t; updateMotivation(); renderHeatmap(); renderTodayHabits(); updateStats(); document.getElementById("settingsModal").classList.remove("active"); showToast("Settings saved!"); } catch(e) { alert(e.message); } };
+    document.getElementById("resetAllData").onclick = () => { document.getElementById("settingsModal").classList.remove("active"); document.getElementById("resetModal").classList.add("active"); };
+    document.getElementById("resetCancel").onclick = () => { document.getElementById("resetModal").classList.remove("active"); document.getElementById("settingsModal").classList.add("active"); };
+    document.getElementById("resetConfirm").onclick = () => { localStorage.removeItem("challengeData"); localStorage.removeItem("gritgo_sleep_state"); localStorage.removeItem("gritgo_intro_seen"); location.reload(); };
+    document.getElementById("showGuideBtn").onclick = () => { document.getElementById("settingsModal").classList.remove("active"); document.getElementById("introModal").classList.add("active"); };
+
     document.getElementById("shareButton").onclick = () => document.getElementById("exportModal").classList.add("active");
-    document.getElementById("exportData").onclick = () => { settingsModal.classList.remove("active"); document.getElementById("exportModal").classList.add("active"); };
-    document.getElementById("exportCancel").onclick = () => { document.getElementById("exportModal").classList.remove("active"); settingsModal.classList.add("active"); };
-    
-    document.getElementById("btnDownloadFile").onclick = () => {
-      const dataStr = JSON.stringify(challengeData);
-      const blob = new Blob([dataStr], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href = url; a.download = `GRITGO_Backup_${getDateKey()}.json`;
-      document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
-      document.getElementById("exportModal").classList.remove("active"); showToast("Download Started!");
-    };
+    document.getElementById("exportCancel").onclick = () => document.getElementById("exportModal").classList.remove("active");
+    document.getElementById("btnDownloadFile").onclick = () => { const blob = new Blob([JSON.stringify(challengeData)], { type: "application/json" }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `GRITGO_Backup_${getDateKey()}.json`; a.click(); document.getElementById("exportModal").classList.remove("active"); };
+    document.getElementById("btnDownloadCSV").onclick = () => { let csv = "Date,Habit Name,Completed\n"; for (let date in challengeData.habitLogs) { challengeData.habits.forEach((h, i) => { const val = challengeData.habitLogs[date][i]; if (val) csv += `${date},"${h}",Done\n`; }); } const blob = new Blob([csv], { type: "text/csv" }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `GRITGO_Data_${getDateKey()}.csv`; a.click(); document.getElementById("exportModal").classList.remove("active"); };
 
-    document.getElementById("importData").onclick = () => document.getElementById("importFileInput").click();
-    document.getElementById("importFileInput").onchange = (event) => {
-      const file = event.target.files[0]; if (!file) return;
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        try {
-          const data = JSON.parse(e.target.result);
-          if (data && data.title) {
-            challengeData = data; localStorage.setItem("challengeData", JSON.stringify(challengeData));
-            showToast("Data Imported!"); setTimeout(() => location.reload(), 1500);
-          } else showToast("Invalid backup file!");
-        } catch (err) { showToast("Error reading file!"); }
-      };
-      reader.readAsText(file);
-    };
+    document.getElementById("commentButton").onclick = () => document.getElementById("feedbackModal").classList.add("active");
+    document.getElementById("feedbackCancel").onclick = () => document.getElementById("feedbackModal").classList.remove("active");
+    document.getElementById("feedbackSubmit").onclick = () => { const text = document.getElementById("feedbackText").value.trim(); if(!text) return; window.open(`https://wa.me/8801888214016?text=${encodeURIComponent("GRITGO Feedback:\n\n" + text)}`, "_blank"); document.getElementById("feedbackModal").classList.remove("active"); };
 
-    function requestNotificationPermission() {
-      if ("Notification" in window) { if (Notification.permission !== "granted" && Notification.permission !== "denied") Notification.requestPermission(); }
-    }
-    requestNotificationPermission();
-
-    let lastStartNotifiedDate = ""; let lastEndNotifiedDate = "";
-    setInterval(() => {
-      if (!challengeData.startDate || challengeData.habits.length === 0) return;
-      if (!("Notification" in window) || Notification.permission !== "granted") return;
-
-      const now = new Date();
-      const currentTime = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
-      const todayDate = getDateKey(now);
-
-      if (todayDate < challengeData.startDate) return;
-
-      if (currentTime === challengeData.dayStart && lastStartNotifiedDate !== todayDate) {
-        lastStartNotifiedDate = todayDate;
-        navigator.serviceWorker.ready.then(r => r.showNotification("Good Morning 🛏🌅", { body: `Start your Day with: ${challengeData.habits[0]} 😊`, icon: "icon-192.png", vibrate: [200, 100, 200] }));
-      }
-      if (currentTime === challengeData.dayEnd && lastEndNotifiedDate !== todayDate) {
-        lastEndNotifiedDate = todayDate;
-        navigator.serviceWorker.ready.then(r => r.showNotification("Good Night 🌃", { body: `Finish your Day with: ${challengeData.habits[challengeData.habits.length - 1]} 😊`, icon: "icon-192.png", vibrate: [200, 100, 200] }));
-      }
-    }, 30000);
-
-    // Init
     const saved = localStorage.getItem("challengeData");
-    if (saved) { challengeData = JSON.parse(saved); startMainApp(); }
-    setTimeout(() => { updateDatePlaceholders(); attachSearchListener(); }, 200);
-
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("service-worker.js").catch(err => console.log("SW failed:", err));
-    }
+    if (saved) { challengeData = JSON.parse(saved); if (!challengeData.notes) challengeData.notes = {}; startMainApp(); }
+    if ("serviceWorker" in navigator) { navigator.serviceWorker.register("service-worker.js").catch(err => console.log(err)); }
   </script>
 </body>
 </html>
