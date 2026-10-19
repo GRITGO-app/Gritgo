@@ -164,7 +164,7 @@
     .hour-btn { background: #1a1f2e; color: #e8eaed; border: 1px solid #2a3142; padding: 12px 0; border-radius: 10px; font-weight: bold; font-size: 14px; cursor: pointer; transition: 0.2s; text-align: center; }
     .hour-btn.selected { background: #00e5ff; color: #05080f; border-color: #00e5ff; box-shadow: 0 0 15px rgba(0, 229, 255, 0.4); }
 
-    /* 🚨 UPGRADE: Missing Weekly Progress CSS Added Here */
+    /* Weekly Progress CSS */
     .weekly-bar-container { margin-bottom: 10px; }
     .weekly-bar-label { display: flex; justify-content: space-between; font-size: 12px; color: #9aa0a6; margin-bottom: 5px; }
     .weekly-bar-bg { background: #2a3142; height: 20px; border-radius: 6px; overflow: hidden; position: relative; }
@@ -302,18 +302,60 @@
     </div>
   </div>
 
-  <!-- Other Modals -->
+  <!-- Updated English Guide Modal -->
   <div id="introModal" class="modal-overlay">
-    <div class="modal-box" style="text-align: center;">
-      <h2 style="color: #00e5ff; font-size: 26px;">Welcome to GRITGO! 🌟</h2>
-      <p style="color: #e8eaed; font-size: 14px; margin-bottom: 20px; line-height: 1.6; text-align: left;">
-        Here is how to use your ultimate discipline tracker:<br><br>
-        ✅ <b>Habits:</b> Add daily habits.<br><br>
-        🔥 <b>Heatmap:</b> See your overall progress.<br><br>
-        🌙 <b>Sleep Tracker:</b> Track your sleep to see your Brain state.<br><br>
-        ✨ <b>Extras:</b> View badges, quotes, notes, and monthly progress!
-      </p>
-      <button id="introClose" style="width: 100%; padding: 14px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; background: linear-gradient(135deg, #00e5ff, #0088cc); color: #05080f;">Got It! Let's Start</button>
+    <div class="modal-box" style="max-height: 85vh; overflow-y: auto; text-align: left;">
+      <h2 style="color: #00e5ff; font-size: 24px; text-align: center; margin-bottom: 15px;">Welcome to GRITGO! 🌟</h2>
+      <p style="color: #9aa0a6; font-size: 13px; text-align: center; margin-bottom: 20px;">Here is your complete guide on how to use the app:</p>
+      
+      <!-- 1. Habits -->
+      <div style="background: #0f1419; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #2a3142;">
+        <h3 style="color: #e8eaed; font-size: 15px; margin-bottom: 10px;">✅ 1. Daily Habits</h3>
+        <p style="color: #9aa0a6; font-size: 13px; line-height: 1.6;">
+          • <b>Add/Edit:</b> Click <b>"+ Add Habit"</b> to create a new habit. Click <b>"Edit habits"</b> to rename (✏️), reorder (↑↓), or delete (🗑️) habits.<br>
+          • <b>Checkbox:</b> Tap the number box next to a habit to complete it. It turns blue with a checkmark (✅).<br>
+          • <b>Search:</b> Use the search bar to find a habit by its name or number.
+        </p>
+      </div>
+
+      <!-- 2. Heatmap -->
+      <div style="background: #0f1419; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #2a3142;">
+        <h3 style="color: #e8eaed; font-size: 15px; margin-bottom: 10px;">🔥 2. Heatmap & Past Dates</h3>
+        <p style="color: #9aa0a6; font-size: 13px; line-height: 1.6;">
+          • <b>Heatmap:</b> Each box represents a day. If you complete all habits, the box glows in Aqua color.<br>
+          • <b>Past Edit:</b> Forgot to check a habit yesterday? Tap on any past box in the heatmap to open that day and edit it.
+        </p>
+      </div>
+
+      <!-- 3. Stats & Progress -->
+      <div style="background: #0f1419; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #2a3142;">
+        <h3 style="color: #e8eaed; font-size: 15px; margin-bottom: 10px;">📊 3. Stats & Progress</h3>
+        <p style="color: #9aa0a6; font-size: 13px; line-height: 1.6;">
+          • <b>Overall %:</b> Shows the percentage of habits you completed TODAY.<br>
+          • <b>Challenge Progress:</b> Shows how many DAYS have passed in your challenge.<br>
+          • <b>Streak & Perfect Days:</b> Tracks how many consecutive days you completed 100% of your habits.
+        </p>
+      </div>
+
+      <!-- 4. Extras -->
+      <div style="background: #0f1419; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #2a3142;">
+        <h3 style="color: #e8eaed; font-size: 15px; margin-bottom: 10px;">✨ 4. Extras & Insights</h3>
+        <p style="color: #9aa0a6; font-size: 13px; line-height: 1.6;">
+          • <b>Achievements:</b> Unlock badges by maintaining streaks.<br>
+          • <b>Calendar & Notes:</b> View your monthly progress and write a daily note.
+        </p>
+      </div>
+
+      <!-- 5. Sleep & Backup -->
+      <div style="background: #0f1419; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #2a3142;">
+        <h3 style="color: #e8eaed; font-size: 15px; margin-bottom: 10px;">🌙 5. Sleep & Backup</h3>
+        <p style="color: #9aa0a6; font-size: 13px; line-height: 1.6;">
+          • <b>Sleep Tracker:</b> Log your sleep to see your Brain State.<br>
+          • <b>Backup (📤):</b> Always export your data (JSON) so you don't lose progress if you clear your browser.
+        </p>
+      </div>
+
+      <button id="introClose" style="width: 100%; padding: 14px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; background: linear-gradient(135deg, #00e5ff, #0088cc); color: #05080f; font-size: 16px;">Got It! Let's Start</button>
     </div>
   </div>
 
@@ -468,7 +510,6 @@
   </div>
 
   <script>
-    // UPGRADE: Changed from alert() to console.error() so it doesn't annoy users
     window.onerror = function(msg, url, line) { console.error("Code Error: " + msg + " at line " + line); };
 
     history.pushState({ page: "main" }, "");
@@ -538,19 +579,16 @@
     function updateMotivation() { document.getElementById("motivationText").textContent = `Day ${getCurrentDayNumber()} of ${challengeData.duration}. ${challengeData.motivation}`; }
     function getCurrentDayNumber() { const todayKey = getDateKey(); if (!challengeData.startDate) return 1; let current = challengeData.startDate, dayNum = 1, safety = 0; while (current < todayKey && safety < 500) { current = nextDateKey(current); dayNum++; safety++; } return Math.max(1, Math.min(dayNum, challengeData.duration)); }
 
-    // UPGRADE: Added ID generation for habits to prevent history breaking on reorder/delete
     function migrateData() {
       if (!challengeData.habits) return;
       let migrated = false;
       
-      // Ensure all habits are objects with unique IDs
       challengeData.habits = challengeData.habits.map(h => {
         if (typeof h === 'string') { migrated = true; return { id: 'h_' + Math.random().toString(36).substr(2, 9), name: h, target: 1, days: [0,1,2,3,4,5,6] }; }
         if (!h.id) { migrated = true; return { ...h, id: 'h_' + Math.random().toString(36).substr(2, 9) }; }
         return h;
       });
 
-      // Migrate old logs (Array format) to new Object format based on ID
       for (let date in challengeData.habitLogs) {
         if (Array.isArray(challengeData.habitLogs[date])) {
           const oldLog = challengeData.habitLogs[date];
@@ -615,7 +653,6 @@
       const dayOfMonth = new Date().getDate();
       document.getElementById("dailyQuoteText").textContent = `"${quotes[dayOfMonth % quotes.length]}"`;
 
-      // UPGRADE: Fixed Badge Logic (First Step not unlocking)
       const totalHabits = challengeData.habits.length;
       let perfectCount = 0;
       const streak = parseInt(document.getElementById("streakStat").textContent) || 0;
@@ -626,7 +663,6 @@
       
       dates.forEach(key => { 
         const log = challengeData.habitLogs[key] || {};
-        // Count true values correctly
         const completed = Object.values(log).filter(val => val === true).length;
         if (completed === totalHabits && totalHabits > 0) perfectCount++; 
       });
@@ -672,7 +708,6 @@
       showToast("Note saved!");
     });
 
-    // UPGRADE: Reorder now works perfectly with IDs without breaking history
     function moveHabit(index, direction) {
       if (direction === 'up' && index > 0) {
         [challengeData.habits[index - 1], challengeData.habits[index]] = [challengeData.habits[index], challengeData.habits[index - 1]];
@@ -1089,7 +1124,7 @@
     if (saved) { 
       challengeData = JSON.parse(saved); 
       if (!challengeData.notes) challengeData.notes = {}; 
-      migrateData(); // Run migration here
+      migrateData(); 
       startMainApp(); 
     }
     if ("serviceWorker" in navigator) { navigator.serviceWorker.register("service-worker.js").catch(err => console.log(err)); }
