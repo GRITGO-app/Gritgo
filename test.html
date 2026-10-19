@@ -552,6 +552,12 @@
     }
     populateTimeSelects();
 
+    // ✅ NEW: Restored updateMotivation()
+    function updateMotivation() {
+      const dayNumber = getCurrentDayNumber();
+      document.getElementById("motivationText").textContent = `Day ${dayNumber} of ${challengeData.duration}. ${challengeData.motivation}`;
+    }
+
     // Setup Logic
     const setupScreen = document.getElementById("setupScreen");
     const mainApp = document.getElementById("mainApp");
@@ -578,7 +584,8 @@
       mainApp.style.display = "block";
       document.getElementById("headerTitle").textContent = challengeData.title + " Tracker";
       document.getElementById("mainTitle").textContent = challengeData.title;
-      document.getElementById("motivationText").textContent = `Day ${getCurrentDayNumber()} of ${challengeData.duration}. ${challengeData.motivation}`;
+      
+      updateMotivation();
       renderHabits(); renderTodayHabits(); renderHeatmap(); updateStats(); attachSearchListener();
       checkSleepWeek(); 
     }
@@ -846,6 +853,7 @@
 
         const numberSpan = document.createElement("span"); numberSpan.className = "checkbox-number"; numberSpan.textContent = (index + 1); checkboxWrapper.appendChild(numberSpan);
 
+        // IF FUTURE, DISABLE ONCLICK
         if (!isFuture) {
           checkboxWrapper.onclick = () => {
             const isChecked = !checkboxWrapper.classList.contains("checked");
@@ -976,13 +984,12 @@
     }
     document.getElementById("dayModalClose").onclick = () => { dayModal.classList.remove("active"); viewingDateKey = null; };
 
-    // Heatmap (FIXED LOGIC)
+    // Heatmap
     function renderHeatmap() {
       const heatmap = document.getElementById("heatmap"); heatmap.innerHTML = "";
       if (!challengeData.startDate || !challengeData.duration) return;
       const todayKey = getDateKey(); const totalHabits = challengeData.habits.length;
       
-      // Start from actual start date (No hack forcing it to today)
       let currentKey = challengeData.startDate; 
 
       for (let i = 0; i < challengeData.duration; i++) {
