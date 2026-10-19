@@ -211,6 +211,14 @@
         statusText.textContent = "System Ready";
       }
     }
+ // ✅ Jarvis App Install korar jonno Service Worker
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw-jarvis.js").then(function(registration) {
+    console.log("Jarvis SW registered successfully");
+  }).catch(function(err) {
+    console.log("SW registration failed:", err);
+  });
+}
   </script>
 </body>
 </html>
