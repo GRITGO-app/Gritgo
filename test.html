@@ -13,6 +13,21 @@
       padding: 0;
       box-sizing: border-box;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      
+      /* টেক্সট সিলেক্ট এবং সার্চ পপ-আপ বন্ধ করার জন্য */
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    /* ইনপুট ফিল্ডে টাইপ করার জন্য সিলেক্ট করা যাবে */
+    input, textarea {
+      -webkit-user-select: auto;
+      user-select: auto;
     }
 
     body {
@@ -294,7 +309,7 @@
     <p class="footer-text">Progress saves in this browser only.</p>
   </div>
 
-  <!-- ===== INTRO MODAL ===== -->
+  <!-- ===== INTRO MODAL (Now accessible from Settings) ===== -->
   <div id="introModal" class="modal-overlay">
     <div class="modal-box" style="text-align: center;">
       <h2 style="color: #00e5ff; font-size: 26px;">Welcome to GRITGO! 🌟</h2>
@@ -447,6 +462,7 @@
     </div>
   </div>
 
+  <!-- ===== SETTINGS MODAL ===== -->
   <div id="settingsModal" class="modal-overlay">
     <div class="modal-box">
       <h2>Settings</h2>
@@ -477,6 +493,12 @@
         <button id="settingsCancel">Cancel</button>
         <button id="settingsSave">Save Changes</button>
       </div>
+      
+      <!-- ✅ NEW: Guide Button (Very Small) -->
+      <button id="showGuideBtn" style="width:100%; margin-top:15px; padding:10px; background:transparent; color:#d6a1f0; border:1px solid #d6a1f0; border-radius:10px; font-size:13px; font-weight:600; cursor:pointer;">
+        📖 How to Use App
+      </button>
+
       <button id="exportData" style="width:100%; margin-top:15px; padding:12px; background:#2a3142; color:#4a9eff; border:1px solid #4a9eff; border-radius:10px; font-weight:600; cursor:pointer;">📥 Backup Data (Export)</button>
       <button id="importData" style="width:100%; margin-top:10px; padding:12px; background:#2a3142; color:#4aaa4a; border:1px solid #4aaa4a; border-radius:10px; font-weight:600; cursor:pointer;">📤 Restore Data (Import)</button>
       <input type="file" id="importFileInput" accept=".json" style="display:none;">
@@ -493,12 +515,8 @@
     window.addEventListener("popstate", function(event) {
       const openModals = document.querySelectorAll('.modal-overlay.active');
       if (openModals.length > 0) {
-        // Close all open modals
         openModals.forEach(modal => modal.classList.remove('active'));
-        // Push state again so the next back press doesn't exit immediately
         history.pushState({ page: "main" }, "");
-      } else {
-        // No modals open, let the app exit
       }
     });
 
@@ -647,7 +665,7 @@
       return Math.max(1, Math.min(dayNum, challengeData.duration));
     }
 
-    // ✅ NEW: Feedback Modal Logic (Fixed Chat Button)
+    // ✅ Feedback Modal Logic
     const commentButton = document.getElementById("commentButton");
     const feedbackModal = document.getElementById("feedbackModal");
     const feedbackCancel = document.getElementById("feedbackCancel");
@@ -1165,6 +1183,12 @@
     };
     document.getElementById("settingsCancel").onclick = () => settingsModal.classList.remove("active");
     
+    // ✅ NEW: Show Guide Button Logic
+    document.getElementById("showGuideBtn").onclick = () => {
+      settingsModal.classList.remove("active"); // Close settings
+      introModal.classList.add("active");       // Open guide modal
+    };
+
     document.getElementById("settingsSave").onclick = () => {
       try {
         const title = document.getElementById("settingsTitle").value.trim();
