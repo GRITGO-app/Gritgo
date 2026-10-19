@@ -168,7 +168,7 @@
     .day-box.done { background: rgba(0, 229, 255, 0.1); border-color: #00e5ff; color: #00e5ff; }
     .day-box .check-mark { display: block; font-size: 12px; margin-top: 4px; }
 
-    /* NEW: Sleep Hours Grid */
+    /* Sleep Hours Grid */
     .hours-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 15px; }
     .hour-btn { background: #1a1f2e; color: #e8eaed; border: 1px solid #2a3142; padding: 12px 0; border-radius: 10px; font-weight: bold; font-size: 14px; cursor: pointer; transition: 0.2s; text-align: center; }
     .hour-btn.selected { background: #00e5ff; color: #05080f; border-color: #00e5ff; box-shadow: 0 0 15px rgba(0, 229, 255, 0.4); }
@@ -197,7 +197,7 @@
 
     <label>Start Date:</label>
     <div class="date-wrapper">
-      <input type="date" id="setupStartDate">
+      <input type="date" id="setupStartDate" required>
       <span class="date-placeholder">Starting Date</span>
     </div>
 
@@ -444,7 +444,7 @@
       <input type="number" id="settingsDuration">
       <label>Start Date:</label>
       <div class="date-wrapper">
-        <input type="date" id="settingsStartDate">
+        <input type="date" id="settingsStartDate" required>
         <span class="date-placeholder">Starting Date</span>
       </div>
       <label>Motivation Text:</label>
@@ -506,6 +506,13 @@
         else wrapper.classList.remove("has-value");
       });
     }
+
+    // ⚠️ এই লিসেনারগুলোই আগে মিসিং ছিল, যা ডেট শো করতে বাধা দিচ্ছিল
+    document.querySelectorAll(".date-wrapper input").forEach(function(input) {
+      input.addEventListener("change", updateDatePlaceholders);
+      input.addEventListener("input", updateDatePlaceholders);
+      input.addEventListener("blur", updateDatePlaceholders);
+    });
 
     function showToast(message) {
       const toast = document.createElement("div"); toast.className = "toast"; toast.textContent = message;
@@ -601,7 +608,7 @@
       trackerModal.classList.add("active");
       renderSleepTracker();
       renderWeeklyProgress();
-      resetSleepButtons(); // Reset selected hours on open
+      resetSleepButtons(); 
     });
 
     document.getElementById("trackerClose").addEventListener("click", () => trackerModal.classList.remove("active"));
@@ -692,7 +699,7 @@
         sleepInputSection.style.display = "none";
       } else {
         sleepInputSection.style.display = "block";
-        resetSleepButtons(); // Reset when opening for a new day
+        resetSleepButtons(); 
       }
     }
 
