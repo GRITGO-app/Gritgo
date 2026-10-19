@@ -488,14 +488,35 @@
 
     const trashIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>`;
 
-    // Helpers
+    // ===== Helpers =====
+    function normalizeDate(dateStr) {
+      if (!dateStr) return "";
+      if (dateStr.includes("/")) {
+        const parts = dateStr.split("/");
+        if (parts.length === 3) {
+          let year = parts[2];
+          let month = parts[1];
+          let day = parts[0];
+          if (parts[0].length === 4) {
+            year = parts[0]; month = parts[1]; day = parts[2];
+          }
+          return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+        }
+      }
+      return dateStr;
+    }
+
     function getDateKey(date) {
       const d = date || new Date();
       return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
     }
 
     function nextDateKey(key) {
-      const d = new Date(key + "T00:00:00"); d.setDate(d.getDate() + 1); return getDateKey(d);
+      if (!key || key.includes("NaN")) return key; 
+      const d = new Date(key + "T00:00:00"); 
+      if (isNaN(d.getTime())) return key;
+      d.setDate(d.getDate() + 1); 
+      return getDateKey(d);
     }
 
     function updateDatePlaceholders() {
@@ -552,7 +573,6 @@
     }
     populateTimeSelects();
 
-    // ✅ NEW: Restored updateMotivation()
     function updateMotivation() {
       const dayNumber = getCurrentDayNumber();
       document.getElementById("motivationText").textContent = `Day ${dayNumber} of ${challengeData.duration}. ${challengeData.motivation}`;
@@ -566,8 +586,9 @@
     setupSaveButton.addEventListener("click", function () {
       const title = document.getElementById("setupTitle").value.trim();
       const duration = parseInt(document.getElementById("setupDuration").value);
-      let startDate = document.getElementById("setupStartDate").value;
+      let startDate = normalizeDate(document.getElementById("setupStartDate").value);
       const motivation = document.getElementById("setupMotivation").value.trim();
+      
       if (!title || !duration || !startDate) { showToast("Please fill required fields"); return; }
 
       challengeData = {
@@ -657,7 +678,6 @@
       renderSleepTracker();
     });
 
-    // Update Brain Preview Helper
     function updateBrainPreview(hours) {
       const brainCircle = document.getElementById("brainCircle");
       const brainText = document.getElementById("brainText");
@@ -713,7 +733,6 @@
       }
     }
 
-    // Sleep Grid Logic
     let selectedSleepHours = null;
     function resetSleepButtons() {
       document.querySelectorAll(".hour-btn").forEach(btn => btn.classList.remove("selected"));
@@ -725,8 +744,6 @@
         document.querySelectorAll(".hour-btn").forEach(btn => btn.classList.remove("selected"));
         e.target.classList.add("selected");
         selectedSleepHours = parseFloat(e.target.dataset.val);
-        
-        // IMMEDIATE BRAIN UPDATE ON SELECT
         updateBrainPreview(selectedSleepHours);
       }
     });
@@ -746,7 +763,6 @@
       renderSleepTracker();
     });
 
-    // Weekly Progress Logic
     function renderWeeklyProgress() {
       const list = document.getElementById("weeklyProgressList");
       list.innerHTML = "";
@@ -770,9 +786,7 @@
 
         const barHTML = `
           <div class="weekly-bar-container">
-            <div class="weekly-bar-label">
-              <span>${displayDate}</span>
-            </div>
+            <div class="weekly-bar-label"><span>${displayDate}</span></div>
             <div class="weekly-bar-bg">
               <div class="weekly-bar-fill" style="width: ${displayPercent}%;"></div>
               <span class="weekly-percent-text">${displayPercent}%</span>
@@ -783,7 +797,6 @@
       }
     }
 
-    // Auto-check week every minute
     setInterval(checkSleepWeek, 60000);
 
     // ==========================================
@@ -853,7 +866,6 @@
 
         const numberSpan = document.createElement("span"); numberSpan.className = "checkbox-number"; numberSpan.textContent = (index + 1); checkboxWrapper.appendChild(numberSpan);
 
-        // IF FUTURE, DISABLE ONCLICK
         if (!isFuture) {
           checkboxWrapper.onclick = () => {
             const isChecked = !checkboxWrapper.classList.contains("checked");
@@ -890,7 +902,6 @@
       }
     }
 
-    // Modals Add/Edit/Delete
     const addHabitModal = document.getElementById("addHabitModal");
     const addHabitCancel = document.getElementById("addHabitCancel");
     const addHabitSave = document.getElementById("addHabitSave");
@@ -934,7 +945,6 @@
       renderHabits(); renderTodayHabits(); renderHeatmap(); updateStats(); showToast("Habit deleted");
     };
 
-    // Edit Mode
     const editMode = document.getElementById("editMode"); const todaySection = document.querySelector(".today-section");
     document.getElementById("editHabitsButton").onclick = () => { editMode.style.display = "block"; todaySection.style.display = "none"; renderHabits(); };
     function closeEditMode() { editMode.style.display = "none"; todaySection.style.display = "block"; renderTodayHabits(); }
@@ -949,13 +959,18 @@
       renderHabits(); renderTodayHabits(); renderHeatmap(); updateStats();
     };
 
-    // Day Modal
     const dayModal = document.getElementById("dayModal"); let viewingDateKey = null;
     function openDayModal(dateKey) {
-      if (dateKey > getDateKey()) { showToast("Cannot edit future dates"); return; }
-      if (dateKey < challengeData.startDate) { showToast("Challenge hasn't started yet!"); return; }
+      const todayKey = getDateKey();
+      if (dateKey > todayKey) { showToast("Cannot edit future dates"); return; }
+      
+      const startKey = normalizeDate(challengeData.startDate);
+      if (dateKey < startKey) { showToast("Challenge hasn't started yet!"); return; }
+      
       if (challengeData.habits.length === 0) { showToast("No habits added yet"); return; }
-      viewingDateKey = dateKey; document.getElementById("dayModalTitle").textContent = new Date(dateKey + "T00:00:00").toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", year: "numeric" });
+      
+      viewingDateKey = dateKey; 
+      document.getElementById("dayModalTitle").textContent = new Date(dateKey + "T00:00:00").toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", year: "numeric" });
       document.getElementById("dayModalSearchInput").value = "";
       if (!challengeData.habitLogs[dateKey]) challengeData.habitLogs[dateKey] = [];
       renderDayModalList(); dayModal.classList.add("active");
@@ -984,13 +999,14 @@
     }
     document.getElementById("dayModalClose").onclick = () => { dayModal.classList.remove("active"); viewingDateKey = null; };
 
-    // Heatmap
+    // Heatmap (FIXED: Strict Start Date)
     function renderHeatmap() {
       const heatmap = document.getElementById("heatmap"); heatmap.innerHTML = "";
       if (!challengeData.startDate || !challengeData.duration) return;
       const todayKey = getDateKey(); const totalHabits = challengeData.habits.length;
+      const startKey = normalizeDate(challengeData.startDate);
       
-      let currentKey = challengeData.startDate; 
+      let currentKey = startKey; 
 
       for (let i = 0; i < challengeData.duration; i++) {
         const dayLog = challengeData.habitLogs[currentKey] || [];
@@ -1005,12 +1021,14 @@
           else cell.style.setProperty("background-color", "#2a4a2a", "important");
         }
         if (currentKey === todayKey) { cell.style.setProperty("border", "2px solid #ffffff", "important"); cell.style.setProperty("box-sizing", "border-box", "important"); }
-        cell.onclick = () => openDayModal(currentKey);
+        
+        const cellDateKey = currentKey; 
+        cell.onclick = () => openDayModal(cellDateKey);
+        
         heatmap.appendChild(cell); currentKey = nextDateKey(currentKey);
       }
     }
 
-    // Stats
     function updateStats() {
       const todayKey = getDateKey(); const todayLog = challengeData.habitLogs[todayKey] || [];
       const completedToday = todayLog.filter(Boolean).length; const totalHabits = challengeData.habits.length;
@@ -1021,7 +1039,7 @@
         document.getElementById("overallStat").textContent = "0%"; return;
       }
 
-      const dates = []; let currentKey = challengeData.startDate;
+      const dates = []; let currentKey = normalizeDate(challengeData.startDate);
       if (currentKey > todayKey) currentKey = todayKey;
       let safety = 0;
       while (currentKey <= todayKey && safety < 500) { dates.push(currentKey); currentKey = nextDateKey(currentKey); safety++; }
@@ -1045,7 +1063,7 @@
     document.getElementById("settingsButton").onclick = () => {
       document.getElementById("settingsTitle").value = challengeData.title;
       document.getElementById("settingsDuration").value = challengeData.duration;
-      document.getElementById("settingsStartDate").value = challengeData.startDate;
+      document.getElementById("settingsStartDate").value = normalizeDate(challengeData.startDate);
       document.getElementById("settingsMotivation").value = challengeData.motivation;
       setSelectsFromTime("settingsDayStart", challengeData.dayStart || "06:00");
       setSelectsFromTime("settingsDayEnd", challengeData.dayEnd || "22:00");
@@ -1053,24 +1071,38 @@
     };
     document.getElementById("settingsCancel").onclick = () => settingsModal.classList.remove("active");
     
+    // Settings Save with Error Catching
     document.getElementById("settingsSave").onclick = () => {
-      const title = document.getElementById("settingsTitle").value.trim();
-      const duration = parseInt(document.getElementById("settingsDuration").value);
-      let startDate = document.getElementById("settingsStartDate").value;
-      const motivation = document.getElementById("settingsMotivation").value.trim();
-      
-      if (!title || !duration || !startDate) { showToast("Please fill all required fields"); return; }
-      
-      challengeData.title = title; challengeData.duration = duration; challengeData.startDate = startDate;
-      challengeData.motivation = motivation || "Show up again.";
-      challengeData.dayStart = getTimeFromSelects("settingsDayStart");
-      challengeData.dayEnd = getTimeFromSelects("settingsDayEnd");
+      try {
+        const title = document.getElementById("settingsTitle").value.trim();
+        const duration = parseInt(document.getElementById("settingsDuration").value);
+        let startDate = normalizeDate(document.getElementById("settingsStartDate").value);
+        const motivation = document.getElementById("settingsMotivation").value.trim();
+        
+        if (!title || !duration || !startDate) { showToast("Please fill all required fields"); return; }
+        
+        challengeData.title = title; 
+        challengeData.duration = duration; 
+        challengeData.startDate = startDate;
+        challengeData.motivation = motivation || "Show up again.";
+        challengeData.dayStart = getTimeFromSelects("settingsDayStart");
+        challengeData.dayEnd = getTimeFromSelects("settingsDayEnd");
 
-      localStorage.setItem("challengeData", JSON.stringify(challengeData));
-      document.getElementById("headerTitle").textContent = challengeData.title + " Tracker";
-      document.getElementById("mainTitle").textContent = challengeData.title;
-      updateMotivation(); renderHeatmap(); renderTodayHabits(); updateStats();
-      settingsModal.classList.remove("active"); showToast("Settings saved!"); requestNotificationPermission();
+        localStorage.setItem("challengeData", JSON.stringify(challengeData));
+        document.getElementById("headerTitle").textContent = challengeData.title + " Tracker";
+        document.getElementById("mainTitle").textContent = challengeData.title;
+        
+        updateMotivation(); 
+        renderHeatmap(); 
+        renderTodayHabits(); 
+        updateStats();
+        
+        settingsModal.classList.remove("active"); 
+        showToast("Settings saved!"); 
+        requestNotificationPermission();
+      } catch (error) {
+        alert("Save Error: " + error.message);
+      }
     };
 
     document.getElementById("resetAllData").onclick = () => { settingsModal.classList.remove("active"); document.getElementById("resetModal").classList.add("active"); };
@@ -1107,7 +1139,6 @@
       reader.readAsText(file);
     };
 
-    // Notifications
     function requestNotificationPermission() {
       if ("Notification" in window) { if (Notification.permission !== "granted" && Notification.permission !== "denied") Notification.requestPermission(); }
     }
