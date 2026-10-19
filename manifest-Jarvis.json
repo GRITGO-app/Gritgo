@@ -2,7 +2,7 @@
   "name": "Jarvis X - AI Assistant",
   "short_name": "Jarvis",
   "description": "My Personal AI Assistant",
-  "start_url": "JarvisX.html",
+  "start_url": "./JarvisX.html",
   "display": "standalone",
   "background_color": "#05080f",
   "theme_color": "#00e5ff",
