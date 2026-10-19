@@ -51,6 +51,13 @@
     .heatmap-cell { aspect-ratio: 1; width: 100%; background-color: #1a1f2e; border-radius: 4px; cursor: pointer; }
     .heatmap-hint { color: #9aa0a6; font-size: 12px; margin-bottom: 25px; text-align: center; }
 
+    /* Quick Action Buttons */
+    .quick-actions { display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 10px; margin-bottom: 15px; }
+    .quick-btn { width: 42px; height: 42px; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 18px; cursor: pointer; transition: all 0.2s; }
+    .quick-btn:active { transform: scale(0.9); }
+    .check-all-btn { background: linear-gradient(135deg, #4a9eff, #2a7fdb); color: white; border: none; box-shadow: 0 0 10px rgba(74, 158, 255, 0.4); }
+    .reset-all-btn { background: #000000; color: #ffffff; border: 1px solid #555555; }
+
     .btn-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
     .tracker-btn { display: flex; align-items: center; justify-content: center; width: 100%; padding: 12px 20px; background: #1e1b2e; color: #d6a1f0; border: 1px solid #9b59b6; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer; box-shadow: 0 0 15px rgba(155, 89, 182, 0.2); }
     .extras-btn { display: flex; align-items: center; justify-content: center; width: 100%; padding: 12px 20px; background: #1a1f2e; color: #00e5ff; border: 1px solid #00e5ff; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer; box-shadow: 0 0 15px rgba(0, 229, 255, 0.1); }
@@ -226,6 +233,13 @@
     </div>
 
     <div id="heatmap"></div>
+    
+    <!-- Quick Action Buttons -->
+    <div class="quick-actions">
+      <button id="checkAllBtn" class="quick-btn check-all-btn" title="Check All">✔️</button>
+      <button id="resetAllBtn" class="quick-btn reset-all-btn" title="Uncheck All">🔄</button>
+    </div>
+
     <p class="heatmap-hint">Darker means more habits done.</p>
 
     <div class="search-section">
@@ -508,15 +522,11 @@
     window.onerror = function(msg, url, line) { console.error("Code Error: " + msg + " at line " + line); };
 
     // ===== FIXED BACK BUTTON LOGIC =====
-    // Push a state so the app doesn't close immediately on back press
     history.pushState({ page: "main" }, "");
-
     window.addEventListener("popstate", function(event) {
       const openModals = document.querySelectorAll('.modal-overlay.active');
       if (openModals.length > 0) {
-        // Close the modals
         openModals.forEach(modal => modal.classList.remove('active'));
-        // Push state again to keep the user in the app
         history.pushState({ page: "main" }, "");
       }
     });
@@ -995,6 +1005,47 @@
       document.getElementById("perfectStat").textContent = perfectDays;
       document.getElementById("overallStat").textContent = Math.round((completedToday / totalHabits) * 100) + "%";
     }
+
+    // ===== QUICK ACTIONS LOGIC =====
+    document.getElementById("checkAllBtn").addEventListener("click", () => {
+      if (challengeData.habits.length === 0) { showToast("No habits to check!"); return; }
+      const todayKey = getDateKey();
+      if (!challengeData.habitLogs[todayKey]) challengeData.habitLogs[todayKey] = {};
+      
+      challengeData.habits.forEach(habit => {
+        challengeData.habitLogs[todayKey][habit.id] = true;
+      });
+      
+      localStorage.setItem("challengeData", JSON.stringify(challengeData));
+      
+      renderTodayHabits();
+      renderHeatmap();
+      updateStats();
+      if(document.getElementById("extrasModal").classList.contains("active")) renderExtras();
+      
+      showConfetti();
+      showToast("All habits checked! 🎉");
+    });
+
+    document.getElementById("resetAllBtn").addEventListener("click", () => {
+      if (challengeData.habits.length === 0) return;
+      const todayKey = getDateKey();
+      
+      if (challengeData.habitLogs[todayKey]) {
+        challengeData.habits.forEach(habit => {
+          challengeData.habitLogs[todayKey][habit.id] = false;
+        });
+      }
+      
+      localStorage.setItem("challengeData", JSON.stringify(challengeData));
+      
+      renderTodayHabits();
+      renderHeatmap();
+      updateStats();
+      if(document.getElementById("extrasModal").classList.contains("active")) renderExtras();
+      
+      showToast("All habits unchecked.");
+    });
 
     const trackerModal = document.getElementById("trackerModal");
     const introModal = document.getElementById("introModal");
