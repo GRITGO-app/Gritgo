@@ -8,7 +8,6 @@
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Courier New', Courier, monospace; }
     body { background-color: #05080f; color: #00e5ff; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
     
-    /* Arc Reactor Animation */
     .reactor-container { position: relative; width: 200px; height: 200px; display: flex; align-items: center; justify-content: center; margin-bottom: 40px; }
     .circle { position: absolute; border-radius: 50%; border: 3px solid transparent; border-top-color: #00e5ff; border-bottom-color: #0088cc; animation: rotate 2s linear infinite; }
     .circle1 { width: 200px; height: 200px; animation-duration: 3s; border-left-color: #00e5ff; box-shadow: 0 0 20px rgba(0, 229, 255, 0.5); }
@@ -19,13 +18,11 @@
     @keyframes rotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     @keyframes pulse { 0% { transform: scale(0.9); box-shadow: 0 0 20px #00e5ff; } 100% { transform: scale(1.1); box-shadow: 0 0 50px #00e5ff, 0 0 10px #ffffff; } }
     
-    /* UI Elements */
     #statusText { font-size: 18px; letter-spacing: 2px; margin-bottom: 10px; text-transform: uppercase; text-shadow: 0 0 10px #00e5ff; }
     .chat-area { width: 90%; max-width: 400px; text-align: center; margin-bottom: 20px; }
     #userText { color: #ffffff; font-size: 16px; margin-bottom: 10px; min-height: 24px; }
     #jarvisText { color: #00e5ff; font-size: 16px; font-weight: bold; min-height: 24px; }
     
-    /* Mic Button */
     #micBtn { position: absolute; bottom: 50px; background: #00e5ff; color: #05080f; border: none; padding: 15px 30px; font-size: 18px; font-weight: bold; border-radius: 30px; box-shadow: 0 0 20px rgba(0, 229, 255, 0.5); cursor: pointer; transition: 0.3s; }
     #micBtn.listening { background: #ff3333; color: white; box-shadow: 0 0 20px rgba(255, 51, 51, 0.5); animation: pulseBtn 1s infinite alternate; }
     @keyframes pulseBtn { from { transform: scale(1); } to { transform: scale(1.05); } }
@@ -65,13 +62,14 @@
       alert("Your browser does not support Speech Recognition. Please use Google Chrome.");
     } else {
       const recognition = new SpeechRecognition();
-      recognition.lang = 'bn-IN'; // বাংলা ভয়েস রিকগনিশন
+      recognition.lang = 'bn-IN'; 
       recognition.interimResults = false;
       recognition.maxAlternatives = 1;
-      recognition.continuous = true;
+      // Continuous false রাখা হয়েছে, আমরা নিজেরাই লুপে রিস্টার্ট করব
+      recognition.continuous = false; 
 
-      let handsFreeMode = false; // হ্যান্ডস-ফ্রি মোড অন/অফ
-      let isSpeaking = false;    // জারভিস কথা বলছে কিনা
+      let handsFreeMode = false; 
+      let isSpeaking = false;    
 
       recognition.onerror = (event) => {
         if (event.error === 'not-allowed') { alert("Microphone blocked! Please allow mic permission."); }
@@ -82,51 +80,54 @@
         micBtn.textContent = "🎤 Tap to Speak";
       };
 
-      // 🔊 ভয়েস ক্লিয়ার করার ফাংশন
       function speak(text, callback) {
         isSpeaking = true;
         window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'bn-IN'; // ভারতীয় বাংলা ভয়েস (অনেক ফোনে ক্লিয়ার শোনায়)
-        utterance.rate = 0.9;     // একটু ধীরে
-        utterance.pitch = 1.0;    // ন্যাচারাল পিচ
+        utterance.lang = 'bn-IN'; 
+        utterance.rate = 0.9;     
+        utterance.pitch = 1.0;    
         
         utterance.onend = () => {
           isSpeaking = false;
-          if (callback) callback(); // কথা বলা শেষ হলে মাইক আবার চালু করার জন্য
+          // কথা বলা শেষ হলে, মাইক চালু করার আগে ১ সেকেন্ডের গ্যাপ দিচ্ছি
+          if (callback) setTimeout(callback, 800); 
         };
         
         window.speechSynthesis.speak(utterance);
       }
 
-      // 🎤 মাইক বাটন ক্লিক (Hands-Free Toggle)
       micBtn.addEventListener('click', () => {
         if (handsFreeMode) {
-          // বন্ধ করা হচ্ছে
           handsFreeMode = false;
           recognition.stop();
-          window.speechSynthesis.cancel(); // যদি কথা বলা চলছিল, থামিয়ে দেবে
+          window.speechSynthesis.cancel();
           micBtn.classList.remove('listening');
           micBtn.textContent = "🎤 Tap to Speak";
           statusText.textContent = "System Ready";
+          jarvisTextDiv.textContent = "Awaiting your command, Sir.";
         } else {
-          // চালু করা হচ্ছে
           handsFreeMode = true;
           micBtn.classList.add('listening');
-          micBtn.textContent = "🔴 Listening (Hands-Free)...";
+          micBtn.textContent = "🔴 Hands-Free ON (Tap to Stop)";
           statusText.textContent = "Listening...";
           try { recognition.start(); } catch (e) {}
         }
       });
 
       recognition.onstart = () => {
-        jarvisTextDiv.textContent = "I'm listening, Sir.";
+        if(handsFreeMode) jarvisTextDiv.textContent = "I'm listening, Sir...";
       };
 
-      // 🔁 কথা বলা শেষ হলে বা মাইক থেমে গেলে আবার চালু হবে
+      // 🔁 মাইক অটো-রিস্টার্ট লজিক (অ্যান্ড্রয়েডে কাজ করার জন্য)
       recognition.onend = () => {
         if (handsFreeMode && !isSpeaking) {
-          try { recognition.start(); } catch (e) {}
+          // মাইক বন্ধ হয়ে গেলে ৫০০ মিলিসেকেন্ড পর আবার চালু করবে
+          setTimeout(() => {
+            if (handsFreeMode && !isSpeaking) {
+              try { recognition.start(); } catch (e) { console.log("Restarting mic..."); }
+            }
+          }, 500);
         } else if (!handsFreeMode) {
           micBtn.classList.remove('listening');
           micBtn.textContent = "🎤 Tap to Speak";
@@ -139,7 +140,7 @@
         const transcript = event.results[lastResultIndex][0].transcript.toLowerCase().trim();
         userTextDiv.textContent = `"${transcript}"`;
         
-        // কথা বলা শেষ হলে মাইক সাময়িকভাবে বন্ধ করব, যাতে জারভিস নিজের কথা শুনে না ফেলে
+        // কথা বলা শেষ হলে মাইক সাময়িকভাবে বন্ধ করব
         recognition.stop(); 
         processCommand(transcript);
       };
@@ -147,7 +148,6 @@
       async function processCommand(command) {
         statusText.textContent = "Processing...";
 
-        // ১. বেসিক কমান্ডসমূহ
         if (command.includes("lost") || command.includes("go home") || command.includes("হারিয়ে")) {
           jarvisTextDiv.textContent = "Navigating you home, Sir.";
           speak("Navigating you home, Sir.", () => { if(handsFreeMode) try{recognition.start();}catch(e){} });
@@ -190,8 +190,6 @@
           jarvisTextDiv.textContent = `The current time is ${time}`;
           speak(`The current time is ${time}`, () => { if(handsFreeMode) try{recognition.start();}catch(e){} });
         }
-        
-        // ২. Groq AI এর সাথে কথা বলা
         else {
           jarvisTextDiv.textContent = "Thinking...";
           
@@ -203,9 +201,9 @@
                 'Authorization': `Bearer ${GROQ_API_KEY}` 
               },
               body: JSON.stringify({
-                model: "openai/gpt-oss-20b", // Groq এর নতুন ফাস্ট মডেল
+                model: "openai/gpt-oss-20b", 
                 messages: [
-                  { role: "system", content: "You are JARVIS, a highly advanced AI assistant created by a 13-year-old genius. Address the user as 'Sir'. Keep your answers short, smart, and helpful. Reply in the same language the user speaks (Bengali or English)." },
+                  { role: "system", content: "You are JARVIS, a highly advanced AI assistant created by a 13-year-old genius. Address the user as 'Sir'. Keep your answers short, smart, and helpful. Reply in the same language the user speaks." },
                   { role: "user", content: command }
                 ]
               })
@@ -218,9 +216,10 @@
               aiResponse = aiResponse.replace(/\*/g, "").replace(/\n/g, " "); 
               jarvisTextDiv.textContent = aiResponse;
               
-              // কথা বলা শেষ হলে মাইক আবার চালু হবে
               speak(aiResponse, () => {
-                if (handsFreeMode) try { recognition.start(); } catch(e) {}
+                if (handsFreeMode) {
+                  try { recognition.start(); } catch(e) {}
+                }
               });
             } else {
               let errorDetails = data.error ? data.error.message : "Unknown Error";
