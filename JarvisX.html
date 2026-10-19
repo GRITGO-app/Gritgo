@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>J.A.R.V.I.S X - AI Assistant</title>
+  
+  <!-- ✅ নতুন ম্যানিফেস্ট ফাইল লিংক -->
+  <link rel="manifest" href="manifest-jarvis.json">
+  <meta name="theme-color" content="#05080f">
+  
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Courier New', Courier, monospace; }
     body { background-color: #05080f; color: #00e5ff; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
@@ -54,7 +59,7 @@
     const jarvisTextDiv = document.getElementById('jarvisText');
 
     // 🔑 এখানে তোমার Groq API Key (gsk_...) বসাও 👇
-    const GROQ_API_KEY = "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"; 
+    const GROQ_API_KEY = "তোমার_gsk_ওয়ালা_Key_এখানে_বসাও"; 
 
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     
@@ -65,83 +70,60 @@
       recognition.lang = 'bn-IN'; 
       recognition.interimResults = false;
       recognition.maxAlternatives = 1;
-      // Continuous false রাখা হয়েছে, আমরা নিজেরাই লুপে রিস্টার্ট করব
-      recognition.continuous = false; 
+      recognition.continuous = false; // একবার শুনবে, তারপর বন্ধ হবে
 
-      let handsFreeMode = false; 
-      let isSpeaking = false;    
+      let isListening = false;
 
       recognition.onerror = (event) => {
         if (event.error === 'not-allowed') { alert("Microphone blocked! Please allow mic permission."); }
         statusText.textContent = "Error!";
         jarvisTextDiv.textContent = "Microphone error, Sir.";
-        handsFreeMode = false;
+        isListening = false;
         micBtn.classList.remove('listening');
         micBtn.textContent = "🎤 Tap to Speak";
       };
 
-      function speak(text, callback) {
-        isSpeaking = true;
+      function speak(text) {
         window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = 'bn-IN'; 
         utterance.rate = 0.9;     
         utterance.pitch = 1.0;    
-        
-        utterance.onend = () => {
-          isSpeaking = false;
-          // কথা বলা শেষ হলে, মাইক চালু করার আগে ১ সেকেন্ডের গ্যাপ দিচ্ছি
-          if (callback) setTimeout(callback, 800); 
-        };
-        
         window.speechSynthesis.speak(utterance);
       }
 
+      // সাধারণ বাটন ক্লিক (যা আগে কাজ করছিল)
       micBtn.addEventListener('click', () => {
-        if (handsFreeMode) {
-          handsFreeMode = false;
+        if (isListening) {
           recognition.stop();
-          window.speechSynthesis.cancel();
-          micBtn.classList.remove('listening');
-          micBtn.textContent = "🎤 Tap to Speak";
-          statusText.textContent = "System Ready";
-          jarvisTextDiv.textContent = "Awaiting your command, Sir.";
         } else {
-          handsFreeMode = true;
-          micBtn.classList.add('listening');
-          micBtn.textContent = "🔴 Hands-Free ON (Tap to Stop)";
-          statusText.textContent = "Listening...";
-          try { recognition.start(); } catch (e) {}
+          try {
+            recognition.start();
+          } catch (error) {
+            recognition.stop();
+          }
         }
       });
 
       recognition.onstart = () => {
-        if(handsFreeMode) jarvisTextDiv.textContent = "I'm listening, Sir...";
+        isListening = true;
+        micBtn.classList.add('listening');
+        micBtn.textContent = "🔴 Listening...";
+        statusText.textContent = "Listening...";
+        jarvisTextDiv.textContent = "I'm listening, Sir.";
       };
 
-      // 🔁 মাইক অটো-রিস্টার্ট লজিক (অ্যান্ড্রয়েডে কাজ করার জন্য)
       recognition.onend = () => {
-        if (handsFreeMode && !isSpeaking) {
-          // মাইক বন্ধ হয়ে গেলে ৫০০ মিলিসেকেন্ড পর আবার চালু করবে
-          setTimeout(() => {
-            if (handsFreeMode && !isSpeaking) {
-              try { recognition.start(); } catch (e) { console.log("Restarting mic..."); }
-            }
-          }, 500);
-        } else if (!handsFreeMode) {
-          micBtn.classList.remove('listening');
-          micBtn.textContent = "🎤 Tap to Speak";
-          statusText.textContent = "System Ready";
-        }
+        isListening = false;
+        micBtn.classList.remove('listening');
+        micBtn.textContent = "🎤 Tap to Speak";
+        statusText.textContent = "System Ready";
       };
 
       recognition.onresult = (event) => {
         const lastResultIndex = event.results.length - 1;
         const transcript = event.results[lastResultIndex][0].transcript.toLowerCase().trim();
         userTextDiv.textContent = `"${transcript}"`;
-        
-        // কথা বলা শেষ হলে মাইক সাময়িকভাবে বন্ধ করব
-        recognition.stop(); 
         processCommand(transcript);
       };
 
@@ -150,7 +132,7 @@
 
         if (command.includes("lost") || command.includes("go home") || command.includes("হারিয়ে")) {
           jarvisTextDiv.textContent = "Navigating you home, Sir.";
-          speak("Navigating you home, Sir.", () => { if(handsFreeMode) try{recognition.start();}catch(e){} });
+          speak("Navigating you home, Sir.");
           setTimeout(() => { window.location.href = "https://www.google.com/maps/dir/?api=1&destination=home"; }, 3000);
         }
         else if (command.includes("open youtube") && command.includes("search")) {
@@ -158,23 +140,23 @@
           let query = parts[1] ? parts[1].trim() : "";
           if (query) {
             jarvisTextDiv.textContent = `Searching YouTube for ${query}...`;
-            speak(`Searching YouTube for ${query}`, () => { if(handsFreeMode) try{recognition.start();}catch(e){} });
+            speak(`Searching YouTube for ${query}`);
             setTimeout(() => { window.location.href = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`; }, 2500);
           }
         }
         else if (command.includes("open youtube")) {
           jarvisTextDiv.textContent = "Opening YouTube.";
-          speak("Opening YouTube, Sir.", () => { if(handsFreeMode) try{recognition.start();}catch(e){} });
+          speak("Opening YouTube, Sir.");
           setTimeout(() => { window.location.href = "https://www.youtube.com"; }, 2000);
         }
         else if (command.includes("open whatsapp")) {
           jarvisTextDiv.textContent = "Opening WhatsApp.";
-          speak("Opening WhatsApp, Sir.", () => { if(handsFreeMode) try{recognition.start();}catch(e){} });
+          speak("Opening WhatsApp, Sir.");
           setTimeout(() => { window.location.href = "whatsapp://"; setTimeout(() => { window.location.href = "https://web.whatsapp.com/"; }, 1000); }, 2000);
         }
         else if (command.includes("open instagram")) {
           jarvisTextDiv.textContent = "Opening Instagram.";
-          speak("Opening Instagram, Sir.", () => { if(handsFreeMode) try{recognition.start();}catch(e){} });
+          speak("Opening Instagram, Sir.");
           setTimeout(() => { window.location.href = "instagram://app"; setTimeout(() => { window.location.href = "https://www.instagram.com/"; }, 1000); }, 2000);
         }
         else if (command.includes("set timer") || command.includes("টাইমার")) {
@@ -182,13 +164,13 @@
           let match = command.match(/(\d+)\s*minute/);
           if (match) minutes = parseInt(match[1]);
           jarvisTextDiv.textContent = `Timer set for ${minutes} minutes.`;
-          speak(`Timer set for ${minutes} minutes, Sir.`, () => { if(handsFreeMode) try{recognition.start();}catch(e){} });
+          speak(`Timer set for ${minutes} minutes, Sir.`);
           setTimeout(() => { speak(`Sir, your ${minutes} minute timer is up.`); alert(`Timer Finished!`); }, minutes * 60000);
         }
         else if (command.includes("time") && !command.includes("timer")) {
           const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
           jarvisTextDiv.textContent = `The current time is ${time}`;
-          speak(`The current time is ${time}`, () => { if(handsFreeMode) try{recognition.start();}catch(e){} });
+          speak(`The current time is ${time}`);
         }
         else {
           jarvisTextDiv.textContent = "Thinking...";
@@ -215,25 +197,18 @@
               let aiResponse = data.choices[0].message.content;
               aiResponse = aiResponse.replace(/\*/g, "").replace(/\n/g, " "); 
               jarvisTextDiv.textContent = aiResponse;
-              
-              speak(aiResponse, () => {
-                if (handsFreeMode) {
-                  try { recognition.start(); } catch(e) {}
-                }
-              });
+              speak(aiResponse);
             } else {
               let errorDetails = data.error ? data.error.message : "Unknown Error";
               alert("Groq API says: " + errorDetails);
               jarvisTextDiv.textContent = "Error: " + errorDetails;
-              if (handsFreeMode) try { recognition.start(); } catch(e) {}
             }
           } catch (error) {
             console.error("Groq Error:", error);
             jarvisTextDiv.textContent = "Connection to AI failed.";
-            if (handsFreeMode) try { recognition.start(); } catch(e) {}
           }
         }
-        statusText.textContent = handsFreeMode ? "Listening..." : "System Ready";
+        statusText.textContent = "System Ready";
       }
     }
   </script>
