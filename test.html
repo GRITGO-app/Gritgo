@@ -487,6 +487,21 @@
   <script>
     window.onerror = function(msg, url, line) { alert("Code Error: " + msg + "\nLine: " + line); };
 
+    // ✅ HISTORY STATE SETUP (For Android Back Button)
+    history.pushState({ page: "main" }, "");
+
+    window.addEventListener("popstate", function(event) {
+      const openModals = document.querySelectorAll('.modal-overlay.active');
+      if (openModals.length > 0) {
+        // Close all open modals
+        openModals.forEach(modal => modal.classList.remove('active'));
+        // Push state again so the next back press doesn't exit immediately
+        history.pushState({ page: "main" }, "");
+      } else {
+        // No modals open, let the app exit
+      }
+    });
+
     // ===== State =====
     let challengeData = {
       title: "", duration: 0, startDate: "", motivation: "",
@@ -632,6 +647,43 @@
       return Math.max(1, Math.min(dayNum, challengeData.duration));
     }
 
+    // ✅ NEW: Feedback Modal Logic (Fixed Chat Button)
+    const commentButton = document.getElementById("commentButton");
+    const feedbackModal = document.getElementById("feedbackModal");
+    const feedbackCancel = document.getElementById("feedbackCancel");
+    const feedbackSubmit = document.getElementById("feedbackSubmit");
+    const feedbackText = document.getElementById("feedbackText");
+
+    commentButton.addEventListener("click", function() {
+      feedbackModal.classList.add("active");
+    });
+
+    feedbackCancel.addEventListener("click", function() {
+      feedbackModal.classList.remove("active");
+      feedbackText.value = "";
+    });
+
+    feedbackModal.addEventListener("click", function(e) {
+      if (e.target === feedbackModal) {
+        feedbackModal.classList.remove("active");
+        feedbackText.value = "";
+      }
+    });
+
+    feedbackSubmit.addEventListener("click", function() {
+      const text = feedbackText.value.trim();
+      if(!text) { showToast("Please write something first!"); return; }
+      
+      const myPhoneNumber = "8801888214016"; 
+      const whatsappUrl = `https://wa.me/${myPhoneNumber}?text=${encodeURIComponent("GRITGO Feedback:\n\n" + text)}`;
+      
+      window.open(whatsappUrl, "_blank");
+      feedbackModal.classList.remove("active");
+      feedbackText.value = "";
+      showToast("Opening WhatsApp...");
+    });
+
+
     // ===== TRACKER LOGIC (Sleep + Weekly Progress) =====
     const trackerModal = document.getElementById("trackerModal");
     const introModal = document.getElementById("introModal");
@@ -691,7 +743,7 @@
       renderSleepTracker();
     });
 
-    // ✅ UPDATED BRAIN PREVIEW FUNCTION (Multi-State)
+    // Brain Preview Function (Multi-State)
     function updateBrainPreview(hours) {
       const brainCircle = document.getElementById("brainCircle");
       const brainText = document.getElementById("brainText");
@@ -1148,7 +1200,14 @@
 
     document.getElementById("resetAllData").onclick = () => { settingsModal.classList.remove("active"); document.getElementById("resetModal").classList.add("active"); };
     document.getElementById("resetCancel").onclick = () => { document.getElementById("resetModal").classList.remove("active"); settingsModal.classList.add("active"); };
-    document.getElementById("resetConfirm").onclick = () => { localStorage.removeItem("challengeData"); location.reload(); };
+    
+    // ✅ FIXED: Now clears ALL data including Sleep State
+    document.getElementById("resetConfirm").onclick = () => { 
+      localStorage.removeItem("challengeData"); 
+      localStorage.removeItem("gritgo_sleep_state");
+      localStorage.removeItem("gritgo_intro_seen");
+      location.reload(); 
+    };
 
     // Backup/Restore
     document.getElementById("shareButton").onclick = () => document.getElementById("exportModal").classList.add("active");
