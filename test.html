@@ -14,7 +14,6 @@
       box-sizing: border-box;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       
-      /* টেক্সট সিলেক্ট এবং সার্চ পপ-আপ বন্ধ করার জন্য */
       -webkit-tap-highlight-color: transparent;
       -webkit-touch-callout: none;
       -webkit-user-select: none;
@@ -24,7 +23,6 @@
       user-select: none;
     }
 
-    /* ইনপুট ফিল্ডে টাইপ করার জন্য সিলেক্ট করা যাবে */
     input, textarea {
       -webkit-user-select: auto;
       user-select: auto;
@@ -81,7 +79,6 @@
     .heatmap-cell { aspect-ratio: 1; width: 100%; background-color: #1a1f2e; border-radius: 4px; cursor: pointer; }
     .heatmap-hint { color: #9aa0a6; font-size: 12px; margin-bottom: 25px; text-align: center; }
 
-    /* Tracker Button (Dark + Purple, Smaller) */
     .tracker-btn { 
       display: block;
       width: fit-content;
@@ -172,7 +169,6 @@
     .sleep-brain-container { text-align: center; margin-bottom: 20px; position: relative; height: 140px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
     .brain-circle { width: 100px; height: 100px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 50px; transition: all 0.5s ease; position: relative; }
     
-    /* Brain States Animations */
     .brain-tired { background: radial-gradient(circle, rgba(255,107,74,0.2) 0%, rgba(255,107,74,0) 70%); box-shadow: 0 0 30px rgba(255, 107, 74, 0.3), inset 0 0 20px rgba(255, 107, 74, 0.1); animation: pulseTired 3s infinite alternate; filter: grayscale(0.3); }
     .brain-better { background: radial-gradient(circle, rgba(241,196,15,0.2) 0%, rgba(241,196,15,0) 70%); box-shadow: 0 0 30px rgba(241, 196, 15, 0.3), inset 0 0 20px rgba(241, 196, 15, 0.1); animation: pulseBetter 2.5s infinite alternate; }
     .brain-fresh { background: radial-gradient(circle, rgba(0,229,255,0.2) 0%, rgba(0,229,255,0) 70%); box-shadow: 0 0 40px rgba(0, 229, 255, 0.4), inset 0 0 20px rgba(0, 229, 255, 0.2); animation: pulseFresh 2s infinite alternate; }
@@ -196,12 +192,10 @@
     .day-box.done { background: rgba(0, 229, 255, 0.1); border-color: #00e5ff; color: #00e5ff; }
     .day-box .check-mark { display: block; font-size: 12px; margin-top: 4px; }
 
-    /* Sleep Hours Grid */
     .hours-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 15px; }
     .hour-btn { background: #1a1f2e; color: #e8eaed; border: 1px solid #2a3142; padding: 12px 0; border-radius: 10px; font-weight: bold; font-size: 14px; cursor: pointer; transition: 0.2s; text-align: center; }
     .hour-btn.selected { background: #00e5ff; color: #05080f; border-color: #00e5ff; box-shadow: 0 0 15px rgba(0, 229, 255, 0.4); }
 
-    /* Weekly Progress Bars */
     .weekly-bar-container { margin-bottom: 12px; }
     .weekly-bar-label { display: flex; justify-content: space-between; font-size: 12px; color: #9aa0a6; margin-bottom: 4px; }
     .weekly-bar-bg { background: #2a3142; height: 8px; border-radius: 4px; overflow: hidden; position: relative; }
@@ -309,7 +303,7 @@
     <p class="footer-text">Progress saves in this browser only.</p>
   </div>
 
-  <!-- ===== INTRO MODAL (Now accessible from Settings) ===== -->
+  <!-- ===== INTRO MODAL ===== -->
   <div id="introModal" class="modal-overlay">
     <div class="modal-box" style="text-align: center;">
       <h2 style="color: #00e5ff; font-size: 26px;">Welcome to GRITGO! 🌟</h2>
@@ -465,7 +459,15 @@
   <!-- ===== SETTINGS MODAL ===== -->
   <div id="settingsModal" class="modal-overlay">
     <div class="modal-box">
-      <h2>Settings</h2>
+      
+      <!-- ✅ NEW: Title and Tiny Guide Button at Top Right -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2 style="margin-bottom: 0; text-align: left;">Settings</h2>
+        <button id="showGuideBtn" style="width: 35px; height: 35px; display: flex; justify-content: center; align-items: center; background: #2a3142; color: #d6a1f0; border: 1px solid #d6a1f0; border-radius: 8px; font-size: 16px; cursor: pointer; padding: 0; box-shadow: 0 0 10px rgba(214, 161, 240, 0.2);">
+          📖
+        </button>
+      </div>
+
       <label>Challenge Name:</label>
       <input type="text" id="settingsTitle">
       <label>Duration (days):</label>
@@ -494,11 +496,6 @@
         <button id="settingsSave">Save Changes</button>
       </div>
       
-      <!-- ✅ NEW: Guide Button (Very Small) -->
-      <button id="showGuideBtn" style="width:100%; margin-top:15px; padding:10px; background:transparent; color:#d6a1f0; border:1px solid #d6a1f0; border-radius:10px; font-size:13px; font-weight:600; cursor:pointer;">
-        📖 How to Use App
-      </button>
-
       <button id="exportData" style="width:100%; margin-top:15px; padding:12px; background:#2a3142; color:#4a9eff; border:1px solid #4a9eff; border-radius:10px; font-weight:600; cursor:pointer;">📥 Backup Data (Export)</button>
       <button id="importData" style="width:100%; margin-top:10px; padding:12px; background:#2a3142; color:#4aaa4a; border:1px solid #4aaa4a; border-radius:10px; font-weight:600; cursor:pointer;">📤 Restore Data (Import)</button>
       <input type="file" id="importFileInput" accept=".json" style="display:none;">
@@ -1183,7 +1180,7 @@
     };
     document.getElementById("settingsCancel").onclick = () => settingsModal.classList.remove("active");
     
-    // ✅ NEW: Show Guide Button Logic
+    // ✅ NEW: Show Guide Button Logic (Top Right)
     document.getElementById("showGuideBtn").onclick = () => {
       settingsModal.classList.remove("active"); // Close settings
       introModal.classList.add("active");       // Open guide modal
@@ -1225,7 +1222,6 @@
     document.getElementById("resetAllData").onclick = () => { settingsModal.classList.remove("active"); document.getElementById("resetModal").classList.add("active"); };
     document.getElementById("resetCancel").onclick = () => { document.getElementById("resetModal").classList.remove("active"); settingsModal.classList.add("active"); };
     
-    // ✅ FIXED: Now clears ALL data including Sleep State
     document.getElementById("resetConfirm").onclick = () => { 
       localStorage.removeItem("challengeData"); 
       localStorage.removeItem("gritgo_sleep_state");
