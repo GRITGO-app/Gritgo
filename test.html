@@ -8,13 +8,7 @@
   <meta name="theme-color" content="#0f1419">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <style>
-    * {
-      margin: 0; padding: 0; box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      -webkit-tap-highlight-color: transparent;
-      -webkit-touch-callout: none;
-      -webkit-user-select: none; user-select: none;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
     input, textarea, select { -webkit-user-select: auto; user-select: auto; }
     body { background-color: #0f1419; color: #e8eaed; min-height: 100vh; overflow-x: hidden; touch-action: manipulation; }
 
@@ -147,8 +141,6 @@
     /* Sleep Tracker Styles */
     .tracker-section { background: #0f1419; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #2a3142; }
     .tracker-section h3 { font-size: 16px; color: #e8eaed; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-    
-    /* Sleep Tracker Lock */
     .sleep-lock-container { display: none; text-align: center; padding: 30px 15px; }
     .sleep-lock-container h3 { color: #ff6b4a; font-size: 18px; margin-bottom: 10px; justify-content: center; }
     .sleep-lock-container p { color: #9aa0a6; font-size: 14px; }
@@ -351,7 +343,15 @@
       </div>
 
       <div style="background: #0f1419; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #2a3142;">
-        <h3 style="color: #e8eaed; font-size: 15px; margin-bottom: 10px;">📊 3. Stats & Progress</h3>
+        <h3 style="color: #e8eaed; font-size: 15px; margin-bottom: 10px;">⚡ 3. Quick Actions (Below Heatmap)</h3>
+        <p style="color: #9aa0a6; font-size: 13px; line-height: 1.6;">
+          • <b>Check All (Blue ✔️):</b> Instantly checks all habits for today in one click. Great for a perfect day!<br>
+          • <b>Reset All (Black 🔄):</b> Unchecks all habits for today if you made a mistake.
+        </p>
+      </div>
+
+      <div style="background: #0f1419; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #2a3142;">
+        <h3 style="color: #e8eaed; font-size: 15px; margin-bottom: 10px;">📊 4. Stats & Progress</h3>
         <p style="color: #9aa0a6; font-size: 13px; line-height: 1.6;">
           • <b>Overall %:</b> Shows the percentage of habits you completed TODAY.<br>
           • <b>Challenge Progress:</b> Shows how many DAYS have passed in your challenge.<br>
@@ -360,7 +360,7 @@
       </div>
 
       <div style="background: #0f1419; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #2a3142;">
-        <h3 style="color: #e8eaed; font-size: 15px; margin-bottom: 10px;">✨ 4. Extras & Insights</h3>
+        <h3 style="color: #e8eaed; font-size: 15px; margin-bottom: 10px;">✨ 5. Extras & Insights</h3>
         <p style="color: #9aa0a6; font-size: 13px; line-height: 1.6;">
           • <b>Achievements:</b> Unlock badges by maintaining streaks.<br>
           • <b>Calendar & Notes:</b> View your monthly progress and write a daily note.
@@ -368,9 +368,9 @@
       </div>
 
       <div style="background: #0f1419; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #2a3142;">
-        <h3 style="color: #e8eaed; font-size: 15px; margin-bottom: 10px;">🌙 5. Sleep & Backup</h3>
+        <h3 style="color: #e8eaed; font-size: 15px; margin-bottom: 10px;">🌙 6. Sleep & Backup</h3>
         <p style="color: #9aa0a6; font-size: 13px; line-height: 1.6;">
-          • <b>Sleep Tracker:</b> Log your sleep to see your Brain State.<br>
+          • <b>Sleep Tracker:</b> Log your sleep to see your Brain State. (Note: It remains <b>Locked</b> until your challenge starts).<br>
           • <b>Backup (📤):</b> Always export your data (JSON) so you don't lose progress if you clear your browser.
         </p>
       </div>
@@ -498,7 +498,6 @@
       <div class="tracker-section">
         <h3>😴 Sleep Tracker</h3>
         
-        <!-- Sleep Tracker Lock Message -->
         <div id="sleepTrackerLock" class="sleep-lock-container">
           <h3>🔒 Challenge Locked</h3>
           <p>You cannot log sleep until the challenge starts.</p>
@@ -590,6 +589,9 @@
     function updateDatePlaceholders() { document.querySelectorAll(".date-wrapper").forEach(w => { const i = w.querySelector("input"); if (i && i.value) w.classList.add("has-value"); else w.classList.remove("has-value"); }); }
     document.querySelectorAll(".date-wrapper input").forEach(i => { i.addEventListener("change", updateDatePlaceholders); i.addEventListener("input", updateDatePlaceholders); i.addEventListener("blur", updateDatePlaceholders); });
 
+    // Prevent past dates in setup
+    document.getElementById("setupStartDate").setAttribute("min", getDateKey());
+
     function showToast(message) { const t = document.createElement("div"); t.className = "toast"; t.textContent = message; document.body.appendChild(t); setTimeout(() => t.classList.add("show"), 10); setTimeout(() => { t.classList.remove("show"); setTimeout(() => t.remove(), 400); }, 2500); }
 
     function requestNotificationPermission() {
@@ -640,7 +642,10 @@
       const duration = parseInt(document.getElementById("setupDuration").value);
       let startDate = normalizeDate(document.getElementById("setupStartDate").value);
       const motivation = document.getElementById("setupMotivation").value.trim();
+      
       if (!title || !duration || !startDate) { showToast("Please fill required fields"); return; }
+      if (startDate < getDateKey()) { showToast("Start Date cannot be in the past!"); return; } // Fix Past Date
+
       challengeData = { title, duration, startDate, motivation: motivation || "Show up again.", habits: [], habitLogs: {}, notes: {}, dayStart: getTimeFromSelects("setupDayStart"), dayEnd: getTimeFromSelects("setupDayEnd") };
       localStorage.setItem("challengeData", JSON.stringify(challengeData));
       startMainApp();
@@ -1034,7 +1039,7 @@
       document.getElementById("overallStat").textContent = Math.round((completedToday / totalHabits) * 100) + "%";
     }
 
-    // ===== QUICK ACTIONS LOGIC (FIXED FOR FUTURE DATE) =====
+    // ===== QUICK ACTIONS LOGIC =====
     document.getElementById("checkAllBtn").addEventListener("click", () => {
       const todayKey = getDateKey();
       const isFuture = challengeData.startDate > todayKey;
@@ -1183,7 +1188,6 @@
         else d.setDate(d.getDate() - i); 
         
         const dateKey = getDateKey(d);
-        // Added Month to the date display
         const displayDate = d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
         const log = challengeData.habitLogs[dateKey] || {}; 
         const completed = Object.values(log).filter(val => val === true).length;
@@ -1200,9 +1204,53 @@
 
     setInterval(checkSleepWeek, 60000);
 
-    document.getElementById("settingsButton").onclick = () => { document.getElementById("settingsTitle").value = challengeData.title; document.getElementById("settingsDuration").value = challengeData.duration; document.getElementById("settingsStartDate").value = normalizeDate(challengeData.startDate); document.getElementById("settingsMotivation").value = challengeData.motivation; setSelectsFromTime("settingsDayStart", challengeData.dayStart); setSelectsFromTime("settingsDayEnd", challengeData.dayEnd); document.getElementById("settingsModal").classList.add("active"); setTimeout(updateDatePlaceholders, 50); };
+    document.getElementById("settingsButton").onclick = () => { 
+      // Set min date for settings
+      const originalStartDate = normalizeDate(challengeData.startDate);
+      document.getElementById("settingsStartDate").setAttribute("min", originalStartDate);
+
+      document.getElementById("settingsTitle").value = challengeData.title; 
+      document.getElementById("settingsDuration").value = challengeData.duration; 
+      document.getElementById("settingsStartDate").value = originalStartDate; 
+      document.getElementById("settingsMotivation").value = challengeData.motivation; 
+      setSelectsFromTime("settingsDayStart", challengeData.dayStart); 
+      setSelectsFromTime("settingsDayEnd", challengeData.dayEnd); 
+      document.getElementById("settingsModal").classList.add("active"); 
+      setTimeout(updateDatePlaceholders, 50); 
+    };
     document.getElementById("settingsCancel").onclick = () => document.getElementById("settingsModal").classList.remove("active");
-    document.getElementById("settingsSave").onclick = () => { try { const t = document.getElementById("settingsTitle").value.trim(); const d = parseInt(document.getElementById("settingsDuration").value); const s = normalizeDate(document.getElementById("settingsStartDate").value); const m = document.getElementById("settingsMotivation").value.trim(); if(!t||!d||!s) { showToast("Fill required fields"); return; } challengeData.title = t; challengeData.duration = d; challengeData.startDate = s; challengeData.motivation = m || "Show up again."; challengeData.dayStart = getTimeFromSelects("settingsDayStart"); challengeData.dayEnd = getTimeFromSelects("settingsDayEnd"); localStorage.setItem("challengeData", JSON.stringify(challengeData)); document.getElementById("headerTitle").textContent = t + " Tracker"; document.getElementById("mainTitle").textContent = t; updateMotivation(); renderHeatmap(); renderTodayHabits(); updateStats(); document.getElementById("settingsModal").classList.remove("active"); showToast("Settings saved!"); } catch(e) { alert(e.message); } };
+    document.getElementById("settingsSave").onclick = () => { 
+      try { 
+        const t = document.getElementById("settingsTitle").value.trim(); 
+        const d = parseInt(document.getElementById("settingsDuration").value); 
+        const s = normalizeDate(document.getElementById("settingsStartDate").value); 
+        const m = document.getElementById("settingsMotivation").value.trim(); 
+        
+        if(!t||!d||!s) { showToast("Fill required fields"); return; } 
+        
+        // Prevent past dates
+        if (s < normalizeDate(challengeData.startDate)) { 
+          showToast("Start date cannot be moved to the past!"); 
+          return; 
+        }
+        
+        challengeData.title = t; 
+        challengeData.duration = d; 
+        challengeData.startDate = s; 
+        challengeData.motivation = m || "Show up again."; 
+        challengeData.dayStart = getTimeFromSelects("settingsDayStart"); 
+        challengeData.dayEnd = getTimeFromSelects("settingsDayEnd"); 
+        localStorage.setItem("challengeData", JSON.stringify(challengeData)); 
+        document.getElementById("headerTitle").textContent = t + " Tracker"; 
+        document.getElementById("mainTitle").textContent = t; 
+        updateMotivation(); 
+        renderHeatmap(); 
+        renderTodayHabits(); 
+        updateStats(); 
+        document.getElementById("settingsModal").classList.remove("active"); 
+        showToast("Settings saved!"); 
+      } catch(e) { alert(e.message); } 
+    };
     document.getElementById("resetAllData").onclick = () => { document.getElementById("settingsModal").classList.remove("active"); document.getElementById("resetModal").classList.add("active"); };
     document.getElementById("resetCancel").onclick = () => { document.getElementById("resetModal").classList.remove("active"); document.getElementById("settingsModal").classList.add("active"); };
     document.getElementById("resetConfirm").onclick = () => { localStorage.removeItem("challengeData"); localStorage.removeItem("gritgo_sleep_state"); localStorage.removeItem("gritgo_intro_seen"); location.reload(); };
