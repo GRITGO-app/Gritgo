@@ -194,7 +194,7 @@
     </div>
     <label>Motivation Text:</label>
     <input type="text" id="setupMotivation" placeholder="Any Motivational Text You Like">
-    <label>Day Start Time:</label>
+    <label>Day Start Time (New day begins at this time):</label>
     <div class="time-picker-row">
       <select class="time-hour" id="setupDayStartHour"></select>
       <select class="time-minute" id="setupDayStartMinute"></select>
@@ -584,13 +584,41 @@
       return dateStr;
     }
 
-    function getDateKey(date) { const d = date || new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; }
+    // ==== LOGICAL DATE LOGIC BASED ON DAY START TIME ====
+    function getLiteralDateKey() {
+      const d = new Date();
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    }
+
+    function getDateKey(date) {
+      let d;
+      if (date) {
+        d = new Date(date);
+        if (isNaN(d.getTime())) return "";
+      } else {
+        d = new Date();
+        // Apply custom Day Start Time logic
+        if (typeof challengeData !== 'undefined' && challengeData.dayStart) {
+          const [startHour, startMinute] = challengeData.dayStart.split(':').map(Number);
+          const currentHour = d.getHours();
+          const currentMinute = d.getMinutes();
+          
+          // If current time is before the day start time, it's logically still yesterday
+          if (currentHour < startHour || (currentHour === startHour && currentMinute < startMinute)) {
+            d.setDate(d.getDate() - 1);
+          }
+        }
+      }
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    }
+    // =========================================================
+
     function nextDateKey(key) { if (!key || key.includes("NaN")) return key; const d = new Date(key + "T00:00:00"); if (isNaN(d.getTime())) return key; d.setDate(d.getDate() + 1); return getDateKey(d); }
     function updateDatePlaceholders() { document.querySelectorAll(".date-wrapper").forEach(w => { const i = w.querySelector("input"); if (i && i.value) w.classList.add("has-value"); else w.classList.remove("has-value"); }); }
     document.querySelectorAll(".date-wrapper input").forEach(i => { i.addEventListener("change", updateDatePlaceholders); i.addEventListener("input", updateDatePlaceholders); i.addEventListener("blur", updateDatePlaceholders); });
 
-    // Prevent past dates in setup
-    document.getElementById("setupStartDate").setAttribute("min", getDateKey());
+    // Prevent past dates in setup (using literal date so setup works even at 2 AM)
+    document.getElementById("setupStartDate").setAttribute("min", getLiteralDateKey());
 
     function showToast(message) { const t = document.createElement("div"); t.className = "toast"; t.textContent = message; document.body.appendChild(t); setTimeout(() => t.classList.add("show"), 10); setTimeout(() => { t.classList.remove("show"); setTimeout(() => t.remove(), 400); }, 2500); }
 
@@ -644,7 +672,7 @@
       const motivation = document.getElementById("setupMotivation").value.trim();
       
       if (!title || !duration || !startDate) { showToast("Please fill required fields"); return; }
-      if (startDate < getDateKey()) { showToast("Start Date cannot be in the past!"); return; } // Fix Past Date
+      if (startDate < getLiteralDateKey()) { showToast("Start Date cannot be in the past!"); return; } // Fix Past Date
 
       challengeData = { title, duration, startDate, motivation: motivation || "Show up again.", habits: [], habitLogs: {}, notes: {}, dayStart: getTimeFromSelects("setupDayStart"), dayEnd: getTimeFromSelects("setupDayEnd") };
       localStorage.setItem("challengeData", JSON.stringify(challengeData));
@@ -682,22 +710,21 @@
     document.getElementById("extrasClose").addEventListener("click", () => extrasModal.classList.remove("active"));
 
     function renderExtras() {
-    const isFuture = challengeData.startDate > getDateKey();
-let progressPercent = 0;
-let progressText = "";
+      const isFuture = challengeData.startDate > getDateKey();
+      let progressPercent = 0;
+      let progressText = "";
 
-if (isFuture) {
-  progressPercent = 0; // চ্যালেঞ্জ শুরুর আগে ০% থাকবে
-  progressText = `Challenge Starts on ${new Date(challengeData.startDate).toLocaleDateString()}`;
-} else {
-  const currentDay = getCurrentDayNumber();
-  progressPercent = Math.min(Math.round((currentDay / challengeData.duration) * 100), 100);
-  progressText = `${progressPercent}% Completed (Day ${currentDay} / ${challengeData.duration})`;
-}
+      if (isFuture) {
+        progressPercent = 0; // চ্যালেঞ্জ শুরুর আগে ০% থাকবে
+        progressText = `Challenge Starts on ${new Date(challengeData.startDate).toLocaleDateString()}`;
+      } else {
+        const currentDay = getCurrentDayNumber();
+        progressPercent = Math.min(Math.round((currentDay / challengeData.duration) * 100), 100);
+        progressText = `${progressPercent}% Completed (Day ${currentDay} / ${challengeData.duration})`;
+      }
 
-// বার এবং টেক্সট আপডেট
-document.getElementById("overallProgressFill").style.width = progressPercent + "%";
-document.getElementById("overallProgressText").textContent = progressText;
+      document.getElementById("overallProgressFill").style.width = progressPercent + "%";
+      document.getElementById("overallProgressText").textContent = progressText;
 
       const dayOfMonth = new Date().getDate();
       document.getElementById("dailyQuoteText").textContent = `"${quotes[dayOfMonth % quotes.length]}"`;
@@ -1287,6 +1314,57 @@ document.getElementById("overallProgressText").textContent = progressText;
       migrateData(); 
       startMainApp(); 
     }
+    
+    // ===== AUTO UPDATE APP AT DAY START TIME =====
+    let lastAppDate = getDateKey();
+    setInterval(() => {
+      const currentAppDate = getDateKey();
+      if (currentAppDate !== lastAppDate) {
+        lastAppDate = currentAppDate;
+        
+        // Refresh UI for new day
+        updateMotivation();
+        renderTodayHabits();
+        renderHeatmap();
+        updateStats();
+        
+        if(document.getElementById("extrasModal").classList.contains("active")) renderExtras();
+        if(document.getElementById("trackerModal").classList.contains("active")) {
+          renderWeeklyProgress();
+          renderSleepTracker();
+        }
+        
+        showToast("New Day Started! Keep going! 🌅");
+      }
+    }, 60000); // Check every minute
+
+    // ===== NOTIFICATION SYSTEM LOGIC =====
+    let lastGmNotified = localStorage.getItem("gritgo_gm_notified") || "";
+    let lastGnNotified = localStorage.getItem("gritgo_gn_notified") || "";
+
+    function checkScheduledNotifications() {
+      if (!("Notification" in window) || Notification.permission !== "granted") return;
+      
+      const now = new Date();
+      const currentTime = String(now.getHours()).padStart(2, '0') + ":" + String(now.getMinutes()).padStart(2, '0');
+      const todayKey = getDateKey();
+
+      if (currentTime === challengeData.dayStart && lastGmNotified !== todayKey) {
+        new Notification("Good Morning! 🌅", { body: "A new day has started. Time to crush your habits!" });
+        localStorage.setItem("gritgo_gm_notified", todayKey);
+        lastGmNotified = todayKey;
+      }
+
+      if (currentTime === challengeData.dayEnd && lastGnNotified !== todayKey) {
+        new Notification("Good Night! 🌙", { body: "The day is ending. Did you complete your habits?" });
+        localStorage.setItem("gritgo_gn_notified", todayKey);
+        lastGnNotified = todayKey;
+      }
+    }
+
+    setInterval(checkScheduledNotifications, 60000);
+    // =====================================
+
     if ("serviceWorker" in navigator) { navigator.serviceWorker.register("service-worker.js").catch(err => console.log(err)); }
   </script>
 </body>
