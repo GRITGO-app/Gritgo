@@ -682,16 +682,22 @@
     document.getElementById("extrasClose").addEventListener("click", () => extrasModal.classList.remove("active"));
 
     function renderExtras() {
-      const currentDay = getCurrentDayNumber();
-      const progressPercent = Math.min(Math.round((currentDay / challengeData.duration) * 100), 100);
-      document.getElementById("overallProgressFill").style.width = progressPercent + "%";
-      
-      const isFuture = challengeData.startDate > getDateKey();
-      if (isFuture) {
-        document.getElementById("overallProgressText").textContent = `Challenge Starts on ${new Date(challengeData.startDate).toLocaleDateString()}`;
-      } else {
-        document.getElementById("overallProgressText").textContent = `${progressPercent}% Completed (Day ${currentDay} / ${challengeData.duration})`;
-      }
+    const isFuture = challengeData.startDate > getDateKey();
+let progressPercent = 0;
+let progressText = "";
+
+if (isFuture) {
+  progressPercent = 0; // চ্যালেঞ্জ শুরুর আগে ০% থাকবে
+  progressText = `Challenge Starts on ${new Date(challengeData.startDate).toLocaleDateString()}`;
+} else {
+  const currentDay = getCurrentDayNumber();
+  progressPercent = Math.min(Math.round((currentDay / challengeData.duration) * 100), 100);
+  progressText = `${progressPercent}% Completed (Day ${currentDay} / ${challengeData.duration})`;
+}
+
+// বার এবং টেক্সট আপডেট
+document.getElementById("overallProgressFill").style.width = progressPercent + "%";
+document.getElementById("overallProgressText").textContent = progressText;
 
       const dayOfMonth = new Date().getDate();
       document.getElementById("dailyQuoteText").textContent = `"${quotes[dayOfMonth % quotes.length]}"`;
