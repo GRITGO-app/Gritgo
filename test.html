@@ -147,6 +147,12 @@
     /* Sleep Tracker Styles */
     .tracker-section { background: #0f1419; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #2a3142; }
     .tracker-section h3 { font-size: 16px; color: #e8eaed; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+    
+    /* Sleep Tracker Lock */
+    .sleep-lock-container { display: none; text-align: center; padding: 30px 15px; }
+    .sleep-lock-container h3 { color: #ff6b4a; font-size: 18px; margin-bottom: 10px; justify-content: center; }
+    .sleep-lock-container p { color: #9aa0a6; font-size: 14px; }
+
     .sleep-brain-container { text-align: center; margin-bottom: 20px; position: relative; height: 140px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
     .brain-circle { width: 100px; height: 100px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 50px; transition: all 0.5s ease; position: relative; }
     .brain-tired { background: radial-gradient(circle, rgba(255,107,74,0.2) 0%, rgba(255,107,74,0) 70%); box-shadow: 0 0 30px rgba(255, 107, 74, 0.3); animation: pulseTired 3s infinite alternate; filter: grayscale(0.3); }
@@ -488,21 +494,32 @@
   <div id="trackerModal" class="modal-overlay">
     <div class="modal-box" style="padding-top: 15px;">
       <h2>Progress Dashboard 📊</h2>
+      
       <div class="tracker-section">
         <h3>😴 Sleep Tracker</h3>
-        <div class="sleep-brain-container">
-          <div id="brainCircle" class="brain-circle brain-tired">😴</div>
-          <div id="brainText" class="brain-text">No Sleep Data Yet</div>
+        
+        <!-- Sleep Tracker Lock Message -->
+        <div id="sleepTrackerLock" class="sleep-lock-container">
+          <h3>🔒 Challenge Locked</h3>
+          <p>You cannot log sleep until the challenge starts.</p>
         </div>
-        <div class="week-grid" id="weekGrid"></div>
-        <div id="sleepInputSection">
-          <label style="margin-top: 0; margin-bottom: 10px; display: block; color: #9aa0a6; font-size: 13px;">Select Hours Slept:</label>
-          <div class="hours-grid" id="hoursGrid">
-            <button class="hour-btn" data-val="1">1h</button><button class="hour-btn" data-val="2">2h</button><button class="hour-btn" data-val="3">3h</button><button class="hour-btn" data-val="4">4h</button><button class="hour-btn" data-val="5">5h</button><button class="hour-btn" data-val="6">6h</button><button class="hour-btn" data-val="7">7h</button><button class="hour-btn" data-val="8">8h</button><button class="hour-btn" data-val="9">9h</button><button class="hour-btn" data-val="10">10h</button><button class="hour-btn" data-val="11">11h</button><button class="hour-btn" data-val="12">12h</button>
+
+        <div id="sleepTrackerContent">
+          <div class="sleep-brain-container">
+            <div id="brainCircle" class="brain-circle brain-tired">😴</div>
+            <div id="brainText" class="brain-text">No Sleep Data Yet</div>
           </div>
-          <button id="saveSleepBtn" style="width:100%; padding:12px; border:none; border-radius:10px; font-weight:bold; cursor:pointer;">Save Today's Sleep</button>
+          <div class="week-grid" id="weekGrid"></div>
+          <div id="sleepInputSection">
+            <label style="margin-top: 0; margin-bottom: 10px; display: block; color: #9aa0a6; font-size: 13px;">Select Hours Slept:</label>
+            <div class="hours-grid" id="hoursGrid">
+              <button class="hour-btn" data-val="1">1h</button><button class="hour-btn" data-val="2">2h</button><button class="hour-btn" data-val="3">3h</button><button class="hour-btn" data-val="4">4h</button><button class="hour-btn" data-val="5">5h</button><button class="hour-btn" data-val="6">6h</button><button class="hour-btn" data-val="7">7h</button><button class="hour-btn" data-val="8">8h</button><button class="hour-btn" data-val="9">9h</button><button class="hour-btn" data-val="10">10h</button><button class="hour-btn" data-val="11">11h</button><button class="hour-btn" data-val="12">12h</button>
+            </div>
+            <button id="saveSleepBtn" style="width:100%; padding:12px; border:none; border-radius:10px; font-weight:bold; cursor:pointer;">Save Today's Sleep</button>
+          </div>
         </div>
       </div>
+
       <div class="tracker-section">
         <h3>📈 Last 7 Days Habits</h3>
         <div id="weeklyProgressList"></div>
@@ -1106,6 +1123,17 @@
     }
 
     function renderSleepTracker() {
+      const isFuture = challengeData.startDate > getDateKey();
+      
+      if (isFuture) {
+        document.getElementById("sleepTrackerLock").style.display = "block";
+        document.getElementById("sleepTrackerContent").style.display = "none";
+        return; // Stop rendering the rest
+      } else {
+        document.getElementById("sleepTrackerLock").style.display = "none";
+        document.getElementById("sleepTrackerContent").style.display = "block";
+      }
+
       const today = getDateKey(); const start = new Date(sleepState.weekStartDate + "T00:00:00"); const now = new Date(today + "T00:00:00");
       const diffDays = Math.floor(Math.abs(now - start) / (1000 * 60 * 60 * 24)); const currentIndex = Math.min(diffDays, 6);
       let displayHours = sleepState.days[currentIndex] !== null ? sleepState.days[currentIndex] : (currentIndex > 0 ? sleepState.days[currentIndex - 1] : null);
@@ -1145,18 +1173,18 @@
       const totalHabits = challengeData.habits.length;
       if (totalHabits === 0) { list.innerHTML = `<p style="color:#9aa0a6; font-size:13px; text-align:center;">No habits to track yet.</p>`; return; }
 
-      // If challenge hasn't started, show the first 7 days of the challenge instead of today
       const isFuture = challengeData.startDate > getDateKey();
       let baseDate = new Date();
       if (isFuture) baseDate = new Date(challengeData.startDate + "T00:00:00");
 
       for (let i = 6; i >= 0; i--) {
         const d = new Date(baseDate); 
-        if (isFuture) d.setDate(d.getDate() + (6 - i)); // Count forward for future
-        else d.setDate(d.getDate() - i); // Count backward for past
+        if (isFuture) d.setDate(d.getDate() + (6 - i)); 
+        else d.setDate(d.getDate() - i); 
         
         const dateKey = getDateKey(d);
-        const displayDate = d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric' });
+        // Added Month to the date display
+        const displayDate = d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
         const log = challengeData.habitLogs[dateKey] || {}; 
         const completed = Object.values(log).filter(val => val === true).length;
         const percent = Math.round((completed / totalHabits) * 100); let displayPercent = (dateKey < challengeData.startDate) ? 0 : percent;
