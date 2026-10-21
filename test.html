@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>GRITGO - Challenge Tracker</title>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f1419">
@@ -12,24 +12,38 @@
     input, textarea, select { -webkit-user-select: auto; user-select: auto; }
     body { background-color: #0f1419; color: #e8eaed; min-height: 100vh; overflow-x: hidden; touch-action: manipulation; }
 
+    /* ===== Sidebar / Drawer ===== */
+    #sidebarOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; backdrop-filter: blur(2px); }
+    #sidebarOverlay.active { display: block; }
+    
+    #sidebar { position: fixed; top: 0; left: -280px; width: 280px; height: 100vh; background-color: #14151f; z-index: 1001; transition: left 0.3s ease-in-out; display: flex; flex-direction: column; border-right: 1px solid #1f2937; box-shadow: 5px 0 15px rgba(0,0,0,0.5); }
+    #sidebar.open { left: 0; }
+    
+    .sidebar-header { padding: 20px; border-bottom: 1px solid #1f2937; display: flex; justify-content: space-between; align-items: center; }
+    .sidebar-header h2 { font-size: 20px; color: #fff; }
+    .close-btn { background: none; border: none; color: #9aa0a6; font-size: 24px; cursor: pointer; }
+    
+    .sidebar-menu { padding: 15px; display: flex; flex-direction: column; gap: 10px; }
+    .menu-item { display: flex; align-items: center; gap: 15px; padding: 15px; background: #1a1f2e; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+    .menu-item:hover { background: #2a3142; border-color: #4a9eff; }
+    .menu-item svg { width: 20px; height: 20px; stroke: #4a9eff; fill: none; stroke-width: 2; }
+
     /* ===== Setup Screen ===== */
     #setupScreen { max-width: 500px; margin: 0 auto; padding: 40px 20px; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; }
-    #setupScreen h1 { color: #ffffff; font-size: 28px; margin-bottom: 8px; text-align: center; }
+    #setupScreen h1 { color: #00e5ff; font-size: 32px; margin-bottom: 8px; text-align: center; text-shadow: 0 0 10px rgba(0,229,255,0.5); }
     #setupScreen > p { color: #9aa0a6; text-align: center; margin-bottom: 30px; font-size: 15px; }
     #setupScreen label { display: block; color: #9aa0a6; font-size: 14px; margin-bottom: 6px; margin-top: 15px; }
     #setupScreen input { width: 100%; padding: 12px 15px; background-color: #1a1f2e; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 15px; outline: none; }
     #setupScreen input:focus { border-color: #4a9eff; }
-    .time-picker-row { display: flex; gap: 8px; margin-bottom: 5px; }
-    .time-picker-row select { background-color: #1a1f2e; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 15px; padding: 12px 10px; outline: none; cursor: pointer; text-align: center; }
-    .time-picker-row select:focus { border-color: #4a9eff; }
-    .time-hour { flex: 1; } .time-minute { flex: 1; } .time-ampm { flex: 1.2; font-weight: bold; color: #4a9eff !important; }
     #setupSaveButton { margin-top: 25px; width: 100%; padding: 14px; background: linear-gradient(135deg, #4a9eff, #2a7fdb); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; }
 
     /* ===== Main App ===== */
     #mainApp { max-width: 500px; margin: 0 auto; padding: 15px; min-height: 100vh; }
     .header { display: flex; align-items: center; justify-content: space-between; padding: 10px 5px; margin-bottom: 20px; }
-    .header button { background: none; border: none; color: #e8eaed; font-size: 20px; cursor: pointer; padding: 5px 10px; }
+    .header button { background: none; border: none; color: #e8eaed; cursor: pointer; padding: 5px 10px; display: flex; align-items: center; justify-content: center; transition: color 0.2s; }
+    .header button:hover { color: #00e5ff; }
     .header span { color: #ffffff; font-size: 16px; font-weight: 600; }
+    .header svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
     .title-section { text-align: center; margin-bottom: 25px; }
     #mainTitle { color: #ffffff; font-size: 42px; font-weight: 800; margin-bottom: 6px; letter-spacing: -1px; }
@@ -41,8 +55,8 @@
     .stat-card span:last-child { color: #9aa0a6; font-size: 11px; text-transform: lowercase; }
     #streakStat { color: #ff6b4a !important; }
 
-    #heatmap { display: grid; grid-template-columns: repeat(10, 1fr); gap: 5px; margin-bottom: 10px; padding: 0; }
-    .heatmap-cell { aspect-ratio: 1; width: 100%; background-color: #1a1f2e; border-radius: 4px; cursor: pointer; }
+    #heatmap { display: grid; grid-template-columns: repeat(13, 1fr); gap: 4px; margin-bottom: 10px; padding: 0; }
+    .heatmap-cell { aspect-ratio: 1; width: 100%; background-color: #1a1f2e; border-radius: 5px; cursor: pointer; }
     .heatmap-hint { color: #9aa0a6; font-size: 12px; margin-bottom: 25px; text-align: center; }
 
     /* Quick Action Buttons */
@@ -52,6 +66,7 @@
     .check-all-btn { background: linear-gradient(135deg, #4a9eff, #2a7fdb); color: white; border: none; box-shadow: 0 0 10px rgba(74, 158, 255, 0.4); }
     .reset-all-btn { background: #000000; color: #ffffff; border: 1px solid #555555; }
     .quick-btn.disabled { opacity: 0.3; cursor: not-allowed; pointer-events: none; }
+    .quick-btn svg { width: 20px; height: 20px; }
 
     .btn-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
     .tracker-btn { display: flex; align-items: center; justify-content: center; width: 100%; padding: 12px 20px; background: #1e1b2e; color: #d6a1f0; border: 1px solid #9b59b6; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer; box-shadow: 0 0 15px rgba(155, 89, 182, 0.2); }
@@ -83,13 +98,20 @@
     .footer-text { color: #6a7280; font-size: 12px; text-align: center; margin-top: 25px; margin-bottom: 20px; }
 
     /* ===== Modals ===== */
-    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 1000; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; backdrop-filter: blur(5px); }
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #0f1419; z-index: 2000; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
     .modal-overlay.active { display: flex; }
+    
     .modal-box { background-color: #1a1f2e; border-radius: 20px; padding: 25px; width: 100%; max-width: 400px; max-height: 90vh; overflow-y: auto; border: 1px solid #2a3142; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
     .modal-box h2 { color: #ffffff; margin-bottom: 20px; font-size: 22px; text-align: center; }
     .modal-box label { display: block; color: #9aa0a6; font-size: 13px; margin-bottom: 6px; margin-top: 12px; }
     .modal-box input, .modal-box textarea { width: 100%; padding: 12px 15px; background-color: #0f1419; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 15px; outline: none; }
     .modal-box input:focus, .modal-box textarea:focus { border-color: #4a9eff; }
+
+    /* Full Screen Modals */
+    #settingsModal .modal-box, #extrasModal .modal-box, #trackerModal .modal-box, #introModal .modal-box, #notificationHistoryModal .modal-box {
+      height: 100dvh; max-height: 100dvh; width: 100%; max-width: 100%; border-radius: 0; border: none; padding: 20px; margin: 0;
+    }
+    #settingsModal, #extrasModal, #trackerModal, #introModal, #notificationHistoryModal { padding: 0; }
 
     .date-wrapper { position: relative; width: 100%; }
     .date-placeholder { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #9aa0a6; font-size: 15px; pointer-events: none; transition: opacity 0.2s; z-index: 10; }
@@ -99,8 +121,8 @@
 
     .settings-buttons { display: flex; gap: 10px; margin-top: 20px; }
     .settings-buttons button { flex: 1; padding: 14px; border: none; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer; }
-    #settingsCancel, #addHabitCancel, #deleteCancel, #resetCancel, #dayModalClose, #exportCancel, #feedbackCancel, #trackerClose, #introClose, #extrasClose { background-color: #2a3142; color: #e8eaed; }
-    #settingsSave, #addHabitSave, #feedbackSubmit, #saveSleepBtn, #saveNoteBtn { background: linear-gradient(135deg, #4a9eff, #2a7fdb); color: white; }
+    #settingsCancel, #addHabitCancel, #deleteCancel, #resetCancel, #dayModalClose, #exportCancel, #feedbackCancel, #trackerClose, #introClose, #extrasClose, #closePromptBtn, #pastEditCancel, #notiHistoryClose { background-color: #2a3142; color: #e8eaed; }
+    #settingsSave, #addHabitSave, #feedbackSubmit, #saveSleepBtn, #saveNoteBtn, #pastEditConfirm { background: linear-gradient(135deg, #4a9eff, #2a7fdb); color: white; }
     #deleteConfirm, #resetConfirm { background: linear-gradient(135deg, #ff6b4a, #d35400); color: white; }
     #resetAllData { width: 100%; margin-top: 15px; padding: 12px; background: transparent; color: #ff6b4a; border: 1px solid #ff6b4a; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; }
 
@@ -118,8 +140,8 @@
     .lock-message { display: none; padding: 15px; background: rgba(255, 107, 74, 0.1); border: 1px solid #ff6b4a; border-radius: 10px; color: #ff6b4a; text-align: center; margin-bottom: 15px; font-weight: 600; font-size: 14px; }
 
     /* ===== Confetti Animation ===== */
-    .confetti-piece { position: fixed; width: 10px; height: 10px; z-index: 99999; animation: fall 3s linear forwards; }
-    @keyframes fall { 0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
+    .confetti-piece { position: fixed; top: -20px; width: 10px; height: 10px; z-index: 99999; animation: fall 1.5s linear forwards; }
+    @keyframes fall { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(105vh) rotate(720deg); opacity: 0; } }
 
     /* ===== Extras Modal Specific ===== */
     .extras-section { background: #0f1419; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #2a3142; }
@@ -137,6 +159,14 @@
     .cal-day { font-size: 11px; padding: 6px 0; border-radius: 4px; background: #2a3142; color: #9aa0a6; }
     .cal-day.done { background: #4a9eff; color: white; font-weight: bold; }
     .cal-day.today { border: 1px solid #ffffff; }
+
+    /* Notification History Specific */
+    .noti-card { background: #0f1419; padding: 15px; border-radius: 10px; border: 1px solid #2a3142; border-left: 4px solid #00e5ff; margin-bottom: 10px; }
+    .noti-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 5px; }
+    .noti-title { font-weight: bold; color: #ffffff; font-size: 15px; }
+    .noti-date { font-size: 11px; color: #9aa0a6; background: #1a1f2e; padding: 2px 6px; border-radius: 4px; }
+    .noti-body { font-size: 13px; color: #e8eaed; line-height: 1.4; }
+    .empty-noti { text-align: center; color: #9aa0a6; margin-top: 30px; font-size: 14px; }
 
     /* Sleep Tracker Styles */
     .tracker-section { background: #0f1419; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #2a3142; }
@@ -180,6 +210,35 @@
 </head>
 <body>
 
+  <!-- Sidebar Overlay -->
+  <div id="sidebarOverlay"></div>
+
+  <!-- Sidebar / Drawer -->
+  <div id="sidebar">
+    <div class="sidebar-header">
+      <h2>GRITGO</h2>
+      <button class="close-btn" id="closeSidebarBtn">✕</button>
+    </div>
+    <div class="sidebar-menu">
+      <div class="menu-item" id="menuSettingsBtn">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        Settings
+      </div>
+      <div class="menu-item" id="menuNotificationsBtn">
+        <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+        Notifications
+      </div>
+      <div class="menu-item" id="menuGuideBtn">
+        <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+        How to Use
+      </div>
+      <div class="menu-item" id="menuFeedbackBtn">
+        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+        Send Feedback
+      </div>
+    </div>
+  </div>
+
   <div id="setupScreen">
     <h1>Welcome to GRITGO</h1>
     <p>Let's set up your challenge</p>
@@ -194,27 +253,23 @@
     </div>
     <label>Motivation Text:</label>
     <input type="text" id="setupMotivation" placeholder="Any Motivational Text You Like">
-    <label>Day Start Time (New day begins at this time):</label>
-    <div class="time-picker-row">
-      <select class="time-hour" id="setupDayStartHour"></select>
-      <select class="time-minute" id="setupDayStartMinute"></select>
-      <select class="time-ampm" id="setupDayStartAmPm"><option value="AM">AM</option><option value="PM">PM</option></select>
-    </div>
-    <label>Day End Time:</label>
-    <div class="time-picker-row">
-      <select class="time-hour" id="setupDayEndHour"></select>
-      <select class="time-minute" id="setupDayEndMinute"></select>
-      <select class="time-ampm" id="setupDayEndAmPm"><option value="AM">AM</option><option value="PM">PM</option></select>
-    </div>
     <button id="setupSaveButton">Start Challenge</button>
   </div>
 
   <div id="mainApp" style="display:none;">
     <div class="header">
-      <button id="settingsButton">⚙️</button>
+      <button id="openSidebarBtn">
+        <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
       <span id="headerTitle">GRITGO</span>
-      <button id="commentButton">💬</button>
-      <button id="shareButton">📤</button>
+      <div style="display: flex; gap: 5px; align-items: center;">
+        <button id="testNotiBtn" title="Test Notification">
+          <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+        </button>
+        <button id="shareButton" title="Export Data">
+          <svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
+        </button>
+      </div>
     </div>
     <div class="title-section">
       <h1 id="mainTitle">Challenge</h1>
@@ -233,13 +288,12 @@
 
     <div id="heatmap"></div>
     
-    <!-- Quick Action Buttons -->
     <div class="quick-actions">
       <button id="checkAllBtn" class="quick-btn check-all-btn" title="Check All">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
       </button>
       <button id="resetAllBtn" class="quick-btn reset-all-btn" title="Uncheck All">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
       </button>
     </div>
 
@@ -319,9 +373,47 @@
     </div>
   </div>
 
-  <!-- Updated English Guide Modal -->
+  <!-- 🟢 NEW: NOTIFICATION HISTORY MODAL -->
+  <div id="notificationHistoryModal" class="modal-overlay">
+    <div class="modal-box">
+      <h2>Notifications 🔔</h2>
+      <div id="notificationList" style="margin-bottom: 20px;">
+        <!-- Dynamically populated -->
+      </div>
+      <div class="settings-buttons">
+        <button id="notiHistoryClose">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEW GUIDE PROMPT MODAL -->
+  <div id="guidePromptModal" class="modal-overlay">
+    <div class="modal-box" style="text-align: center;">
+      <h2 style="color: #ffffff; margin-bottom: 15px;">Learn How To Use App</h2>
+      <p style="color: #9aa0a6; font-size: 14px; margin-bottom: 25px;">Want to see the complete guide on how to use GRITGO?</p>
+      
+      <button id="startLearningBtn" style="width: 100%; padding: 14px; background: #00e5ff; color: #05080f; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 0 15px rgba(0, 229, 255, 0.4); margin-bottom: 10px;">Learn</button>
+      
+      <button id="closePromptBtn" style="width: 100%; padding: 14px; background: #2a3142; color: #e8eaed; border: none; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer;">Cancel</button>
+    </div>
+  </div>
+
+  <!-- PAST EDIT PROMPT MODAL -->
+  <div id="pastEditPromptModal" class="modal-overlay">
+    <div class="modal-box" style="text-align: center;">
+      <h2 style="color: #ffffff; margin-bottom: 15px;">Tick on Past Habits</h2>
+      <p style="color: #9aa0a6; font-size: 14px; margin-bottom: 25px;">You are about to edit habits for a past date. Do you want to proceed?</p>
+      
+      <div class="settings-buttons" style="margin-top: 0;">
+        <button id="pastEditCancel">Cancel</button>
+        <button id="pastEditConfirm">Tick</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN GUIDE MODAL -->
   <div id="introModal" class="modal-overlay">
-    <div class="modal-box" style="max-height: 85vh; overflow-y: auto; text-align: left;">
+    <div class="modal-box" style="text-align: left;">
       <h2 style="color: #00e5ff; font-size: 24px; text-align: center; margin-bottom: 15px;">Welcome to GRITGO! 🌟</h2>
       <p style="color: #9aa0a6; font-size: 13px; text-align: center; margin-bottom: 20px;">Here is your complete guide on how to use the app:</p>
       
@@ -451,10 +543,7 @@
 
   <div id="settingsModal" class="modal-overlay">
     <div class="modal-box">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h2 style="margin-bottom: 0; text-align: left;">Settings</h2>
-        <button id="showGuideBtn" style="width: 35px; height: 35px; display: flex; justify-content: center; align-items: center; background: #2a3142; color: #d6a1f0; border: 1px solid #d6a1f0; border-radius: 8px; font-size: 16px; cursor: pointer; padding: 0; box-shadow: 0 0 10px rgba(214, 161, 240, 0.2);">📖</button>
-      </div>
+      <h2 style="margin-bottom: 20px; text-align: left;">Settings</h2>
 
       <label>Challenge Name:</label>
       <input type="text" id="settingsTitle">
@@ -467,18 +556,6 @@
       </div>
       <label>Motivation Text:</label>
       <input type="text" id="settingsMotivation">
-      <label>Day Start Time:</label>
-      <div class="time-picker-row">
-        <select class="time-hour" id="settingsDayStartHour"></select>
-        <select class="time-minute" id="settingsDayStartMinute"></select>
-        <select class="time-ampm" id="settingsDayStartAmPm"><option value="AM">AM</option><option value="PM">PM</option></select>
-      </div>
-      <label>Day End Time:</label>
-      <div class="time-picker-row">
-        <select class="time-hour" id="settingsDayEndHour"></select>
-        <select class="time-minute" id="settingsDayEndMinute"></select>
-        <select class="time-ampm" id="settingsDayEndAmPm"><option value="AM">AM</option><option value="PM">PM</option></select>
-      </div>
       <div class="settings-buttons">
         <button id="settingsCancel">Cancel</button>
         <button id="settingsSave">Save Changes</button>
@@ -552,7 +629,7 @@
       }
     });
 
-    let challengeData = { title: "", duration: 0, startDate: "", motivation: "", habits: [], habitLogs: {}, notes: {}, dayStart: "06:00", dayEnd: "22:00" };
+    let challengeData = { title: "", duration: 0, startDate: "", motivation: "", habits: [], habitLogs: {}, notes: {}, dayStart: "00:00", dayEnd: "23:59" };
     let sleepState = { weekStartDate: getDateKey(), days: [null, null, null, null, null, null, null] };
 
     const savedSleep = localStorage.getItem("gritgo_sleep_state");
@@ -584,40 +661,21 @@
       return dateStr;
     }
 
-    // ==== LOGICAL DATE LOGIC BASED ON DAY START TIME ====
     function getLiteralDateKey() {
       const d = new Date();
       return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
     }
 
     function getDateKey(date) {
-      let d;
-      if (date) {
-        d = new Date(date);
-        if (isNaN(d.getTime())) return "";
-      } else {
-        d = new Date();
-        // Apply custom Day Start Time logic
-        if (typeof challengeData !== 'undefined' && challengeData.dayStart) {
-          const [startHour, startMinute] = challengeData.dayStart.split(':').map(Number);
-          const currentHour = d.getHours();
-          const currentMinute = d.getMinutes();
-          
-          // If current time is before the day start time, it's logically still yesterday
-          if (currentHour < startHour || (currentHour === startHour && currentMinute < startMinute)) {
-            d.setDate(d.getDate() - 1);
-          }
-        }
-      }
+      const d = date ? new Date(date) : new Date();
+      if (isNaN(d.getTime())) return "";
       return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
     }
-    // =========================================================
 
     function nextDateKey(key) { if (!key || key.includes("NaN")) return key; const d = new Date(key + "T00:00:00"); if (isNaN(d.getTime())) return key; d.setDate(d.getDate() + 1); return getDateKey(d); }
     function updateDatePlaceholders() { document.querySelectorAll(".date-wrapper").forEach(w => { const i = w.querySelector("input"); if (i && i.value) w.classList.add("has-value"); else w.classList.remove("has-value"); }); }
     document.querySelectorAll(".date-wrapper input").forEach(i => { i.addEventListener("change", updateDatePlaceholders); i.addEventListener("input", updateDatePlaceholders); i.addEventListener("blur", updateDatePlaceholders); });
 
-    // Prevent past dates in setup
     document.getElementById("setupStartDate").setAttribute("min", getLiteralDateKey());
 
     function showToast(message) { const t = document.createElement("div"); t.className = "toast"; t.textContent = message; document.body.appendChild(t); setTimeout(() => t.classList.add("show"), 10); setTimeout(() => { t.classList.remove("show"); setTimeout(() => t.remove(), 400); }, 2500); }
@@ -627,16 +685,6 @@
         if (Notification.permission !== "granted" && Notification.permission !== "denied") Notification.requestPermission();
       }
     }
-
-    function populateTimeSelects() {
-      const hours = Array.from({length: 12}, (_, i) => String(i + 1).padStart(2, '0'));
-      const mins = Array.from({length: 60}, (_, i) => String(i).padStart(2, '0'));
-      ["setupDayStartHour", "setupDayEndHour", "settingsDayStartHour", "settingsDayEndHour"].forEach(id => { const el = document.getElementById(id); if(el) el.innerHTML = hours.map(h => `<option value="${h}">${h}</option>`).join(""); });
-      ["setupDayStartMinute", "setupDayEndMinute", "settingsDayStartMinute", "settingsDayEndMinute"].forEach(id => { const el = document.getElementById(id); if(el) el.innerHTML = mins.map(m => `<option value="${m}">${m}</option>`).join(""); });
-    }
-    function getTimeFromSelects(prefix) { const h12 = parseInt(document.getElementById(prefix + "Hour").value); const m = document.getElementById(prefix + "Minute").value; const ampm = document.getElementById(prefix + "AmPm").value; let h24 = h12; if (ampm === "AM" && h12 === 12) h24 = 0; if (ampm === "PM" && h12 !== 12) h24 = h12 + 12; return String(h24).padStart(2, '0') + ":" + m; }
-    function setSelectsFromTime(prefix, timeStr) { if(!timeStr) timeStr = "06:00"; let [h24, m] = timeStr.split(":").map(Number); let ampm = h24 >= 12 ? "PM" : "AM"; let h12 = h24 % 12; if(h12 === 0) h12 = 12; document.getElementById(prefix + "Hour").value = String(h12).padStart(2, '0'); document.getElementById(prefix + "Minute").value = String(m).padStart(2, '0'); document.getElementById(prefix + "AmPm").value = ampm; }
-    populateTimeSelects();
 
     function updateMotivation() { document.getElementById("motivationText").textContent = `Day ${getCurrentDayNumber()} of ${challengeData.duration}. ${challengeData.motivation}`; }
     function getCurrentDayNumber() { const todayKey = getDateKey(); if (!challengeData.startDate) return 1; let current = challengeData.startDate, dayNum = 1, safety = 0; while (current < todayKey && safety < 500) { current = nextDateKey(current); dayNum++; safety++; } return Math.max(1, Math.min(dayNum, challengeData.duration)); }
@@ -674,7 +722,7 @@
       if (!title || !duration || !startDate) { showToast("Please fill required fields"); return; }
       if (startDate < getLiteralDateKey()) { showToast("Start Date cannot be in the past!"); return; } 
 
-      challengeData = { title, duration, startDate, motivation: motivation || "Show up again.", habits: [], habitLogs: {}, notes: {}, dayStart: getTimeFromSelects("setupDayStart"), dayEnd: getTimeFromSelects("setupDayEnd") };
+      challengeData = { title, duration, startDate, motivation: motivation || "Show up again.", habits: [], habitLogs: {}, notes: {}, dayStart: "00:00", dayEnd: "23:59" };
       localStorage.setItem("challengeData", JSON.stringify(challengeData));
       startMainApp();
     });
@@ -690,17 +738,110 @@
 
     function showConfetti() {
       const colors = ['#00e5ff', '#4a9eff', '#ff6b4a', '#d6a1f0', '#4aaa4a', '#f1c40f'];
-      for (let i = 0; i < 50; i++) {
+      for (let i = 0; i < 100; i++) {
         const confetti = document.createElement('div');
         confetti.classList.add('confetti-piece');
         confetti.style.left = Math.random() * 100 + 'vw';
         confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-        confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
-        confetti.style.animationDelay = Math.random() * 0.5 + 's';
+        confetti.style.animationDuration = (Math.random() * 1 + 1) + 's'; 
+        confetti.style.animationDelay = Math.random() * 0.2 + 's'; 
         document.body.appendChild(confetti);
-        setTimeout(() => confetti.remove(), 4000);
+        setTimeout(() => confetti.remove(), 3000);
       }
     }
+
+    // 🟢 NEW: NOTIFICATION HISTORY LOGIC
+    function saveNotificationLog(title, body) {
+      let notis = JSON.parse(localStorage.getItem('gritgo_notification_history')) || [];
+      const now = new Date();
+      const dateStr = now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+      const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+      
+      notis.unshift({ title, body, date: `${dateStr}, ${timeStr}` });
+      if (notis.length > 50) notis = notis.slice(0, 50); // Limit history
+      localStorage.setItem('gritgo_notification_history', JSON.stringify(notis));
+    }
+
+    function renderNotificationHistory() {
+      const list = document.getElementById('notificationList');
+      list.innerHTML = '';
+      let notis = JSON.parse(localStorage.getItem('gritgo_notification_history')) || [];
+      
+      if (notis.length === 0) {
+        list.innerHTML = '<div class="empty-noti">No notifications yet. Keep crushing your habits!</div>';
+        return;
+      }
+
+      notis.forEach(n => {
+        const card = document.createElement('div');
+        card.className = 'noti-card';
+        card.innerHTML = `
+          <div class="noti-header">
+            <span class="noti-title">${n.title}</span>
+            <span class="noti-date">${n.date}</span>
+          </div>
+          <div class="noti-body">${n.body}</div>
+        `;
+        list.appendChild(card);
+      });
+    }
+
+    // ===== SIDEBAR LOGIC =====
+    const sidebar = document.getElementById("sidebar");
+    const sidebarOverlay = document.getElementById("sidebarOverlay");
+    
+    document.getElementById("openSidebarBtn").addEventListener("click", () => {
+      sidebar.classList.add("open");
+      sidebarOverlay.classList.add("active");
+    });
+    
+    const closeSidebar = () => {
+      sidebar.classList.remove("open");
+      sidebarOverlay.classList.remove("active");
+    };
+    
+    document.getElementById("closeSidebarBtn").addEventListener("click", closeSidebar);
+    sidebarOverlay.addEventListener("click", closeSidebar);
+    
+    document.getElementById("menuSettingsBtn").addEventListener("click", () => {
+      closeSidebar();
+      document.getElementById("settingsStartDate").setAttribute("min", getLiteralDateKey());
+      document.getElementById("settingsTitle").value = challengeData.title; 
+      document.getElementById("settingsDuration").value = challengeData.duration; 
+      document.getElementById("settingsStartDate").value = normalizeDate(challengeData.startDate); 
+      document.getElementById("settingsMotivation").value = challengeData.motivation; 
+      document.getElementById("settingsModal").classList.add("active"); 
+      setTimeout(updateDatePlaceholders, 50);
+    });
+
+    document.getElementById("menuNotificationsBtn").addEventListener("click", () => {
+      closeSidebar();
+      renderNotificationHistory();
+      document.getElementById("notificationHistoryModal").classList.add("active");
+    });
+    
+    document.getElementById("menuGuideBtn").addEventListener("click", () => {
+      closeSidebar();
+      document.getElementById("guidePromptModal").classList.add("active");
+    });
+    
+    document.getElementById("menuFeedbackBtn").addEventListener("click", () => {
+      closeSidebar();
+      document.getElementById("feedbackModal").classList.add("active");
+    });
+
+    document.getElementById("notiHistoryClose").addEventListener("click", () => {
+      document.getElementById("notificationHistoryModal").classList.remove("active");
+    });
+
+    document.getElementById("startLearningBtn").addEventListener("click", () => {
+      document.getElementById("guidePromptModal").classList.remove("active");
+      document.getElementById("introModal").classList.add("active");
+    });
+    
+    document.getElementById("closePromptBtn").addEventListener("click", () => {
+      document.getElementById("guidePromptModal").classList.remove("active");
+    });
 
     const extrasModal = document.getElementById("extrasModal");
     document.getElementById("openExtrasBtn").addEventListener("click", () => {
@@ -878,6 +1019,17 @@
             const newCompleted = Object.values(challengeData.habitLogs[todayKey]).filter(val => val === true).length;
             if (isChecked && newCompleted === challengeData.habits.length) {
               showConfetti();
+              if (getCurrentDayNumber() === challengeData.duration) {
+                showToast("🎉 Congratulations! Challenge Completed!");
+                if ("Notification" in window && Notification.permission === "granted") {
+                  setTimeout(() => {
+                    const notiTitle = "🏆 Challenge Completed!";
+                    const notiBody = "Congratulations Sir! You have successfully completed the challenge. I am proud of you!";
+                    new Notification(notiTitle, { body: notiBody });
+                    saveNotificationLog(notiTitle, notiBody); // 🟢 Save to History
+                  }, 2000);
+                }
+              }
             }
           };
         }
@@ -904,20 +1056,41 @@
     const dayModal = document.getElementById("dayModal"); 
     let viewingDateKey = null;
 
-    function openDayModal(dateKey) {
+    function promptPastEdit(dateKey) {
       const todayKey = getDateKey();
-      if (dateKey > todayKey) { showToast("Cannot edit future dates"); return; }
       const startKey = normalizeDate(challengeData.startDate);
+      
+      if (dateKey > todayKey) { showToast("Cannot edit future dates"); return; }
       if (dateKey < startKey) { showToast("Challenge hasn't started yet!"); return; }
       if (challengeData.habits.length === 0) { showToast("No habits added yet"); return; }
-      
-      viewingDateKey = dateKey; 
+
+      if (dateKey === todayKey) {
+        viewingDateKey = dateKey; 
+        openDayModal(dateKey);
+      } else {
+        viewingDateKey = dateKey; 
+        document.getElementById("pastEditPromptModal").classList.add("active");
+      }
+    }
+
+    function openDayModal(dateKey) {
       document.getElementById("dayModalTitle").textContent = new Date(dateKey + "T00:00:00").toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", year: "numeric" });
       document.getElementById("dayModalSearchInput").value = "";
       if (!challengeData.habitLogs[dateKey]) challengeData.habitLogs[dateKey] = {};
       renderDayModalList(); 
       dayModal.classList.add("active");
     }
+
+    document.getElementById("pastEditCancel").addEventListener("click", () => {
+      document.getElementById("pastEditPromptModal").classList.remove("active");
+      viewingDateKey = null;
+    });
+
+    document.getElementById("pastEditConfirm").addEventListener("click", () => {
+      document.getElementById("pastEditPromptModal").classList.remove("active");
+      if (viewingDateKey) openDayModal(viewingDateKey);
+    });
+
 
     function renderDayModalList() {
       const list = document.getElementById("dayModalList"); list.innerHTML = "";
@@ -1043,7 +1216,8 @@
           else cell.style.setProperty("background-color", "#2a4a2a", "important");
         }
         if (currentKey === todayKey) { cell.style.setProperty("border", "2px solid #ffffff", "important"); cell.style.setProperty("box-sizing", "border-box", "important"); }
-        const cellKey = currentKey; cell.onclick = () => openDayModal(cellKey);
+        
+        const cellKey = currentKey; cell.onclick = () => promptPastEdit(cellKey);
         heatmap.appendChild(cell); currentKey = nextDateKey(currentKey);
       }
     }
@@ -1132,35 +1306,25 @@
     document.getElementById("reportClose").addEventListener("click", () => { weeklyReportModal.classList.remove("active"); renderSleepTracker(); });
 
     function checkSleepWeek() {
-      const today = getDateKey(); 
-      const start = new Date(sleepState.weekStartDate + "T00:00:00"); 
-      const now = new Date(today + "T00:00:00");
-      const diffTime = Math.abs(now - start); 
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      
+      const today = getDateKey(); const start = new Date(sleepState.weekStartDate + "T00:00:00"); const now = new Date(today + "T00:00:00");
+      const diffTime = Math.abs(now - start); const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
       if (diffDays >= 7) {
         let totalHours = 0; let validDays = 0;
         sleepState.days.forEach(h => { if(h !== null) { totalHours += h; validDays++; } });
         let avg = validDays > 0 ? (totalHours / validDays).toFixed(1) : 0;
         
-        const reportTitle = document.getElementById("reportTitle"); 
-        const reportText = document.getElementById("reportText"); 
-        const reportIcon = document.getElementById("reportIcon");
-        
-        if (avg >= 7.5) { 
-          reportTitle.textContent = "Excellent Sleep! 🌟"; 
-          reportTitle.style.color = "#00e5ff"; 
-          reportText.textContent = `You averaged ${avg} hours this week. Your brain is fresh!`; 
-          reportIcon.textContent = "🧠✨"; 
-        }
-        else { 
-          reportTitle.textContent = "Warning: Sleep Deprived! ⚠️"; 
-          reportTitle.style.color = "#ff6b4a"; 
-          reportText.textContent = `You only averaged ${avg} hours. Try to sleep earlier!`; 
-          reportIcon.textContent = "🧠💤"; 
-        }
-        
+        const reportTitle = document.getElementById("reportTitle"); const reportText = document.getElementById("reportText"); const reportIcon = document.getElementById("reportIcon");
+        if (avg >= 7.5) { reportTitle.textContent = "Excellent Sleep! 🌟"; reportTitle.style.color = "#00e5ff"; reportText.textContent = `You averaged ${avg} hours this week. Your brain is fresh!`; reportIcon.textContent = "🧠✨"; }
+        else { reportTitle.textContent = "Warning: Sleep Deprived! ⚠️"; reportTitle.style.color = "#ff6b4a"; reportText.textContent = `You only averaged ${avg} hours. Try to sleep earlier!`; reportIcon.textContent = "🧠💤"; }
         weeklyReportModal.classList.add("active");
+        
+        if ("Notification" in window && Notification.permission === "granted") {
+          const notiTitle = "Weekly Sleep Report 📊";
+          const notiBody = avg >= 7.5 ? `Excellent! You averaged ${avg}h sleep.` : `Warning! You only averaged ${avg}h sleep.`;
+          new Notification(notiTitle, { body: notiBody });
+          saveNotificationLog(notiTitle, notiBody); // 🟢 Save to History
+        }
+
         sleepState = { weekStartDate: getDateKey(), days: [null, null, null, null, null, null, null] };
         localStorage.setItem("gritgo_sleep_state", JSON.stringify(sleepState));
       }
@@ -1184,7 +1348,7 @@
       if (isFuture) {
         document.getElementById("sleepTrackerLock").style.display = "block";
         document.getElementById("sleepTrackerContent").style.display = "none";
-        return;
+        return; 
       } else {
         document.getElementById("sleepTrackerLock").style.display = "none";
         document.getElementById("sleepTrackerContent").style.display = "block";
@@ -1255,19 +1419,7 @@
 
     setInterval(checkSleepWeek, 60000);
 
-    document.getElementById("settingsButton").onclick = () => { 
-      // 🟢 FIX: Sets min date to today, allowing user to change future dates back to today
-      document.getElementById("settingsStartDate").setAttribute("min", getLiteralDateKey());
-
-      document.getElementById("settingsTitle").value = challengeData.title; 
-      document.getElementById("settingsDuration").value = challengeData.duration; 
-      document.getElementById("settingsStartDate").value = normalizeDate(challengeData.startDate); 
-      document.getElementById("settingsMotivation").value = challengeData.motivation; 
-      setSelectsFromTime("settingsDayStart", challengeData.dayStart); 
-      setSelectsFromTime("settingsDayEnd", challengeData.dayEnd); 
-      document.getElementById("settingsModal").classList.add("active"); 
-      setTimeout(updateDatePlaceholders, 50); 
-    };
+    // ===== SETTINGS MODAL LOGIC =====
     document.getElementById("settingsCancel").onclick = () => document.getElementById("settingsModal").classList.remove("active");
     document.getElementById("settingsSave").onclick = () => { 
       try { 
@@ -1278,7 +1430,6 @@
         
         if(!t||!d||!s) { showToast("Fill required fields"); return; } 
         
-        // 🟢 FIX: Prevents setting past dates
         if (s < getLiteralDateKey()) { 
           showToast("Start date cannot be in the past!"); 
           return; 
@@ -1288,8 +1439,6 @@
         challengeData.duration = d; 
         challengeData.startDate = s; 
         challengeData.motivation = m || "Show up again."; 
-        challengeData.dayStart = getTimeFromSelects("settingsDayStart"); 
-        challengeData.dayEnd = getTimeFromSelects("settingsDayEnd"); 
         localStorage.setItem("challengeData", JSON.stringify(challengeData)); 
         document.getElementById("headerTitle").textContent = t + " Tracker"; 
         document.getElementById("mainTitle").textContent = t; 
@@ -1304,7 +1453,10 @@
     document.getElementById("resetAllData").onclick = () => { document.getElementById("settingsModal").classList.remove("active"); document.getElementById("resetModal").classList.add("active"); };
     document.getElementById("resetCancel").onclick = () => { document.getElementById("resetModal").classList.remove("active"); document.getElementById("settingsModal").classList.add("active"); };
     document.getElementById("resetConfirm").onclick = () => { localStorage.removeItem("challengeData"); localStorage.removeItem("gritgo_sleep_state"); localStorage.removeItem("gritgo_intro_seen"); location.reload(); };
-    document.getElementById("showGuideBtn").onclick = () => { document.getElementById("settingsModal").classList.remove("active"); document.getElementById("introModal").classList.add("active"); };
+    
+    // ===== FEEDBACK MODAL LOGIC =====
+    document.getElementById("feedbackCancel").onclick = () => document.getElementById("feedbackModal").classList.remove("active");
+    document.getElementById("feedbackSubmit").onclick = () => { const text = document.getElementById("feedbackText").value.trim(); if(!text) return; window.open(`https://wa.me/8801888214016?text=${encodeURIComponent("GRITGO Feedback:\n\n" + text)}`, "_blank"); document.getElementById("feedbackModal").classList.remove("active"); };
 
     document.getElementById("shareButton").onclick = () => document.getElementById("exportModal").classList.add("active");
     document.getElementById("exportCancel").onclick = () => document.getElementById("exportModal").classList.remove("active");
@@ -1320,9 +1472,49 @@
       const blob = new Blob([csv], { type: "text/csv" }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `GRITGO_Data_${getDateKey()}.csv`; a.click(); document.getElementById("exportModal").classList.remove("active"); 
     };
 
-    document.getElementById("commentButton").onclick = () => document.getElementById("feedbackModal").classList.add("active");
-    document.getElementById("feedbackCancel").onclick = () => document.getElementById("feedbackModal").classList.remove("active");
-    document.getElementById("feedbackSubmit").onclick = () => { const text = document.getElementById("feedbackText").value.trim(); if(!text) return; window.open(`https://wa.me/8801888214016?text=${encodeURIComponent("GRITGO Feedback:\n\n" + text)}`, "_blank"); document.getElementById("feedbackModal").classList.remove("active"); };
+    // 🟢 UPDATED: Test Notification Button Logic (Mobile Friendly)
+    document.getElementById("testNotiBtn").addEventListener("click", async () => {
+      if (!("Notification" in window)) {
+        alert("⚠️ Your browser does not support notifications.\n\nIf you are on mobile, please 'Add to Home Screen' (Install as App) first, then try again!");
+        return;
+      }
+      
+      if (Notification.permission === "granted") {
+        sendTestNotification();
+      } else if (Notification.permission !== "denied") {
+        const permission = await Notification.requestPermission();
+        if (permission === "granted") {
+          sendTestNotification();
+        }
+      } else {
+        alert("🚫 Notifications are blocked. Please enable them in your browser settings.");
+      }
+    });
+
+    async function sendTestNotification() {
+      const title = "🔔 Notification Test";
+      const body = "Notifications are working perfectly! You will receive Weekly and Challenge Completion alerts here.";
+      
+      try {
+        // Service Worker এর মাধ্যমে নোটিফিকেশন পাঠানো (মোবাইলে ভালো কাজ করে)
+        if ("serviceWorker" in navigator) {
+          const registration = await navigator.serviceWorker.ready;
+          if (registration && registration.showNotification) {
+            await registration.showNotification(title, { body: body });
+          } else {
+            new Notification(title, { body: body });
+          }
+        } else {
+          new Notification(title, { body: body });
+        }
+        
+        saveNotificationLog(title, body); 
+        showToast("Test notification sent!");
+      } catch (error) {
+        console.error("Notification error:", error);
+        alert("Failed to send notification. On mobile, try installing the app to Home Screen first.");
+      }
+    }
 
     const saved = localStorage.getItem("challengeData");
     if (saved) { 
@@ -1332,70 +1524,21 @@
       startMainApp(); 
     }
     
-    // ===== AUTO UPDATE APP AT DAY START TIME =====
+    // ===== AUTO UPDATE APP AT DAY START TIME (Midnight) =====
     let lastAppDate = getDateKey();
     setInterval(() => {
       const currentAppDate = getDateKey();
       if (currentAppDate !== lastAppDate) {
         lastAppDate = currentAppDate;
-        
-        // Refresh UI for new day
         updateMotivation();
         renderTodayHabits();
         renderHeatmap();
         updateStats();
-        
         if(document.getElementById("extrasModal").classList.contains("active")) renderExtras();
-        if(document.getElementById("trackerModal").classList.contains("active")) {
-          renderWeeklyProgress();
-          renderSleepTracker();
-        }
-        
+        if(document.getElementById("trackerModal").classList.contains("active")) { renderWeeklyProgress(); renderSleepTracker(); }
         showToast("New Day Started! Keep going! 🌅");
       }
-    }, 60000); // Check every minute
-
-    // ===== NOTIFICATION SYSTEM LOGIC =====
-    let lastGmNotified = localStorage.getItem("gritgo_gm_notified") || "";
-    let lastGnNotified = localStorage.getItem("gritgo_gn_notified") || "";
-
-    function timeToMinutes(timeStr) {
-      if (!timeStr) return 0;
-      const [h, m] = timeStr.split(':').map(Number);
-      return h * 60 + m;
-    }
-
-    function checkScheduledNotifications() {
-      if (!("Notification" in window) || Notification.permission !== "granted") return;
-      
-      const now = new Date();
-      const currentMins = now.getHours() * 60 + now.getMinutes();
-      const todayKey = getDateKey();
-
-      const startMins = timeToMinutes(challengeData.dayStart);
-      const endMins = timeToMinutes(challengeData.dayEnd);
-
-      // Day Start (Good Morning)
-      if (currentMins >= startMins && lastGmNotified !== todayKey) {
-        if (currentMins <= startMins + 120) { // Only trigger within 2 hours
-          new Notification("Good Morning! 🌅", { body: "A new day has started. Time to crush your habits!" });
-        }
-        localStorage.setItem("gritgo_gm_notified", todayKey);
-        lastGmNotified = todayKey;
-      }
-
-      // Day End (Good Night)
-      if (currentMins >= endMins && lastGnNotified !== todayKey) {
-        if (currentMins <= endMins + 120) {
-          new Notification("Good Night! 🌙", { body: "The day is ending. Did you complete your habits?" });
-        }
-        localStorage.setItem("gritgo_gn_notified", todayKey);
-        lastGnNotified = todayKey;
-      }
-    }
-
-    setInterval(checkScheduledNotifications, 60000);
-    // =====================================
+    }, 60000);
 
     if ("serviceWorker" in navigator) { navigator.serviceWorker.register("service-worker.js").catch(err => console.log(err)); }
   </script>
