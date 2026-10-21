@@ -617,7 +617,7 @@
     function updateDatePlaceholders() { document.querySelectorAll(".date-wrapper").forEach(w => { const i = w.querySelector("input"); if (i && i.value) w.classList.add("has-value"); else w.classList.remove("has-value"); }); }
     document.querySelectorAll(".date-wrapper input").forEach(i => { i.addEventListener("change", updateDatePlaceholders); i.addEventListener("input", updateDatePlaceholders); i.addEventListener("blur", updateDatePlaceholders); });
 
-    // Prevent past dates in setup (using literal date so setup works even at 2 AM)
+    // Prevent past dates in setup
     document.getElementById("setupStartDate").setAttribute("min", getLiteralDateKey());
 
     function showToast(message) { const t = document.createElement("div"); t.className = "toast"; t.textContent = message; document.body.appendChild(t); setTimeout(() => t.classList.add("show"), 10); setTimeout(() => { t.classList.remove("show"); setTimeout(() => t.remove(), 400); }, 2500); }
@@ -672,7 +672,7 @@
       const motivation = document.getElementById("setupMotivation").value.trim();
       
       if (!title || !duration || !startDate) { showToast("Please fill required fields"); return; }
-      if (startDate < getLiteralDateKey()) { showToast("Start Date cannot be in the past!"); return; } // Fix Past Date
+      if (startDate < getLiteralDateKey()) { showToast("Start Date cannot be in the past!"); return; } 
 
       challengeData = { title, duration, startDate, motivation: motivation || "Show up again.", habits: [], habitLogs: {}, notes: {}, dayStart: getTimeFromSelects("setupDayStart"), dayEnd: getTimeFromSelects("setupDayEnd") };
       localStorage.setItem("challengeData", JSON.stringify(challengeData));
@@ -715,7 +715,7 @@
       let progressText = "";
 
       if (isFuture) {
-        progressPercent = 0; // চ্যালেঞ্জ শুরুর আগে ০% থাকবে
+        progressPercent = 0; 
         progressText = `Challenge Starts on ${new Date(challengeData.startDate).toLocaleDateString()}`;
       } else {
         const currentDay = getCurrentDayNumber();
@@ -1132,16 +1132,34 @@
     document.getElementById("reportClose").addEventListener("click", () => { weeklyReportModal.classList.remove("active"); renderSleepTracker(); });
 
     function checkSleepWeek() {
-      const today = getDateKey(); const start = new Date(sleepState.weekStartDate + "T00:00:00"); const now = new Date(today + "T00:00:00");
-      const diffTime = Math.abs(now - start); const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      const today = getDateKey(); 
+      const start = new Date(sleepState.weekStartDate + "T00:00:00"); 
+      const now = new Date(today + "T00:00:00");
+      const diffTime = Math.abs(now - start); 
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      
       if (diffDays >= 7) {
         let totalHours = 0; let validDays = 0;
         sleepState.days.forEach(h => { if(h !== null) { totalHours += h; validDays++; } });
         let avg = validDays > 0 ? (totalHours / validDays).toFixed(1) : 0;
         
-        const reportTitle = document.getElementById("reportTitle"); const reportText = document.getElementById("reportText"); const reportIcon = document.getElementById("reportIcon");
-        if (avg >= 7.5) { reportTitle.textContent = "Excellent Sleep! 🌟"; reportTitle.style.color = "#00e5ff"; reportText.textContent = `You averaged ${avg} hours this week. Your brain is fresh!`; reportIcon.textContent = "🧠✨"; }
-        else { reportTitle.textContent = "Warning: Sleep Deprived! ⚠️"; reportTitle.style.color = "#ff6b4a"; reportText.textContent = `You only averaged ${avg} hours. Try to sleep earlier!`; reportIcon.textContent = "🧠💤"; }
+        const reportTitle = document.getElementById("reportTitle"); 
+        const reportText = document.getElementById("reportText"); 
+        const reportIcon = document.getElementById("reportIcon");
+        
+        if (avg >= 7.5) { 
+          reportTitle.textContent = "Excellent Sleep! 🌟"; 
+          reportTitle.style.color = "#00e5ff"; 
+          reportText.textContent = `You averaged ${avg} hours this week. Your brain is fresh!`; 
+          reportIcon.textContent = "🧠✨"; 
+        }
+        else { 
+          reportTitle.textContent = "Warning: Sleep Deprived! ⚠️"; 
+          reportTitle.style.color = "#ff6b4a"; 
+          reportText.textContent = `You only averaged ${avg} hours. Try to sleep earlier!`; 
+          reportIcon.textContent = "🧠💤"; 
+        }
+        
         weeklyReportModal.classList.add("active");
         sleepState = { weekStartDate: getDateKey(), days: [null, null, null, null, null, null, null] };
         localStorage.setItem("gritgo_sleep_state", JSON.stringify(sleepState));
@@ -1166,7 +1184,7 @@
       if (isFuture) {
         document.getElementById("sleepTrackerLock").style.display = "block";
         document.getElementById("sleepTrackerContent").style.display = "none";
-        return; // Stop rendering the rest
+        return;
       } else {
         document.getElementById("sleepTrackerLock").style.display = "none";
         document.getElementById("sleepTrackerContent").style.display = "block";
@@ -1238,13 +1256,12 @@
     setInterval(checkSleepWeek, 60000);
 
     document.getElementById("settingsButton").onclick = () => { 
-      // Set min date for settings
-      const originalStartDate = normalizeDate(challengeData.startDate);
-      document.getElementById("settingsStartDate").setAttribute("min", originalStartDate);
+      // 🟢 FIX: Sets min date to today, allowing user to change future dates back to today
+      document.getElementById("settingsStartDate").setAttribute("min", getLiteralDateKey());
 
       document.getElementById("settingsTitle").value = challengeData.title; 
       document.getElementById("settingsDuration").value = challengeData.duration; 
-      document.getElementById("settingsStartDate").value = originalStartDate; 
+      document.getElementById("settingsStartDate").value = normalizeDate(challengeData.startDate); 
       document.getElementById("settingsMotivation").value = challengeData.motivation; 
       setSelectsFromTime("settingsDayStart", challengeData.dayStart); 
       setSelectsFromTime("settingsDayEnd", challengeData.dayEnd); 
@@ -1261,9 +1278,9 @@
         
         if(!t||!d||!s) { showToast("Fill required fields"); return; } 
         
-        // Prevent past dates
-        if (s < normalizeDate(challengeData.startDate)) { 
-          showToast("Start date cannot be moved to the past!"); 
+        // 🟢 FIX: Prevents setting past dates
+        if (s < getLiteralDateKey()) { 
+          showToast("Start date cannot be in the past!"); 
           return; 
         }
         
@@ -1342,21 +1359,36 @@
     let lastGmNotified = localStorage.getItem("gritgo_gm_notified") || "";
     let lastGnNotified = localStorage.getItem("gritgo_gn_notified") || "";
 
+    function timeToMinutes(timeStr) {
+      if (!timeStr) return 0;
+      const [h, m] = timeStr.split(':').map(Number);
+      return h * 60 + m;
+    }
+
     function checkScheduledNotifications() {
       if (!("Notification" in window) || Notification.permission !== "granted") return;
       
       const now = new Date();
-      const currentTime = String(now.getHours()).padStart(2, '0') + ":" + String(now.getMinutes()).padStart(2, '0');
+      const currentMins = now.getHours() * 60 + now.getMinutes();
       const todayKey = getDateKey();
 
-      if (currentTime === challengeData.dayStart && lastGmNotified !== todayKey) {
-        new Notification("Good Morning! 🌅", { body: "A new day has started. Time to crush your habits!" });
+      const startMins = timeToMinutes(challengeData.dayStart);
+      const endMins = timeToMinutes(challengeData.dayEnd);
+
+      // Day Start (Good Morning)
+      if (currentMins >= startMins && lastGmNotified !== todayKey) {
+        if (currentMins <= startMins + 120) { // Only trigger within 2 hours
+          new Notification("Good Morning! 🌅", { body: "A new day has started. Time to crush your habits!" });
+        }
         localStorage.setItem("gritgo_gm_notified", todayKey);
         lastGmNotified = todayKey;
       }
 
-      if (currentTime === challengeData.dayEnd && lastGnNotified !== todayKey) {
-        new Notification("Good Night! 🌙", { body: "The day is ending. Did you complete your habits?" });
+      // Day End (Good Night)
+      if (currentMins >= endMins && lastGnNotified !== todayKey) {
+        if (currentMins <= endMins + 120) {
+          new Notification("Good Night! 🌙", { body: "The day is ending. Did you complete your habits?" });
+        }
         localStorage.setItem("gritgo_gn_notified", todayKey);
         lastGnNotified = todayKey;
       }
