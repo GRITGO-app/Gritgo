@@ -1473,39 +1473,31 @@
       const blob = new Blob([csv], { type: "text/csv" }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `GRITGO_Data_${getDateKey()}.csv`; a.click(); document.getElementById("exportModal").classList.remove("active"); 
     };
 
-    // 🟢 UPDATED: Test Notification Button Logic (Using OneSignal)
+    // 🟢 UPDATED: Test Notification Button Logic (Forced Subscribe)
     document.getElementById("testNotiBtn").addEventListener("click", async () => {
       if (window.OneSignalDeferred) {
         window.OneSignalDeferred.push(async function(OneSignal) {
-          // Check if already granted
-          if (OneSignal.Notifications.permission) {
-            showToast("Notifications are already enabled! 🔔");
-            return;
-          }
-          
-          // Request permission
-          const granted = await OneSignal.Notifications.requestPermission();
-          if (granted) {
-            showToast("Notifications Enabled! 🔔");
-          } else {
-            showToast("Permission denied. Please check browser settings.");
+          try {
+            // OneSignal-কে জোর করে সাবস্ক্রাইব করতে বলা
+            await OneSignal.User.PushSubscription.optIn();
+            
+            if (OneSignal.Notifications.permission) {
+              showToast("Notifications Enabled & Synced! 🔔");
+            } else {
+              const granted = await OneSignal.Notifications.requestPermission();
+              if (granted) {
+                showToast("Notifications Enabled! 🔔");
+              } else {
+                showToast("Permission denied. Please check browser settings.");
+              }
+            }
+          } catch (error) {
+            console.error("OneSignal Error:", error);
+            showToast("Syncing error. Please try again.");
           }
         });
       } else {
-        // Fallback if OneSignal is not loaded yet
-        if (!("Notification" in window)) {
-          alert("Your browser does not support notifications.");
-          return;
-        }
-        if (Notification.permission === "granted") {
-          showToast("Notifications are already enabled!");
-        } else if (Notification.permission !== "denied") {
-          Notification.requestPermission().then(permission => {
-            if (permission === "granted") showToast("Notifications enabled!");
-          });
-        } else {
-          alert("Notifications are blocked. Please enable them in your browser settings.");
-        }
+        showToast("OneSignal is still loading. Please wait.");
       }
     });
 
