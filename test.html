@@ -1478,7 +1478,6 @@
       if (window.OneSignalDeferred) {
         window.OneSignalDeferred.push(async function(OneSignal) {
           try {
-            // OneSignal-এর সুন্দর পপ-আপ (Slidedown) কল করা
             await OneSignal.Slidedown.promptPush();
           } catch (error) {
             console.error("OneSignal Error:", error);
@@ -1522,18 +1521,18 @@
         await OneSignal.init({
           appId: "8e24183d-f94c-462e-98ba-242403228064",
           allowLocalhostAsSecureOrigin: true,
+          // 🟢 এই দুটি লাইন 404 এরর ফিক্স করবে
+          serviceWorkerPath: "Gritgo/OneSignalSDKWorker.js",
+          serviceWorkerParam: { scope: "/Gritgo/" },
           notifyButton: {
             enable: false, // We use our custom bell icon
           }
         });
         
-        // ডিবাগিং: ইনিশিয়ালাইজ সফল হলে টোস্ট দেখাবে
         showToast("OneSignal SDK Loaded ✅");
 
-        // জোর করে সাবস্ক্রাইব করা
         await OneSignal.User.PushSubscription.optIn();
         
-        // সাবস্ক্রিপশন আইডি চেক করা
         const subId = OneSignal.User.PushSubscription.id;
         if (subId) {
           showToast("Subscribed! ID: " + subId.substring(0, 5) + "... ✅");
