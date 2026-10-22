@@ -9,8 +9,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
-    input, textarea, select { -webkit-user-select: auto; user-select: auto; }
-    body { background-color: #0f1419; color: #e8eaed; min-height: 100vh; overflow-x: hidden; touch-action: manipulation; transition: background-color 0.3s, color 0.3s; }
+    input, textarea, select { -webkit-user-select: auto; user-select: auto; -webkit-touch-callout: default; }
+    body { background-color: #0f1419; color: #e8eaed; min-height: 100vh; overflow-x: hidden; touch-action: manipulation; }
 
     /* ===== LIGHT THEME OVERRIDES ===== */
     body.light-theme { background-color: #f0f2f5; color: #1a1f2e; }
@@ -18,7 +18,6 @@
     body.light-theme .header button { color: #1a1f2e; }
     body.light-theme .stat-card, body.light-theme .modal-box, body.light-theme .menu-item, body.light-theme .today-buttons button, body.light-theme .edit-buttons button, body.light-theme .extras-section, body.light-theme .tracker-section, body.light-theme #addHabitModalInput, body.light-theme #newHabitInput, body.light-theme #habitSearchInput, body.light-theme #dayModalSearchInput { background-color: #ffffff; border-color: #d1d5db; color: #1a1f2e; }
     
-    /* 🟢 Light Mode Text Contrast Fix */
     body.light-theme .stat-card span:first-child { color: #000000; }
     body.light-theme .stat-card span:last-child { color: #4b5563; font-weight: 600; }
     body.light-theme #streakStat { color: #ff6b4a !important; }
@@ -62,10 +61,9 @@
     body.light-theme .badge-card { background: #f5f7fa; border-color: #d1d5db; }
     body.light-theme .badge-card.unlocked { background: #ffffff; border-color: #00e5ff; }
     body.light-theme .badge-name { color: #1a1f2e; }
-    body.light-theme #addHabitModal .modal-box, body.light-theme #deleteModal .modal-box, body.light-theme #resetModal .modal-box, body.light-theme #dayModal .modal-box, body.light-theme #exportModal .modal-box, body.light-theme #feedbackModal .modal-box, body.light-theme #pastEditPromptModal .modal-box, body.light-theme #guidePromptModal .modal-box { background-color: #ffffff; }
+    body.light-theme #addHabitModal .modal-box, body.light-theme #deleteModal .modal-box, body.light-theme #resetModal .modal-box, body.light-theme #dayModal .modal-box, body.light-theme #feedbackModal .modal-box, body.light-theme #pastEditPromptModal .modal-box, body.light-theme #guidePromptModal .modal-box, body.light-theme #backupModal .modal-box, body.light-theme #restoreModal .modal-box { background-color: #ffffff; }
     body.light-theme .settings-buttons button:not(#settingsSave):not(#addHabitSave):not(#feedbackSubmit):not(#saveSleepBtn):not(#saveNoteBtn):not(#pastEditConfirm):not(#startLearningBtn) { background-color: #e5e7eb; color: #1a1f2e; }
     
-    /* Light Mode Button Overrides */
     body.light-theme #exportData, body.light-theme #importData { background-color: #f8f9fa; border-color: #cbd5e1; color: #1a1f2e; }
     body.light-theme #resetAllData { background-color: transparent; }
     body.light-theme #themeToggleBtn { background-color: #ffffff; border-color: #cbd5e1; color: #1a1f2e; }
@@ -74,7 +72,7 @@
     #sidebarOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; backdrop-filter: blur(2px); }
     #sidebarOverlay.active { display: block; }
     
-    #sidebar { position: fixed; top: 0; left: -280px; width: 280px; height: 100vh; background-color: #14151f; z-index: 1001; transition: left 0.3s ease-in-out, background-color 0.3s; display: flex; flex-direction: column; border-right: 1px solid #1f2937; box-shadow: 5px 0 15px rgba(0,0,0,0.5); }
+    #sidebar { position: fixed; top: 0; left: -280px; width: 280px; height: 100vh; background-color: #14151f; z-index: 1001; transition: left 0.3s ease-in-out; display: flex; flex-direction: column; border-right: 1px solid #1f2937; box-shadow: 5px 0 15px rgba(0,0,0,0.5); }
     #sidebar.open { left: 0; }
     
     .sidebar-header { padding: 20px; border-bottom: 1px solid #1f2937; display: flex; justify-content: space-between; align-items: center; }
@@ -108,13 +106,13 @@
     #motivationText { color: #9aa0a6; font-size: 14px; }
 
     .stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-    .stat-card { background-color: #1a1f2e; border-radius: 14px; padding: 15px 8px; text-align: center; display: flex; flex-direction: column; gap: 5px; border: 1px solid transparent; transition: background-color 0.3s; }
+    .stat-card { background-color: #1a1f2e; border-radius: 14px; padding: 15px 8px; text-align: center; display: flex; flex-direction: column; gap: 5px; border: 1px solid transparent; }
     .stat-card span:first-child { color: #ffffff; font-size: 26px; font-weight: 700; }
     .stat-card span:last-child { color: #9aa0a6; font-size: 11px; text-transform: lowercase; }
     #streakStat { color: #ff6b4a !important; }
 
     #heatmap { display: grid; grid-template-columns: repeat(13, 1fr); gap: 4px; margin-bottom: 10px; padding: 0; }
-    .heatmap-cell { aspect-ratio: 1; width: 100%; background-color: #1a1f2e; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; }
+    .heatmap-cell { aspect-ratio: 1; width: 100%; background-color: #1a1f2e; border-radius: 5px; cursor: pointer; }
     .heatmap-hint { color: #9aa0a6; font-size: 12px; margin-bottom: 25px; text-align: center; }
 
     /* Quick Action Buttons */
@@ -127,11 +125,11 @@
     .quick-btn svg { width: 20px; height: 20px; }
 
     .btn-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-    .tracker-btn { display: flex; align-items: center; justify-content: center; width: 100%; padding: 12px 20px; background: #1e1b2e; color: #d6a1f0; border: 1px solid #9b59b6; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer; box-shadow: 0 0 15px rgba(155, 89, 182, 0.2); transition: background 0.3s; }
-    .extras-btn { display: flex; align-items: center; justify-content: center; width: 100%; padding: 12px 20px; background: #1a1f2e; color: #00e5ff; border: 1px solid #00e5ff; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer; box-shadow: 0 0 15px rgba(0, 229, 255, 0.1); transition: background 0.3s; }
+    .tracker-btn { display: flex; align-items: center; justify-content: center; width: 100%; padding: 12px 20px; background: #1e1b2e; color: #d6a1f0; border: 1px solid #9b59b6; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer; box-shadow: 0 0 15px rgba(155, 89, 182, 0.2); }
+    .extras-btn { display: flex; align-items: center; justify-content: center; width: 100%; padding: 12px 20px; background: #1a1f2e; color: #00e5ff; border: 1px solid #00e5ff; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer; box-shadow: 0 0 15px rgba(0, 229, 255, 0.1); }
 
     .search-section { margin-bottom: 15px; }
-    #habitSearchInput { width: 100%; padding: 12px 15px; background-color: #1a1f2e; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 14px; outline: none; transition: background-color 0.3s; }
+    #habitSearchInput { width: 100%; padding: 12px 15px; background-color: #1a1f2e; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 14px; outline: none; }
     #habitSearchInput:focus { border-color: #4a9eff; }
 
     .today-section { margin-bottom: 20px; }
@@ -140,29 +138,32 @@
     #todayCount { color: #4a9eff; font-size: 16px; font-weight: 600; }
     #emptyMessage { color: #9aa0a6; font-size: 14px; margin-bottom: 20px; }
     .today-buttons { display: flex; gap: 10px; margin-top: 15px; }
-    .today-buttons button { flex: 1; padding: 14px; background-color: #1a1f2e; color: #e8eaed; border: 1px solid #2a3142; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background-color 0.3s; }
+    .today-buttons button { flex: 1; padding: 14px; background-color: #1a1f2e; color: #e8eaed; border: 1px solid #2a3142; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; }
 
     #editMode { margin-top: 20px; }
     .edit-buttons { display: flex; gap: 10px; margin-bottom: 15px; }
-    .edit-buttons button { flex: 1; padding: 14px; background-color: #1a1f2e; color: #e8eaed; border: 1px solid #2a3142; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background-color 0.3s; }
+    .edit-buttons button { flex: 1; padding: 14px; background-color: #1a1f2e; color: #e8eaed; border: 1px solid #2a3142; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; }
     .add-habit-row { display: flex; gap: 8px; margin-bottom: 10px; }
-    #newHabitInput { flex: 1; padding: 12px 15px; background-color: #1a1f2e; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 14px; outline: none; transition: background-color 0.3s; }
+    #newHabitInput { flex: 1; padding: 12px 15px; background-color: #1a1f2e; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 14px; outline: none; }
     #addHabitBtn { padding: 12px 18px; background-color: #4a9eff; color: white; border: none; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer; }
     
     #habitsList { list-style: none; margin-top: 15px; }
-    #habitsList li { display: flex; align-items: center; gap: 10px; padding: 12px; background-color: #1a1f2e; border-radius: 10px; margin-bottom: 8px; color: #e8eaed; transition: background-color 0.3s; }
+    #habitsList li { display: flex; align-items: center; gap: 10px; padding: 12px; background-color: #1a1f2e; border-radius: 10px; margin-bottom: 8px; color: #e8eaed; }
     .move-btn { background: transparent; border: none; color: #9aa0a6; font-size: 16px; cursor: pointer; padding: 5px; }
 
     .footer-text { color: #6a7280; font-size: 12px; text-align: center; margin-top: 25px; margin-bottom: 20px; }
 
     /* ===== Modals ===== */
-    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #0f1419; z-index: 2000; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; transition: background-color 0.3s; }
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #0f1419; z-index: 2000; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
     .modal-overlay.active { display: flex; }
     
-    .modal-box { background-color: #1a1f2e; border-radius: 20px; padding: 25px; width: 100%; max-width: 400px; max-height: 90vh; overflow-y: auto; border: 1px solid #2a3142; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: background-color 0.3s; }
+    /* Z-Index fix for Backup/Restore to sit on top of Settings */
+    #backupModal, #restoreModal { z-index: 3000; }
+
+    .modal-box { background-color: #1a1f2e; border-radius: 20px; padding: 25px; width: 100%; max-width: 400px; max-height: 90vh; overflow-y: auto; border: 1px solid #2a3142; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
     .modal-box h2 { color: #ffffff; margin-bottom: 20px; font-size: 22px; text-align: center; }
     .modal-box label { display: block; color: #9aa0a6; font-size: 13px; margin-bottom: 6px; margin-top: 12px; }
-    .modal-box input, .modal-box textarea { width: 100%; padding: 12px 15px; background-color: #0f1419; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 15px; outline: none; transition: background-color 0.3s; }
+    .modal-box input, .modal-box textarea { width: 100%; padding: 12px 15px; background-color: #0f1419; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 15px; outline: none; -webkit-user-select: auto; user-select: auto; -webkit-touch-callout: default; }
     .modal-box input:focus, .modal-box textarea:focus { border-color: #4a9eff; }
 
     /* Full Screen Modals */
@@ -179,7 +180,7 @@
 
     .settings-buttons { display: flex; gap: 10px; margin-top: 20px; }
     .settings-buttons button { flex: 1; padding: 14px; border: none; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer; }
-    #settingsCancel, #addHabitCancel, #deleteCancel, #resetCancel, #dayModalClose, #exportCancel, #feedbackCancel, #trackerClose, #introClose, #extrasClose, #closePromptBtn, #pastEditCancel { background-color: #2a3142; color: #e8eaed; }
+    #settingsCancel, #addHabitCancel, #deleteCancel, #resetCancel, #dayModalClose, #feedbackCancel, #trackerClose, #introClose, #extrasClose, #closePromptBtn, #pastEditCancel, #closeBackupBtn, #closeRestoreBtn { background-color: #2a3142; color: #e8eaed; }
     #settingsSave, #addHabitSave, #feedbackSubmit, #saveSleepBtn, #saveNoteBtn, #pastEditConfirm { background: linear-gradient(135deg, #4a9eff, #2a7fdb); color: white; }
     #deleteConfirm, #resetConfirm { background: linear-gradient(135deg, #ff6b4a, #d35400); color: white; }
     
@@ -203,7 +204,7 @@
     @keyframes fall { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(105vh) rotate(720deg); opacity: 0; } }
 
     /* ===== Extras Modal Specific ===== */
-    .extras-section { background: #0f1419; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #2a3142; transition: background-color 0.3s; }
+    .extras-section { background: #0f1419; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #2a3142; }
     .extras-section h3 { font-size: 16px; color: #e8eaed; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
     .progress-bar-bg { background: #2a3142; height: 12px; border-radius: 6px; overflow: hidden; position: relative; margin-bottom: 5px;}
     .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #4a9eff, #00e5ff); border-radius: 6px; transition: width 1s ease; }
@@ -215,12 +216,12 @@
     .badge-name { font-size: 9px; color: #e8eaed; font-weight: bold; }
     .mini-calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
     .cal-header { font-size: 10px; color: #9aa0a6; font-weight: bold; margin-bottom: 5px; }
-    .cal-day { font-size: 11px; padding: 6px 0; border-radius: 4px; background: #2a3142; color: #9aa0a6; transition: background-color 0.3s; }
+    .cal-day { font-size: 11px; padding: 6px 0; border-radius: 4px; background: #2a3142; color: #9aa0a6; }
     .cal-day.done { background: #4a9eff; color: white; font-weight: bold; }
     .cal-day.today { border: 1px solid #ffffff; }
 
     /* Sleep Tracker Styles */
-    .tracker-section { background: #0f1419; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #2a3142; transition: background-color 0.3s; }
+    .tracker-section { background: #0f1419; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #2a3142; }
     .tracker-section h3 { font-size: 16px; color: #e8eaed; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
     .sleep-lock-container { display: none; text-align: center; padding: 30px 15px; }
     .sleep-lock-container h3 { color: #ff6b4a; font-size: 18px; margin-bottom: 10px; justify-content: center; }
@@ -254,7 +255,7 @@
     /* Weekly Progress CSS */
     .weekly-bar-container { margin-bottom: 10px; }
     .weekly-bar-label { display: flex; justify-content: space-between; font-size: 12px; color: #9aa0a6; margin-bottom: 5px; }
-    .weekly-bar-bg { background: #2a3142; height: 20px; border-radius: 6px; overflow: hidden; position: relative; transition: background-color 0.3s; }
+    .weekly-bar-bg { background: #2a3142; height: 20px; border-radius: 6px; overflow: hidden; position: relative; }
     .weekly-bar-fill { height: 100%; background: linear-gradient(90deg, #4a9eff, #00e5ff); border-radius: 6px; transition: width 0.5s ease; }
     .weekly-percent-text { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font-size: 10px; font-weight: bold; color: #ffffff; text-shadow: 1px 1px 2px #000; }
   </style>
@@ -310,7 +311,7 @@
       </button>
       <span id="headerTitle">GRITGO</span>
       <div style="display: flex; gap: 5px; align-items: center;">
-        <button id="shareButton" title="Export Data">
+        <button id="shareButton" title="Backup Data">
           <svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
         </button>
       </div>
@@ -413,6 +414,33 @@
 
       <div class="settings-buttons">
         <button id="extrasClose">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BACKUP MODAL (Text Copy) -->
+  <div id="backupModal" class="modal-overlay">
+    <div class="modal-box" style="max-width: 90%;">
+      <h2>📥 Backup Data</h2>
+      <p style="text-align:center; color:#9aa0a6; font-size:13px; margin-bottom:15px;">Copy the text below and save it safely (e.g., in Notes or WhatsApp).</p>
+      <textarea id="backupText" readonly style="width:100%; height:120px; background:#0f1419; color:#00e5ff; border:1px solid #2a3142; border-radius:10px; padding:10px; font-family:monospace; font-size:12px; resize:none; margin-bottom:15px; -webkit-user-select:auto; user-select:auto; -webkit-touch-callout:default;"></textarea>
+      <button id="copyBackupBtn" style="width:100%; padding:14px; background:linear-gradient(135deg, #4a9eff, #2a7fdb); color:white; border:none; border-radius:10px; font-weight:bold; cursor:pointer; margin-bottom:10px;">📋 Copy Text</button>
+      <div class="settings-buttons" style="margin-top:0;">
+        <button id="closeBackupBtn" style="background-color:#2a3142; color:#e8eaed; padding:14px; border-radius:10px; border:none; font-weight:bold; cursor:pointer;">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESTORE MODAL (Text Paste) -->
+  <div id="restoreModal" class="modal-overlay">
+    <div class="modal-box" style="max-width: 90%;">
+      <h2>📤 Restore Data</h2>
+      <p style="text-align:center; color:#9aa0a6; font-size:13px; margin-bottom:15px;">Paste your backup text here and click Restore.</p>
+      <textarea id="restoreText" placeholder="Paste JSON here..." style="width:100%; height:120px; background:#0f1419; color:#e8eaed; border:1px solid #2a3142; border-radius:10px; padding:10px; font-family:monospace; font-size:12px; resize:none; margin-bottom:15px; -webkit-user-select:auto; user-select:auto; -webkit-touch-callout:default;"></textarea>
+      <button id="pasteClipboardBtn" style="width:100%; padding:12px; background:#2a3142; color:#00e5ff; border:1px solid #00e5ff; border-radius:10px; font-weight:600; cursor:pointer; margin-bottom:10px;">📋 Auto Paste from Clipboard</button>
+      <button id="restoreFromTextBtn" style="width:100%; padding:14px; background:linear-gradient(135deg, #4aaa4a, #2d8a2d); color:white; border:none; border-radius:10px; font-weight:bold; cursor:pointer; margin-bottom:10px;">🔄 Restore Text</button>
+      <div class="settings-buttons" style="margin-top:0;">
+        <button id="closeRestoreBtn" style="background-color:#2a3142; color:#e8eaed; padding:14px; border-radius:10px; border:none; font-weight:bold; cursor:pointer;">Cancel</button>
       </div>
     </div>
   </div>
@@ -548,18 +576,6 @@
     </div>
   </div>
 
-  <div id="exportModal" class="modal-overlay">
-    <div class="modal-box">
-      <h2>Backup Options</h2>
-      <p style="text-align:center; color:#9aa0a6; margin-bottom:20px; font-size:14px;">Choose how you want to save your backup file.</p>
-      <button id="btnDownloadFile" style="width:100%; padding:14px; background:linear-gradient(135deg, #4a9eff, #2a7fdb); color:white; border:none; border-radius:10px; font-weight:bold; font-size:15px; margin-bottom:12px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;"><span>📥</span> Download JSON</button>
-      <button id="btnDownloadCSV" style="width:100%; padding:14px; background:linear-gradient(135deg, #4aaa4a, #2d8a2d); color:white; border:none; border-radius:10px; font-weight:bold; font-size:15px; margin-bottom:12px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;"><span>📊</span> Export to Excel (CSV)</button>
-      <div class="settings-buttons" style="margin-top: 10px;">
-        <button id="exportCancel">Cancel</button>
-      </div>
-    </div>
-  </div>
-
   <div id="feedbackModal" class="modal-overlay">
     <div class="modal-box">
       <h2>Send Feedback 💬</h2>
@@ -605,15 +621,15 @@
       <!-- Backup and Restore Buttons -->
       <button id="exportData" style="width:100%; margin-top:15px; padding:12px; background:#2a3142; color:#4a9eff; border:1px solid #4a9eff; border-radius:10px; font-weight:600; cursor:pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-        Backup Data (Export)
+        Backup Data (Copy Text)
       </button>
       
       <button id="importData" style="width:100%; margin-top:10px; padding:12px; background:#2a3142; color:#4aaa4a; border:1px solid #4aaa4a; border-radius:10px; font-weight:600; cursor:pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-        Restore Data (Import)
+        Restore Data (Paste Text)
       </button>
       
-      <input type="file" id="importFileInput" accept=".json" style="display:none;">
+      <input type="file" id="importFileInput" style="display:none;">
       
       <button id="resetAllData">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
@@ -853,7 +869,6 @@
       setTimeout(updateDatePlaceholders, 50);
     });
 
-    // 🟢 গাইড বাটন ফিরিয়ে আনা হলো সাইডবারে
     document.getElementById("menuGuideBtn").addEventListener("click", () => {
       closeSidebar();
       document.getElementById("guidePromptModal").classList.add("active");
@@ -1479,18 +1494,97 @@
     document.getElementById("feedbackCancel").onclick = () => document.getElementById("feedbackModal").classList.remove("active");
     document.getElementById("feedbackSubmit").onclick = () => { const text = document.getElementById("feedbackText").value.trim(); if(!text) return; window.open(`https://wa.me/8801888214016?text=${encodeURIComponent("GRITGO Feedback:\n\n" + text)}`, "_blank"); document.getElementById("feedbackModal").classList.remove("active"); };
 
-    document.getElementById("shareButton").onclick = () => document.getElementById("exportModal").classList.add("active");
-    document.getElementById("exportCancel").onclick = () => document.getElementById("exportModal").classList.remove("active");
-    document.getElementById("btnDownloadFile").onclick = () => { const blob = new Blob([JSON.stringify(challengeData)], { type: "application/json" }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `GRITGO_Backup_${getDateKey()}.json`; a.click(); document.getElementById("exportModal").classList.remove("active"); };
-    document.getElementById("btnDownloadCSV").onclick = () => { 
-      let csv = "Date,Habit Name,Completed\n"; 
-      for (let date in challengeData.habitLogs) { 
-        challengeData.habits.forEach((h) => { 
-          const val = challengeData.habitLogs[date][h.id]; 
-          if (val) csv += `${date},"${h.name}",Done\n`; 
-        }); 
-      } 
-      const blob = new Blob([csv], { type: "text/csv" }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `GRITGO_Data_${getDateKey()}.csv`; a.click(); document.getElementById("exportModal").classList.remove("active"); 
+    // 🟢 Backup Logic (Copy Text) — FIXED (Share button opens this directly)
+    document.getElementById("shareButton").onclick = () => {
+      const dataStr = JSON.stringify(challengeData);
+      document.getElementById("backupText").value = dataStr;
+      document.getElementById("backupModal").classList.add("active");
+    };
+    
+    document.getElementById("exportData").onclick = () => {
+      const dataStr = JSON.stringify(challengeData);
+      document.getElementById("backupText").value = dataStr;
+      document.getElementById("backupModal").classList.add("active");
+    };
+    document.getElementById("closeBackupBtn").onclick = () => document.getElementById("backupModal").classList.remove("active");
+
+    document.getElementById("copyBackupBtn").onclick = async () => {
+      const copyText = document.getElementById("backupText");
+      const text = copyText.value;
+
+      // Try modern Clipboard API (secure context only: https / localhost)
+      if (navigator.clipboard && window.isSecureContext) {
+        try {
+          await navigator.clipboard.writeText(text);
+          showToast("Copied to Clipboard! ✅");
+          return;
+        } catch (err) {
+          console.log("Clipboard API failed:", err);
+        }
+      }
+
+      // Fallback: focus + select + execCommand
+      copyText.focus();
+      copyText.select();
+      copyText.setSelectionRange(0, text.length);
+
+      let ok = false;
+      try { ok = document.execCommand("copy"); } catch (e) { console.log(e); }
+
+      if (ok) {
+        showToast("Copied to Clipboard! ✅");
+      } else {
+        showToast("Text is selected — long-press and tap Copy 📋");
+      }
+    };
+
+    // 🟢 Restore Logic (Paste Text) — FIXED
+    document.getElementById("importData").onclick = () => {
+      document.getElementById("restoreText").value = "";
+      document.getElementById("restoreModal").classList.add("active");
+    };
+    document.getElementById("closeRestoreBtn").onclick = () => document.getElementById("restoreModal").classList.remove("active");
+
+    document.getElementById("pasteClipboardBtn").onclick = async () => {
+      if (!navigator.clipboard || !window.isSecureContext) {
+        showToast("Auto-paste not available — long-press box and Paste 📋");
+        document.getElementById("restoreText").focus();
+        return;
+      }
+      try {
+        const text = await navigator.clipboard.readText();
+        document.getElementById("restoreText").value = text;
+        showToast("Pasted from clipboard ✅");
+      } catch (err) {
+        showToast("Permission denied — long-press box and Paste 📋");
+      }
+    };
+
+    document.getElementById("restoreFromTextBtn").onclick = () => {
+      const text = document.getElementById("restoreText").value.trim();
+      if (!text) { showToast("Please paste your backup text first!"); return; }
+
+      let importedData;
+      try {
+        importedData = JSON.parse(text);
+      } catch (err) {
+        showToast("Invalid JSON format! Check your paste. ❌");
+        return;
+      }
+
+      // Lenient validation — anything with a habits array counts
+      if (!importedData || typeof importedData !== "object" || !Array.isArray(importedData.habits)) {
+        showToast("Invalid backup — missing habits data. ❌");
+        return;
+      }
+
+      challengeData = importedData;
+      if (!challengeData.notes) challengeData.notes = {};
+      if (!challengeData.habitLogs) challengeData.habitLogs = {};
+
+      localStorage.setItem("challengeData", JSON.stringify(challengeData));
+      showToast("Data Restored Successfully! ✅");
+      setTimeout(() => location.reload(), 1200);
     };
 
     const saved = localStorage.getItem("challengeData");
@@ -1513,7 +1607,6 @@
         updateStats();
         if(document.getElementById("extrasModal").classList.contains("active")) renderExtras();
         
-        // 🟢 Sleep Tracker মডাল খোলা থাকলে সেটাও আপডেট করবে
         if(document.getElementById("trackerModal").classList.contains("active")) {
           renderSleepTracker();
           renderWeeklyProgress();
