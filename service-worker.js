@@ -1,5 +1,4 @@
-importScripts("https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js");
-const CACHE_NAME = "gritgo-v100";
+const CACHE_NAME = "gritgo-v102";
 const urlsToCache = [
   "test.html",
   "manifest.json",
