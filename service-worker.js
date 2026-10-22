@@ -1,4 +1,4 @@
-const CACHE_NAME = "gritgo-v47";
+const CACHE_NAME = "gritgo-v99";
 const urlsToCache = [
   "test.html",
   "manifest.json",
