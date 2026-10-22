@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>GRITGO - Challenge Tracker</title>
-<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>  
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>  
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f1419">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -374,7 +374,7 @@
     </div>
   </div>
 
-  <!-- 🟢 NEW: NOTIFICATION HISTORY MODAL -->
+  <!-- NOTIFICATION HISTORY MODAL -->
   <div id="notificationHistoryModal" class="modal-overlay">
     <div class="modal-box">
       <h2>Notifications 🔔</h2>
@@ -1027,7 +1027,7 @@
                     const notiTitle = "🏆 Challenge Completed!";
                     const notiBody = "Congratulations Sir! You have successfully completed the challenge. I am proud of you!";
                     new Notification(notiTitle, { body: notiBody });
-                    saveNotificationLog(notiTitle, notiBody); // 🟢 Save to History
+                    saveNotificationLog(notiTitle, notiBody); 
                   }, 2000);
                 }
               }
@@ -1323,7 +1323,7 @@
           const notiTitle = "Weekly Sleep Report 📊";
           const notiBody = avg >= 7.5 ? `Excellent! You averaged ${avg}h sleep.` : `Warning! You only averaged ${avg}h sleep.`;
           new Notification(notiTitle, { body: notiBody });
-          saveNotificationLog(notiTitle, notiBody); // 🟢 Save to History
+          saveNotificationLog(notiTitle, notiBody); 
         }
 
         sleepState = { weekStartDate: getDateKey(), days: [null, null, null, null, null, null, null] };
@@ -1473,30 +1473,39 @@
       const blob = new Blob([csv], { type: "text/csv" }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `GRITGO_Data_${getDateKey()}.csv`; a.click(); document.getElementById("exportModal").classList.remove("active"); 
     };
 
-    // 🟢 NEW: Test Notification Button Logic (Saves to History)
-    document.getElementById("testNotiBtn").addEventListener("click", () => {
-      if (!("Notification" in window)) {
-        alert("This browser does not support desktop notification");
-        return;
-      }
-      if (Notification.permission === "granted") {
-        const title = "🔔 Notification Test";
-        const body = "Notifications are working perfectly! You will receive Weekly and Challenge Completion alerts here.";
-        new Notification(title, { body: body });
-        saveNotificationLog(title, body); 
-        showToast("Test notification sent!");
-      } else if (Notification.permission !== "denied") {
-        Notification.requestPermission().then(function (permission) {
-          if (permission === "granted") {
-            const title = "🔔 Notification Test";
-            const body = "Notifications are working perfectly!";
-            new Notification(title, { body: body });
-            saveNotificationLog(title, body);
-            showToast("Test notification sent!");
+    // 🟢 UPDATED: Test Notification Button Logic (Using OneSignal)
+    document.getElementById("testNotiBtn").addEventListener("click", async () => {
+      if (window.OneSignalDeferred) {
+        window.OneSignalDeferred.push(async function(OneSignal) {
+          // Check if already granted
+          if (OneSignal.Notifications.permission) {
+            showToast("Notifications are already enabled! 🔔");
+            return;
+          }
+          
+          // Request permission
+          const granted = await OneSignal.Notifications.requestPermission();
+          if (granted) {
+            showToast("Notifications Enabled! 🔔");
+          } else {
+            showToast("Permission denied. Please check browser settings.");
           }
         });
       } else {
-        alert("Notifications are blocked. Please enable them in your browser settings.");
+        // Fallback if OneSignal is not loaded yet
+        if (!("Notification" in window)) {
+          alert("Your browser does not support notifications.");
+          return;
+        }
+        if (Notification.permission === "granted") {
+          showToast("Notifications are already enabled!");
+        } else if (Notification.permission !== "denied") {
+          Notification.requestPermission().then(permission => {
+            if (permission === "granted") showToast("Notifications enabled!");
+          });
+        } else {
+          alert("Notifications are blocked. Please enable them in your browser settings.");
+        }
       }
     });
 
@@ -1532,7 +1541,7 @@
         appId: "8e24183d-f94c-462e-98ba-242403228064",
         allowLocalhostAsSecureOrigin: true,
         notifyButton: {
-          enable: false, // আমরা আমাদের নিজেদের বেল আইকন ব্যবহার করবো
+          enable: false, // We use our custom bell icon
         },
       });
     });
