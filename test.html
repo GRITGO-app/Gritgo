@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>GRITGO - Challenge Tracker</title>
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>  
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f1419">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1472,49 +1473,32 @@
       const blob = new Blob([csv], { type: "text/csv" }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `GRITGO_Data_${getDateKey()}.csv`; a.click(); document.getElementById("exportModal").classList.remove("active"); 
     };
 
-    // 🟢 UPDATED: Test Notification Button Logic (Mobile Friendly)
-    document.getElementById("testNotiBtn").addEventListener("click", async () => {
+    // 🟢 NEW: Test Notification Button Logic (Saves to History)
+    document.getElementById("testNotiBtn").addEventListener("click", () => {
       if (!("Notification" in window)) {
-        alert("⚠️ Your browser does not support notifications.\n\nIf you are on mobile, please 'Add to Home Screen' (Install as App) first, then try again!");
+        alert("This browser does not support desktop notification");
         return;
       }
-      
       if (Notification.permission === "granted") {
-        sendTestNotification();
-      } else if (Notification.permission !== "denied") {
-        const permission = await Notification.requestPermission();
-        if (permission === "granted") {
-          sendTestNotification();
-        }
-      } else {
-        alert("🚫 Notifications are blocked. Please enable them in your browser settings.");
-      }
-    });
-
-    async function sendTestNotification() {
-      const title = "🔔 Notification Test";
-      const body = "Notifications are working perfectly! You will receive Weekly and Challenge Completion alerts here.";
-      
-      try {
-        // Service Worker এর মাধ্যমে নোটিফিকেশন পাঠানো (মোবাইলে ভালো কাজ করে)
-        if ("serviceWorker" in navigator) {
-          const registration = await navigator.serviceWorker.ready;
-          if (registration && registration.showNotification) {
-            await registration.showNotification(title, { body: body });
-          } else {
-            new Notification(title, { body: body });
-          }
-        } else {
-          new Notification(title, { body: body });
-        }
-        
+        const title = "🔔 Notification Test";
+        const body = "Notifications are working perfectly! You will receive Weekly and Challenge Completion alerts here.";
+        new Notification(title, { body: body });
         saveNotificationLog(title, body); 
         showToast("Test notification sent!");
-      } catch (error) {
-        console.error("Notification error:", error);
-        alert("Failed to send notification. On mobile, try installing the app to Home Screen first.");
+      } else if (Notification.permission !== "denied") {
+        Notification.requestPermission().then(function (permission) {
+          if (permission === "granted") {
+            const title = "🔔 Notification Test";
+            const body = "Notifications are working perfectly!";
+            new Notification(title, { body: body });
+            saveNotificationLog(title, body);
+            showToast("Test notification sent!");
+          }
+        });
+      } else {
+        alert("Notifications are blocked. Please enable them in your browser settings.");
       }
-    }
+    });
 
     const saved = localStorage.getItem("challengeData");
     if (saved) { 
@@ -1535,12 +1519,23 @@
         renderHeatmap();
         updateStats();
         if(document.getElementById("extrasModal").classList.contains("active")) renderExtras();
-        if(document.getElementById("trackerModal").classList.contains("active")) { renderWeeklyProgress(); renderSleepTracker(); }
         showToast("New Day Started! Keep going! 🌅");
       }
     }, 60000);
 
     if ("serviceWorker" in navigator) { navigator.serviceWorker.register("service-worker.js").catch(err => console.log(err)); }
+  </script>
+    <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({
+        appId: "8e24183d-f94c-462e-98ba-242403228064",
+        allowLocalhostAsSecureOrigin: true,
+        notifyButton: {
+          enable: false, // আমরা আমাদের নিজেদের বেল আইকন ব্যবহার করবো
+        },
+      });
+    });
   </script>
 </body>
 </html>
