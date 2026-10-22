@@ -1515,35 +1515,35 @@
     if ("serviceWorker" in navigator) { navigator.serviceWorker.register("service-worker.js").catch(err => console.log(err)); }
   </script>
     <script>
-    window.OneSignalDeferred = window.OneSignalDeferred || [];
-    OneSignalDeferred.push(async function(OneSignal) {
-      try {
-        await OneSignal.init({
-          appId: "8e24183d-f94c-462e-98ba-242403228064",
-          allowLocalhostAsSecureOrigin: true,
-          // 🟢 এই দুটি লাইন 404 এরর ফিক্স করবে
-          serviceWorkerPath: "Gritgo/OneSignalSDKWorker.js",
-          serviceWorkerParam: { scope: "/Gritgo/" },
-          notifyButton: {
-            enable: false, // We use our custom bell icon
-          }
-        });
-        
-        showToast("OneSignal SDK Loaded ✅");
-
-        await OneSignal.User.PushSubscription.optIn();
-        
-        const subId = OneSignal.User.PushSubscription.id;
-        if (subId) {
-          showToast("Subscribed! ID: " + subId.substring(0, 5) + "... ✅");
-        } else {
-          showToast("Not subscribed yet ❌");
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    try {
+      await OneSignal.init({
+        appId: "8e24183d-f94c-462e-98ba-242403228064",
+        allowLocalhostAsSecureOrigin: true,
+        // 🟢 আমাদের নিজেদের সার্ভিস ওয়ার্কার ব্যবহার করবো
+        serviceWorkerPath: "service-worker.js",
+        serviceWorkerParam: { scope: "./" }, 
+        notifyButton: {
+          enable: false, 
         }
-      } catch (error) {
-        console.error(error);
-        showToast("Error: " + error.message);
+      });
+      
+      showToast("OneSignal SDK Loaded ✅");
+      
+      await OneSignal.User.PushSubscription.optIn();
+      
+      const subId = OneSignal.User.PushSubscription.id;
+      if (subId) {
+        showToast("Subscribed! ID: " + subId.substring(0, 5) + "... ✅");
+      } else {
+        showToast("Not subscribed yet ❌");
       }
-    });
-  </script>
+    } catch (error) {
+      console.error(error);
+      showToast("Error: " + error.message);
+    }
+  });
+</script>
 </body>
 </html>
