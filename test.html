@@ -1473,24 +1473,13 @@
       const blob = new Blob([csv], { type: "text/csv" }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `GRITGO_Data_${getDateKey()}.csv`; a.click(); document.getElementById("exportModal").classList.remove("active"); 
     };
 
-    // 🟢 UPDATED: Test Notification Button Logic (Forced Subscribe)
+    // 🟢 UPDATED: Test Notification Button Logic (Manual Slidedown Prompt)
     document.getElementById("testNotiBtn").addEventListener("click", async () => {
       if (window.OneSignalDeferred) {
         window.OneSignalDeferred.push(async function(OneSignal) {
           try {
-            // OneSignal-কে জোর করে সাবস্ক্রাইব করতে বলা
-            await OneSignal.User.PushSubscription.optIn();
-            
-            if (OneSignal.Notifications.permission) {
-              showToast("Notifications Enabled & Synced! 🔔");
-            } else {
-              const granted = await OneSignal.Notifications.requestPermission();
-              if (granted) {
-                showToast("Notifications Enabled! 🔔");
-              } else {
-                showToast("Permission denied. Please check browser settings.");
-              }
-            }
+            // OneSignal-এর সুন্দর পপ-আপ (Slidedown) কল করা
+            await OneSignal.Slidedown.promptPush();
           } catch (error) {
             console.error("OneSignal Error:", error);
             showToast("Syncing error. Please try again.");
@@ -1534,7 +1523,7 @@
         allowLocalhostAsSecureOrigin: true,
         notifyButton: {
           enable: false, // We use our custom bell icon
-        },
+        }
       });
     });
   </script>
