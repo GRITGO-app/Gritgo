@@ -74,8 +74,8 @@
     body.light-theme .badge-card { background: #f5f7fa; border-color: #d1d5db; }
     body.light-theme .badge-card.unlocked { background: #ffffff; border-color: #00e5ff; }
     body.light-theme .badge-name { color: #1a1f2e; }
-    body.light-theme #addHabitModal .modal-box, body.light-theme #deleteModal .modal-box, body.light-theme #resetModal .modal-box, body.light-theme #dayModal .modal-box, body.light-theme #feedbackModal .modal-box, body.light-theme #pastEditPromptModal .modal-box, body.light-theme #guidePromptModal .modal-box, body.light-theme #backupModal .modal-box, body.light-theme #restoreModal .modal-box { background-color: #ffffff; }
-    body.light-theme .settings-buttons button:not(#settingsSave):not(#addHabitSave):not(#feedbackSubmit):not(#saveSleepBtn):not(#saveNoteBtn):not(#pastEditConfirm):not(#startLearningBtn) { background-color: #e5e7eb; color: #1a1f2e; }
+    body.light-theme #addHabitModal .modal-box, body.light-theme #deleteModal .modal-box, body.light-theme #resetModal .modal-box, body.light-theme #dayModal .modal-box, body.light-theme #feedbackModal .modal-box, body.light-theme #pastEditPromptModal .modal-box, body.light-theme #guidePromptModal .modal-box, body.light-theme #backupModal .modal-box, body.light-theme #restoreModal .modal-box, body.light-theme #congratsModal .modal-box { background-color: #ffffff; }
+    body.light-theme .settings-buttons button:not(#settingsSave):not(#addHabitSave):not(#feedbackSubmit):not(#saveSleepBtn):not(#saveNoteBtn):not(#pastEditConfirm):not(#startLearningBtn):not(#congratsStartBtn) { background-color: #e5e7eb; color: #1a1f2e; }
     
     body.light-theme #exportData, body.light-theme #importData { background-color: #f8f9fa; border-color: #cbd5e1; color: #1a1f2e; }
     body.light-theme #resetAllData { background-color: transparent; }
@@ -192,9 +192,10 @@
 
     .settings-buttons { display: flex; gap: 10px; margin-top: 20px; }
     .settings-buttons button { flex: 1; padding: 14px; border: none; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
-    #settingsCancel, #addHabitCancel, #deleteCancel, #resetCancel, #dayModalClose, #feedbackCancel, #trackerClose, #introClose, #extrasClose, #closePromptBtn, #pastEditCancel, #closeBackupBtn, #closeRestoreBtn { background-color: #2a3142; color: #e8eaed; }
-    #settingsSave, #addHabitSave, #feedbackSubmit, #saveSleepBtn, #saveNoteBtn, #pastEditConfirm { background: linear-gradient(135deg, #4a9eff, #2a7fdb); color: white; }
+    #settingsCancel, #addHabitCancel, #deleteCancel, #resetCancel, #dayModalClose, #feedbackCancel, #trackerClose, #introClose, #extrasClose, #closePromptBtn, #pastEditCancel, #closeBackupBtn, #closeRestoreBtn, #congratsCancelBtn { background-color: #2a3142; color: #e8eaed; }
+    #settingsSave, #addHabitSave, #feedbackSubmit, #saveSleepBtn, #saveNoteBtn, #pastEditConfirm, #congratsStartBtn { background: linear-gradient(135deg, #4a9eff, #2a7fdb); color: white; }
     #deleteConfirm, #resetConfirm { background: linear-gradient(135deg, #ff6b4a, #d35400); color: white; }
+    #congratsThankBtn { background: linear-gradient(135deg, #f1c40f, #f39c12); color: #05080f; }
     
     #resetAllData { width: 100%; margin-top: 15px; padding: 12px; background: transparent; color: #ff6b4a; border: 1px solid #ff6b4a; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;}
 
@@ -279,6 +280,51 @@
     .weekly-bar-bg { background: #2a3142; height: 20px; border-radius: 6px; overflow: hidden; position: relative; }
     .weekly-bar-fill { height: 100%; background: linear-gradient(90deg, #4a9eff, #00e5ff); border-radius: 6px; transition: width 0.5s ease; }
     .weekly-percent-text { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font-size: 10px; font-weight: bold; color: #ffffff; text-shadow: 1px 1px 2px #000; }
+
+    /* ===== Click/Press Feedback ===== */
+    button:active, .quick-btn:active, .custom-checkbox:active, .heatmap-cell:active, .menu-item:active, .hour-btn:active {
+      transform: scale(0.92) !important;
+      opacity: 0.8;
+    }
+    button, .menu-item, .custom-checkbox {
+      cursor: pointer;
+      transition: transform 0.1s ease, opacity 0.1s ease;
+    }
+
+    /* Custom Congratulation Modal */
+    #congratsModal .modal-box {
+      text-align: center;
+      background: linear-gradient(145deg, #1a1f2e, #14151f);
+      border: 2px solid #f1c40f;
+      box-shadow: 0 0 30px rgba(241, 196, 15, 0.3);
+      padding: 30px 20px;
+    }
+    #congratsModal h2 {
+      color: #f1c40f;
+      font-size: 28px;
+      margin-bottom: 10px;
+      text-shadow: 0 0 10px rgba(241, 196, 15, 0.5);
+    }
+    #congratsModal p {
+      color: #e8eaed;
+      font-size: 15px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+    #congratsModal .congrats-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 15px;
+      stroke: #f1c40f;
+      fill: none;
+      stroke-width: 1.5;
+    }
+    #congratsModal .congrats-footer {
+      color: #00e5ff; 
+      font-weight: bold; 
+      font-size: 16px; 
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
@@ -400,6 +446,28 @@
       <ul id="habitsList"></ul>
     </div>
     
+  </div>
+
+  <!-- CHALLENGE COMPLETION CONGRATULATIONS MODAL -->
+  <div id="congratsModal" class="modal-overlay">
+    <div class="modal-box">
+      <div id="congratsIconContainer">
+        <!-- Icon will be injected here via JS -->
+      </div>
+      <h2 id="congratsTitle">Congratulations! 🎉</h2>
+      <p id="congratsBody">You have successfully completed the <b id="congratsChallengeName"></b> challenge! Your dedication and consistency will take you far.</p>
+      <p id="congratsQuote" style="font-style: italic; color: #9aa0a6;">"Success is the sum of small efforts, repeated day in and day out."</p>
+      <p class="congrats-footer" id="congratsFooter">Best of luck for your next journey! 🚀</p>
+      
+      <div class="settings-buttons" id="congratsStartButtons" style="display: none;">
+        <button id="congratsStartBtn">Let's Go!</button>
+      </div>
+      
+      <div class="settings-buttons" id="congratsEndButtons">
+        <button id="congratsCancelBtn">Cancel</button>
+        <button id="congratsThankBtn">Thank You</button>
+      </div>
+    </div>
   </div>
 
   <!-- EXTRAS MODAL -->
@@ -763,7 +831,32 @@
   <script>
     window.onerror = function(msg, url, line) { console.error("Code Error: " + msg + " at line " + line); };
 
-    // SVG Icons for Brain States
+    // ===== Haptic Feedback & Press Feel =====
+    document.addEventListener('pointerdown', function(e) {
+      const clickable = e.target.closest('button, .quick-btn, .custom-checkbox, .heatmap-cell, .menu-item, .hour-btn');
+      if (clickable) {
+        clickable.style.transition = 'transform 0.1s';
+        clickable.style.transform = 'scale(0.92)';
+        if (navigator.vibrate) navigator.vibrate(15);
+      }
+    });
+
+    document.addEventListener('pointerup', function(e) {
+      const clickable = e.target.closest('button, .quick-btn, .custom-checkbox, .heatmap-cell, .menu-item, .hour-btn');
+      if (clickable) {
+        clickable.style.transform = '';
+        setTimeout(() => clickable.style.transition = '', 100);
+      }
+    });
+
+    document.addEventListener('pointercancel', function(e) {
+      const clickable = e.target.closest('button, .quick-btn, .custom-checkbox, .heatmap-cell, .menu-item, .hour-btn');
+      if (clickable) {
+        clickable.style.transform = '';
+        setTimeout(() => clickable.style.transition = '', 100);
+      }
+    });
+
     const brainIcons = {
       empty: `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"></path><path d="M12 12 2.1 12"></path><path d="M12 12 18.5 18.5"></path></svg>`,
       tired: `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="18" height="12" rx="2" ry="2"></rect><line x1="23" y1="13" x2="23" y2="11"></line><line x1="5" y1="10" x2="5" y2="14"></line><line x1="9" y1="10" x2="9" y2="14"></line></svg>`,
@@ -774,7 +867,6 @@
       over: `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>`
     };
 
-    // ===== THEME TOGGLE LOGIC WITH SVG ICONS =====
     const themeToggleBtn = document.getElementById("themeToggleBtn");
     const currentTheme = localStorage.getItem("gritgo_theme");
     
@@ -802,7 +894,6 @@
       }
     });
 
-    // ===== FIXED BACK BUTTON LOGIC =====
     history.pushState({ page: "main" }, "");
     window.addEventListener("popstate", function(event) {
       const openModals = document.querySelectorAll('.modal-overlay.active');
@@ -866,7 +957,18 @@
     function showToast(message) { const t = document.createElement("div"); t.className = "toast"; t.textContent = message; document.body.appendChild(t); setTimeout(() => t.classList.add("show"), 10); setTimeout(() => { t.classList.remove("show"); setTimeout(() => t.remove(), 400); }, 2500); }
 
     function updateMotivation() { document.getElementById("motivationText").textContent = `Day ${getCurrentDayNumber()} of ${challengeData.duration}. ${challengeData.motivation}`; }
-    function getCurrentDayNumber() { const todayKey = getDateKey(); if (!challengeData.startDate) return 1; let current = challengeData.startDate, dayNum = 1, safety = 0; while (current < todayKey && safety < 500) { current = nextDateKey(current); dayNum++; safety++; } return Math.max(1, Math.min(dayNum, challengeData.duration)); }
+    
+    function getCurrentDayNumber() { 
+      const todayKey = getDateKey(); 
+      if (!challengeData.startDate) return 1; 
+      let current = challengeData.startDate, dayNum = 1, safety = 0; 
+      while (current < todayKey && safety < 1000) { 
+        current = nextDateKey(current); 
+        dayNum++; 
+        safety++; 
+      } 
+      return Math.max(1, Math.min(dayNum, challengeData.duration)); 
+    }
 
     function migrateData() {
       if (!challengeData.habits) return;
@@ -912,6 +1014,8 @@
       document.getElementById("headerTitle").textContent = challengeData.title + " Tracker";
       document.getElementById("mainTitle").textContent = challengeData.title;
       updateMotivation(); renderHabits(); renderTodayHabits(); renderHeatmap(); updateStats(); attachSearchListener(); checkSleepWeek(); 
+      
+      checkChallengeStatus();
     }
 
     function showConfetti() {
@@ -928,7 +1032,6 @@
       }
     }
 
-    // ===== SIDEBAR LOGIC =====
     const sidebar = document.getElementById("sidebar");
     const sidebarOverlay = document.getElementById("sidebarOverlay");
     
@@ -1319,46 +1422,43 @@
     document.getElementById("deleteCancel").onclick = () => { deleteModal.classList.remove("active"); deletingIndex = null; };
     document.getElementById("deleteConfirm").onclick = () => { if (deletingIndex === null) return; challengeData.habits.splice(deletingIndex, 1); localStorage.setItem("challengeData", JSON.stringify(challengeData)); deletingIndex = null; deleteModal.classList.remove("active"); renderHabits(); renderTodayHabits(); renderHeatmap(); updateStats(); showToast("Habit deleted"); };
     
-    let habitsBackup = null; // ব্যাকআপ রাখার জন্য ভ্যারিয়েবল
+    let habitsBackup = null;
 
-document.getElementById("editHabitsButton").onclick = () => { 
-  if (challengeData.habits.length === 0) {
-    document.getElementById("quickAddHabitButton").click();
-    return;
-  }
-  // এডিট মোডে ঢোকার আগে হ্যাবিটগুলোর ব্যাকআপ নিয়ে রাখছি
-  habitsBackup = JSON.parse(JSON.stringify(challengeData.habits));
-  
-  document.getElementById("editMode").style.display = "block"; 
-  document.querySelector(".today-section").style.display = "none"; 
-  renderHabits(); 
-};
-
-// Done editing চাপলে পরিবর্তনগুলো সেভ হবে
-document.getElementById("doneEditingButton").onclick = () => {
-  habitsBackup = null; // ব্যাকআপ মুছে দিচ্ছি
-  closeEditMode();
-}; 
-
-// Back চাপলে আগের অবস্থায় ফিরে যাবে (Cancel)
-document.getElementById("backButton").onclick = () => {
-  if (habitsBackup) {
-    challengeData.habits = habitsBackup; // আগের অবস্থায় ফিরিয়ে আনছি
-    localStorage.setItem("challengeData", JSON.stringify(challengeData));
-    habitsBackup = null;
-    showToast("Changes discarded"); // ইউজারকে জানানোর জন্য
-  }
-  closeEditMode();
-};
-
-function closeEditMode() { 
-  document.getElementById("editMode").style.display = "none"; 
-  document.querySelector(".today-section").style.display = "block"; 
-  renderHabits();
-  renderTodayHabits(); 
-  renderHeatmap();
-  updateStats();
-}
+    document.getElementById("editHabitsButton").onclick = () => { 
+      if (challengeData.habits.length === 0) {
+        document.getElementById("quickAddHabitButton").click();
+        return;
+      }
+      habitsBackup = JSON.parse(JSON.stringify(challengeData.habits));
+      
+      document.getElementById("editMode").style.display = "block"; 
+      document.querySelector(".today-section").style.display = "none"; 
+      renderHabits(); 
+    };
+    
+    document.getElementById("doneEditingButton").onclick = () => {
+      habitsBackup = null;
+      closeEditMode();
+    }; 
+    
+    document.getElementById("backButton").onclick = () => {
+      if (habitsBackup) {
+        challengeData.habits = habitsBackup;
+        localStorage.setItem("challengeData", JSON.stringify(challengeData));
+        habitsBackup = null;
+        showToast("Changes discarded");
+      }
+      closeEditMode();
+    };
+    
+    function closeEditMode() { 
+      document.getElementById("editMode").style.display = "none"; 
+      document.querySelector(".today-section").style.display = "block"; 
+      renderHabits();
+      renderTodayHabits(); 
+      renderHeatmap();
+      updateStats();
+    }
     
     document.getElementById("addHabitBtn").onclick = () => { 
       const text = document.getElementById("newHabitInput").value.trim(); 
@@ -1418,7 +1518,6 @@ function closeEditMode() {
       document.getElementById("overallStat").textContent = Math.round((completedToday / totalHabits) * 100) + "%";
     }
 
-    // ===== QUICK ACTIONS LOGIC =====
     document.getElementById("checkAllBtn").addEventListener("click", () => {
       const todayKey = getDateKey();
       const isFuture = challengeData.startDate > todayKey;
@@ -1638,6 +1737,106 @@ function closeEditMode() {
 
     setInterval(checkSleepWeek, 60000);
 
+    // ===== Challenge Start & End Logic =====
+    function getEndDateKey(startDateStr, duration) {
+      let d = new Date(startDateStr + "T00:00:00");
+      d.setDate(d.getDate() + duration - 1);
+      return getDateKey(d);
+    }
+
+    function checkChallengeStatus() {
+      if (!challengeData.startDate || !challengeData.duration) return;
+      
+      const todayKey = getDateKey();
+      const startKey = challengeData.startDate;
+      const endKey = getEndDateKey(startKey, challengeData.duration);
+      
+      const startSeenKey = "gritgo_start_seen_" + challengeData.title + "_" + startKey;
+      const endSeenKey = "gritgo_end_seen_" + challengeData.title + "_" + startKey;
+      
+      // ১. চেক করা আজ চ্যালেঞ্জের শেষ দিন পার হয়ে গেছে কিনা (মানে নতুন দিন এসেছে)
+      if (todayKey > endKey && !localStorage.getItem(endSeenKey)) {
+         showEndPopup(endSeenKey);
+      } 
+      // ২. চেক করা আজ চ্যালেঞ্জের প্রথম দিন কিনা
+      else if (todayKey === startKey && !localStorage.getItem(startSeenKey)) {
+         showStartPopup(startSeenKey);
+      }
+    }
+
+    function showStartPopup(seenKey) {
+      document.getElementById("congratsTitle").textContent = "Best of Luck! 🚀";
+      document.getElementById("congratsTitle").style.color = "#00e5ff";
+      document.getElementById("congratsIconContainer").innerHTML = `<svg class="congrats-icon" style="stroke: #00e5ff;" viewBox="0 0 24 24"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path></svg>`;
+      document.getElementById("congratsBody").innerHTML = `Your journey for <b id="congratsChallengeName">${challengeData.title}</b> starts today. Stay disciplined, show up every day, and you will achieve greatness!`;
+      document.getElementById("congratsQuote").style.display = "none";
+      document.getElementById("congratsFooter").innerHTML = "Best of Luck for your journey! 💪";
+      
+      document.getElementById("congratsStartButtons").style.display = "flex";
+      document.getElementById("congratsEndButtons").style.display = "none";
+      
+      document.getElementById("congratsModal").classList.add("active");
+    }
+
+    function showEndPopup(seenKey) {
+      document.getElementById("congratsTitle").textContent = "Congratulations! 🎉";
+      document.getElementById("congratsTitle").style.color = "#f1c40f";
+      document.getElementById("congratsIconContainer").innerHTML = `<svg class="congrats-icon" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>`;
+      document.getElementById("congratsBody").innerHTML = `You have successfully completed the <b id="congratsChallengeName">${challengeData.title}</b> challenge! Your dedication and consistency will take you far.`;
+      document.getElementById("congratsQuote").style.display = "block";
+      document.getElementById("congratsFooter").innerHTML = "Best of luck for your next journey! 🚀";
+      
+      document.getElementById("congratsStartButtons").style.display = "none";
+      document.getElementById("congratsEndButtons").style.display = "flex";
+      
+      document.getElementById("congratsModal").classList.add("active");
+      
+      sendLocalNotification();
+    }
+
+    function sendLocalNotification() {
+      if (!("Notification" in window)) return;
+      if (Notification.permission === "granted") {
+        new Notification("Challenge Completed! 🎉", {
+          body: `You successfully completed "${challengeData.title}"!`,
+          icon: "icon-192.png"
+        });
+      } else if (Notification.permission !== "denied") {
+        Notification.requestPermission().then(permission => {
+          if (permission === "granted") {
+            new Notification("Challenge Completed! 🎉", {
+              body: `You successfully completed "${challengeData.title}"!`,
+              icon: "icon-192.png"
+            });
+          }
+        });
+      }
+    }
+
+    // Congrats Popup Buttons Logic
+    document.getElementById("congratsStartBtn").onclick = () => {
+      const startSeenKey = "gritgo_start_seen_" + challengeData.title + "_" + challengeData.startDate;
+      localStorage.setItem(startSeenKey, "true");
+      document.getElementById("congratsModal").classList.remove("active");
+    };
+
+    document.getElementById("congratsCancelBtn").addEventListener("click", () => {
+      const endSeenKey = "gritgo_end_seen_" + challengeData.title + "_" + challengeData.startDate;
+      localStorage.setItem(endSeenKey, "true");
+      document.getElementById("congratsModal").classList.remove("active");
+      showToast("Best of luck! Keep growing! 🌟"); 
+    });
+
+    document.getElementById("congratsThankBtn").addEventListener("click", () => {
+      const endSeenKey = "gritgo_end_seen_" + challengeData.title + "_" + challengeData.startDate;
+      localStorage.setItem(endSeenKey, "true");
+      
+      const message = `GRITGO Thank You Note:\n\nI have successfully completed the "${challengeData.title}" (${challengeData.duration} Days) challenge! Thank you so much for this amazing app. Best of luck to you too! ❤️🚀`;
+      const whatsappNumber = "8801888214016"; 
+      window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, "_blank");
+      document.getElementById("congratsModal").classList.remove("active");
+    });
+
     // ===== SETTINGS MODAL LOGIC =====
     document.getElementById("settingsCancel").onclick = () => document.getElementById("settingsModal").classList.remove("active");
     document.getElementById("settingsSave").onclick = () => { 
@@ -1667,6 +1866,8 @@ function closeEditMode() {
         updateStats(); 
         document.getElementById("settingsModal").classList.remove("active"); 
         showToast("Settings saved!"); 
+        
+        checkChallengeStatus();
       } catch(e) { alert(e.message); } 
     };
     document.getElementById("resetAllData").onclick = () => { document.getElementById("settingsModal").classList.remove("active"); document.getElementById("resetModal").classList.add("active"); };
@@ -1787,9 +1988,12 @@ function closeEditMode() {
           renderWeeklyProgress();
         }
 
-        showToast("New Day Started! Keep going!");
+        // 🌟 নতুন লাইন: ১২:০০ বাজলেই চেক করবে স্টার্ট বা এন্ড পপআপ আসবে কিনা
+        checkChallengeStatus();
+
+        showToast("New Day Started! Keep going! 🌅");
       }
-    }, 60000);
+    }, 10000); // ১০ সেকেন্ডে একবার চেক করবে
 
     if ("serviceWorker" in navigator) { navigator.serviceWorker.register("service-worker.js").catch(err => console.log(err)); }
   </script>
