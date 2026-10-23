@@ -20,7 +20,7 @@
     body.light-theme { background-color: #f0f2f5; color: #1a1f2e; }
     body.light-theme .header span, body.light-theme #mainTitle, body.light-theme .today-header h2, body.light-theme .extras-section h3, body.light-theme .tracker-section h3, body.light-theme .modal-box h2 { color: #000000; }
     body.light-theme .header button { color: #1a1f2e; }
-    body.light-theme .stat-card, body.light-theme .modal-box, body.light-theme .menu-item, body.light-theme .today-buttons button, body.light-theme .edit-buttons button, body.light-theme .extras-section, body.light-theme .tracker-section, body.light-theme #addHabitModalInput, body.light-theme #newHabitInput, body.light-theme #habitSearchInput, body.light-theme #dayModalSearchInput { background-color: #ffffff; border-color: #d1d5db; color: #1a1f2e; }
+    body.light-theme .stat-card, body.light-theme .modal-box, body.light-theme .menu-item, body.light-theme .today-buttons button, body.light-theme .edit-buttons button, body.light-theme .extras-section, body.light-theme .tracker-section, body.light-theme #addHabitModalInput, body.light-theme #newHabitInput, body.light-theme #habitSearchInput, body.light-theme #dayModalSearchInput, body.light-theme #settingsDayStart, body.light-theme #settingsDayEnd, body.light-theme #setupDayStart, body.light-theme #setupDayEnd { background-color: #ffffff; border-color: #d1d5db; color: #1a1f2e; }
     
     body.light-theme .stat-card span:first-child { color: #000000; }
     body.light-theme .stat-card span:last-child { color: #4b5563; font-weight: 600; }
@@ -368,6 +368,13 @@
     </div>
     <label>Motivation Text:</label>
     <input type="text" id="setupMotivation" placeholder="Any Motivational Text You Like">
+    
+    <!-- নতুন টাইম ইনপুট -->
+    <label>Day Start Time:</label>
+    <input type="time" id="setupDayStart" value="05:00">
+    <label>Day End Time:</label>
+    <input type="time" id="setupDayEnd" value="21:00">
+
     <button id="setupSaveButton">Start Challenge</button>
   </div>
 
@@ -744,6 +751,14 @@
       </div>
       <label>Motivation Text:</label>
       <input type="text" id="settingsMotivation">
+      
+      <!-- টাইম ইনপুট -->
+      <label>Day Start Time:</label>
+      <input type="time" id="settingsDayStart" style="width: 100%; padding: 12px 15px; background-color: #0f1419; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 15px; margin-bottom: 10px;">
+      
+      <label>Day End Time:</label>
+      <input type="time" id="settingsDayEnd" style="width: 100%; padding: 12px 15px; background-color: #0f1419; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 15px; margin-bottom: 10px;">
+
       <div class="settings-buttons">
         <button id="settingsCancel">Cancel</button>
         <button id="settingsSave">Save Changes</button>
@@ -903,7 +918,7 @@
       }
     });
 
-    let challengeData = { title: "", duration: 0, startDate: "", motivation: "", habits: [], habitLogs: {}, notes: {}, dayStart: "00:00", dayEnd: "23:59" };
+    let challengeData = { title: "", duration: 0, startDate: "", motivation: "", habits: [], habitLogs: {}, notes: {}, dayStart: "05:00", dayEnd: "21:00" };
     let sleepState = { weekStartDate: getDateKey(), days: [null, null, null, null, null, null, null] };
 
     const savedSleep = localStorage.getItem("gritgo_sleep_state");
@@ -1000,10 +1015,13 @@
       let startDate = normalizeDate(document.getElementById("setupStartDate").value);
       const motivation = document.getElementById("setupMotivation").value.trim();
       
+      const dayStart = document.getElementById("setupDayStart").value || "05:00";
+      const dayEnd = document.getElementById("setupDayEnd").value || "21:00";
+
       if (!title || !duration || !startDate) { showToast("Please fill required fields"); return; }
       if (startDate < getLiteralDateKey()) { showToast("Start Date cannot be in the past!"); return; } 
 
-      challengeData = { title, duration, startDate, motivation: motivation || "Show up again.", habits: [], habitLogs: {}, notes: {}, dayStart: "00:00", dayEnd: "23:59" };
+      challengeData = { title, duration, startDate, motivation: motivation || "Show up again.", habits: [], habitLogs: {}, notes: {}, dayStart, dayEnd };
       localStorage.setItem("challengeData", JSON.stringify(challengeData));
       startMainApp();
     });
@@ -1055,6 +1073,10 @@
       document.getElementById("settingsDuration").value = challengeData.duration; 
       document.getElementById("settingsStartDate").value = normalizeDate(challengeData.startDate); 
       document.getElementById("settingsMotivation").value = challengeData.motivation; 
+      
+      document.getElementById("settingsDayStart").value = challengeData.dayStart || "05:00";
+      document.getElementById("settingsDayEnd").value = challengeData.dayEnd || "21:00";
+
       document.getElementById("settingsModal").classList.add("active"); 
       setTimeout(updateDatePlaceholders, 50);
     });
@@ -1754,11 +1776,9 @@
       const startSeenKey = "gritgo_start_seen_" + challengeData.title + "_" + startKey;
       const endSeenKey = "gritgo_end_seen_" + challengeData.title + "_" + startKey;
       
-      // ১. চেক করা আজ চ্যালেঞ্জের শেষ দিন পার হয়ে গেছে কিনা (মানে নতুন দিন এসেছে)
       if (todayKey > endKey && !localStorage.getItem(endSeenKey)) {
          showEndPopup(endSeenKey);
       } 
-      // ২. চেক করা আজ চ্যালেঞ্জের প্রথম দিন কিনা
       else if (todayKey === startKey && !localStorage.getItem(startSeenKey)) {
          showStartPopup(startSeenKey);
       }
@@ -1857,6 +1877,10 @@
         challengeData.duration = d; 
         challengeData.startDate = s; 
         challengeData.motivation = m || "Show up again."; 
+        
+        challengeData.dayStart = document.getElementById("settingsDayStart").value || "05:00";
+        challengeData.dayEnd = document.getElementById("settingsDayEnd").value || "21:00";
+
         localStorage.setItem("challengeData", JSON.stringify(challengeData)); 
         document.getElementById("headerTitle").textContent = t + " Tracker"; 
         document.getElementById("mainTitle").textContent = t; 
@@ -1957,6 +1981,8 @@
       challengeData = importedData;
       if (!challengeData.notes) challengeData.notes = {};
       if (!challengeData.habitLogs) challengeData.habitLogs = {};
+      if (!challengeData.dayStart) challengeData.dayStart = "05:00";
+      if (!challengeData.dayEnd) challengeData.dayEnd = "21:00";
 
       localStorage.setItem("challengeData", JSON.stringify(challengeData));
       showToast("Data Restored Successfully!");
@@ -1988,12 +2014,59 @@
           renderWeeklyProgress();
         }
 
-        // 🌟 নতুন লাইন: ১২:০০ বাজলেই চেক করবে স্টার্ট বা এন্ড পপআপ আসবে কিনা
         checkChallengeStatus();
 
         showToast("New Day Started! Keep going! 🌅");
       }
-    }, 10000); // ১০ সেকেন্ডে একবার চেক করবে
+    }, 10000);
+
+    // ===== DAY START & END NOTIFICATION LOGIC =====
+    function checkHabitReminders() {
+      if (!challengeData.startDate || challengeData.habits.length === 0) return;
+
+      const now = new Date();
+      const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+      const todayKey = getDateKey();
+
+      const startTime = challengeData.dayStart || "05:00";
+      const endTime = challengeData.dayEnd || "21:00";
+
+      const firstHabit = challengeData.habits[0]?.name || "your first habit";
+      const lastHabit = challengeData.habits[challengeData.habits.length - 1]?.name || "your last habit";
+
+      if (currentTime === startTime) {
+        const notiKey = `gritgo_start_noti_${todayKey}`;
+        if (!localStorage.getItem(notiKey)) {
+          sendBrowserNotification("Good Morning 🌅", `Start Your Day With ${firstHabit} 😊`);
+          localStorage.setItem(notiKey, "true");
+        }
+      }
+
+      if (currentTime === endTime) {
+        const notiKey = `gritgo_end_noti_${todayKey}`;
+        if (!localStorage.getItem(notiKey)) {
+          sendBrowserNotification("Good Night 🌃", `End Your Day With ${lastHabit} 😊`);
+          localStorage.setItem(notiKey, "true");
+        }
+      }
+    }
+
+    function sendBrowserNotification(title, body) {
+      if ("Notification" in window && Notification.permission === "granted") {
+        try {
+          new Notification(title, { body: body, icon: "icon-192.png" });
+          return;
+        } catch(e) { console.log("Notification failed, showing toast instead."); }
+      } 
+      
+      showToast(`${title} - ${body}`);
+      
+      if ("Notification" in window && Notification.permission === "default") {
+        Notification.requestPermission();
+      }
+    }
+
+    setInterval(checkHabitReminders, 30000);
 
     if ("serviceWorker" in navigator) { navigator.serviceWorker.register("service-worker.js").catch(err => console.log(err)); }
   </script>
