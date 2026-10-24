@@ -716,7 +716,7 @@
 
       <!-- Custom Timer Input -->
       <div style="display: flex; gap: 10px; margin-bottom: 15px; align-items: stretch;">
-        <input type="text" id="customTimerInput" placeholder="Set hours" style="flex: 1; padding: 12px; background: #0f1419; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 14px; outline: none; text-align: center;">
+        <input type="text" id="customTimerInput" placeholder="Type hours" style="flex: 1; padding: 12px; background: #0f1419; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 14px; outline: none; text-align: center;">
         <button onclick="startCustomTimer()" style="background: linear-gradient(135deg, #4a9eff, #2a7fdb); color: white; padding: 12px 20px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 14px;">Start</button>
       </div>
 
@@ -1362,6 +1362,7 @@
     });
 
     // ===== VOICE INPUT (Speech to Text) =====
+    let isVoiceInput = false; // ট্র্যাক করার জন্য ইউজার ভয়েস দিয়ে বলছে কিনা
     const voiceInputBtn = document.getElementById("voiceInputBtn");
     const aiQuestionInput = document.getElementById("aiQuestionInput");
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -1386,6 +1387,7 @@
         const transcript = event.results[0][0].transcript;
         aiQuestionInput.value = transcript;
         voiceInputBtn.classList.remove("listening");
+        isVoiceInput = true; // ভয়েস দিয়ে বলা হয়েছে, তাই true
       };
 
       recognition.onerror = (event) => {
@@ -1404,6 +1406,11 @@
       voiceInputBtn.style.display = "none"; 
       console.log("Speech Recognition not supported in this browser.");
     }
+
+    // ইউজার যদি হাতে টাইপ করে, তবে ভয়েস মোড বন্ধ হয়ে যাবে
+    aiQuestionInput.addEventListener('input', () => {
+        isVoiceInput = false;
+    });
 
     // ===== TEXT TO SPEECH (AI Voice Reply) =====
     function speakText(text) {
@@ -1449,7 +1456,10 @@
         responseBox.style.display = "block";
         const reply = `Sure! I have started a timer for ${timerMins >= 60 ? (timerMins/60)+' hours' : timerMins+' minutes'}. Let's get to work!`;
         responseText.textContent = reply;
-        speakText("Timer set successfully. Let's focus."); 
+        if (isVoiceInput) {
+            speakText("Timer set successfully. Let's focus.");
+        }
+        isVoiceInput = false;
         return;
       }
 
@@ -1465,6 +1475,10 @@
       if (noteText) userPrompt += `My daily note: "${noteText}"\n`;
       if (questionText) userPrompt += `My question to you: "${questionText}"`;
       else userPrompt += `Based on my daily note, give me some advice for tomorrow.`;
+
+      // ইউজারের ইনপুট বাংলা নাকি ইংরেজি তা চেক করা
+      const isBengaliInput = /[\u0980-\u09FF]/.test(userPrompt);
+      const targetLang = isBengaliInput ? "Bengali" : "English";
 
       try {
         const aiRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
@@ -1484,7 +1498,7 @@
                 The current local time is: ${new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}.
                 
                 IMPORTANT RULES:
-                1. Always reply in the SAME language the user used (Bengali or English).
+                1. The user's input is in ${targetLang}. You MUST reply ONLY in ${targetLang}.
                 2. If the current time is after 10:00 PM (22:00) or before 5:00 AM, strongly advise the user to go to sleep.
                 3. Keep it short, encouraging, and personalized based on their habits. Use 1 or 2 relevant emojis to make the response friendly.` 
               },
@@ -1504,11 +1518,17 @@
         const aiMessage = aiData.choices[0].message.content.trim();
         responseText.textContent = aiMessage;
         
-        speakText(aiMessage);
+        // 🌟 যদি ইউজার ভয়েস দিয়ে বলে, তবেই AI ভয়েসে উত্তর দিবে
+        if (isVoiceInput) {
+            speakText(aiMessage); 
+        }
+        
+        isVoiceInput = false; // রিসেট
 
       } catch (error) {
         responseText.textContent = "Error: " + error.message;
         console.error(error);
+        isVoiceInput = false;
       } finally {
         btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg> Ask AI`;
         btn.disabled = false;
