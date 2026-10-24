@@ -640,7 +640,7 @@
         
         <!-- AI Input Box with Mic -->
         <div style="display: flex; gap: 8px; margin-bottom: 10px;">
-          <textarea id="aiQuestionInput" rows="2" placeholder="Ask anything..." style="flex: 1; background: #1a1f2e; border-color: #9b59b6; margin-bottom: 0;"></textarea>
+          <textarea id="aiQuestionInput" rows="2" placeholder="Ask anything or say 'Set timer for 1h'..." style="flex: 1; background: #1a1f2e; border-color: #9b59b6; margin-bottom: 0;"></textarea>
           <button id="voiceInputBtn" title="Voice Input" style="display: flex; align-items: center; justify-content: center;">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path>
@@ -716,7 +716,7 @@
 
       <!-- Custom Timer Input -->
       <div style="display: flex; gap: 10px; margin-bottom: 15px; align-items: stretch;">
-        <input type="text" id="customTimerInput" placeholder="Type hours" style="flex: 1; padding: 12px; background: #0f1419; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 14px; outline: none; text-align: center;">
+        <input type="text" id="customTimerInput" placeholder="Ex: 45 or 2h" style="flex: 1; padding: 12px; background: #0f1419; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 14px; outline: none; text-align: center;">
         <button onclick="startCustomTimer()" style="background: linear-gradient(135deg, #4a9eff, #2a7fdb); color: white; padding: 12px 20px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 14px;">Start</button>
       </div>
 
@@ -1362,7 +1362,8 @@
     });
 
     // ===== VOICE INPUT (Speech to Text) =====
-    let isVoiceInput = false; // ট্র্যাক করার জন্য ইউজার ভয়েস দিয়ে বলছে কিনা
+    let isVoiceInput = false; 
+    let isSettingFromVoice = false; // নতুন ফ্ল্যাগ: ভয়েস থেকে টেক্সট বসানো হচ্ছে কিনা
     const voiceInputBtn = document.getElementById("voiceInputBtn");
     const aiQuestionInput = document.getElementById("aiQuestionInput");
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -1371,7 +1372,7 @@
       const recognition = new SpeechRecognition();
       recognition.continuous = false;
       recognition.interimResults = false;
-      recognition.lang = 'bn-BD'; // বাংলা এবং ইংরেজি দুটোই বোঝার জন্য
+      recognition.lang = 'bn-BD'; 
 
       voiceInputBtn.addEventListener("click", () => {
         try {
@@ -1385,9 +1386,11 @@
 
       recognition.onresult = (event) => {
         const transcript = event.results[0][0].transcript;
+        isSettingFromVoice = true; // ইনপুট ইভেন্ট ব্লক করার জন্য
         aiQuestionInput.value = transcript;
+        isSettingFromVoice = false; // আনব্লক
         voiceInputBtn.classList.remove("listening");
-        isVoiceInput = true; // ভয়েস দিয়ে বলা হয়েছে, তাই true
+        isVoiceInput = true; // ভয়েস মোড অন
       };
 
       recognition.onerror = (event) => {
@@ -1407,9 +1410,11 @@
       console.log("Speech Recognition not supported in this browser.");
     }
 
-    // ইউজার যদি হাতে টাইপ করে, তবে ভয়েস মোড বন্ধ হয়ে যাবে
     aiQuestionInput.addEventListener('input', () => {
-        isVoiceInput = false;
+        // যদি ভয়েস থেকে টেক্সট সেট না হয়, তার মানে ইউজার নিজে টাইপ করছে
+        if (!isSettingFromVoice) {
+            isVoiceInput = false;
+        }
     });
 
     // ===== TEXT TO SPEECH (AI Voice Reply) =====
@@ -1456,17 +1461,19 @@
         responseBox.style.display = "block";
         const reply = `Sure! I have started a timer for ${timerMins >= 60 ? (timerMins/60)+' hours' : timerMins+' minutes'}. Let's get to work!`;
         responseText.textContent = reply;
+        
+        // যদি ভয়েস দিয়ে বলা হয়, তবেই উত্তর ভয়েসে শোনাবে
         if (isVoiceInput) {
             speakText("Timer set successfully. Let's focus.");
         }
-        isVoiceInput = false;
+        isVoiceInput = false; // রিসেট
         return;
       }
 
       // 🌟🌟🌟 এখানে তোমার Groq API Key বসাও 🌟🌟🌟
-      const GROQ_API_KEY = "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"; 
+      const GROQ_API_KEY = "gsk_তোর_আসল_কি_এখানে_বসা"; 
 
-      btn.innerHTML = "Thinking...";
+      btn.innerHTML = "Thinking... 🤔";
       btn.disabled = true;
       responseBox.style.display = "block";
       responseText.textContent = "Analyzing...";
@@ -1476,7 +1483,7 @@
       if (questionText) userPrompt += `My question to you: "${questionText}"`;
       else userPrompt += `Based on my daily note, give me some advice for tomorrow.`;
 
-      // ইউজারের ইনপুট বাংলা নাকি ইংরেজি তা চেক করা
+      // বাংলা নাকি ইংরেজি টেক্সট চেক
       const isBengaliInput = /[\u0980-\u09FF]/.test(userPrompt);
       const targetLang = isBengaliInput ? "Bengali" : "English";
 
@@ -1518,7 +1525,7 @@
         const aiMessage = aiData.choices[0].message.content.trim();
         responseText.textContent = aiMessage;
         
-        // 🌟 যদি ইউজার ভয়েস দিয়ে বলে, তবেই AI ভয়েসে উত্তর দিবে
+        // ভয়েস ইনপুট হলে AI ভয়েসে উত্তর দিবে
         if (isVoiceInput) {
             speakText(aiMessage); 
         }
