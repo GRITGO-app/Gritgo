@@ -20,7 +20,7 @@
     body.light-theme { background-color: #f0f2f5; color: #1a1f2e; }
     body.light-theme .header span, body.light-theme #mainTitle, body.light-theme .today-header h2, body.light-theme .extras-section h3, body.light-theme .tracker-section h3, body.light-theme .modal-box h2 { color: #000000; }
     body.light-theme .header button { color: #1a1f2e; }
-    body.light-theme .stat-card, body.light-theme .modal-box, body.light-theme .menu-item, body.light-theme .today-buttons button, body.light-theme .edit-buttons button, body.light-theme .extras-section, body.light-theme .tracker-section, body.light-theme #addHabitModalInput, body.light-theme #newHabitInput, body.light-theme #habitSearchInput, body.light-theme #dayModalSearchInput, body.light-theme #settingsDayStart, body.light-theme #settingsDayEnd, body.light-theme #setupDayStart, body.light-theme #setupDayEnd { background-color: #ffffff; border-color: #d1d5db; color: #1a1f2e; }
+    body.light-theme .stat-card, body.light-theme .modal-box, body.light-theme .menu-item, body.light-theme .today-buttons button, body.light-theme .edit-buttons button, body.light-theme .extras-section, body.light-theme .tracker-section, body.light-theme #addHabitModalInput, body.light-theme #newHabitInput, body.light-theme #habitSearchInput, body.light-theme #dayModalSearchInput, body.light-theme #settingsDayStart, body.light-theme #settingsDayEnd, body.light-theme #setupDayStart, body.light-theme #setupDayEnd, body.light-theme #aiQuestionInput { background-color: #ffffff; border-color: #d1d5db; color: #1a1f2e; }
     
     body.light-theme .stat-card span:first-child { color: #000000; }
     body.light-theme .stat-card span:last-child { color: #4b5563; font-weight: 600; }
@@ -369,7 +369,6 @@
     <label>Motivation Text:</label>
     <input type="text" id="setupMotivation" placeholder="Any Motivational Text You Like">
     
-    <!-- নতুন টাইম ইনপুট -->
     <label>Day Start Time:</label>
     <input type="time" id="setupDayStart" value="05:00">
     <label>Day End Time:</label>
@@ -532,6 +531,7 @@
         <div class="mini-calendar" id="miniCalendar"></div>
       </div>
 
+      <!-- TODAY'S NOTE SECTION -->
       <div class="extras-section">
         <h3>
           <svg class="svg-icon" style="stroke: #4aaa4a;" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
@@ -539,6 +539,23 @@
         </h3>
         <textarea id="dailyNoteInput" rows="3" placeholder="How was your day?" style="margin-bottom: 10px;"></textarea>
         <button id="saveNoteBtn" style="width: 100%; padding: 10px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer;">Save Note</button>
+      </div>
+
+      <!-- AI COACH SECTION -->
+      <div class="extras-section" style="border-color: #9b59b6;">
+        <h3>
+          <svg class="svg-icon" style="stroke: #9b59b6;" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+          Ask AI Coach
+        </h3>
+        <textarea id="aiQuestionInput" rows="2" placeholder="Ask anything... (e.g., 'Give me a plan for tomorrow')" style="margin-bottom: 10px; background: #1a1f2e; border-color: #9b59b6;"></textarea>
+        <button id="askAiBtn" style="width: 100%; padding: 12px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; background: linear-gradient(135deg, #9b59b6, #8e44ad); color: white; display: flex; align-items: center; justify-content: center; gap: 8px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+          Ask AI
+        </button>
+        
+        <div id="aiResponseBox" style="display: none; margin-top: 15px; padding: 15px; background: #0f1419; border: 1px solid #9b59b6; border-radius: 10px;">
+          <p id="aiResponseText" style="color: #e8eaed; font-size: 14px; line-height: 1.6; white-space: pre-wrap;"></p>
+        </div>
       </div>
 
       <div class="settings-buttons">
@@ -752,7 +769,6 @@
       <label>Motivation Text:</label>
       <input type="text" id="settingsMotivation">
       
-      <!-- টাইম ইনপুট -->
       <label>Day Start Time:</label>
       <input type="time" id="settingsDayStart" style="width: 100%; padding: 12px 15px; background-color: #0f1419; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 15px; margin-bottom: 10px;">
       
@@ -1034,8 +1050,29 @@
       updateMotivation(); renderHabits(); renderTodayHabits(); renderHeatmap(); updateStats(); attachSearchListener(); checkSleepWeek(); 
       
       checkChallengeStatus();
+      checkLateNightWarning(); 
     }
+function checkLateNightWarning() {
+  const currentHour = new Date().getHours();
+  
+  // রাত ১০টা (22) থেকে ভোর ৪টা (4) পর্যন্ত চেক করবে
+  if (currentHour >= 22 || currentHour < 4) {
+    const todayKey = getDateKey();
+    const todayLog = challengeData.habitLogs[todayKey] || {};
+    const completedToday = Object.values(todayLog).filter(val => val === true).length;
+    const totalHabits = challengeData.habits.length;
 
+    if (totalHabits > 0 && completedToday < totalHabits) {
+      setTimeout(() => {
+        showToast("⚠️ It's getting late! Finish your remaining habits and get some sleep. 😴");
+      }, 1500);
+    } else {
+      setTimeout(() => {
+        showToast("🌃 Great job today! Now go get some rest. Good night! 😴");
+      }, 1500);
+    }
+  }
+}
     function showConfetti() {
       const colors = ['#00e5ff', '#4a9eff', '#ff6b4a', '#d6a1f0', '#4aaa4a', '#f1c40f'];
       for (let i = 0; i < 100; i++) {
@@ -1180,6 +1217,82 @@
       challengeData.notes[noteKey] = noteText;
       localStorage.setItem("challengeData", JSON.stringify(challengeData));
       showToast("Note saved!");
+    });
+
+    // ===== AI Assistant Logic =====
+    document.getElementById("askAiBtn").addEventListener("click", async () => {
+      const noteText = document.getElementById("dailyNoteInput").value.trim();
+      const questionText = document.getElementById("aiQuestionInput").value.trim();
+      const responseBox = document.getElementById("aiResponseBox");
+      const responseText = document.getElementById("aiResponseText");
+      const btn = document.getElementById("askAiBtn");
+
+      if (!noteText && !questionText) {
+        showToast("Please write a note or ask a question first!");
+        return;
+      }
+
+      // এখানে আপনার Groq API Key বসান (যেটা gsk_ দিয়ে শুরু)
+      const GROQ_API_KEY = "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";
+
+      btn.innerHTML = "Thinking... 🤔";
+      btn.disabled = true;
+      responseBox.style.display = "block";
+      responseText.textContent = "Analyzing...";
+
+      let userPrompt = "";
+      if (noteText) userPrompt += `My daily note: "${noteText}"\n`;
+      if (questionText) userPrompt += `My question to you: "${questionText}"`;
+      else userPrompt += `Based on my daily note, give me some advice for tomorrow.`;
+
+      try {
+        const aiRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${GROQ_API_KEY}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+  model: 'openai/gpt-oss-120b',
+  messages: [
+    { 
+      role: 'system', 
+      content: `You are a smart AI habit coach inside the GRITGO app. 
+      The user is doing a challenge called "${challengeData.title}". 
+      The user's current habits are: ${challengeData.habits.map(h => h.name).join(', ') || 'No habits added yet'}.
+      The current local time is: ${new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}.
+      
+      IMPORTANT RULES:
+      1. Always reply in the SAME language the user used (Bengali or English).
+      2. If the current time is after 10:00 PM (22:00) or before 5:00 AM, strongly advise the user to go to sleep.
+      3. Keep it short, encouraging, and personalized based on their habits. Do not use emojis.` 
+    },
+    { 
+      role: 'user', 
+      content: userPrompt
+    }
+  ],
+  temperature: 0.7,
+  max_tokens: 250
+})
+        });
+
+        if (!aiRes.ok) {
+          throw new Error("API Error");
+        }
+
+        const aiData = await aiRes.json();
+        const aiMessage = aiData.choices[0].message.content.trim();
+        
+        responseText.textContent = aiMessage;
+
+      } catch (error) {
+        responseText.textContent = "Sorry, I couldn't connect to the AI. Please check your internet or API key.";
+        console.error(error);
+      } finally {
+        btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg> Ask AI`;
+        btn.disabled = false;
+      }
     });
 
     function moveHabit(index, direction) {
@@ -2020,34 +2133,35 @@
       }
     }, 10000);
 
-    // ===== DAY START & END NOTIFICATION LOGIC =====
+    // ===== DAY START & END NOTIFICATION LOGIC (FIXED) =====
     function checkHabitReminders() {
       if (!challengeData.startDate || challengeData.habits.length === 0) return;
 
       const now = new Date();
-      const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
       const todayKey = getDateKey();
+      const currentMins = now.getHours() * 60 + now.getMinutes();
 
       const startTime = challengeData.dayStart || "05:00";
       const endTime = challengeData.dayEnd || "21:00";
+      
+      const [sh, sm] = startTime.split(':').map(Number);
+      const [eh, em] = endTime.split(':').map(Number);
+      const startMins = sh * 60 + sm;
+      const endMins = eh * 60 + em;
 
       const firstHabit = challengeData.habits[0]?.name || "your first habit";
       const lastHabit = challengeData.habits[challengeData.habits.length - 1]?.name || "your last habit";
 
-      if (currentTime === startTime) {
-        const notiKey = `gritgo_start_noti_${todayKey}`;
-        if (!localStorage.getItem(notiKey)) {
-          sendBrowserNotification("Good Morning 🌅", `Start Your Day With ${firstHabit} 😊`);
-          localStorage.setItem(notiKey, "true");
-        }
+      const startNotiKey = `gritgo_start_noti_v2_${todayKey}`;
+      if (currentMins >= startMins && !localStorage.getItem(startNotiKey)) {
+        sendBrowserNotification("Good Morning 🌅", `Start Your Day With ${firstHabit} 😊`);
+        localStorage.setItem(startNotiKey, "true");
       }
 
-      if (currentTime === endTime) {
-        const notiKey = `gritgo_end_noti_${todayKey}`;
-        if (!localStorage.getItem(notiKey)) {
-          sendBrowserNotification("Good Night 🌃", `End Your Day With ${lastHabit} 😊`);
-          localStorage.setItem(notiKey, "true");
-        }
+      const endNotiKey = `gritgo_end_noti_v2_${todayKey}`;
+      if (currentMins >= endMins && !localStorage.getItem(endNotiKey)) {
+        sendBrowserNotification("Good Night 🌃", `End Your Day With ${lastHabit} 😊`);
+        localStorage.setItem(endNotiKey, "true");
       }
     }
 
@@ -2066,7 +2180,7 @@
       }
     }
 
-    setInterval(checkHabitReminders, 30000);
+    setInterval(checkHabitReminders, 10000);
 
     if ("serviceWorker" in navigator) { navigator.serviceWorker.register("service-worker.js").catch(err => console.log(err)); }
   </script>
