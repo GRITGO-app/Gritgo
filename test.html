@@ -640,7 +640,7 @@
         
         <!-- AI Input Box with Mic -->
         <div style="display: flex; gap: 8px; margin-bottom: 10px;">
-          <textarea id="aiQuestionInput" rows="2" placeholder="Ask anything or say 'Set timer for 1h'..." style="flex: 1; background: #1a1f2e; border-color: #9b59b6; margin-bottom: 0;"></textarea>
+          <textarea id="aiQuestionInput" rows="2" placeholder="Ask anything..." style="flex: 1; background: #1a1f2e; border-color: #9b59b6; margin-bottom: 0;"></textarea>
           <button id="voiceInputBtn" title="Voice Input" style="display: flex; align-items: center; justify-content: center;">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path>
@@ -716,7 +716,7 @@
 
       <!-- Custom Timer Input -->
       <div style="display: flex; gap: 10px; margin-bottom: 15px; align-items: stretch;">
-        <input type="text" id="customTimerInput" placeholder="Ex: 45 or 2h" style="flex: 1; padding: 12px; background: #0f1419; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 14px; outline: none; text-align: center;">
+        <input type="text" id="customTimerInput" placeholder="Type hours" style="flex: 1; padding: 12px; background: #0f1419; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 14px; outline: none; text-align: center;">
         <button onclick="startCustomTimer()" style="background: linear-gradient(135deg, #4a9eff, #2a7fdb); color: white; padding: 12px 20px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 14px;">Start</button>
       </div>
 
@@ -1471,9 +1471,9 @@
       }
 
       // 🌟🌟🌟 এখানে তোমার Groq API Key বসাও 🌟🌟🌟
-      const GROQ_API_KEY = "gsk_তোর_আসল_কি_এখানে_বসা"; 
+      const GROQ_API_KEY = "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"; 
 
-      btn.innerHTML = "Thinking... 🤔";
+      btn.innerHTML = "Thinking...";
       btn.disabled = true;
       responseBox.style.display = "block";
       responseText.textContent = "Analyzing...";
@@ -1507,7 +1507,7 @@
                 IMPORTANT RULES:
                 1. The user's input is in ${targetLang}. You MUST reply ONLY in ${targetLang}.
                 2. If the current time is after 10:00 PM (22:00) or before 5:00 AM, strongly advise the user to go to sleep.
-                3. Keep it short, encouraging, and personalized based on their habits. Use 1 or 2 relevant emojis to make the response friendly.` 
+                3. Keep it short, encouraging, and personalized based on their habits. Use emojis to make the response friendly.` 
               },
               { role: 'user', content: userPrompt }
             ],
