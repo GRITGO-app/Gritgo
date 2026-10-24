@@ -325,6 +325,47 @@
       font-size: 16px; 
       margin-top: 10px;
     }
+/* ===== NEW SEARCH BAR STYLES ===== */
+.search-wrapper { position: relative; width: 100%; }
+
+.search-icon { 
+  position: absolute; 
+  left: 15px; 
+  top: 50%; 
+  transform: translateY(-50%); 
+  width: 18px; 
+  height: 18px; 
+  stroke: #9aa0a6; 
+  pointer-events: none; 
+}
+
+#habitSearchInput { 
+  width: 100%; 
+  padding: 12px 15px 12px 42px !important; /* বাম দিকে ৪২ পিক্সেল প্যাডিং */
+  background-color: #1a1f2e; 
+  border: 1px solid #2a3142; 
+  border-radius: 10px; 
+  color: #e8eaed; 
+  font-size: 14px; 
+  outline: none; 
+}
+
+#habitSearchInput:focus { border-color: #4a9eff; }
+
+/* লাইট থিমের জন্য আইকনের কালার */
+body.light-theme .search-icon { stroke: #6b7280; }
+  #dayModalSearchInput { 
+  width: 100%; 
+  padding: 12px 15px 12px 42px !important; /* বাম দিকে ৪২ পিক্সেল প্যাডিং */
+  background-color: #0f1419; 
+  border: 1px solid #2a3142; 
+  border-radius: 10px; 
+  color: #e8eaed; 
+  font-size: 14px; 
+  outline: none; 
+}
+
+#dayModalSearchInput:focus { border-color: #4a9eff; }
   </style>
 </head>
 <body>
@@ -424,8 +465,11 @@
     <p class="heatmap-hint">Brighter means more habits done.</p>
 
     <div class="search-section">
-      <input type="text" id="habitSearchInput" placeholder="Search by number or name..." autocomplete="off">
-    </div>
+  <div class="search-wrapper">
+    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+    <input type="text" id="habitSearchInput" placeholder="Search by number or name..." autocomplete="off">
+  </div>
+</div>
 
     <div class="today-section">
       <div class="today-header">
@@ -547,7 +591,7 @@
           <svg class="svg-icon" style="stroke: #9b59b6;" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
           Ask AI Coach
         </h3>
-        <textarea id="aiQuestionInput" rows="2" placeholder="Ask anything... (e.g., 'Give me a plan for tomorrow')" style="margin-bottom: 10px; background: #1a1f2e; border-color: #9b59b6;"></textarea>
+        <textarea id="aiQuestionInput" rows="2" placeholder="Ask anything... " style="margin-bottom: 10px; background: #1a1f2e; border-color: #9b59b6;"></textarea>
         <button id="askAiBtn" style="width: 100%; padding: 12px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; background: linear-gradient(135deg, #9b59b6, #8e44ad); color: white; display: flex; align-items: center; justify-content: center; gap: 8px;">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
           Ask AI
@@ -719,7 +763,10 @@
   <div id="dayModal" class="modal-overlay">
     <div class="modal-box">
       <h2 id="dayModalTitle">Day</h2>
-      <input type="text" id="dayModalSearchInput" placeholder="Search habit by number or name..." autocomplete="off" style="margin-bottom: 15px;">
+    <div class="search-wrapper" style="margin-bottom: 15px;">
+  <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+  <input type="text" id="dayModalSearchInput" placeholder="Search habit by number or name..." autocomplete="off">
+</div>  
       <p id="dayModalSubtitle" style="text-align:center; color:#9aa0a6; margin-bottom:15px; font-size:13px;">0 / 0 habits done</p>
       <ul id="dayModalList" style="list-style:none; max-height:50vh; overflow-y:auto;"></ul>
       <div class="settings-buttons">
