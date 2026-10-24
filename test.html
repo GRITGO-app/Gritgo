@@ -1282,7 +1282,7 @@ function checkLateNightWarning() {
       // এখানে আপনার Groq API Key বসান (যেটা gsk_ দিয়ে শুরু)
       const GROQ_API_KEY = "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";
 
-      btn.innerHTML = "Thinking... 🤔";
+      btn.innerHTML = "Thinking...";
       btn.disabled = true;
       responseBox.style.display = "block";
       responseText.textContent = "Analyzing...";
@@ -1320,7 +1320,7 @@ function checkLateNightWarning() {
     }
   ],
   temperature: 0.7,
-  max_tokens: 250
+  max_tokens: 12000
 })
         });
 
