@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -94,6 +93,42 @@
       0% { box-shadow: 0 0 5px #ff6b4a; }
       100% { box-shadow: 0 0 20px #ff6b4a; }
     }
+
+    /* Language Selector Styling */
+    .lang-select-wrapper {
+      position: relative;
+      width: 100%;
+      margin-bottom: 8px;
+    }
+    .lang-select-wrapper svg {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      stroke: #00e5ff;
+      pointer-events: none;
+    }
+    #voiceLangSelect {
+      width: 100%;
+      padding: 10px 10px 10px 35px;
+      background: #1a1f2e;
+      color: #e8eaed;
+      border: 1px solid #9b59b6;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      outline: none;
+      appearance: none;
+      -webkit-appearance: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    #voiceLangSelect:focus { border-color: #00e5ff; box-shadow: 0 0 10px rgba(0, 229, 255, 0.2); }
+    
+    body.light-theme #voiceLangSelect { background: #ffffff; color: #1a1f2e; border-color: #9b59b6; }
+    body.light-theme .lang-select-wrapper svg { stroke: #9b59b6; }
 
     body.light-theme .date-wrapper input { background-color: #ffffff; color: #1a1f2e; }
     body.light-theme .sidebar-header { border-bottom-color: #e5e7eb; }
@@ -638,6 +673,65 @@
           Ask AI Coach
         </h3>
         
+        <!-- Language Selector (Styled) -->
+        <div class="lang-select-wrapper">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+          <select id="voiceLangSelect">
+            <option value="en-US">English (US)</option>
+            <option value="bn-BD">Bengali</option>
+            <option value="hi-IN">Hindi</option>
+            <option value="es-ES">Spanish</option>
+            <option value="fr-FR">French</option>
+            <option value="de-DE">German</option>
+            <option value="zh-CN">Chinese</option>
+            <option value="ja-JP">Japanese</option>
+            <option value="ar-SA">Arabic</option>
+            <option value="ru-RU">Russian</option>
+            <option value="pt-BR">Portuguese</option>
+            <option value="it-IT">Italian</option>
+            <option value="ko-KR">Korean</option>
+            <option value="tr-TR">Turkish</option>
+            <option value="vi-VN">Vietnamese</option>
+            <option value="th-TH">Thai</option>
+            <option value="id-ID">Indonesian</option>
+            <option value="ms-MY">Malay</option>
+            <option value="ur-PK">Urdu</option>
+            <option value="ta-IN">Tamil</option>
+            <option value="te-IN">Telugu</option>
+            <option value="mr-IN">Marathi</option>
+            <option value="gu-IN">Gujarati</option>
+            <option value="kn-IN">Kannada</option>
+            <option value="ml-IN">Malayalam</option>
+            <option value="pa-IN">Punjabi</option>
+            <option value="nl-NL">Dutch</option>
+            <option value="pl-PL">Polish</option>
+            <option value="sv-SE">Swedish</option>
+            <option value="da-DK">Danish</option>
+            <option value="fi-FI">Finnish</option>
+            <option value="no-NO">Norwegian</option>
+            <option value="el-GR">Greek</option>
+            <option value="he-IL">Hebrew</option>
+            <option value="cs-CZ">Czech</option>
+            <option value="hu-HU">Hungarian</option>
+            <option value="ro-RO">Romanian</option>
+            <option value="uk-UA">Ukrainian</option>
+            <option value="fa-IR">Persian</option>
+            <option value="sw-KE">Swahili</option>
+            <option value="af-ZA">Afrikaans</option>
+            <option value="fil-PH">Filipino</option>
+            <option value="my-MM">Burmese</option>
+            <option value="km-KH">Khmer</option>
+            <option value="si-LK">Sinhala</option>
+            <option value="ne-NP">Nepali</option>
+            <option value="sr-RS">Serbian</option>
+            <option value="hr-HR">Croatian</option>
+          </select>
+        </div>
+
         <!-- AI Input Box with Mic -->
         <div style="display: flex; gap: 8px; margin-bottom: 10px;">
           <textarea id="aiQuestionInput" rows="2" placeholder="Ask anything..." style="flex: 1; background: #1a1f2e; border-color: #9b59b6; margin-bottom: 0;"></textarea>
@@ -716,7 +810,7 @@
 
       <!-- Custom Timer Input -->
       <div style="display: flex; gap: 10px; margin-bottom: 15px; align-items: stretch;">
-        <input type="text" id="customTimerInput" placeholder="Type hours" style="flex: 1; padding: 12px; background: #0f1419; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 14px; outline: none; text-align: center;">
+        <input type="text" id="customTimerInput" placeholder="Type Mins or hours" style="flex: 1; padding: 12px; background: #0f1419; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 14px; outline: none; text-align: center;">
         <button onclick="startCustomTimer()" style="background: linear-gradient(135deg, #4a9eff, #2a7fdb); color: white; padding: 12px 20px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 14px;">Start</button>
       </div>
 
@@ -1363,19 +1457,20 @@
 
     // ===== VOICE INPUT (Speech to Text) =====
     let isVoiceInput = false; 
-    let isSettingFromVoice = false; // নতুন ফ্ল্যাগ: ভয়েস থেকে টেক্সট বসানো হচ্ছে কিনা
+    let isSettingFromVoice = false; 
     const voiceInputBtn = document.getElementById("voiceInputBtn");
     const aiQuestionInput = document.getElementById("aiQuestionInput");
+    const voiceLangSelect = document.getElementById("voiceLangSelect"); 
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
     if (SpeechRecognition) {
       const recognition = new SpeechRecognition();
       recognition.continuous = false;
       recognition.interimResults = false;
-      recognition.lang = 'bn-BD'; 
 
       voiceInputBtn.addEventListener("click", () => {
         try {
+          recognition.lang = voiceLangSelect.value; // Sets the selected language dynamically
           recognition.start();
           voiceInputBtn.classList.add("listening");
           showToast("Listening... Speak now");
@@ -1386,11 +1481,11 @@
 
       recognition.onresult = (event) => {
         const transcript = event.results[0][0].transcript;
-        isSettingFromVoice = true; // ইনপুট ইভেন্ট ব্লক করার জন্য
+        isSettingFromVoice = true; 
         aiQuestionInput.value = transcript;
-        isSettingFromVoice = false; // আনব্লক
+        isSettingFromVoice = false; 
         voiceInputBtn.classList.remove("listening");
-        isVoiceInput = true; // ভয়েস মোড অন
+        isVoiceInput = true; // Trigger AI Voice Reply
       };
 
       recognition.onerror = (event) => {
@@ -1411,9 +1506,8 @@
     }
 
     aiQuestionInput.addEventListener('input', () => {
-        // যদি ভয়েস থেকে টেক্সট সেট না হয়, তার মানে ইউজার নিজে টাইপ করছে
         if (!isSettingFromVoice) {
-            isVoiceInput = false;
+            isVoiceInput = false; 
         }
     });
 
@@ -1432,9 +1526,9 @@
     // ===== SMART TIMER PARSE & AI LOGIC =====
     function parseTimerCommand(text) {
       const lowerText = text.toLowerCase();
-      if (lowerText.includes("টাইমার") || lowerText.includes("timer") || lowerText.includes("set time")) {
-        const hMatch = lowerText.match(/(\d+(?:\.\d+)?)\s*(h|hour|hours|ঘন্টা|ঘণ্টা)/);
-        const mMatch = lowerText.match(/(\d+)\s*(m|min|mins|minutes|মিনিট)/);
+      if (lowerText.includes("টাইমার") || lowerText.includes("timer") || lowerText.includes("set time") || lowerText.includes("temp") || lowerText.includes("temporizador") || lowerText.includes("minuteur") || lowerText.includes("timer") || lowerText.includes("wecker")) {
+        const hMatch = lowerText.match(/(\d+(?:\.\d+)?)\s*(h|hour|hours|ঘন্টা|ঘণ্টা|hora|heures|stunden)/);
+        const mMatch = lowerText.match(/(\d+)\s*(m|min|mins|minutes|মিনিট|minutos)/);
         if (hMatch) return parseFloat(hMatch[1]) * 60; 
         else if (mMatch) return parseInt(mMatch[1]);
       }
@@ -1453,7 +1547,7 @@
         return;
       }
 
-      // টাইমার কমান্ড চেক
+      // Check for timer command
       const timerMins = parseTimerCommand(questionText);
       if (timerMins !== null) {
         openTimerModal(null, "AI Coach Command", getDateKey()); 
@@ -1462,11 +1556,10 @@
         const reply = `Sure! I have started a timer for ${timerMins >= 60 ? (timerMins/60)+' hours' : timerMins+' minutes'}. Let's get to work!`;
         responseText.textContent = reply;
         
-        // যদি ভয়েস দিয়ে বলা হয়, তবেই উত্তর ভয়েসে শোনাবে
         if (isVoiceInput) {
             speakText("Timer set successfully. Let's focus.");
         }
-        isVoiceInput = false; // রিসেট
+        isVoiceInput = false; 
         return;
       }
 
@@ -1483,7 +1576,7 @@
       if (questionText) userPrompt += `My question to you: "${questionText}"`;
       else userPrompt += `Based on my daily note, give me some advice for tomorrow.`;
 
-      // বাংলা নাকি ইংরেজি টেক্সট চেক
+      // Automatically detect language of input
       const isBengaliInput = /[\u0980-\u09FF]/.test(userPrompt);
       const targetLang = isBengaliInput ? "Bengali" : "English";
 
@@ -1507,7 +1600,7 @@
                 IMPORTANT RULES:
                 1. The user's input is in ${targetLang}. You MUST reply ONLY in ${targetLang}.
                 2. If the current time is after 10:00 PM (22:00) or before 5:00 AM, strongly advise the user to go to sleep.
-                3. Keep it short, encouraging, and personalized based on their habits. Use emojis to make the response friendly.` 
+                3. Keep it short, encouraging, and personalized based on their habits. Use 1 or 2 relevant emojis to make the response friendly.` 
               },
               { role: 'user', content: userPrompt }
             ],
@@ -1525,12 +1618,11 @@
         const aiMessage = aiData.choices[0].message.content.trim();
         responseText.textContent = aiMessage;
         
-        // ভয়েস ইনপুট হলে AI ভয়েসে উত্তর দিবে
         if (isVoiceInput) {
             speakText(aiMessage); 
         }
         
-        isVoiceInput = false; // রিসেট
+        isVoiceInput = false;
 
       } catch (error) {
         responseText.textContent = "Error: " + error.message;
