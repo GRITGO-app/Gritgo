@@ -12,15 +12,13 @@
     input, textarea, select { -webkit-user-select: auto; user-select: auto; -webkit-touch-callout: default; }
     body { background-color: #0f1419; color: #e8eaed; min-height: 100vh; overflow-x: hidden; touch-action: manipulation; }
 
-    /* Flex utility for icons */
     .flex-icon { display: flex; align-items: center; justify-content: center; gap: 8px; }
     .svg-icon { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
 
-    /* ===== LIGHT THEME OVERRIDES ===== */
     body.light-theme { background-color: #f0f2f5; color: #1a1f2e; }
     body.light-theme .header span, body.light-theme #mainTitle, body.light-theme .today-header h2, body.light-theme .extras-section h3, body.light-theme .tracker-section h3, body.light-theme .modal-box h2 { color: #000000; }
     body.light-theme .header button { color: #1a1f2e; }
-    body.light-theme .stat-card, body.light-theme .modal-box, body.light-theme .menu-item, body.light-theme .today-buttons button, body.light-theme .edit-buttons button, body.light-theme .extras-section, body.light-theme .tracker-section, body.light-theme #addHabitModalInput, body.light-theme #newHabitInput, body.light-theme #habitSearchInput, body.light-theme #dayModalSearchInput, body.light-theme #settingsDayStart, body.light-theme #settingsDayEnd, body.light-theme #setupDayStart, body.light-theme #setupDayEnd, body.light-theme #aiQuestionInput { background-color: #ffffff; border-color: #d1d5db; color: #1a1f2e; }
+    body.light-theme .stat-card, body.light-theme .modal-box, body.light-theme .menu-item, body.light-theme .today-buttons button, body.light-theme .edit-buttons button, body.light-theme .extras-section, body.light-theme .tracker-section, body.light-theme #addHabitModalInput, body.light-theme #newHabitInput, body.light-theme #habitSearchInput, body.light-theme #dayModalSearchInput, body.light-theme #settingsDayStart, body.light-theme #settingsDayEnd, body.light-theme #setupDayStart, body.light-theme #setupDayEnd, body.light-theme #aiQuestionInput, body.light-theme #aiHabitPrompt { background-color: #ffffff; border-color: #d1d5db; color: #1a1f2e; }
     
     body.light-theme .stat-card span:first-child { color: #000000; }
     body.light-theme .stat-card span:last-child { color: #4b5563; font-weight: 600; }
@@ -41,7 +39,6 @@
     body.light-theme .custom-checkbox.checked::after { color: #ffffff; }
     body.light-theme .delete-btn { color: #6b7280; }
     
-    /* Edit & Delete Buttons */
     .delete-btn { background: transparent; border: none; cursor: pointer; padding: 6px; display: flex; align-items: center; justify-content: center; color: #ff6b4a; flex-shrink: 0; transition: all 0.2s; }
     .delete-btn:hover { color: #ff4a4a; transform: scale(1.1); }
     .edit-btn { background: transparent; border: none; cursor: pointer; padding: 6px; display: flex; align-items: center; justify-content: center; color: #4a9eff; flex-shrink: 0; transition: all 0.2s; }
@@ -49,111 +46,31 @@
     body.light-theme .edit-btn { color: #4a9eff; }
     body.light-theme .delete-btn { color: #ff6b4a; } 
 
-    /* Timer Styles */
     .timer-btn { background: transparent; border: none; cursor: pointer; padding: 6px; display: flex; align-items: center; justify-content: center; color: #9aa0a6; flex-shrink: 0; transition: all 0.2s; }
     .timer-btn:hover { color: #00e5ff; transform: scale(1.1); }
     
     #floatingTimer {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #1a1f2e;
-      border: 2px solid #00e5ff;
-      border-radius: 15px;
-      padding: 15px;
-      box-shadow: 0 5px 20px rgba(0, 229, 255, 0.4);
-      z-index: 9999;
-      display: none;
-      text-align: center;
-      min-width: 180px;
+      position: fixed; bottom: 20px; right: 20px; background: #1a1f2e; border: 2px solid #00e5ff; border-radius: 15px; padding: 15px; box-shadow: 0 5px 20px rgba(0, 229, 255, 0.4); z-index: 9999; display: none; text-align: center; min-width: 180px;
     }
     #floatingTimer .timer-text { font-size: 32px; font-weight: bold; color: #00e5ff; margin-bottom: 5px; letter-spacing: 1px; }
     #floatingTimer .timer-habit { font-size: 12px; color: #e8eaed; margin-bottom: 10px; }
     #floatingTimer button { background: #ff6b4a; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold; }
 
-    /* Voice Button Styles */
-    #voiceInputBtn {
-      background: #2a3142;
-      color: #00e5ff;
-      border: 1px solid #00e5ff;
-      border-radius: 10px;
-      padding: 0 15px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.3s ease;
-    }
-    #voiceInputBtn.listening {
-      background: #ff6b4a;
-      color: white;
-      border-color: #ff6b4a;
-      animation: pulseMic 1s infinite alternate;
-    }
-    @keyframes pulseMic {
-      0% { box-shadow: 0 0 5px #ff6b4a; }
-      100% { box-shadow: 0 0 20px #ff6b4a; }
-    }
+    #voiceInputBtn { background: #2a3142; color: #00e5ff; border: 1px solid #00e5ff; border-radius: 10px; padding: 0 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; }
+    #voiceInputBtn.listening { background: #ff6b4a; color: white; border-color: #ff6b4a; animation: pulseMic 1s infinite alternate; }
+    @keyframes pulseMic { 0% { box-shadow: 0 0 5px #ff6b4a; } 100% { box-shadow: 0 0 20px #ff6b4a; } }
 
-    /* ===== CUSTOM LANGUAGE DROPDOWN ===== */
-    .custom-lang-wrapper {
-      position: relative;
-      width: 100%;
-      margin-bottom: 8px;
-      z-index: 100;
-    }
-    .lang-trigger {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      padding: 10px 15px;
-      background: #0f1419;
-      color: #00e5ff;
-      border: 1px solid #00e5ff;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 0 10px rgba(0, 229, 255, 0.1);
-    }
+    .custom-lang-wrapper { position: relative; width: 100%; margin-bottom: 8px; z-index: 100; }
+    .lang-trigger { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 10px 15px; background: #0f1419; color: #00e5ff; border: 1px solid #00e5ff; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 0 10px rgba(0, 229, 255, 0.1); }
     .lang-trigger svg { width: 16px; height: 16px; stroke: #00e5ff; }
-    
-    .lang-menu {
-      position: absolute;
-      top: 105%;
-      left: 0;
-      width: 100%;
-      background: #0f1419;
-      border: 1px solid #00e5ff;
-      border-radius: 10px;
-      max-height: 220px;
-      overflow-y: auto;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 229, 255, 0.2);
-      display: none;
-      z-index: 999;
-    }
+    .lang-menu { position: absolute; top: 105%; left: 0; width: 100%; background: #0f1419; border: 1px solid #00e5ff; border-radius: 10px; max-height: 220px; overflow-y: auto; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 229, 255, 0.2); display: none; z-index: 999; }
     .lang-menu.open { display: block; }
-    
-    .lang-option {
-      padding: 12px 15px;
-      color: #e8eaed;
-      font-size: 14px;
-      cursor: pointer;
-      border-bottom: 1px solid #1a1f2e;
-      transition: all 0.2s;
-    }
+    .lang-option { padding: 12px 15px; color: #e8eaed; font-size: 14px; cursor: pointer; border-bottom: 1px solid #1a1f2e; transition: all 0.2s; }
     .lang-option:last-child { border-bottom: none; }
-    .lang-option:hover, .lang-option.selected {
-      background: rgba(0, 229, 255, 0.1);
-      color: #00e5ff;
-    }
-    
-    /* Custom Scrollbar for Lang Menu */
+    .lang-option:hover, .lang-option.selected { background: rgba(0, 229, 255, 0.1); color: #00e5ff; }
     .lang-menu::-webkit-scrollbar { width: 6px; }
     .lang-menu::-webkit-scrollbar-track { background: #1a1f2e; border-radius: 10px; }
     .lang-menu::-webkit-scrollbar-thumb { background: #00e5ff; border-radius: 10px; }
-
     body.light-theme .lang-trigger { background: #ffffff; color: #1a1f2e; border-color: #4a9eff; box-shadow: none; }
     body.light-theme .lang-trigger svg { stroke: #4a9eff; }
     body.light-theme .lang-menu { background: #ffffff; border-color: #4a9eff; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); }
@@ -185,30 +102,25 @@
     body.light-theme .badge-card { background: #f5f7fa; border-color: #d1d5db; }
     body.light-theme .badge-card.unlocked { background: #ffffff; border-color: #00e5ff; }
     body.light-theme .badge-name { color: #1a1f2e; }
-    body.light-theme #addHabitModal .modal-box, body.light-theme #deleteModal .modal-box, body.light-theme #resetModal .modal-box, body.light-theme #dayModal .modal-box, body.light-theme #feedbackModal .modal-box, body.light-theme #pastEditPromptModal .modal-box, body.light-theme #guidePromptModal .modal-box, body.light-theme #backupModal .modal-box, body.light-theme #restoreModal .modal-box, body.light-theme #congratsModal .modal-box, body.light-theme #timerModal .modal-box { background-color: #ffffff; }
+    body.light-theme #addHabitModal .modal-box, body.light-theme #deleteModal .modal-box, body.light-theme #resetModal .modal-box, body.light-theme #dayModal .modal-box, body.light-theme #feedbackModal .modal-box, body.light-theme #pastEditPromptModal .modal-box, body.light-theme #guidePromptModal .modal-box, body.light-theme #backupModal .modal-box, body.light-theme #restoreModal .modal-box, body.light-theme #congratsModal .modal-box, body.light-theme #timerModal .modal-box, body.light-theme #aiModal .modal-box { background-color: #ffffff; }
     body.light-theme .settings-buttons button:not(#settingsSave):not(#addHabitSave):not(#feedbackSubmit):not(#saveSleepBtn):not(#saveNoteBtn):not(#pastEditConfirm):not(#startLearningBtn):not(#congratsStartBtn) { background-color: #e5e7eb; color: #1a1f2e; }
     
     body.light-theme #exportData, body.light-theme #importData { background-color: #f8f9fa; border-color: #cbd5e1; color: #1a1f2e; }
     body.light-theme #resetAllData { background-color: transparent; }
     body.light-theme #themeToggleBtn { background-color: #ffffff; border-color: #cbd5e1; color: #1a1f2e; }
 
-    /* ===== Sidebar / Drawer ===== */
     #sidebarOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; backdrop-filter: blur(2px); }
     #sidebarOverlay.active { display: block; }
-    
     #sidebar { position: fixed; top: 0; left: -280px; width: 280px; height: 100vh; background-color: #14151f; z-index: 1001; transition: left 0.3s ease-in-out; display: flex; flex-direction: column; border-right: 1px solid #1f2937; box-shadow: 5px 0 15px rgba(0,0,0,0.5); }
     #sidebar.open { left: 0; }
-    
     .sidebar-header { padding: 20px; border-bottom: 1px solid #1f2937; display: flex; justify-content: space-between; align-items: center; }
     .sidebar-header h2 { font-size: 20px; color: #fff; }
     .close-btn { background: none; border: none; color: #9aa0a6; font-size: 24px; cursor: pointer; }
-    
     .sidebar-menu { padding: 15px; display: flex; flex-direction: column; gap: 10px; }
     .menu-item { display: flex; align-items: center; gap: 15px; padding: 15px; background: #1a1f2e; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.2s; }
     .menu-item:hover { background: #2a3142; border-color: #4a9eff; }
     .menu-item svg { width: 20px; height: 20px; stroke: #4a9eff; fill: none; stroke-width: 2; }
 
-    /* ===== Setup Screen ===== */
     #setupScreen { max-width: 500px; margin: 0 auto; padding: 40px 20px; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; }
     #setupScreen h1 { color: #00e5ff; font-size: 32px; margin-bottom: 8px; text-align: center; text-shadow: 0 0 10px rgba(0,229,255,0.5); }
     #setupScreen > p { color: #9aa0a6; text-align: center; margin-bottom: 30px; font-size: 15px; }
@@ -217,7 +129,6 @@
     #setupScreen input:focus { border-color: #4a9eff; }
     #setupSaveButton { margin-top: 25px; width: 100%; padding: 14px; background: linear-gradient(135deg, #4a9eff, #2a7fdb); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; }
 
-    /* ===== Main App ===== */
     #mainApp { max-width: 500px; margin: 0 auto; padding: 15px; min-height: 100vh; }
     .header { display: flex; align-items: center; justify-content: space-between; padding: 10px 5px; margin-bottom: 20px; }
     .header button { background: none; border: none; color: #e8eaed; cursor: pointer; padding: 5px 10px; display: flex; align-items: center; justify-content: center; transition: color 0.2s; }
@@ -239,7 +150,6 @@
     .heatmap-cell { aspect-ratio: 1; width: 100%; background-color: #1a1f2e; border-radius: 5px; cursor: pointer; }
     .heatmap-hint { color: #9aa0a6; font-size: 12px; margin-bottom: 25px; text-align: center; }
 
-    /* Quick Action Buttons */
     .quick-actions { display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 10px; margin-bottom: 15px; }
     .quick-btn { width: 42px; height: 42px; border-radius: 10px; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: all 0.2s; }
     .quick-btn:active { transform: scale(0.9); }
@@ -251,6 +161,17 @@
     .btn-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
     .tracker-btn { display: flex; align-items: center; justify-content: center; width: 100%; padding: 12px 20px; background: #1e1b2e; color: #d6a1f0; border: 1px solid #9b59b6; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer; box-shadow: 0 0 15px rgba(155, 89, 182, 0.2); gap: 8px; }
     .extras-btn { display: flex; align-items: center; justify-content: center; width: 100%; padding: 12px 20px; background: #1a1f2e; color: #00e5ff; border: 1px solid #00e5ff; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer; box-shadow: 0 0 15px rgba(0, 229, 255, 0.1); gap: 8px; }
+    
+    /* নতুন AI বাটনের স্টাইল */
+    .ai-btn { 
+      display: flex; align-items: center; justify-content: center; 
+      padding: 12px; background: #0f1419; color: #00e5ff; 
+      border: 1px solid #00e5ff; border-radius: 10px; 
+      font-size: 15px; font-weight: 900; letter-spacing: 1px; 
+      cursor: pointer; box-shadow: 0 0 15px rgba(0, 229, 255, 0.2); 
+      flex: 0.4; 
+    }
+    body.light-theme .ai-btn { background: #e0f2fe; color: #0284c7; border-color: #bae6fd; box-shadow: none; }
 
     .search-section { margin-bottom: 15px; }
     #habitSearchInput { width: 100%; padding: 12px 15px; background-color: #1a1f2e; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 14px; outline: none; }
@@ -277,10 +198,8 @@
 
     .footer-text { color: #6a7280; font-size: 12px; text-align: center; margin-top: 25px; margin-bottom: 20px; }
 
-    /* ===== Modals ===== */
     .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #0f1419; z-index: 2000; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
     .modal-overlay.active { display: flex; }
-    
     #backupModal, #restoreModal { z-index: 3000; }
 
     .modal-box { background-color: #1a1f2e; border-radius: 20px; padding: 25px; width: 100%; max-width: 400px; max-height: 90vh; overflow-y: auto; border: 1px solid #2a3142; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
@@ -289,11 +208,8 @@
     .modal-box input, .modal-box textarea { width: 100%; padding: 12px 15px; background-color: #0f1419; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 15px; outline: none; -webkit-user-select: auto; user-select: auto; -webkit-touch-callout: default; }
     .modal-box input:focus, .modal-box textarea:focus { border-color: #4a9eff; }
 
-    /* Full Screen Modals */
-    #settingsModal .modal-box, #extrasModal .modal-box, #trackerModal .modal-box, #introModal .modal-box {
-      height: 100dvh; max-height: 100dvh; width: 100%; max-width: 100%; border-radius: 0; border: none; padding: 20px; margin: 0;
-    }
-    #settingsModal, #extrasModal, #trackerModal, #introModal { padding: 0; }
+    #settingsModal .modal-box, #extrasModal .modal-box, #trackerModal .modal-box, #introModal .modal-box, #aiModal .modal-box { height: 100dvh; max-height: 100dvh; width: 100%; max-width: 100%; border-radius: 0; border: none; padding: 20px; margin: 0; }
+    #settingsModal, #extrasModal, #trackerModal, #introModal, #aiModal { padding: 0; }
 
     .date-wrapper { position: relative; width: 100%; }
     .date-placeholder { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #9aa0a6; font-size: 15px; pointer-events: none; transition: opacity 0.2s; z-index: 10; }
@@ -303,7 +219,7 @@
 
     .settings-buttons { display: flex; gap: 10px; margin-top: 20px; }
     .settings-buttons button { flex: 1; padding: 14px; border: none; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
-    #settingsCancel, #addHabitCancel, #deleteCancel, #resetCancel, #dayModalClose, #feedbackCancel, #trackerClose, #introClose, #extrasClose, #closePromptBtn, #pastEditCancel, #closeBackupBtn, #closeRestoreBtn, #congratsCancelBtn, #timerCancel { background-color: #2a3142; color: #e8eaed; }
+    #settingsCancel, #addHabitCancel, #deleteCancel, #resetCancel, #dayModalClose, #feedbackCancel, #trackerClose, #introClose, #extrasClose, #aiClose, #closePromptBtn, #pastEditCancel, #closeBackupBtn, #closeRestoreBtn, #congratsCancelBtn, #timerCancel { background-color: #2a3142; color: #e8eaed; }
     #settingsSave, #addHabitSave, #feedbackSubmit, #saveSleepBtn, #saveNoteBtn, #pastEditConfirm, #congratsStartBtn { background: linear-gradient(135deg, #4a9eff, #2a7fdb); color: white; }
     #deleteConfirm, #resetConfirm { background: linear-gradient(135deg, #ff6b4a, #d35400); color: white; }
     #congratsThankBtn { background: linear-gradient(135deg, #f1c40f, #f39c12); color: #05080f; }
@@ -321,11 +237,9 @@
     
     .lock-message { display: none; padding: 15px; background: rgba(255, 107, 74, 0.1); border: 1px solid #ff6b4a; border-radius: 10px; color: #ff6b4a; text-align: center; margin-bottom: 15px; font-weight: 600; font-size: 14px; }
 
-    /* ===== Confetti Animation ===== */
     .confetti-piece { position: fixed; top: -20px; width: 10px; height: 10px; z-index: 99999; animation: fall 1.5s linear forwards; }
     @keyframes fall { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(105vh) rotate(720deg); opacity: 0; } }
 
-    /* ===== Extras Modal Specific ===== */
     .extras-section { background: #0f1419; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #2a3142; }
     .extras-section h3 { font-size: 16px; color: #e8eaed; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
     .progress-bar-bg { background: #2a3142; height: 12px; border-radius: 6px; overflow: hidden; position: relative; margin-bottom: 5px;}
@@ -342,7 +256,6 @@
     .cal-day.done { background: #4a9eff; color: white; font-weight: bold; }
     .cal-day.today { border: 1px solid #ffffff; }
 
-    /* Sleep Tracker Styles */
     .tracker-section { background: #0f1419; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #2a3142; }
     .tracker-section h3 { font-size: 16px; color: #e8eaed; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
     .sleep-lock-container { display: none; text-align: center; padding: 30px 15px; }
@@ -385,106 +298,40 @@
     .hour-btn { background: #1a1f2e; color: #e8eaed; border: 1px solid #2a3142; padding: 12px 0; border-radius: 10px; font-weight: bold; font-size: 14px; cursor: pointer; transition: 0.2s; text-align: center; }
     .hour-btn.selected { background: #00e5ff; color: #05080f; border-color: #00e5ff; box-shadow: 0 0 15px rgba(0, 229, 255, 0.4); }
 
-    /* Weekly Progress CSS */
     .weekly-bar-container { margin-bottom: 10px; }
     .weekly-bar-label { display: flex; justify-content: space-between; font-size: 12px; color: #9aa0a6; margin-bottom: 5px; }
     .weekly-bar-bg { background: #2a3142; height: 20px; border-radius: 6px; overflow: hidden; position: relative; }
     .weekly-bar-fill { height: 100%; background: linear-gradient(90deg, #4a9eff, #00e5ff); border-radius: 6px; transition: width 0.5s ease; }
     .weekly-percent-text { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font-size: 10px; font-weight: bold; color: #ffffff; text-shadow: 1px 1px 2px #000; }
 
-    /* ===== Click/Press Feedback ===== */
-    button:active, .quick-btn:active, .custom-checkbox:active, .heatmap-cell:active, .menu-item:active, .hour-btn:active, .lang-trigger:active, .lang-option:active {
+    button:active, .quick-btn:active, .custom-checkbox:active, .heatmap-cell:active, .menu-item:active, .hour-btn:active, .lang-trigger:active, .lang-option:active, .mood-btn:active {
       transform: scale(0.92) !important;
       opacity: 0.8;
     }
-    button, .menu-item, .custom-checkbox, .lang-trigger, .lang-option {
+    button, .menu-item, .custom-checkbox, .lang-trigger, .lang-option, .mood-btn {
       cursor: pointer;
       transition: transform 0.1s ease, opacity 0.1s ease;
     }
 
-    /* Custom Congratulation Modal */
-    #congratsModal .modal-box {
-      text-align: center;
-      background: linear-gradient(145deg, #1a1f2e, #14151f);
-      border: 2px solid #f1c40f;
-      box-shadow: 0 0 30px rgba(241, 196, 15, 0.3);
-      padding: 30px 20px;
-    }
-    #congratsModal h2 {
-      color: #f1c40f;
-      font-size: 28px;
-      margin-bottom: 10px;
-      text-shadow: 0 0 10px rgba(241, 196, 15, 0.5);
-    }
-    #congratsModal p {
-      color: #e8eaed;
-      font-size: 15px;
-      line-height: 1.6;
-      margin-bottom: 20px;
-    }
-    #congratsModal .congrats-icon {
-      width: 80px;
-      height: 80px;
-      margin: 0 auto 15px;
-      stroke: #f1c40f;
-      fill: none;
-      stroke-width: 1.5;
-    }
-    #congratsModal .congrats-footer {
-      color: #00e5ff; 
-      font-weight: bold; 
-      font-size: 16px; 
-      margin-top: 10px;
-    }
+    #congratsModal .modal-box { text-align: center; background: linear-gradient(145deg, #1a1f2e, #14151f); border: 2px solid #f1c40f; box-shadow: 0 0 30px rgba(241, 196, 15, 0.3); padding: 30px 20px; }
+    #congratsModal h2 { color: #f1c40f; font-size: 28px; margin-bottom: 10px; text-shadow: 0 0 10px rgba(241, 196, 15, 0.5); }
+    #congratsModal p { color: #e8eaed; font-size: 15px; line-height: 1.6; margin-bottom: 20px; }
+    #congratsModal .congrats-icon { width: 80px; height: 80px; margin: 0 auto 15px; stroke: #f1c40f; fill: none; stroke-width: 1.5; }
+    #congratsModal .congrats-footer { color: #00e5ff; font-weight: bold; font-size: 16px; margin-top: 10px; }
 
-    /* ===== NEW SEARCH BAR STYLES ===== */
     .search-wrapper { position: relative; width: 100%; }
-    
-    .search-icon { 
-      position: absolute; 
-      left: 15px; 
-      top: 50%; 
-      transform: translateY(-50%); 
-      width: 18px; 
-      height: 18px; 
-      stroke: #9aa0a6; 
-      pointer-events: none; 
-    }
-    
-    #habitSearchInput { 
-      width: 100%; 
-      padding: 12px 15px 12px 42px !important;
-      background-color: #1a1f2e; 
-      border: 1px solid #2a3142; 
-      border-radius: 10px; 
-      color: #e8eaed; 
-      font-size: 14px; 
-      outline: none; 
-    }
-    
+    .search-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; stroke: #9aa0a6; pointer-events: none; }
+    #habitSearchInput { width: 100%; padding: 12px 15px 12px 42px !important; background-color: #1a1f2e; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 14px; outline: none; }
     #habitSearchInput:focus { border-color: #4a9eff; }
-    
     body.light-theme .search-icon { stroke: #6b7280; }
-
-    #dayModalSearchInput { 
-      width: 100%; 
-      padding: 12px 15px 12px 42px !important;
-      background-color: #0f1419; 
-      border: 1px solid #2a3142; 
-      border-radius: 10px; 
-      color: #e8eaed; 
-      font-size: 14px; 
-      outline: none; 
-    }
+    #dayModalSearchInput { width: 100%; padding: 12px 15px 12px 42px !important; background-color: #0f1419; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 14px; outline: none; }
     #dayModalSearchInput:focus { border-color: #4a9eff; }
   </style>
 </head>
 <body>
 
-  <!-- Sidebar Overlay -->
   <div id="sidebarOverlay"></div>
 
-  <!-- Sidebar / Drawer -->
   <div id="sidebar">
     <div class="sidebar-header">
       <h2>GRITGO</h2>
@@ -556,10 +403,17 @@
         <svg class="svg-icon" viewBox="0 0 24 24"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg>
         Open Weekly Progress & Sleep Tracker
       </button>
-      <button id="openExtrasBtn" class="extras-btn">
-        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5L12 3z"></path><path d="M19 13l1 3l3 1l-3 1l-1 3l-1-3l-3-1l3-1l1-3z"></path></svg>
-        Extras & Insights
-      </button>
+      
+      <!-- এখানে Extras এবং AI বাটন পাশাপাশি বসানো হয়েছে -->
+      <div style="display: flex; gap: 10px; width: 100%;">
+        <button id="openExtrasBtn" class="extras-btn" style="flex: 1.5;">
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5L12 3z"></path><path d="M19 13l1 3l3 1l-3 1l-1 3l-1-3l-3-1l3-1l1-3z"></path></svg>
+          Extras & Insights
+        </button>
+        <button id="openAiBtn" class="ai-btn">
+          AI
+        </button>
+      </div>
     </div>
 
     <div id="heatmap"></div>
@@ -609,12 +463,9 @@
     
   </div>
 
-  <!-- CHALLENGE COMPLETION CONGRATULATIONS MODAL -->
   <div id="congratsModal" class="modal-overlay">
     <div class="modal-box">
-      <div id="congratsIconContainer">
-        <!-- Icon will be injected here via JS -->
-      </div>
+      <div id="congratsIconContainer"></div>
       <h2 id="congratsTitle">Congratulations!</h2>
       <p id="congratsBody">You have successfully completed the <b id="congratsChallengeName"></b> challenge! Your dedication and consistency will take you far.</p>
       <p id="congratsQuote" style="font-style: italic; color: #9aa0a6;">"Success is the sum of small efforts, repeated day in and day out."</p>
@@ -631,83 +482,26 @@
     </div>
   </div>
 
-  <!-- EXTRAS MODAL -->
-  <div id="extrasModal" class="modal-overlay">
+  <!-- নতুন AI Modal (৩টা AI বক্স এখানে থাকবে) -->
+  <div id="aiModal" class="modal-overlay">
     <div class="modal-box">
-      <h2>Extras & Insights</h2>
+      <h2>AI Features</h2>
       
-      <div class="extras-section">
+      <!-- AI Habit Generator -->
+      <div class="extras-section" style="border-color: #4a9eff;">
         <h3>
-          <svg class="svg-icon" style="stroke: #4a9eff;" viewBox="0 0 24 24"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg>
-          Challenge Progress
+          <svg class="svg-icon" style="stroke: #4a9eff;" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10H12V2z"></path><path d="M12 12 2.1 12"></path><path d="M12 12 18.5 18.5"></path></svg>
+          AI Habit Generator
         </h3>
-        <div class="progress-bar-bg"><div class="progress-bar-fill" id="overallProgressFill" style="width: 0%;"></div></div>
-        <p style="text-align: right; font-size: 12px; color: #00e5ff; margin-top: 5px;" id="overallProgressText">0% Completed</p>
-      </div>
-
-      <!-- CHART JS SECTION -->
-      <div class="extras-section" style="border-color: #00e5ff;">
-        <h3>
-          <svg class="svg-icon" style="stroke: #00e5ff;" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
-          Weekly Progress Chart
-        </h3>
-        <div style="width: 100%; height: 220px; margin-top: 10px;">
-          <canvas id="progressChart"></canvas>
+        <p style="color: #9aa0a6; font-size: 13px; margin-bottom: 10px;">Tell AI your goal, and it will suggest habits for you!</p>
+        <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+          <input type="text" id="aiHabitPrompt" placeholder="Type goal..." style="flex: 1; background: #1a1f2e; border-color: #4a9eff;">
+          <button id="generateHabitsBtn" style="background: linear-gradient(135deg, #4a9eff, #2a7fdb); color: white; padding: 10px 15px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer;">Generate</button>
         </div>
+        <div id="generatedHabitsBox" style="display: none; flex-direction: column; gap: 8px;"></div>
       </div>
 
-      <div class="extras-section">
-        <h3>
-          <svg class="svg-icon" style="stroke: #f1c40f;" viewBox="0 0 24 24"><path d="M9 18h6"></path><path d="M10 22h4"></path><path d="M12 2a7 7 0 0 0-7 7c0 2.4 1.2 4.5 3 5.7V17h8v-2.3c1.8-1.2 3-3.3 3-5.7a7 7 0 0 0-7-7z"></path></svg>
-          Daily Motivation
-        </h3>
-        <div class="quote-text" id="dailyQuoteText">Loading...</div>
-      </div>
-
-      <div class="extras-section">
-        <h3>
-          <svg class="svg-icon" style="stroke: #d6a1f0;" viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
-          Achievements
-        </h3>
-        <div class="badges-grid" id="badgesGrid">
-          <div class="badge-card" id="badge-first">
-            <svg class="badge-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-            <span class="badge-name">First Step</span>
-          </div>
-          <div class="badge-card" id="badge-streak7">
-            <svg class="badge-icon" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg>
-            <span class="badge-name">7 Day Streak</span>
-          </div>
-          <div class="badge-card" id="badge-streak30">
-            <svg class="badge-icon" viewBox="0 0 24 24"><path d="M6 3h12l4 6-10 13L2 9z"></path></svg>
-            <span class="badge-name">30 Day Streak</span>
-          </div>
-          <div class="badge-card" id="badge-perfect10">
-            <svg class="badge-icon" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>
-            <span class="badge-name">10 Perfect</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="extras-section">
-        <h3>
-          <svg class="svg-icon" style="stroke: #00e5ff;" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-          This Month
-        </h3>
-        <div class="mini-calendar" id="miniCalendar"></div>
-      </div>
-
-      <!-- TODAY'S NOTE SECTION -->
-      <div class="extras-section">
-        <h3>
-          <svg class="svg-icon" style="stroke: #4aaa4a;" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-          Today's Note
-        </h3>
-        <textarea id="dailyNoteInput" rows="3" placeholder="How was your day?" style="margin-bottom: 10px;"></textarea>
-        <button id="saveNoteBtn" style="width: 100%; padding: 10px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer;">Save Note</button>
-      </div>
-
-      <!-- AI PERFORMANCE REVIEW SECTION -->
+      <!-- AI Performance Review -->
       <div class="extras-section" style="border-color: #00e5ff;">
         <h3>
           <svg class="svg-icon" style="stroke: #00e5ff;" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
@@ -725,22 +519,17 @@
         </div>
       </div>
 
-      <!-- AI COACH SECTION -->
+      <!-- Ask AI Coach -->
       <div class="extras-section" style="border-color: #9b59b6;">
         <h3>
           <svg class="svg-icon" style="stroke: #9b59b6;" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
           Ask AI Coach
         </h3>
         
-        <!-- ===== CUSTOM LANGUAGE DROPDOWN ===== -->
         <div class="custom-lang-wrapper">
           <button class="lang-trigger" id="langTrigger">
             <div style="display: flex; align-items: center; gap: 10px;">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <line x1="2" y1="12" x2="22" y2="12"></line>
-                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-              </svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
               <span id="selectedLangText">English (US)</span>
             </div>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
@@ -797,17 +586,11 @@
           </div>
           <input type="hidden" id="voiceLangSelect" value="en-US">
         </div>
-        <!-- ======================= -->
 
-        <!-- AI Input Box with Mic -->
         <div style="display: flex; gap: 8px; margin-bottom: 10px;">
           <textarea id="aiQuestionInput" rows="2" placeholder="Ask anything..." style="flex: 1; background: #1a1f2e; border-color: #9b59b6; margin-bottom: 0;"></textarea>
           <button id="voiceInputBtn" title="Voice Input" style="display: flex; align-items: center; justify-content: center;">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path>
-              <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-              <line x1="12" y1="19" x2="12" y2="22"></line>
-            </svg>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg>
           </button>
         </div>
 
@@ -822,19 +605,123 @@
       </div>
 
       <div class="settings-buttons">
+        <button id="aiClose">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="extrasModal" class="modal-overlay">
+    <div class="modal-box">
+      <h2>Extras & Insights</h2>
+      
+      <div class="extras-section">
+        <h3>
+          <svg class="svg-icon" style="stroke: #4a9eff;" viewBox="0 0 24 24"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg>
+          Challenge Progress
+        </h3>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="overallProgressFill" style="width: 0%;"></div></div>
+        <p style="text-align: right; font-size: 12px; color: #00e5ff; margin-top: 5px;" id="overallProgressText">0% Completed</p>
+      </div>
+
+      <div class="extras-section" style="border-color: #00e5ff;">
+        <h3>
+          <svg class="svg-icon" style="stroke: #00e5ff;" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+          Weekly Progress Chart
+        </h3>
+        <div style="width: 100%; height: 220px; margin-top: 10px;">
+          <canvas id="progressChart"></canvas>
+        </div>
+      </div>
+
+      <div class="extras-section">
+        <h3>
+          <svg class="svg-icon" style="stroke: #f1c40f;" viewBox="0 0 24 24"><path d="M9 18h6"></path><path d="M10 22h4"></path><path d="M12 2a7 7 0 0 0-7 7c0 2.4 1.2 4.5 3 5.7V17h8v-2.3c1.8-1.2 3-3.3 3-5.7a7 7 0 0 0-7-7z"></path></svg>
+          Daily Motivation
+        </h3>
+        <div class="quote-text" id="dailyQuoteText">Loading...</div>
+      </div>
+
+      <div class="extras-section">
+        <h3>
+          <svg class="svg-icon" style="stroke: #d6a1f0;" viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+          Achievements
+        </h3>
+        <div class="badges-grid" id="badgesGrid">
+          <div class="badge-card" id="badge-first">
+            <svg class="badge-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            <span class="badge-name">First Step</span>
+          </div>
+          <div class="badge-card" id="badge-streak7">
+            <svg class="badge-icon" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg>
+            <span class="badge-name">7 Day Streak</span>
+          </div>
+          <div class="badge-card" id="badge-streak30">
+            <svg class="badge-icon" viewBox="0 0 24 24"><path d="M6 3h12l4 6-10 13L2 9z"></path></svg>
+            <span class="badge-name">30 Day Streak</span>
+          </div>
+          <div class="badge-card" id="badge-perfect10">
+            <svg class="badge-icon" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>
+            <span class="badge-name">10 Perfect</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="extras-section">
+        <h3>
+          <svg class="svg-icon" style="stroke: #00e5ff;" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          This Month
+        </h3>
+        <div class="mini-calendar" id="miniCalendar"></div>
+      </div>
+
+      <div class="extras-section" style="border-color: #f1c40f;">
+        <h3>
+          <svg class="svg-icon" style="stroke: #f1c40f;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
+          Today's Mood
+        </h3>
+        <p style="color: #9aa0a6; font-size: 13px; margin-bottom: 10px;">How are you feeling today?</p>
+        <div style="display: flex; gap: 10px; justify-content: space-between;">
+          <button class="mood-btn" data-mood="happy" style="flex:1; padding: 12px 5px; background: #1a1f2e; border: 1px solid #2a3142; border-radius: 10px; display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; transition: all 0.2s;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4aaa4a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
+            <span style="font-size: 10px; color: #9aa0a6;">Happy</span>
+          </button>
+          <button class="mood-btn" data-mood="okay" style="flex:1; padding: 12px 5px; background: #1a1f2e; border: 1px solid #2a3142; border-radius: 10px; display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; transition: all 0.2s;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f1c40f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="15" x2="16" y2="15"></line><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
+            <span style="font-size: 10px; color: #9aa0a6;">Okay</span>
+          </button>
+          <button class="mood-btn" data-mood="tired" style="flex:1; padding: 12px 5px; background: #1a1f2e; border: 1px solid #2a3142; border-radius: 10px; display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; transition: all 0.2s;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9b59b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a10 10 0 1 0-10-10 10 10 0 0 0 10 10z"></path><path d="M8 16h8"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
+            <span style="font-size: 10px; color: #9aa0a6;">Tired</span>
+          </button>
+          <button class="mood-btn" data-mood="stressed" style="flex:1; padding: 12px 5px; background: #1a1f2e; border: 1px solid #2a3142; border-radius: 10px; display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; transition: all 0.2s;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff6b4a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a10 10 0 1 0-10-10 10 10 0 0 0 10 10z"></path><path d="M16 16s-1.5-2-4-2-4 2-4 2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
+            <span style="font-size: 10px; color: #9aa0a6;">Stressed</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="extras-section">
+        <h3>
+          <svg class="svg-icon" style="stroke: #4aaa4a;" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+          Today's Note
+        </h3>
+        <textarea id="dailyNoteInput" rows="3" placeholder="How was your day?" style="margin-bottom: 10px;"></textarea>
+        <button id="saveNoteBtn" style="width: 100%; padding: 10px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer;">Save Note</button>
+      </div>
+
+      <div class="settings-buttons">
         <button id="extrasClose">Close</button>
       </div>
     </div>
   </div>
 
-  <!-- BACKUP MODAL (Text Copy) -->
   <div id="backupModal" class="modal-overlay">
     <div class="modal-box" style="max-width: 90%;">
       <h2>
         <svg class="svg-icon" style="stroke: #4a9eff;" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
         Backup Data
       </h2>
-      <p style="text-align:center; color:#9aa0a6; font-size:13px; margin-bottom:15px;">Copy the text below and save it safely (e.g., in Notes or WhatsApp).</p>
+      <p style="text-align:center; color:#9aa0a6; font-size:13px; margin-bottom:15px;">Copy the text below and save it safely.</p>
       <textarea id="backupText" readonly style="width:100%; height:120px; background:#0f1419; color:#00e5ff; border:1px solid #2a3142; border-radius:10px; padding:10px; font-family:monospace; font-size:12px; resize:none; margin-bottom:15px; -webkit-user-select:auto; user-select:auto; -webkit-touch-callout:default;"></textarea>
       <button id="copyBackupBtn" style="width:100%; padding:14px; background:linear-gradient(135deg, #4a9eff, #2a7fdb); color:white; border:none; border-radius:10px; font-weight:bold; cursor:pointer; margin-bottom:10px;">Copy Text</button>
       <div class="settings-buttons" style="margin-top:0;">
@@ -843,7 +730,6 @@
     </div>
   </div>
 
-  <!-- RESTORE MODAL (Text Paste) -->
   <div id="restoreModal" class="modal-overlay">
     <div class="modal-box" style="max-width: 90%;">
       <h2>
@@ -860,7 +746,6 @@
     </div>
   </div>
 
-  <!-- TIMER MODAL -->
   <div id="timerModal" class="modal-overlay">
     <div class="modal-box" style="text-align: center;">
       <h2>
@@ -869,7 +754,6 @@
       </h2>
       <p id="timerHabitName" style="color:#00e5ff; margin-bottom:20px; font-weight:bold; font-size:16px;"></p>
       
-      <!-- Timer Buttons Grid -->
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
         <button class="btn" onclick="startTimer(5)" style="background:#2a3142; color:white; padding:12px; border:none; border-radius:10px; cursor:pointer; font-weight:bold;">5 Mins</button>
         <button class="btn" onclick="startTimer(30)" style="background:#2a3142; color:white; padding:12px; border:none; border-radius:10px; cursor:pointer; font-weight:bold;">30 Mins</button>
@@ -878,7 +762,6 @@
         <button class="btn" onclick="startTimer(300)" style="background:#2a3142; color:#00e5ff; border: 1px solid #00e5ff; padding:12px; border-radius:10px; cursor:pointer; font-weight:bold;">5 Hours (5h)</button>
       </div>
 
-      <!-- Custom Timer Input -->
       <div style="display: flex; gap: 10px; margin-bottom: 15px; align-items: stretch;">
         <input type="text" id="customTimerInput" placeholder="Type Mins or hours" style="flex: 1; padding: 12px; background: #0f1419; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 14px; outline: none; text-align: center;">
         <button onclick="startCustomTimer()" style="background: linear-gradient(135deg, #4a9eff, #2a7fdb); color: white; padding: 12px 20px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 14px;">Start</button>
@@ -890,14 +773,12 @@
     </div>
   </div>
 
-  <!-- FLOATING TIMER DISPLAY -->
   <div id="floatingTimer">
     <div class="timer-text" id="timerDisplay">00:00</div>
     <div class="timer-habit" id="activeTimerHabit"></div>
     <button onclick="stopTimer()">Stop Timer</button>
   </div>
 
-  <!-- GUIDE PROMPT MODAL -->
   <div id="guidePromptModal" class="modal-overlay">
     <div class="modal-box" style="text-align: center;">
       <h2 style="color: #ffffff; margin-bottom: 15px;">Learn How To Use App</h2>
@@ -909,7 +790,6 @@
     </div>
   </div>
 
-  <!-- PAST EDIT PROMPT MODAL -->
   <div id="pastEditPromptModal" class="modal-overlay">
     <div class="modal-box" style="text-align: center;">
       <h2 style="color: #ffffff; margin-bottom: 15px;">Tick on Past Habits</h2>
@@ -922,104 +802,96 @@
     </div>
   </div>
 
-<!-- MAIN GUIDE MODAL -->
-<div id="introModal" class="modal-overlay">
-  <div class="modal-box" style="text-align: left;">
-    <h2 style="color: #00e5ff; font-size: 26px; text-align: center; margin-bottom: 10px; text-shadow: 0 0 10px rgba(0, 229, 255, 0.4);">Welcome to GRITGO!</h2>
-    <p style="color: #c3c9d1; font-size: 14px; text-align: center; margin-bottom: 25px;">Here is your complete guide on how to use the app:</p>
-    
-    <!-- Section 1 -->
-    <div style="display: flex; gap: 15px; background: #0f1419; padding: 18px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #2a3142; align-items: flex-start;">
-      <div style="background: rgba(74, 158, 255, 0.15); width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0;">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4a9eff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+  <div id="introModal" class="modal-overlay">
+    <div class="modal-box" style="text-align: left;">
+      <h2 style="color: #00e5ff; font-size: 26px; text-align: center; margin-bottom: 10px; text-shadow: 0 0 10px rgba(0, 229, 255, 0.4);">Welcome to GRITGO!</h2>
+      <p style="color: #c3c9d1; font-size: 14px; text-align: center; margin-bottom: 25px;">Here is your complete guide on how to use the app:</p>
+      
+      <div style="display: flex; gap: 15px; background: #0f1419; padding: 18px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #2a3142; align-items: flex-start;">
+        <div style="background: rgba(74, 158, 255, 0.15); width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4a9eff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+        </div>
+        <div>
+          <h3 style="color: #ffffff; font-size: 16px; margin-bottom: 8px;">1. Daily Habits & Search</h3>
+          <p style="color: #c3c9d1; font-size: 13px; line-height: 1.6;">
+            • <b>Add/Edit:</b> Click <b>"Add Habit"</b> to create a habit. Click <b>"Edit habits"</b> to rename or delete.<br>
+            • <b>Checkbox:</b> Tap the number box next to a habit to complete it.<br>
+            • <b>Search:</b> Use the search bar to find a habit quickly.
+          </p>
+        </div>
       </div>
-      <div>
-        <h3 style="color: #ffffff; font-size: 16px; margin-bottom: 8px;">1. Daily Habits & Search</h3>
-        <p style="color: #c3c9d1; font-size: 13px; line-height: 1.6;">
-          • <b>Add/Edit:</b> Click <b>"Add Habit"</b> to create a habit. Click <b>"Edit habits"</b> to rename or delete.<br>
-          • <b>Checkbox:</b> Tap the number box next to a habit to complete it.<br>
-          • <b>Search:</b> Use the search bar to find a habit quickly.
-        </p>
-      </div>
-    </div>
 
-    <!-- Section 2 -->
-    <div style="display: flex; gap: 15px; background: #0f1419; padding: 18px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #2a3142; align-items: flex-start;">
-      <div style="background: rgba(0, 229, 255, 0.15); width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0;">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+      <div style="display: flex; gap: 15px; background: #0f1419; padding: 18px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #2a3142; align-items: flex-start;">
+        <div style="background: rgba(0, 229, 255, 0.15); width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        </div>
+        <div>
+          <h3 style="color: #ffffff; font-size: 16px; margin-bottom: 8px;">2. Advanced Timer</h3>
+          <p style="color: #c3c9d1; font-size: 13px; line-height: 1.6;">
+            • <b>Custom Time:</b> Choose from 5m, 30m, 1h, or type your own time (e.g., <b>45</b> for mins or <b>2h</b> for hours).<br>
+            • <b>Auto-Check:</b> When the timer ends, a sound will play, and the habit will be automatically checked!
+          </p>
+        </div>
       </div>
-      <div>
-        <h3 style="color: #ffffff; font-size: 16px; margin-bottom: 8px;">2. Advanced Timer</h3>
-        <p style="color: #c3c9d1; font-size: 13px; line-height: 1.6;">
-          • <b>Custom Time:</b> Choose from 5m, 30m, 1h, or type your own time (e.g., <b>45</b> for mins or <b>2h</b> for hours).<br>
-          • <b>Auto-Check:</b> When the timer ends, a sound will play, and the habit will be automatically checked!
-        </p>
-      </div>
-    </div>
 
-    <!-- Section 3 -->
-    <div style="display: flex; gap: 15px; background: #0f1419; padding: 18px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #2a3142; align-items: flex-start;">
-      <!-- AI TEXT ICON -->
-      <div style="background: rgba(155, 89, 182, 0.15); width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0;">
-        <span style="color: #9b59b6; font-size: 18px; font-weight: 800; letter-spacing: -1px;">AI</span>
+      <div style="display: flex; gap: 15px; background: #0f1419; padding: 18px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #2a3142; align-items: flex-start;">
+        <div style="background: rgba(155, 89, 182, 0.15); width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0;">
+          <span style="color: #9b59b6; font-size: 18px; font-weight: 800; letter-spacing: -1px;">AI</span>
+        </div>
+        <div>
+          <h3 style="color: #ffffff; font-size: 16px; margin-bottom: 8px;">3. Smart AI Coach</h3>
+          <p style="color: #c3c9d1; font-size: 13px; line-height: 1.6;">
+            • <b>Voice Input:</b> Click the <b>Mic</b> icon and speak. Select from <b>48 languages</b> using the dropdown!<br>
+            • <b>AI Voice Reply:</b> If you speak, the AI replies with voice. If you type, it replies with text.<br>
+            • <b>Voice Commands:</b> Say or type <i>"Set timer for 1h"</i> and the AI will start a timer for you.<br>
+            • <b>AI Reviews:</b> Get your Weekly & Monthly progress analyzed by the AI in the Extras section.
+          </p>
+        </div>
       </div>
-      <div>
-        <h3 style="color: #ffffff; font-size: 16px; margin-bottom: 8px;">3. Smart AI Coach</h3>
-        <p style="color: #c3c9d1; font-size: 13px; line-height: 1.6;">
-          • <b>Voice Input:</b> Click the <b>Mic</b> icon and speak. Select from <b>48 languages</b> using the dropdown!<br>
-          • <b>AI Voice Reply:</b> If you speak, the AI replies with voice. If you type, it replies with text.<br>
-          • <b>Voice Commands:</b> Say or type <i>"Set timer for 1h"</i> and the AI will start a timer for you.<br>
-          • <b>AI Reviews:</b> Get your Weekly & Monthly progress analyzed by the AI in the Extras section.
-        </p>
-      </div>
-    </div>
 
-    <!-- Section 4 -->
-    <div style="display: flex; gap: 15px; background: #0f1419; padding: 18px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #2a3142; align-items: flex-start;">
-      <div style="background: rgba(74, 170, 74, 0.15); width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0;">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4aaa4a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      <div style="display: flex; gap: 15px; background: #0f1419; padding: 18px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #2a3142; align-items: flex-start;">
+        <div style="background: rgba(74, 170, 74, 0.15); width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4aaa4a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+        </div>
+        <div>
+          <h3 style="color: #ffffff; font-size: 16px; margin-bottom: 8px;">4. Heatmap & Edits</h3>
+          <p style="color: #c3c9d1; font-size: 13px; line-height: 1.6;">
+            • <b>Heatmap:</b> Each box represents a day. Complete all habits to make it glow Aqua.<br>
+            • <b>Past Edit:</b> Tap on any past box in the heatmap to open that day and edit it.
+          </p>
+        </div>
       </div>
-      <div>
-        <h3 style="color: #ffffff; font-size: 16px; margin-bottom: 8px;">4. Heatmap & Edits</h3>
-        <p style="color: #c3c9d1; font-size: 13px; line-height: 1.6;">
-          • <b>Heatmap:</b> Each box represents a day. Complete all habits to make it glow Aqua.<br>
-          • <b>Past Edit:</b> Tap on any past box in the heatmap to open that day and edit it.
-        </p>
-      </div>
-    </div>
 
-    <!-- Section 5 -->
-    <div style="display: flex; gap: 15px; background: #0f1419; padding: 18px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #2a3142; align-items: flex-start;">
-      <div style="background: rgba(241, 196, 15, 0.15); width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0;">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f1c40f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg>
+      <div style="display: flex; gap: 15px; background: #0f1419; padding: 18px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #2a3142; align-items: flex-start;">
+        <div style="background: rgba(241, 196, 15, 0.15); width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f1c40f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg>
+        </div>
+        <div>
+          <h3 style="color: #ffffff; font-size: 16px; margin-bottom: 8px;">5. Progress & Charts</h3>
+          <p style="color: #c3c9d1; font-size: 13px; line-height: 1.6;">
+            • <b>Extras & Insights:</b> Opens the dashboard where you can see your Weekly Line Chart and 7-Day Habits bar.<br>
+            • <b>Day Streak:</b> Tracks how many consecutive days you completed 100% of your habits.<br>
+            • <b>Quick Actions:</b> Use the Blue check to mark all done, and Black reset to uncheck.
+          </p>
+        </div>
       </div>
-      <div>
-        <h3 style="color: #ffffff; font-size: 16px; margin-bottom: 8px;">5. Progress & Charts</h3>
-        <p style="color: #c3c9d1; font-size: 13px; line-height: 1.6;">
-          • <b>Extras & Insights:</b> Opens the dashboard where you can see your Weekly Line Chart and 7-Day Habits bar.<br>
-          • <b>Day Streak:</b> Tracks how many consecutive days you completed 100% of your habits.<br>
-          • <b>Quick Actions:</b> Use the Blue check to mark all done, and Black reset to uncheck.
-        </p>
-      </div>
-    </div>
 
-    <!-- Section 6 -->
-    <div style="display: flex; gap: 15px; background: #0f1419; padding: 18px; border-radius: 12px; margin-bottom: 25px; border: 1px solid #2a3142; align-items: flex-start;">
-      <div style="background: rgba(214, 161, 240, 0.15); width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0;">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d6a1f0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      <div style="display: flex; gap: 15px; background: #0f1419; padding: 18px; border-radius: 12px; margin-bottom: 25px; border: 1px solid #2a3142; align-items: flex-start;">
+        <div style="background: rgba(214, 161, 240, 0.15); width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d6a1f0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </div>
+        <div>
+          <h3 style="color: #ffffff; font-size: 16px; margin-bottom: 8px;">6. Sleep & Backup</h3>
+          <p style="color: #c3c9d1; font-size: 13px; line-height: 1.6;">
+            • <b>Sleep Tracker:</b> Log your sleep to see your Brain State. (Locked until challenge starts).<br>
+            • <b>Backup:</b> Always export your data from Settings so you don't lose progress.
+          </p>
+        </div>
       </div>
-      <div>
-        <h3 style="color: #ffffff; font-size: 16px; margin-bottom: 8px;">6. Sleep & Backup</h3>
-        <p style="color: #c3c9d1; font-size: 13px; line-height: 1.6;">
-          • <b>Sleep Tracker:</b> Log your sleep to see your Brain State. (Locked until challenge starts).<br>
-          • <b>Backup:</b> Always export your data from Settings so you don't lose progress.
-        </p>
-      </div>
-    </div>
 
-    <button id="introClose" style="width: 100%; padding: 16px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; background: linear-gradient(135deg, #00e5ff, #0088cc); color: #05080f; font-size: 16px; box-shadow: 0 4px 15px rgba(0, 229, 255, 0.3);">Got It! Let's Start</button>
+      <button id="introClose" style="width: 100%; padding: 16px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; background: linear-gradient(135deg, #00e5ff, #0088cc); color: #05080f; font-size: 16px; box-shadow: 0 4px 15px rgba(0, 229, 255, 0.3);">Got It! Let's Start</button>
+    </div>
   </div>
-</div>
 
   <div id="addHabitModal" class="modal-overlay">
     <div class="modal-box">
@@ -1088,12 +960,10 @@
   <div id="settingsModal" class="modal-overlay">
     <div class="modal-box">
       
-      <!-- Settings Header with Theme Toggle Button -->
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
         <h2 style="margin-bottom: 0; text-align: left;">Settings</h2>
         <div style="display: flex; gap: 10px;">
           
-          <!-- Theme Toggle Button -->
           <button id="themeToggleBtn" style="width: 34px; height: 34px; border-radius: 8px; background: #2a3142; color: #fff; border: 1px solid #4a9eff; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: all 0.2s;"></button>
           
         </div>
@@ -1122,7 +992,6 @@
         <button id="settingsSave">Save Changes</button>
       </div>
       
-      <!-- Backup and Restore Buttons -->
       <button id="exportData" class="flex-icon" style="width:100%; margin-top:15px; padding:12px; background:#2a3142; color:#4a9eff; border:1px solid #4a9eff; border-radius:10px; font-weight:600; cursor:pointer;">
         <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
         Backup Data (Copy Text)
@@ -1201,15 +1070,63 @@
     </div>
   </div>
 
-  <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <script>
     window.onerror = function(msg, url, line) { console.error("Code Error: " + msg + " at line " + line); };
 
-    // ===== Haptic Feedback & Press Feel =====
+    // ============================================================
+    // 🔑 AI CONFIG — এখানে তোমার Groq API Key বসাও (শুধু এই এক জায়গায়)
+    // ============================================================
+    const AI_CONFIG = {
+      KEY: "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",  // ← "gsk_..." এখানে বসাও
+      MODELS: ["openai/gpt-oss-120b", "openai/gpt-oss-20b"], // নতুন ও সক্রিয় মডেল
+      URL: "https://api.groq.com/openai/v1/chat/completions"
+    };
+
+    // ============================================================
+    // 🧠 Central AI caller — model fallback + clear errors
+    // ============================================================
+    async function callGroq(messages, options = {}) {
+      if (!AI_CONFIG.KEY || AI_CONFIG.KEY === "PASTE_YOUR_GROQ_KEY_HERE" || AI_CONFIG.KEY.length < 20) {
+        throw new Error("API Key সেট করা হয়নি। উপরের AI_CONFIG.KEY এ তোমার আসল Key বসাও।");
+      }
+      const errors = [];
+      for (const model of AI_CONFIG.MODELS) {
+        try {
+          const res = await fetch(AI_CONFIG.URL, {
+            method: "POST",
+            headers: {
+              "Authorization": `Bearer ${AI_CONFIG.KEY}`,
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              model,
+              messages,
+              temperature: options.temperature ?? 0.7,
+              max_tokens: options.max_tokens ?? 1024
+            })
+          });
+          const data = await res.json();
+          if (!res.ok) {
+            const msg = (data && data.error && data.error.message) || `HTTP ${res.status}`;
+            errors.push(`${model} → ${msg}`);
+            if (res.status === 401 || res.status === 403) break;
+            continue;
+          }
+          if (data && data.choices && data.choices[0] && data.choices[0].message) {
+            return data.choices[0].message.content.trim();
+          }
+          errors.push(`${model} → unexpected response`);
+        } catch (e) {
+          errors.push(`${model} → ${e.message}`);
+        }
+      }
+      throw new Error("AI ফেইল করেছে:\n" + errors.join("\n"));
+    }
+
     document.addEventListener('pointerdown', function(e) {
-      const clickable = e.target.closest('button, .quick-btn, .custom-checkbox, .heatmap-cell, .menu-item, .hour-btn, .timer-btn, .lang-trigger, .lang-option');
+      const clickable = e.target.closest('button, .quick-btn, .custom-checkbox, .heatmap-cell, .menu-item, .hour-btn, .timer-btn, .lang-trigger, .lang-option, .mood-btn');
       if (clickable) {
         clickable.style.transition = 'transform 0.1s';
         clickable.style.transform = 'scale(0.92)';
@@ -1218,7 +1135,7 @@
     });
 
     document.addEventListener('pointerup', function(e) {
-      const clickable = e.target.closest('button, .quick-btn, .custom-checkbox, .heatmap-cell, .menu-item, .hour-btn, .timer-btn, .lang-trigger, .lang-option');
+      const clickable = e.target.closest('button, .quick-btn, .custom-checkbox, .heatmap-cell, .menu-item, .hour-btn, .timer-btn, .lang-trigger, .lang-option, .mood-btn');
       if (clickable) {
         clickable.style.transform = '';
         setTimeout(() => clickable.style.transition = '', 100);
@@ -1226,7 +1143,7 @@
     });
 
     document.addEventListener('pointercancel', function(e) {
-      const clickable = e.target.closest('button, .quick-btn, .custom-checkbox, .heatmap-cell, .menu-item, .hour-btn, .timer-btn, .lang-trigger, .lang-option');
+      const clickable = e.target.closest('button, .quick-btn, .custom-checkbox, .heatmap-cell, .menu-item, .hour-btn, .timer-btn, .lang-trigger, .lang-option, .mood-btn');
       if (clickable) {
         clickable.style.transform = '';
         setTimeout(() => clickable.style.transition = '', 100);
@@ -1258,7 +1175,6 @@
 
     themeToggleBtn.addEventListener("click", () => {
       document.body.classList.toggle("light-theme");
-      
       if (document.body.classList.contains("light-theme")) {
         localStorage.setItem("gritgo_theme", "light");
         themeToggleBtn.innerHTML = moonIcon;
@@ -1269,7 +1185,7 @@
         showToast("Dark Mode Enabled");
       }
       if (typeof myProgressChart !== 'undefined' && myProgressChart) {
-          renderChart(); // Update chart colors on theme change
+          renderChart();
       }
     });
 
@@ -1282,7 +1198,7 @@
       }
     });
 
-    let challengeData = { title: "", duration: 0, startDate: "", motivation: "", habits: [], habitLogs: {}, notes: {}, dayStart: "05:00", dayEnd: "21:00" };
+    let challengeData = { title: "", duration: 0, startDate: "", motivation: "", habits: [], habitLogs: {}, notes: {}, moods: {}, dayStart: "05:00", dayEnd: "21:00" };
     let sleepState = { weekStartDate: getDateKey(), days: [null, null, null, null, null, null, null] };
 
     const savedSleep = localStorage.getItem("gritgo_sleep_state");
@@ -1395,7 +1311,7 @@
       if (!title || !duration || !startDate) { showToast("Please fill required fields"); return; }
       if (startDate < getLiteralDateKey()) { showToast("Start Date cannot be in the past!"); return; } 
 
-      challengeData = { title, duration, startDate, motivation: motivation || "Show up again.", habits: [], habitLogs: {}, notes: {}, dayStart, dayEnd };
+      challengeData = { title, duration, startDate, motivation: motivation || "Show up again.", habits: [], habitLogs: {}, notes: {}, moods: {}, dayStart, dayEnd };
       localStorage.setItem("challengeData", JSON.stringify(challengeData));
       startMainApp();
     });
@@ -1410,26 +1326,20 @@
       checkChallengeStatus();
       checkLateNightWarning(); 
       const lastBackup = parseInt(localStorage.getItem("gritgo_last_backup")) || 0;
-      if (Date.now() - lastBackup > 7 * 86400000) setTimeout(() => showToast("💾 Backup নেওয়ার সময় হয়েছে!"), 3000);
+      if (Date.now() - lastBackup > 7 * 86400000) setTimeout(() => showToast("💾Time to Get Backup!"), 3000);
     }
     
     function checkLateNightWarning() {
       const currentHour = new Date().getHours();
-      
       if (currentHour >= 22 || currentHour < 4) {
         const todayKey = getDateKey();
         const todayLog = challengeData.habitLogs[todayKey] || {};
         const completedToday = Object.values(todayLog).filter(val => val === true).length;
         const totalHabits = challengeData.habits.length;
-
         if (totalHabits > 0 && completedToday < totalHabits) {
-          setTimeout(() => {
-            showToast("It's getting late! Finish your remaining habits and get some sleep.");
-          }, 1500);
+          setTimeout(() => { showToast("It's getting late! Finish your remaining habits and get some sleep."); }, 1500);
         } else {
-          setTimeout(() => {
-            showToast("Great job today! Now go get some rest. Good night!");
-          }, 1500);
+          setTimeout(() => { showToast("Great job today! Now go get some rest. Good night!"); }, 1500);
         }
       }
     }
@@ -1451,15 +1361,8 @@
     const sidebar = document.getElementById("sidebar");
     const sidebarOverlay = document.getElementById("sidebarOverlay");
     
-    document.getElementById("openSidebarBtn").addEventListener("click", () => {
-      sidebar.classList.add("open");
-      sidebarOverlay.classList.add("active");
-    });
-    
-    const closeSidebar = () => {
-      sidebar.classList.remove("open");
-      sidebarOverlay.classList.remove("active");
-    };
+    document.getElementById("openSidebarBtn").addEventListener("click", () => { sidebar.classList.add("open"); sidebarOverlay.classList.add("active"); });
+    const closeSidebar = () => { sidebar.classList.remove("open"); sidebarOverlay.classList.remove("active"); };
     
     document.getElementById("closeSidebarBtn").addEventListener("click", closeSidebar);
     sidebarOverlay.addEventListener("click", closeSidebar);
@@ -1471,39 +1374,28 @@
       document.getElementById("settingsDuration").value = challengeData.duration; 
       document.getElementById("settingsStartDate").value = normalizeDate(challengeData.startDate); 
       document.getElementById("settingsMotivation").value = challengeData.motivation; 
-      
       document.getElementById("settingsDayStart").value = challengeData.dayStart || "05:00";
       document.getElementById("settingsDayEnd").value = challengeData.dayEnd || "21:00";
-
       document.getElementById("settingsModal").classList.add("active"); 
       setTimeout(updateDatePlaceholders, 50);
     });
 
-    document.getElementById("menuGuideBtn").addEventListener("click", () => {
-      closeSidebar();
-      document.getElementById("guidePromptModal").classList.add("active");
-    });
-    
-    document.getElementById("menuFeedbackBtn").addEventListener("click", () => {
-      closeSidebar();
-      document.getElementById("feedbackModal").classList.add("active");
-    });
-
-    document.getElementById("startLearningBtn").addEventListener("click", () => {
-      document.getElementById("guidePromptModal").classList.remove("active");
-      document.getElementById("introModal").classList.add("active");
-    });
-    
-    document.getElementById("closePromptBtn").addEventListener("click", () => {
-      document.getElementById("guidePromptModal").classList.remove("active");
-    });
+    document.getElementById("menuGuideBtn").addEventListener("click", () => { closeSidebar(); document.getElementById("guidePromptModal").classList.add("active"); });
+    document.getElementById("menuFeedbackBtn").addEventListener("click", () => { closeSidebar(); document.getElementById("feedbackModal").classList.add("active"); });
+    document.getElementById("startLearningBtn").addEventListener("click", () => { document.getElementById("guidePromptModal").classList.remove("active"); document.getElementById("introModal").classList.add("active"); });
+    document.getElementById("closePromptBtn").addEventListener("click", () => { document.getElementById("guidePromptModal").classList.remove("active"); });
 
     const extrasModal = document.getElementById("extrasModal");
-    document.getElementById("openExtrasBtn").addEventListener("click", () => {
-      extrasModal.classList.add("active");
-      renderExtras();
-    });
+    document.getElementById("openExtrasBtn").addEventListener("click", () => { extrasModal.classList.add("active"); renderExtras(); });
     document.getElementById("extrasClose").addEventListener("click", () => extrasModal.classList.remove("active"));
+
+    // নতুন AI Modal ওপেন এবং ক্লোজ করার লজিক
+    document.getElementById("openAiBtn").addEventListener("click", () => { 
+        document.getElementById("aiModal").classList.add("active"); 
+    });
+    document.getElementById("aiClose").addEventListener("click", () => { 
+        document.getElementById("aiModal").classList.remove("active"); 
+    });
 
     function renderExtras() {
       const isFuture = challengeData.startDate > getDateKey();
@@ -1569,17 +1461,28 @@
       const noteKey = getDateKey();
       document.getElementById("dailyNoteInput").value = challengeData.notes[noteKey] || "";
 
-      // রেন্ডার চার্ট
+      const moodKey = getDateKey();
+      const savedMood = challengeData.moods && challengeData.moods[moodKey] ? challengeData.moods[moodKey] : null;
+      document.querySelectorAll('.mood-btn').forEach(btn => {
+        if (btn.dataset.mood === savedMood) {
+          btn.style.borderColor = '#00e5ff';
+          btn.style.boxShadow = '0 0 10px rgba(0, 229, 255, 0.3)';
+          btn.style.background = 'rgba(0, 229, 255, 0.1)';
+        } else {
+          btn.style.borderColor = '#2a3142';
+          btn.style.boxShadow = 'none';
+          btn.style.background = '#1a1f2e';
+        }
+      });
+
       renderChart();
     }
 
-    // ===== CHART JS LOGIC =====
     let myProgressChart = null;
     function renderChart() {
       const canvas = document.getElementById("progressChart");
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
-      
       if (myProgressChart) { myProgressChart.destroy(); }
 
       const labels = [];
@@ -1607,38 +1510,14 @@
 
       myProgressChart = new Chart(ctx, {
         type: 'line',
-        data: {
-          labels: labels,
-          datasets: [{
-            label: 'Completion %',
-            data: data,
-            borderColor: '#00e5ff',
-            backgroundColor: gradient,
-            borderWidth: 2,
-            pointBackgroundColor: '#00e5ff',
-            pointBorderColor: isLight ? '#fff' : '#0f1419',
-            pointRadius: 4,
-            fill: true,
-            tension: 0.4
-          }]
-        },
+        data: { labels: labels, datasets: [{ label: 'Completion %', data: data, borderColor: '#00e5ff', backgroundColor: gradient, borderWidth: 2, pointBackgroundColor: '#00e5ff', pointBorderColor: isLight ? '#fff' : '#0f1419', pointRadius: 4, fill: true, tension: 0.4 }] },
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false }
-          },
+          plugins: { legend: { display: false } },
           scales: {
-            y: {
-              beginAtZero: true,
-              max: 100,
-              grid: { color: gridColor },
-              ticks: { color: textColor, callback: function(value) { return value + "%" } }
-            },
-            x: {
-              grid: { display: false },
-              ticks: { color: textColor }
-            }
+            y: { beginAtZero: true, max: 100, grid: { color: gridColor }, ticks: { color: textColor, callback: function(value) { return value + "%" } } },
+            x: { grid: { display: false }, ticks: { color: textColor } }
           }
         }
       });
@@ -1654,7 +1533,86 @@
       showToast("Note saved!");
     });
 
-    // ===== CUSTOM LANGUAGE DROPDOWN LOGIC =====
+    document.querySelectorAll('.mood-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const mood = btn.dataset.mood;
+        const todayKey = getDateKey();
+        if (!challengeData.moods) challengeData.moods = {};
+        challengeData.moods[todayKey] = mood;
+        localStorage.setItem("challengeData", JSON.stringify(challengeData));
+        showToast("Mood saved!");
+        document.querySelectorAll('.mood-btn').forEach(b => {
+            b.style.borderColor = '#2a3142';
+            b.style.boxShadow = 'none';
+            b.style.background = '#1a1f2e';
+        });
+        btn.style.borderColor = '#00e5ff';
+        btn.style.boxShadow = '0 0 10px rgba(0, 229, 255, 0.3)';
+        btn.style.background = 'rgba(0, 229, 255, 0.1)';
+      });
+    });
+
+    // ===== AI HABIT GENERATOR =====
+    document.getElementById("generateHabitsBtn").addEventListener("click", async () => {
+      const prompt = document.getElementById("aiHabitPrompt").value.trim();
+      const box = document.getElementById("generatedHabitsBox");
+      const btn = document.getElementById("generateHabitsBtn");
+      
+      if (!prompt) { showToast("Please write your goal first!"); return; }
+
+      btn.textContent = "Thinking...";
+      btn.disabled = true;
+      box.style.display = "none";
+      box.innerHTML = "";
+
+      try {
+        const rawText = await callGroq([
+          { 
+            role: 'system', 
+            content: `You are a habit expert. The user will give you a goal. Generate exactly 5 short, actionable daily habits that help achieve this goal. Return ONLY the 5 habits separated by commas. Do not include numbers, bullet points, or any extra text. Example output: Drink 2L water, Read 10 pages, Walk 5000 steps, Meditate for 5 mins, Sleep by 10 PM.` 
+          },
+          { role: 'user', content: prompt }
+        ], { temperature: 0.7, max_tokens: 200 });
+
+        const habitsArray = rawText.split(',').map(h => h.trim()).filter(h => h.length > 0);
+        
+        box.style.display = "flex";
+        box.innerHTML = `<p style="color:#00e5ff; font-size:12px; margin-bottom:5px; font-weight:bold;">Tap to Add:</p>`;
+
+        habitsArray.forEach(habitText => {
+          const habitBtn = document.createElement("button");
+          habitBtn.textContent = "+ " + habitText;
+          habitBtn.style.padding = "10px";
+          habitBtn.style.background = "#1a1f2e";
+          habitBtn.style.color = "#00e5ff";
+          habitBtn.style.border = "1px solid #00e5ff";
+          habitBtn.style.borderRadius = "8px";
+          habitBtn.style.cursor = "pointer";
+          habitBtn.style.textAlign = "left";
+          habitBtn.style.fontWeight = "bold";
+          
+          habitBtn.onclick = () => {
+            challengeData.habits.push({ id: 'h_' + Math.random().toString(36).substr(2, 9), name: habitText, target: 1, days: [0,1,2,3,4,5,6] });
+            localStorage.setItem("challengeData", JSON.stringify(challengeData));
+            renderHabits(); renderTodayHabits(); renderHeatmap(); updateStats();
+            showToast(`Added: ${habitText}`);
+            habitBtn.style.display = "none";
+          };
+          box.appendChild(habitBtn);
+        });
+
+      } catch (error) {
+        showToast("AI Error — Console দেখো");
+        console.error(error);
+        box.style.display = "flex";
+        box.innerHTML = `<p style="color:#ff6b4a; font-size:12px;">${error.message}</p>`;
+      } finally {
+        btn.textContent = "Generate";
+        btn.disabled = false;
+      }
+    });
+
+    // ===== CUSTOM LANGUAGE DROPDOWN =====
     const langTrigger = document.getElementById("langTrigger");
     const langMenu = document.getElementById("langMenu");
     const selectedLangText = document.getElementById("selectedLangText");
@@ -1671,11 +1629,7 @@
       }
     }
 
-    langTrigger.addEventListener("click", (e) => {
-      e.stopPropagation();
-      langMenu.classList.toggle("open");
-    });
-
+    langTrigger.addEventListener("click", (e) => { e.stopPropagation(); langMenu.classList.toggle("open"); });
     document.querySelectorAll(".lang-option").forEach(option => {
       option.addEventListener("click", () => {
         const val = option.getAttribute("data-value");
@@ -1687,21 +1641,27 @@
         langMenu.classList.remove("open");
       });
     });
+    document.addEventListener("click", (e) => { if (!langTrigger.contains(e.target) && !langMenu.contains(e.target)) { langMenu.classList.remove("open"); } });
 
-    document.addEventListener("click", (e) => {
-      if (!langTrigger.contains(e.target) && !langMenu.contains(e.target)) {
-        langMenu.classList.remove("open");
-      }
-    });
-
-    // ===== AI WEEKLY & MONTHLY REVIEW LOGIC =====
+    // ===== AI WEEKLY & MONTHLY REVIEW =====
     async function generateAIReview(type) {
-      const GROQ_API_KEY = "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"; 
-      
       const btnW = document.getElementById("weeklyReviewBtn");
       const btnM = document.getElementById("monthlyReviewBtn");
       const responseBox = document.getElementById("reviewResponseBox");
       const responseText = document.getElementById("reviewResponseText");
+
+      const currentDay = getCurrentDayNumber();
+      
+      if (type === 'weekly' && currentDay < 7) {
+          responseBox.style.display = "block";
+          responseText.textContent = `Your week is not over yet! You are currently on Day ${currentDay}. Please wait until Day 7 to get your first Weekly Review.`;
+          return; 
+      }
+      if (type === 'monthly' && currentDay < 30) {
+          responseBox.style.display = "block";
+          responseText.textContent = `Your month is not over yet! You are currently on Day ${currentDay}. Please wait until Day 30 to get your first Monthly Review.`;
+          return; 
+      }
 
       btnW.disabled = true;
       btnM.disabled = true;
@@ -1716,12 +1676,12 @@
       
       challengeData.habits.forEach(h => habitStats[h.name] = 0);
       let notesToRead = [];
+      let moodsToRead = [];
 
       for (let i = 0; i < daysToLookBack; i++) {
         let d = new Date(today);
         d.setDate(d.getDate() - i);
         let dateKey = getDateKey(d);
-        
         let log = challengeData.habitLogs[dateKey] || {};
         challengeData.habits.forEach(h => {
           if (log[h.id] === true) {
@@ -1729,10 +1689,11 @@
             habitStats[h.name]++;
           }
         });
-
         if (challengeData.notes && challengeData.notes[dateKey]) {
           notesToRead.push(`[${dateKey}]: ${challengeData.notes[dateKey]}`);
         }
+        let moodForDay = challengeData.moods && challengeData.moods[dateKey] ? challengeData.moods[dateKey] : "Not recorded";
+        moodsToRead.push(`[${dateKey}]: ${moodForDay}`);
       }
 
       let completionRate = totalPossible > 0 ? Math.round((totalCompleted / totalPossible) * 100) : 0;
@@ -1743,44 +1704,40 @@
       }
 
       let notesSummary = notesToRead.length > 0 ? notesToRead.join("\n") : "No notes written.";
-
+      let moodsSummary = moodsToRead.length > 0 ? moodsToRead.join("\n") : "No moods recorded.";
+      
       let prompt = `Here is my progress report for the last ${daysToLookBack} days:
       - Overall Completion Rate: ${completionRate}%
       - Total Habits: ${challengeData.habits.length}
       - Habit Breakdown:\n${habitSummary}
+      - My Mood Logs:\n${moodsSummary}
       - My Daily Notes:\n${notesSummary}
 
-      Please act as my strict but encouraging habit coach. Analyze this data and give me a ${type} review.
+      Please act as my strict but encouraging habit coach and a psychologist. Analyze this data and give me a ${type} review.
       Format the response with these sections:
       1. Overall Summary (1 sentence)
       2. What I did well
       3. Where I struggled (mention specific habits if possible)
-      4. Actionable advice for next week/month.
+      4. Mood vs Habits Analysis (Compare my mood with my habit completion. If I was stressed or tired, acknowledge it kindly.)
+      5. Actionable advice for next week/month.
       
       Keep it short, motivating, and use 1 or 2 emojis.`;
 
       try {
-        const aiRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-          method: 'POST',
-          headers: { 
-            'Authorization': `Bearer ${GROQ_API_KEY}`, 
-            'Content-Type': 'application/json' 
+        const reply = await callGroq([
+          { 
+            role: 'system', 
+            content: `You are a smart AI habit coach and a psychologist inside the GRITGO app. The user is doing a challenge called "${challengeData.title}". 
+            Analyze their weekly/monthly data. Pay special attention to their Mood Logs. 
+            If they completed fewer habits on days they felt "stressed" or "tired", point that out gently and give advice on how to manage their energy better. 
+            Always encourage them and keep the response human-like.` 
           },
-          body: JSON.stringify({
-            model: 'openai/gpt-oss-120b',
-            messages: [{ role: 'user', content: prompt }],
-            temperature: 0.7,
-            max_tokens: 1500
-          })
-        });
+          { role: 'user', content: prompt }
+        ], { temperature: 0.7, max_tokens: 1500 });
 
-        if (!aiRes.ok) throw new Error("Failed to connect to AI");
-
-        const aiData = await aiRes.json();
-        responseText.textContent = aiData.choices[0].message.content.trim();
-
+        responseText.textContent = reply;
       } catch (error) {
-        responseText.textContent = "Error: Could not generate review. Please check your API Key or internet.";
+        responseText.textContent = "Error: " + error.message;
         console.error(error);
       } finally {
         btnW.disabled = false;
@@ -1791,7 +1748,7 @@
     document.getElementById("weeklyReviewBtn").addEventListener("click", () => generateAIReview('weekly'));
     document.getElementById("monthlyReviewBtn").addEventListener("click", () => generateAIReview('monthly'));
 
-    // ===== VOICE INPUT (Speech to Text) =====
+    // ===== VOICE INPUT =====
     let isVoiceInput = false; 
     let isSettingFromVoice = false; 
     const voiceInputBtn = document.getElementById("voiceInputBtn");
@@ -1805,13 +1762,11 @@
 
       voiceInputBtn.addEventListener("click", () => {
         try {
-          recognition.lang = voiceLangSelect.value; // Sets the selected language dynamically
+          recognition.lang = voiceLangSelect.value; 
           recognition.start();
           voiceInputBtn.classList.add("listening");
           showToast("Listening... Speak now");
-        } catch(e) {
-          showToast("Mic Error: " + e.message);
-        }
+        } catch(e) { showToast("Mic Error: " + e.message); }
       });
 
       recognition.onresult = (event) => {
@@ -1820,33 +1775,24 @@
         aiQuestionInput.value = transcript;
         isSettingFromVoice = false; 
         voiceInputBtn.classList.remove("listening");
-        isVoiceInput = true; // Trigger AI Voice Reply
+        isVoiceInput = true; 
       };
 
       recognition.onerror = (event) => {
         voiceInputBtn.classList.remove("listening");
-        if(event.error === "not-allowed") {
-          showToast("Microphone access denied. Please allow mic permissions.");
-        } else {
-          showToast("Voice Error: " + event.error);
-        }
+        if(event.error === "not-allowed") { showToast("Microphone access denied. Please allow mic permissions."); } 
+        else { showToast("Voice Error: " + event.error); }
       };
 
-      recognition.onend = () => {
-        voiceInputBtn.classList.remove("listening");
-      };
+      recognition.onend = () => { voiceInputBtn.classList.remove("listening"); };
     } else {
       voiceInputBtn.style.display = "none"; 
       console.log("Speech Recognition not supported in this browser.");
     }
 
-    aiQuestionInput.addEventListener('input', () => {
-        if (!isSettingFromVoice) {
-            isVoiceInput = false; 
-        }
-    });
+    aiQuestionInput.addEventListener('input', () => { if (!isSettingFromVoice) { isVoiceInput = false; } });
 
-    // ===== TEXT TO SPEECH (AI Voice Reply) =====
+    // ===== TEXT TO SPEECH =====
     function speakText(text) {
       if (!("speechSynthesis" in window)) return;
       window.speechSynthesis.cancel();
@@ -1877,12 +1823,8 @@
       const responseText = document.getElementById("aiResponseText");
       const btn = document.getElementById("askAiBtn");
 
-      if (!noteText && !questionText) {
-        showToast("Please write a note or ask a question first!");
-        return;
-      }
+      if (!noteText && !questionText) { showToast("Please write a note or ask a question first!"); return; }
 
-      // Check for timer command
       const timerMins = parseTimerCommand(questionText);
       if (timerMins !== null) {
         openTimerModal(null, "AI Coach Command", getDateKey()); 
@@ -1890,16 +1832,10 @@
         responseBox.style.display = "block";
         const reply = `Sure! I have started a timer for ${timerMins >= 60 ? (timerMins/60)+' hours' : timerMins+' minutes'}. Let's get to work!`;
         responseText.textContent = reply;
-        
-        if (isVoiceInput) {
-            speakText("Timer set successfully. Let's focus.");
-        }
+        if (isVoiceInput) { speakText("Timer set successfully. Let's focus."); }
         isVoiceInput = false; 
         return;
       }
-
-      // 🌟🌟🌟 এখানে তোমার Groq API Key বসাও 🌟🌟🌟
-      const GROQ_API_KEY = "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"; 
 
       btn.innerHTML = "Thinking...";
       btn.disabled = true;
@@ -1911,54 +1847,29 @@
       if (questionText) userPrompt += `My question to you: "${questionText}"`;
       else userPrompt += `Based on my daily note, give me some advice for tomorrow.`;
 
-      // Automatically detect language of input
       const isBengaliInput = /[\u0980-\u09FF]/.test(userPrompt);
       const targetLang = isBengaliInput ? "Bengali" : "English";
 
       try {
-        const aiRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-          method: 'POST',
-          headers: { 
-            'Authorization': `Bearer ${GROQ_API_KEY}`, 
-            'Content-Type': 'application/json' 
+        const aiMessage = await callGroq([
+          { 
+            role: 'system', 
+            content: `You are a smart AI habit coach inside the GRITGO app. 
+            The user is doing a challenge called "${challengeData.title}". 
+            The user's current habits are: ${challengeData.habits.map(h => h.name).join(', ') || 'No habits added yet'}.
+            The current local time is: ${new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}.
+            
+            IMPORTANT RULES:
+            1. The user's input is in ${targetLang}. You MUST reply ONLY in ${targetLang}.
+            2. If the current time is after 10:00 PM (22:00) or before 5:00 AM, strongly advise the user to go to sleep.
+            3. Keep it short, encouraging, and personalized based on their habits. Use 1 or 2 relevant emojis to make the response friendly.` 
           },
-          body: JSON.stringify({
-            model: 'openai/gpt-oss-120b',
-            messages: [
-              { 
-                role: 'system', 
-                content: `You are a smart AI habit coach inside the GRITGO app. 
-                The user is doing a challenge called "${challengeData.title}". 
-                The user's current habits are: ${challengeData.habits.map(h => h.name).join(', ') || 'No habits added yet'}.
-                The current local time is: ${new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}.
-                
-                IMPORTANT RULES:
-                1. The user's input is in ${targetLang}. You MUST reply ONLY in ${targetLang}.
-                2. If the current time is after 10:00 PM (22:00) or before 5:00 AM, strongly advise the user to go to sleep.
-                3. Keep it short, encouraging, and personalized based on their habits. Use 1 or 2 relevant emojis to make the response friendly.` 
-              },
-              { role: 'user', content: userPrompt }
-            ],
-            temperature: 0.7,
-            max_tokens: 8000
-          })
-        });
+          { role: 'user', content: userPrompt }
+        ], { temperature: 0.7, max_tokens: 1024 });
 
-        if (!aiRes.ok) {
-          const errorText = await aiRes.text();
-          throw new Error(errorText);
-        }
-
-        const aiData = await aiRes.json();
-        const aiMessage = aiData.choices[0].message.content.trim();
         responseText.textContent = aiMessage;
-        
-        if (isVoiceInput) {
-            speakText(aiMessage); 
-        }
-        
+        if (isVoiceInput) { speakText(aiMessage); }
         isVoiceInput = false;
-
       } catch (error) {
         responseText.textContent = "Error: " + error.message;
         console.error(error);
@@ -1980,37 +1891,29 @@
       document.getElementById("timerModal").classList.add("active");
     }
 
-    document.getElementById("timerCancel").onclick = () => {
-      document.getElementById("timerModal").classList.remove("active");
-    };
+    document.getElementById("timerCancel").onclick = () => { document.getElementById("timerModal").classList.remove("active"); };
 
     function startTimer(mins) {
       document.getElementById("timerModal").classList.remove("active");
       timerTimeLeft = mins * 60;
-      
       document.getElementById("activeTimerHabit").textContent = timerTarget.name;
       document.getElementById("floatingTimer").style.display = "block";
-      
       updateTimerDisplay();
-
       if (timerInterval) clearInterval(timerInterval);
 
       timerInterval = setInterval(() => {
         timerTimeLeft--;
         updateTimerDisplay();
-
         if (timerTimeLeft <= 0) {
           clearInterval(timerInterval);
           document.getElementById("floatingTimer").style.display = "none";
           playTimerSound();
           showToast(`Timer finished for ${timerTarget.name}!`);
-          
           if (timerTarget.id && timerTarget.dateKey) {
             if (!challengeData.habitLogs[timerTarget.dateKey]) challengeData.habitLogs[timerTarget.dateKey] = {};
             challengeData.habitLogs[timerTarget.dateKey][timerTarget.id] = true;
             localStorage.setItem("challengeData", JSON.stringify(challengeData));
           }
-          
           renderTodayHabits();
           renderHeatmap();
           updateStats();
@@ -2023,19 +1926,10 @@
     function startCustomTimer() {
       let val = document.getElementById("customTimerInput").value.trim().toLowerCase();
       if (!val) return;
-
       let mins = 0;
-      if (val.includes('h')) {
-        mins = parseFloat(val.replace('h', '')) * 60;
-      } else {
-        mins = parseFloat(val);
-      }
-
-      if (isNaN(mins) || mins <= 0) {
-        showToast("Please enter a valid time (e.g., 45 or 2h).");
-        return;
-      }
-      
+      if (val.includes('h')) { mins = parseFloat(val.replace('h', '')) * 60; } 
+      else { mins = parseFloat(val); }
+      if (isNaN(mins) || mins <= 0) { showToast("Please enter a valid time (e.g., 45 or 2h)."); return; }
       document.getElementById("customTimerInput").value = ""; 
       startTimer(mins); 
     }
@@ -2044,13 +1938,9 @@
       let h = Math.floor(timerTimeLeft / 3600);
       let m = Math.floor((timerTimeLeft % 3600) / 60);
       let s = timerTimeLeft % 60;
-
       let displayStr = "";
-      if (h > 0) {
-        displayStr = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-      } else {
-        displayStr = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-      }
+      if (h > 0) { displayStr = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`; } 
+      else { displayStr = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`; }
       document.getElementById("timerDisplay").textContent = displayStr;
     }
 
@@ -2086,9 +1976,7 @@
 
     function renderHabits() {
       const habitsList = document.getElementById("habitsList"); habitsList.innerHTML = "";
-      if (challengeData.habits.length === 0) {
-        habitsList.innerHTML = `<li style="color: #9aa0a6; justify-content: center;">No habits yet. Add one above.</li>`; return;
-      }
+      if (challengeData.habits.length === 0) { habitsList.innerHTML = `<li style="color: #9aa0a6; justify-content: center;">No habits yet. Add one above.</li>`; return; }
       challengeData.habits.forEach((habit, index) => {
         const li = document.createElement("li");
         const moveUp = document.createElement("button"); moveUp.className = "move-btn"; moveUp.textContent = "↑"; moveUp.onclick = () => moveHabit(index, 'up');
@@ -2096,7 +1984,6 @@
         const span = document.createElement("span"); span.textContent = (index + 1) + ". " + habit.name; span.style.flex = "1";
         const editBtn = document.createElement("button"); editBtn.innerHTML = editIconSVG; editBtn.className = "edit-btn"; editBtn.onclick = () => openEditModal(index);
         const deleteBtn = document.createElement("button"); deleteBtn.innerHTML = trashIconSVG; deleteBtn.className = "delete-btn"; deleteBtn.onclick = () => openDeleteModal(index);
-        
         li.appendChild(moveUp); li.appendChild(moveDown);
         li.appendChild(span); li.appendChild(editBtn); li.appendChild(deleteBtn); habitsList.appendChild(li);
       });
@@ -2115,9 +2002,7 @@
         todayCount.textContent = "0 / 0"; lockMessage.style.display = "none"; 
         editBtn.textContent = "Add habits to Edit";
         return;
-      } else {
-        editBtn.textContent = "Edit habits";
-      }
+      } else { editBtn.textContent = "Edit habits"; }
 
       const todayKey = getDateKey();
       const isFuture = challengeData.startDate > todayKey;
@@ -2142,7 +2027,6 @@
       challengeData.habits.forEach((habitObj, index) => {
         const habit = habitObj.name;
         const habitNumber = String(index + 1);
-        
         if (searchNumber && habitNumber !== searchNumber) return;
         if (searchText && !habit.toLowerCase().includes(searchText)) return;
         shownCount++;
@@ -2164,19 +2048,15 @@
             checkboxWrapper.classList.toggle("checked", isChecked);
             challengeData.habitLogs[todayKey][habitObj.id] = isChecked;
             localStorage.setItem("challengeData", JSON.stringify(challengeData));
-            
             updateTodayCount();
             renderHeatmap();
             updateStats(); 
             if(document.getElementById("trackerModal").classList.contains("active")) renderWeeklyProgress();
             if(document.getElementById("extrasModal").classList.contains("active")) renderExtras();
-
             const newCompleted = Object.values(challengeData.habitLogs[todayKey]).filter(val => val === true).length;
             if (isChecked && newCompleted === challengeData.habits.length) {
               showConfetti();
-              if (getCurrentDayNumber() === challengeData.duration) {
-                showToast("Congratulations! Challenge Completed!");
-              }
+              if (getCurrentDayNumber() === challengeData.duration) { showToast("Congratulations! Challenge Completed!"); }
             }
           };
         }
@@ -2184,9 +2064,7 @@
         const span = document.createElement("span"); span.textContent = habit; span.style.flex = "1"; span.style.color = isFuture ? "#6a7280" : "#e8eaed"; span.style.fontWeight = "500";
         if (document.body.classList.contains("light-theme")) span.style.color = isFuture ? "#9ca3af" : "#1a1f2e";
 
-        const timerBtn = document.createElement("button"); 
-        timerBtn.innerHTML = timerIconSVG; 
-        timerBtn.className = "timer-btn"; 
+        const timerBtn = document.createElement("button"); timerBtn.innerHTML = timerIconSVG; timerBtn.className = "timer-btn"; 
         timerBtn.onclick = (e) => { e.stopPropagation(); openTimerModal(habitObj.id, habitObj.name, todayKey); };
 
         const deleteBtn = document.createElement("button"); deleteBtn.innerHTML = trashIconSVG; deleteBtn.className = "delete-btn"; deleteBtn.onclick = (e) => { e.stopPropagation(); openDeleteModal(index); };
@@ -2202,8 +2080,7 @@
 
     function attachSearchListener() { const input = document.getElementById("habitSearchInput"); if (input && !input.dataset.l) { input.addEventListener("input", renderTodayHabits); input.dataset.l = "true"; } }
     function updateTodayCount() { 
-      const todayKey = getDateKey(); 
-      const todayLog = challengeData.habitLogs[todayKey] || {}; 
+      const todayKey = getDateKey(); const todayLog = challengeData.habitLogs[todayKey] || {}; 
       document.getElementById("todayCount").textContent = Object.values(todayLog).filter(val => val === true).length + " / " + challengeData.habits.length; 
     }
 
@@ -2213,18 +2090,11 @@
     function promptPastEdit(dateKey) {
       const todayKey = getDateKey();
       const startKey = normalizeDate(challengeData.startDate);
-      
       if (dateKey > todayKey) { showToast("Cannot edit future dates"); return; }
       if (dateKey < startKey) { showToast("Challenge hasn't started yet!"); return; }
       if (challengeData.habits.length === 0) { showToast("No habits added yet"); return; }
-
-      if (dateKey === todayKey) {
-        viewingDateKey = dateKey; 
-        openDayModal(dateKey);
-      } else {
-        viewingDateKey = dateKey; 
-        document.getElementById("pastEditPromptModal").classList.add("active");
-      }
+      if (dateKey === todayKey) { viewingDateKey = dateKey; openDayModal(dateKey); } 
+      else { viewingDateKey = dateKey; document.getElementById("pastEditPromptModal").classList.add("active"); }
     }
 
     function openDayModal(dateKey) {
@@ -2235,16 +2105,8 @@
       dayModal.classList.add("active");
     }
 
-    document.getElementById("pastEditCancel").addEventListener("click", () => {
-      document.getElementById("pastEditPromptModal").classList.remove("active");
-      viewingDateKey = null;
-    });
-
-    document.getElementById("pastEditConfirm").addEventListener("click", () => {
-      document.getElementById("pastEditPromptModal").classList.remove("active");
-      if (viewingDateKey) openDayModal(viewingDateKey);
-    });
-
+    document.getElementById("pastEditCancel").addEventListener("click", () => { document.getElementById("pastEditPromptModal").classList.remove("active"); viewingDateKey = null; });
+    document.getElementById("pastEditConfirm").addEventListener("click", () => { document.getElementById("pastEditPromptModal").classList.remove("active"); if (viewingDateKey) openDayModal(viewingDateKey); });
 
     function renderDayModalList() {
       const list = document.getElementById("dayModalList"); list.innerHTML = "";
@@ -2262,7 +2124,6 @@
       challengeData.habits.forEach((habitObj, index) => {
         const habit = habitObj.name;
         const habitNumber = String(index + 1);
-        
         if (searchNumber && habitNumber !== searchNumber) return;
         if (searchText && !habit.toLowerCase().includes(searchText)) return;
         shownCount++;
@@ -2271,14 +2132,8 @@
         li.style.cssText = "display:flex;align-items:center;gap:12px;padding:12px;background:#0f1419;border-radius:10px;margin-bottom:8px;";
         if (document.body.classList.contains("light-theme")) li.style.background = "#f5f7fa";
         
-        const cb = document.createElement("div"); 
-        cb.className = "custom-checkbox"; 
-        if (log[habitObj.id] === true) cb.classList.add("checked");
-        
-        const ns = document.createElement("span"); 
-        ns.className = "checkbox-number"; 
-        ns.textContent = (index + 1); 
-        cb.appendChild(ns);
+        const cb = document.createElement("div"); cb.className = "custom-checkbox"; if (log[habitObj.id] === true) cb.classList.add("checked");
+        const ns = document.createElement("span"); ns.className = "checkbox-number"; ns.textContent = (index + 1); cb.appendChild(ns);
         
         cb.onclick = () => {
           const isChecked = !cb.classList.contains("checked"); 
@@ -2286,31 +2141,18 @@
           if (!challengeData.habitLogs[viewingDateKey]) challengeData.habitLogs[viewingDateKey] = {};
           challengeData.habitLogs[viewingDateKey][habitObj.id] = isChecked; 
           localStorage.setItem("challengeData", JSON.stringify(challengeData));
-          
           document.getElementById("dayModalSubtitle").textContent = `${Object.values(challengeData.habitLogs[viewingDateKey]).filter(val => val === true).length} / ${challengeData.habits.length} habits done`;
           renderHeatmap(); updateStats(); 
           if(document.getElementById("extrasModal").classList.contains("active")) renderExtras();
         };
 
-        const sp = document.createElement("span"); 
-        sp.textContent = habit; 
-        sp.style.flex = "1"; 
-        sp.style.color = "#e8eaed"; 
-        sp.style.fontSize = "14px";
+        const sp = document.createElement("span"); sp.textContent = habit; sp.style.flex = "1"; sp.style.color = "#e8eaed"; sp.style.fontSize = "14px";
         if (document.body.classList.contains("light-theme")) sp.style.color = "#1a1f2e";
-        
-        li.appendChild(cb); 
-        li.appendChild(sp); 
-        list.appendChild(li);
+        li.appendChild(cb); li.appendChild(sp); list.appendChild(li);
       });
 
       if (shownCount === 0) {
-        const li = document.createElement("li");
-        li.textContent = "No habits match your search";
-        li.style.color = "#9aa0a6";
-        li.style.textAlign = "center";
-        li.style.padding = "10px";
-        list.appendChild(li);
+        const li = document.createElement("li"); li.textContent = "No habits match your search"; li.style.color = "#9aa0a6"; li.style.textAlign = "center"; li.style.padding = "10px"; list.appendChild(li);
       }
     }
 
@@ -2327,10 +2169,7 @@
     document.getElementById("addHabitSave").onclick = () => {
       const text = document.getElementById("addHabitModalInput").value.trim();
       if (!text) { showToast("Please enter a habit"); return; }
-      if (editingIndex !== null) { 
-        challengeData.habits[editingIndex].name = text;
-        showToast("Habit updated!"); editingIndex = null; 
-      }
+      if (editingIndex !== null) { challengeData.habits[editingIndex].name = text; showToast("Habit updated!"); editingIndex = null; } 
       else { challengeData.habits.push({ id: 'h_' + Math.random().toString(36).substr(2, 9), name: text, target: 1, days: [0,1,2,3,4,5,6] }); showToast("Habit added!"); }
       localStorage.setItem("challengeData", JSON.stringify(challengeData));
       addHabitModal.classList.remove("active"); renderHabits(); renderTodayHabits(); renderHeatmap(); updateStats();
@@ -2344,39 +2183,24 @@
     let habitsBackup = null;
 
     document.getElementById("editHabitsButton").onclick = () => { 
-      if (challengeData.habits.length === 0) {
-        document.getElementById("quickAddHabitButton").click();
-        return;
-      }
+      if (challengeData.habits.length === 0) { document.getElementById("quickAddHabitButton").click(); return; }
       habitsBackup = JSON.parse(JSON.stringify(challengeData.habits));
-      
       document.getElementById("editMode").style.display = "block"; 
       document.querySelector(".today-section").style.display = "none"; 
       renderHabits(); 
     };
     
-    document.getElementById("doneEditingButton").onclick = () => {
-      habitsBackup = null;
-      closeEditMode();
-    }; 
+    document.getElementById("doneEditingButton").onclick = () => { habitsBackup = null; closeEditMode(); }; 
     
     document.getElementById("backButton").onclick = () => {
-      if (habitsBackup) {
-        challengeData.habits = habitsBackup;
-        localStorage.setItem("challengeData", JSON.stringify(challengeData));
-        habitsBackup = null;
-        showToast("Changes discarded");
-      }
+      if (habitsBackup) { challengeData.habits = habitsBackup; localStorage.setItem("challengeData", JSON.stringify(challengeData)); habitsBackup = null; showToast("Changes discarded"); }
       closeEditMode();
     };
     
     function closeEditMode() { 
       document.getElementById("editMode").style.display = "none"; 
       document.querySelector(".today-section").style.display = "block"; 
-      renderHabits();
-      renderTodayHabits(); 
-      renderHeatmap();
-      updateStats();
+      renderHabits(); renderTodayHabits(); renderHeatmap(); updateStats();
     }
     
     document.getElementById("addHabitBtn").onclick = () => { 
@@ -2397,7 +2221,6 @@
         const dayLog = challengeData.habitLogs[currentKey] || {};
         const completedCount = Object.values(dayLog).filter(val => val === true).length;
         const cell = document.createElement("div"); cell.className = "heatmap-cell";
-
         if (completedCount > 0 && challengeData.habits.length > 0) {
           const p = completedCount / challengeData.habits.length;
           if (p >= 1) { cell.style.setProperty("background", "linear-gradient(135deg, #00e5ff, #00b8d4)", "important"); cell.style.setProperty("box-shadow", "0 0 12px rgba(0, 229, 255, 0.8)", "important"); }
@@ -2407,7 +2230,6 @@
         }
         if (currentKey === todayKey) { cell.style.setProperty("border", "2px solid #ffffff", "important"); cell.style.setProperty("box-sizing", "border-box", "important"); }
         if (document.body.classList.contains("light-theme") && currentKey === todayKey) { cell.style.setProperty("border", "2px solid #1a1f2e", "important"); }
-        
         const cellKey = currentKey; cell.onclick = () => promptPastEdit(cellKey);
         heatmap.appendChild(cell); currentKey = nextDateKey(currentKey);
       }
@@ -2427,22 +2249,14 @@
         if (Object.values(log).filter(val => val === true).length === totalHabits) perfectDays++; 
       });
 
-      // ===== FIXED STREAK LOGIC =====
       let streak = 0;
       let checkIdx = dates.length - 1;
       const isTodayPerfect = completedToday === totalHabits;
-
-      if (!isTodayPerfect && dates.length > 1) {
-          checkIdx = dates.length - 2; // Start from yesterday if today isn't perfect
-      }
-
+      if (!isTodayPerfect && dates.length > 1) { checkIdx = dates.length - 2; }
       for (let i = checkIdx; i >= 0; i--) {
           const log = challengeData.habitLogs[dates[i]] || {};
-          if (Object.values(log).filter(val => val === true).length === totalHabits) {
-              streak++;
-          } else {
-              break;
-          }
+          if (Object.values(log).filter(val => val === true).length === totalHabits) { streak++; } 
+          else { break; }
       }
       
       document.getElementById("streakStat").textContent = streak;
@@ -2453,47 +2267,27 @@
     document.getElementById("checkAllBtn").addEventListener("click", () => {
       const todayKey = getDateKey();
       const isFuture = challengeData.startDate > todayKey;
-      
       if (isFuture) { showToast("Challenge hasn't started yet!"); return; }
       if (challengeData.habits.length === 0) { showToast("No habits to check!"); return; }
-      
       if (!challengeData.habitLogs[todayKey]) challengeData.habitLogs[todayKey] = {};
-      
-      challengeData.habits.forEach(habit => {
-        challengeData.habitLogs[todayKey][habit.id] = true;
-      });
-      
+      challengeData.habits.forEach(habit => { challengeData.habitLogs[todayKey][habit.id] = true; });
       localStorage.setItem("challengeData", JSON.stringify(challengeData));
-      
-      renderTodayHabits();
-      renderHeatmap();
-      updateStats();
+      renderTodayHabits(); renderHeatmap(); updateStats();
       if(document.getElementById("extrasModal").classList.contains("active")) renderExtras();
-      
-      showConfetti();
-      showToast("All habits checked!");
+      showConfetti(); showToast("All habits checked!");
     });
 
     document.getElementById("resetAllBtn").addEventListener("click", () => {
       const todayKey = getDateKey();
       const isFuture = challengeData.startDate > todayKey;
-      
       if (isFuture) { showToast("Challenge hasn't started yet!"); return; }
       if (challengeData.habits.length === 0) return;
-      
       if (challengeData.habitLogs[todayKey]) {
-        challengeData.habits.forEach(habit => {
-          challengeData.habitLogs[todayKey][habit.id] = false;
-        });
+        challengeData.habits.forEach(habit => { challengeData.habitLogs[todayKey][habit.id] = false; });
       }
-      
       localStorage.setItem("challengeData", JSON.stringify(challengeData));
-      
-      renderTodayHabits();
-      renderHeatmap();
-      updateStats();
+      renderTodayHabits(); renderHeatmap(); updateStats();
       if(document.getElementById("extrasModal").classList.contains("active")) renderExtras();
-      
       showToast("All habits unchecked.");
     });
 
@@ -2522,23 +2316,16 @@
         let totalHours = 0; let validDays = 0;
         sleepState.days.forEach(h => { if(h !== null) { totalHours += h; validDays++; } });
         let avg = validDays > 0 ? (totalHours / validDays).toFixed(1) : 0;
-        
         const reportTitle = document.getElementById("reportTitle"); const reportText = document.getElementById("reportText"); const reportIcon = document.getElementById("reportIcon");
-        
         if (avg >= 7.5) { 
-          reportTitle.textContent = "Excellent Sleep!"; 
-          reportTitle.style.color = "#00e5ff"; 
-          reportText.textContent = `You averaged ${avg} hours this week. Your brain is fresh!`; 
+          reportTitle.textContent = "Excellent Sleep!"; reportTitle.style.color = "#00e5ff"; reportText.textContent = `You averaged ${avg} hours this week. Your brain is fresh!`; 
           reportIcon.innerHTML = `<svg style="width: 60px; height: 60px; stroke: #00e5ff; fill: none; stroke-width: 2;" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`;
         }
         else { 
-          reportTitle.textContent = "Warning: Sleep Deprived!"; 
-          reportTitle.style.color = "#ff6b4a"; 
-          reportText.textContent = `You only averaged ${avg} hours. Try to sleep earlier!`; 
+          reportTitle.textContent = "Warning: Sleep Deprived!"; reportTitle.style.color = "#ff6b4a"; reportText.textContent = `You only averaged ${avg} hours. Try to sleep earlier!`; 
           reportIcon.innerHTML = `<svg style="width: 60px; height: 60px; stroke: #ff6b4a; fill: none; stroke-width: 2;" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>`;
         }
         weeklyReportModal.classList.add("active");
-
         sleepState = { weekStartDate: getDateKey(), days: [null, null, null, null, null, null, null] };
         localStorage.setItem("gritgo_sleep_state", JSON.stringify(sleepState));
       }
@@ -2546,67 +2333,20 @@
 
     function updateBrainPreview(hours) {
       const brainCircle = document.getElementById("brainCircle"); const brainText = document.getElementById("brainText");
-      if (hours === null) { 
-        brainCircle.className = "brain-circle brain-tired"; 
-        brainCircle.innerHTML = brainIcons.empty; 
-        brainText.textContent = "No Sleep Data Yet"; 
-        brainText.style.color = "#e8eaed"; 
-      }
-      else if (hours <= 6) { 
-        brainCircle.className = "brain-circle brain-tired"; 
-        brainCircle.innerHTML = brainIcons.tired; 
-        brainText.textContent = `Tired Brain (${hours}h)`; 
-        brainText.style.color = "#ff6b4a"; 
-      }
-      else if (hours === 7) { 
-        brainCircle.className = "brain-circle brain-better"; 
-        brainCircle.innerHTML = brainIcons.better; 
-        brainText.textContent = `Better Brain (${hours}h)`; 
-        brainText.style.color = "#f1c40f"; 
-      }
-      else if (hours === 8) { 
-        brainCircle.className = "brain-circle brain-fresh"; 
-        brainCircle.innerHTML = brainIcons.fresh; 
-        brainText.textContent = `Fresh Brain (${hours}h)`; 
-        brainText.style.color = "#00e5ff"; 
-      }
-      else if (hours === 9) { 
-        brainCircle.className = "brain-circle brain-fresher"; 
-        brainCircle.innerHTML = brainIcons.fresher; 
-        brainText.textContent = `Super Fresh (${hours}h)`; 
-        brainText.style.color = "#00b8d4"; 
-      }
-      else if (hours === 10) { 
-        brainCircle.className = "brain-circle brain-jammed-1"; 
-        brainCircle.innerHTML = brainIcons.jammed; 
-        brainText.textContent = `A Bit Jammed (${hours}h)`; 
-        brainText.style.color = "#9b59b6"; 
-      }
-      else if (hours === 11) { 
-        brainCircle.className = "brain-circle brain-jammed-2"; 
-        brainCircle.innerHTML = brainIcons.jammed; 
-        brainText.textContent = `Too Jammed (${hours}h)`; 
-        brainText.style.color = "#8e44ad"; 
-      }
-      else if (hours === 12) { 
-        brainCircle.className = "brain-circle brain-over"; 
-        brainCircle.innerHTML = brainIcons.over; 
-        brainText.textContent = `Over Sleep (${hours}h)`; 
-        brainText.style.color = "#95a5a6"; 
-      }
+      if (hours === null) { brainCircle.className = "brain-circle brain-tired"; brainCircle.innerHTML = brainIcons.empty; brainText.textContent = "No Sleep Data Yet"; brainText.style.color = "#e8eaed"; }
+      else if (hours <= 6) { brainCircle.className = "brain-circle brain-tired"; brainCircle.innerHTML = brainIcons.tired; brainText.textContent = `Tired Brain (${hours}h)`; brainText.style.color = "#ff6b4a"; }
+      else if (hours === 7) { brainCircle.className = "brain-circle brain-better"; brainCircle.innerHTML = brainIcons.better; brainText.textContent = `Better Brain (${hours}h)`; brainText.style.color = "#f1c40f"; }
+      else if (hours === 8) { brainCircle.className = "brain-circle brain-fresh"; brainCircle.innerHTML = brainIcons.fresh; brainText.textContent = `Fresh Brain (${hours}h)`; brainText.style.color = "#00e5ff"; }
+      else if (hours === 9) { brainCircle.className = "brain-circle brain-fresher"; brainCircle.innerHTML = brainIcons.fresher; brainText.textContent = `Super Fresh (${hours}h)`; brainText.style.color = "#00b8d4"; }
+      else if (hours === 10) { brainCircle.className = "brain-circle brain-jammed-1"; brainCircle.innerHTML = brainIcons.jammed; brainText.textContent = `A Bit Jammed (${hours}h)`; brainText.style.color = "#9b59b6"; }
+      else if (hours === 11) { brainCircle.className = "brain-circle brain-jammed-2"; brainCircle.innerHTML = brainIcons.jammed; brainText.textContent = `Too Jammed (${hours}h)`; brainText.style.color = "#8e44ad"; }
+      else if (hours === 12) { brainCircle.className = "brain-circle brain-over"; brainCircle.innerHTML = brainIcons.over; brainText.textContent = `Over Sleep (${hours}h)`; brainText.style.color = "#95a5a6"; }
     }
 
     function renderSleepTracker() {
       const isFuture = challengeData.startDate > getDateKey();
-      
-      if (isFuture) {
-        document.getElementById("sleepTrackerLock").style.display = "block";
-        document.getElementById("sleepTrackerContent").style.display = "none";
-        return; 
-      } else {
-        document.getElementById("sleepTrackerLock").style.display = "none";
-        document.getElementById("sleepTrackerContent").style.display = "block";
-      }
+      if (isFuture) { document.getElementById("sleepTrackerLock").style.display = "block"; document.getElementById("sleepTrackerContent").style.display = "none"; return; } 
+      else { document.getElementById("sleepTrackerLock").style.display = "none"; document.getElementById("sleepTrackerContent").style.display = "block"; }
 
       const today = getDateKey(); const start = new Date(sleepState.weekStartDate + "T00:00:00"); const now = new Date(today + "T00:00:00");
       const diffDays = Math.floor(Math.max(0, now - start) / (1000 * 60 * 60 * 24)); const currentIndex = Math.min(diffDays, 6);
@@ -2617,10 +2357,7 @@
       for (let i = 0; i < 7; i++) {
         const box = document.createElement("div"); box.className = "day-box";
         if (i === currentIndex && sleepState.days[i] === null) { box.classList.add("active"); box.innerHTML = `Day ${i + 1}`; }
-        else if (sleepState.days[i] !== null) { 
-          box.classList.add("done"); 
-          box.innerHTML = `Day ${i + 1}<span class="check-mark">✓</span>`; 
-        }
+        else if (sleepState.days[i] !== null) { box.classList.add("done"); box.innerHTML = `Day ${i + 1}<span class="check-mark">✓</span>`; } 
         else { box.innerHTML = `Day ${i + 1}`; }
         weekGrid.appendChild(box);
       }
@@ -2649,22 +2386,17 @@
       const list = document.getElementById("weeklyProgressList"); list.innerHTML = "";
       const totalHabits = challengeData.habits.length;
       if (totalHabits === 0) { list.innerHTML = `<p style="color:#9aa0a6; font-size:13px; text-align:center;">No habits to track yet.</p>`; return; }
-
       const isFuture = challengeData.startDate > getDateKey();
       let baseDate = new Date();
       if (isFuture) baseDate = new Date(challengeData.startDate + "T00:00:00");
-
       for (let i = 6; i >= 0; i--) {
         const d = new Date(baseDate); 
-        if (isFuture) d.setDate(d.getDate() + (6 - i)); 
-        else d.setDate(d.getDate() - i); 
-        
+        if (isFuture) d.setDate(d.getDate() + (6 - i)); else d.setDate(d.getDate() - i); 
         const dateKey = getDateKey(d);
         const displayDate = d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
         const log = challengeData.habitLogs[dateKey] || {}; 
         const completed = Object.values(log).filter(val => val === true).length;
         const percent = Math.round((completed / totalHabits) * 100); let displayPercent = (dateKey < challengeData.startDate) ? 0 : percent;
-
         list.insertAdjacentHTML("beforeend", `
           <div class="weekly-bar-container">
             <div class="weekly-bar-label"><span>${displayDate}</span></div>
@@ -2676,29 +2408,14 @@
 
     setInterval(checkSleepWeek, 60000);
 
-    // ===== Challenge Start & End Logic =====
-    function getEndDateKey(startDateStr, duration) {
-      let d = new Date(startDateStr + "T00:00:00");
-      d.setDate(d.getDate() + duration - 1);
-      return getDateKey(d);
-    }
+    function getEndDateKey(startDateStr, duration) { let d = new Date(startDateStr + "T00:00:00"); d.setDate(d.getDate() + duration - 1); return getDateKey(d); }
 
     function checkChallengeStatus() {
       if (!challengeData.startDate || !challengeData.duration) return;
-      
-      const todayKey = getDateKey();
-      const startKey = challengeData.startDate;
-      const endKey = getEndDateKey(startKey, challengeData.duration);
-      
-      const startSeenKey = "gritgo_start_seen_" + challengeData.title + "_" + startKey;
-      const endSeenKey = "gritgo_end_seen_" + challengeData.title + "_" + startKey;
-      
-      if (todayKey > endKey && !localStorage.getItem(endSeenKey)) {
-         showEndPopup(endSeenKey);
-      } 
-      else if (todayKey === startKey && !localStorage.getItem(startSeenKey)) {
-         showStartPopup(startSeenKey);
-      }
+      const todayKey = getDateKey(); const startKey = challengeData.startDate; const endKey = getEndDateKey(startKey, challengeData.duration);
+      const startSeenKey = "gritgo_start_seen_" + challengeData.title + "_" + startKey; const endSeenKey = "gritgo_end_seen_" + challengeData.title + "_" + startKey;
+      if (todayKey > endKey && !localStorage.getItem(endSeenKey)) { showEndPopup(endSeenKey); } 
+      else if (todayKey === startKey && !localStorage.getItem(startSeenKey)) { showStartPopup(startSeenKey); }
     }
 
     function showStartPopup(seenKey) {
@@ -2708,10 +2425,8 @@
       document.getElementById("congratsBody").innerHTML = `Your journey for <b id="congratsChallengeName">${challengeData.title}</b> starts today. Stay disciplined, show up every day, and you will achieve greatness!`;
       document.getElementById("congratsQuote").style.display = "none";
       document.getElementById("congratsFooter").innerHTML = "Best of Luck for your journey!";
-      
       document.getElementById("congratsStartButtons").style.display = "flex";
       document.getElementById("congratsEndButtons").style.display = "none";
-      
       document.getElementById("congratsModal").classList.add("active");
     }
 
@@ -2722,272 +2437,128 @@
       document.getElementById("congratsBody").innerHTML = `You have successfully completed the <b id="congratsChallengeName">${challengeData.title}</b> challenge! Your dedication and consistency will take you far.`;
       document.getElementById("congratsQuote").style.display = "block";
       document.getElementById("congratsFooter").innerHTML = "Best of luck for your next journey!";
-      
       document.getElementById("congratsStartButtons").style.display = "none";
       document.getElementById("congratsEndButtons").style.display = "flex";
-      
       document.getElementById("congratsModal").classList.add("active");
-      
       sendLocalNotification();
     }
 
     function sendLocalNotification() {
       if (!("Notification" in window)) return;
-      if (Notification.permission === "granted") {
-        new Notification("Challenge Completed!", {
-          body: `You successfully completed "${challengeData.title}"!`,
-          icon: "icon-192.png"
-        });
-      } else if (Notification.permission !== "denied") {
+      if (Notification.permission === "granted") { new Notification("Challenge Completed!", { body: `You successfully completed "${challengeData.title}"!`, icon: "icon-192.png" }); } 
+      else if (Notification.permission !== "denied") {
         Notification.requestPermission().then(permission => {
-          if (permission === "granted") {
-            new Notification("Challenge Completed!", {
-              body: `You successfully completed "${challengeData.title}"!`,
-              icon: "icon-192.png"
-            });
-          }
+          if (permission === "granted") { new Notification("Challenge Completed!", { body: `You successfully completed "${challengeData.title}"!`, icon: "icon-192.png" }); }
         });
       }
     }
 
-    // Congrats Popup Buttons Logic
-    document.getElementById("congratsStartBtn").onclick = () => {
-      const startSeenKey = "gritgo_start_seen_" + challengeData.title + "_" + challengeData.startDate;
-      localStorage.setItem(startSeenKey, "true");
-      document.getElementById("congratsModal").classList.remove("active");
-    };
-
-    document.getElementById("congratsCancelBtn").addEventListener("click", () => {
-      const endSeenKey = "gritgo_end_seen_" + challengeData.title + "_" + challengeData.startDate;
-      localStorage.setItem(endSeenKey, "true");
-      document.getElementById("congratsModal").classList.remove("active");
-      showToast("Best of luck! Keep growing!"); 
-    });
-
+    document.getElementById("congratsStartBtn").onclick = () => { const startSeenKey = "gritgo_start_seen_" + challengeData.title + "_" + challengeData.startDate; localStorage.setItem(startSeenKey, "true"); document.getElementById("congratsModal").classList.remove("active"); };
+    document.getElementById("congratsCancelBtn").addEventListener("click", () => { const endSeenKey = "gritgo_end_seen_" + challengeData.title + "_" + challengeData.startDate; localStorage.setItem(endSeenKey, "true"); document.getElementById("congratsModal").classList.remove("active"); showToast("Best of luck! Keep growing!"); });
     document.getElementById("congratsThankBtn").addEventListener("click", () => {
-      const endSeenKey = "gritgo_end_seen_" + challengeData.title + "_" + challengeData.startDate;
-      localStorage.setItem(endSeenKey, "true");
-      
+      const endSeenKey = "gritgo_end_seen_" + challengeData.title + "_" + challengeData.startDate; localStorage.setItem(endSeenKey, "true");
       const message = `GRITGO Thank You Note:\n\nI have successfully completed the "${challengeData.title}" (${challengeData.duration} Days) challenge! Thank you so much for this amazing app. Best of luck to you too!`;
-      const whatsappNumber = "8801888214016"; 
-      window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, "_blank");
+      window.open(`https://wa.me/8801888214016?text=${encodeURIComponent(message)}`, "_blank");
       document.getElementById("congratsModal").classList.remove("active");
     });
 
-    // ===== SETTINGS MODAL LOGIC =====
     document.getElementById("settingsCancel").onclick = () => document.getElementById("settingsModal").classList.remove("active");
     document.getElementById("settingsSave").onclick = () => { 
       try { 
-        const t = document.getElementById("settingsTitle").value.trim(); 
-        const d = parseInt(document.getElementById("settingsDuration").value); 
-        const s = normalizeDate(document.getElementById("settingsStartDate").value); 
-        const m = document.getElementById("settingsMotivation").value.trim(); 
-        
+        const t = document.getElementById("settingsTitle").value.trim(); const d = parseInt(document.getElementById("settingsDuration").value); const s = normalizeDate(document.getElementById("settingsStartDate").value); const m = document.getElementById("settingsMotivation").value.trim(); 
         if(!t||!d||!s) { showToast("Fill required fields"); return; } 
-        
-        if (s < getLiteralDateKey()) { 
-          showToast("Start date cannot be in the past!"); 
-          return; 
-        }
-        
-        challengeData.title = t; 
-        challengeData.duration = d; 
-        challengeData.startDate = s; 
-        challengeData.motivation = m || "Show up again."; 
-        
-        challengeData.dayStart = document.getElementById("settingsDayStart").value || "05:00";
-        challengeData.dayEnd = document.getElementById("settingsDayEnd").value || "21:00";
-
+        if (s < getLiteralDateKey()) { showToast("Start date cannot be in the past!"); return; }
+        challengeData.title = t; challengeData.duration = d; challengeData.startDate = s; challengeData.motivation = m || "Show up again."; 
+        challengeData.dayStart = document.getElementById("settingsDayStart").value || "05:00"; challengeData.dayEnd = document.getElementById("settingsDayEnd").value || "21:00";
         localStorage.setItem("challengeData", JSON.stringify(challengeData)); 
-        document.getElementById("headerTitle").textContent = t + " Tracker"; 
-        document.getElementById("mainTitle").textContent = t; 
-        updateMotivation(); 
-        renderHeatmap(); 
-        renderTodayHabits(); 
-        updateStats(); 
-        document.getElementById("settingsModal").classList.remove("active"); 
-        showToast("Settings saved!"); 
-        checkSleepWeek();
-        
-        checkChallengeStatus();
+        document.getElementById("headerTitle").textContent = t + " Tracker"; document.getElementById("mainTitle").textContent = t; 
+        updateMotivation(); renderHeatmap(); renderTodayHabits(); updateStats(); 
+        document.getElementById("settingsModal").classList.remove("active"); showToast("Settings saved!"); 
+        checkSleepWeek(); checkChallengeStatus();
       } catch(e) { alert(e.message); } 
     };
     document.getElementById("resetAllData").onclick = () => { document.getElementById("settingsModal").classList.remove("active"); document.getElementById("resetModal").classList.add("active"); };
     document.getElementById("resetCancel").onclick = () => { document.getElementById("resetModal").classList.remove("active"); document.getElementById("settingsModal").classList.add("active"); };
     document.getElementById("resetConfirm").onclick = () => { localStorage.removeItem("challengeData"); localStorage.removeItem("gritgo_sleep_state"); localStorage.removeItem("gritgo_intro_seen"); location.reload(); };
     
-    // ===== FEEDBACK MODAL LOGIC =====
     document.getElementById("feedbackCancel").onclick = () => document.getElementById("feedbackModal").classList.remove("active");
     document.getElementById("feedbackSubmit").onclick = () => { const text = document.getElementById("feedbackText").value.trim(); if(!text) return; window.open(`https://wa.me/8801888214016?text=${encodeURIComponent("GRITGO Feedback:\n\n" + text)}`, "_blank"); document.getElementById("feedbackModal").classList.remove("active"); };
 
-    // 🟢 Backup Logic (Copy Text)
-    document.getElementById("shareButton").onclick = () => {
-      const dataStr = JSON.stringify(challengeData);
-      document.getElementById("backupText").value = dataStr;
-      document.getElementById("backupModal").classList.add("active");
-    };
-    
-    document.getElementById("exportData").onclick = () => {
-      const dataStr = JSON.stringify(challengeData);
-      document.getElementById("backupText").value = dataStr;
-      document.getElementById("backupModal").classList.add("active");
-    };
+    document.getElementById("shareButton").onclick = () => { const dataStr = JSON.stringify(challengeData); document.getElementById("backupText").value = dataStr; document.getElementById("backupModal").classList.add("active"); };
+    document.getElementById("exportData").onclick = () => { const dataStr = JSON.stringify(challengeData); document.getElementById("backupText").value = dataStr; document.getElementById("backupModal").classList.add("active"); };
     document.getElementById("closeBackupBtn").onclick = () => document.getElementById("backupModal").classList.remove("active");
 
     document.getElementById("copyBackupBtn").onclick = async () => {
-      const copyText = document.getElementById("backupText");
-      const text = copyText.value;
-
-      if (navigator.clipboard && window.isSecureContext) {
-        try {
-          await navigator.clipboard.writeText(text);
-          localStorage.setItem("gritgo_last_backup", Date.now());
-          showToast("Copied to Clipboard!");
-          return;
-        } catch (err) { console.log("Clipboard API failed:", err); }
-      }
-
-      copyText.focus();
-      copyText.select();
-      copyText.setSelectionRange(0, text.length);
-
-      let ok = false;
-      try { ok = document.execCommand("copy"); } catch (e) { console.log(e); }
-
-      if (ok) { localStorage.setItem("gritgo_last_backup", Date.now()); showToast("Copied to Clipboard!"); } 
-      else { showToast("Text is selected — long-press and tap Copy"); }
+      const copyText = document.getElementById("backupText"); const text = copyText.value;
+      if (navigator.clipboard && window.isSecureContext) { try { await navigator.clipboard.writeText(text); localStorage.setItem("gritgo_last_backup", Date.now()); showToast("Copied to Clipboard!"); return; } catch (err) { console.log("Clipboard API failed:", err); } }
+      copyText.focus(); copyText.select(); copyText.setSelectionRange(0, text.length);
+      let ok = false; try { ok = document.execCommand("copy"); } catch (e) { console.log(e); }
+      if (ok) { localStorage.setItem("gritgo_last_backup", Date.now()); showToast("Copied to Clipboard!"); } else { showToast("Text is selected — long-press and tap Copy"); }
     };
 
-    // 🟢 Restore Logic (Paste Text)
-    document.getElementById("importData").onclick = () => {
-      document.getElementById("restoreText").value = "";
-      document.getElementById("restoreModal").classList.add("active");
-    };
+    document.getElementById("importData").onclick = () => { document.getElementById("restoreText").value = ""; document.getElementById("restoreModal").classList.add("active"); };
     document.getElementById("closeRestoreBtn").onclick = () => document.getElementById("restoreModal").classList.remove("active");
-
     document.getElementById("pasteClipboardBtn").onclick = async () => {
-      if (!navigator.clipboard || !window.isSecureContext) {
-        showToast("Auto-paste not available — long-press box and Paste");
-        document.getElementById("restoreText").focus();
-        return;
-      }
-      try {
-        const text = await navigator.clipboard.readText();
-        document.getElementById("restoreText").value = text;
-        showToast("Pasted from clipboard");
-      } catch (err) {
-        showToast("Permission denied — long-press box and Paste");
-      }
+      if (!navigator.clipboard || !window.isSecureContext) { showToast("Auto-paste not available — long-press box and Paste"); document.getElementById("restoreText").focus(); return; }
+      try { const text = await navigator.clipboard.readText(); document.getElementById("restoreText").value = text; showToast("Pasted from clipboard"); } 
+      catch (err) { showToast("Permission denied — long-press box and Paste"); }
     };
 
     document.getElementById("restoreFromTextBtn").onclick = () => {
       const text = document.getElementById("restoreText").value.trim();
       if (!text) { showToast("Please paste your backup text first!"); return; }
-
       let importedData;
-      try {
-        importedData = JSON.parse(text);
-      } catch (err) {
-        showToast("Invalid JSON format! Check your paste.");
-        return;
-      }
-
-      if (!importedData || typeof importedData !== "object" || !Array.isArray(importedData.habits)) {
-        showToast("Invalid backup — missing habits data.");
-        return;
-      }
-
+      try { importedData = JSON.parse(text); } catch (err) { showToast("Invalid JSON format! Check your paste."); return; }
+      if (!importedData || typeof importedData !== "object" || !Array.isArray(importedData.habits)) { showToast("Invalid backup — missing habits data."); return; }
       challengeData = importedData;
       if (!challengeData.notes) challengeData.notes = {};
       if (!challengeData.habitLogs) challengeData.habitLogs = {};
       if (!challengeData.dayStart) challengeData.dayStart = "05:00";
       if (!challengeData.dayEnd) challengeData.dayEnd = "21:00";
-
       localStorage.setItem("challengeData", JSON.stringify(challengeData));
       showToast("Data Restored Successfully!");
       setTimeout(() => location.reload(), 1200);
     };
 
     const saved = localStorage.getItem("challengeData");
-    if (saved) { 
-      challengeData = JSON.parse(saved); 
-      if (!challengeData.notes) challengeData.notes = {}; 
-      migrateData(); 
-      startMainApp(); 
-    }
+    if (saved) { challengeData = JSON.parse(saved); if (!challengeData.notes) challengeData.notes = {}; migrateData(); startMainApp(); }
     
-    // ===== AUTO UPDATE APP AT DAY START TIME =====
     let lastAppDate = getDateKey();
     setInterval(() => {
       const currentAppDate = getDateKey();
       if (currentAppDate !== lastAppDate) {
         lastAppDate = currentAppDate;
-        updateMotivation();
-        renderTodayHabits();
-        renderHeatmap();
-        updateStats();
+        updateMotivation(); renderTodayHabits(); renderHeatmap(); updateStats();
         if(document.getElementById("extrasModal").classList.contains("active")) renderExtras();
-        
-        if(document.getElementById("trackerModal").classList.contains("active")) {
-          renderSleepTracker();
-          renderWeeklyProgress();
-        }
-
+        if(document.getElementById("trackerModal").classList.contains("active")) { renderSleepTracker(); renderWeeklyProgress(); }
         checkChallengeStatus();
-
         showToast("New Day Started! Keep going!");
       }
     }, 10000);
 
-    // ===== DAY START & END NOTIFICATION LOGIC =====
     function checkHabitReminders() {
       if (!challengeData.startDate || challengeData.habits.length === 0) return;
-
-      const now = new Date();
-      const todayKey = getDateKey();
-      const currentMins = now.getHours() * 60 + now.getMinutes();
-
-      const startTime = challengeData.dayStart || "05:00";
-      const endTime = challengeData.dayEnd || "21:00";
-      
-      const [sh, sm] = startTime.split(':').map(Number);
-      const [eh, em] = endTime.split(':').map(Number);
-      const startMins = sh * 60 + sm;
-      const endMins = eh * 60 + em;
-
-      const firstHabit = challengeData.habits[0]?.name || "your first habit";
-      const lastHabit = challengeData.habits[challengeData.habits.length - 1]?.name || "your last habit";
-
+      const now = new Date(); const todayKey = getDateKey(); const currentMins = now.getHours() * 60 + now.getMinutes();
+      const startTime = challengeData.dayStart || "05:00"; const endTime = challengeData.dayEnd || "21:00";
+      const [sh, sm] = startTime.split(':').map(Number); const [eh, em] = endTime.split(':').map(Number);
+      const startMins = sh * 60 + sm; const endMins = eh * 60 + em;
+      const firstHabit = challengeData.habits[0]?.name || "your first habit"; const lastHabit = challengeData.habits[challengeData.habits.length - 1]?.name || "your last habit";
       const startNotiKey = `gritgo_start_noti_v2_${todayKey}`;
-      if (currentMins >= startMins && !localStorage.getItem(startNotiKey)) {
-        sendBrowserNotification("Good Morning", `Start Your Day With ${firstHabit}`);
-        localStorage.setItem(startNotiKey, "true");
-      }
-
+      if (currentMins >= startMins && !localStorage.getItem(startNotiKey)) { sendBrowserNotification("Good Morning", `Start Your Day With ${firstHabit}`); localStorage.setItem(startNotiKey, "true"); }
       const endNotiKey = `gritgo_end_noti_v2_${todayKey}`;
-      if (currentMins >= endMins && !localStorage.getItem(endNotiKey)) {
-        sendBrowserNotification("Good Night", `End Your Day With ${lastHabit}`);
-        localStorage.setItem(endNotiKey, "true");
-      }
+      if (currentMins >= endMins && !localStorage.getItem(endNotiKey)) { sendBrowserNotification("Good Night", `End Your Day With ${lastHabit}`); localStorage.setItem(endNotiKey, "true"); }
     }
 
     function sendBrowserNotification(title, body) {
       if ("Notification" in window && Notification.permission === "granted") {
-        try {
-          new Notification(title, { body: body, icon: "icon-192.png" });
-          return;
-        } catch(e) { console.log("Notification failed, showing toast instead."); }
+        try { new Notification(title, { body: body, icon: "icon-192.png" }); return; } 
+        catch(e) { console.log("Notification failed, showing toast instead."); }
       } 
-      
       showToast(`${title} - ${body}`);
-      
-      if ("Notification" in window && Notification.permission === "default") {
-        Notification.requestPermission();
-      }
+      if ("Notification" in window && Notification.permission === "default") { Notification.requestPermission(); }
     }
 
     setInterval(checkHabitReminders, 10000);
-
     if ("serviceWorker" in navigator) { navigator.serviceWorker.register("service-worker.js").catch(err => console.log(err)); }
   </script>
 </body>
