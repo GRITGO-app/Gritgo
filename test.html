@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -94,41 +95,70 @@
       100% { box-shadow: 0 0 20px #ff6b4a; }
     }
 
-    /* Language Selector Styling */
-    .lang-select-wrapper {
+    /* ===== CUSTOM LANGUAGE DROPDOWN ===== */
+    .custom-lang-wrapper {
       position: relative;
       width: 100%;
       margin-bottom: 8px;
+      z-index: 100;
     }
-    .lang-select-wrapper svg {
-      position: absolute;
-      left: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 16px;
-      height: 16px;
-      stroke: #00e5ff;
-      pointer-events: none;
-    }
-    #voiceLangSelect {
+    .lang-trigger {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       width: 100%;
-      padding: 10px 10px 10px 35px;
-      background: #1a1f2e;
-      color: #e8eaed;
-      border: 1px solid #9b59b6;
+      padding: 10px 15px;
+      background: #0f1419;
+      color: #00e5ff;
+      border: 1px solid #00e5ff;
       border-radius: 10px;
-      font-size: 13px;
-      font-weight: 500;
-      outline: none;
-      appearance: none;
-      -webkit-appearance: none;
+      font-size: 14px;
+      font-weight: 600;
       cursor: pointer;
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.1);
+    }
+    .lang-trigger svg { width: 16px; height: 16px; stroke: #00e5ff; }
+    
+    .lang-menu {
+      position: absolute;
+      top: 105%;
+      left: 0;
+      width: 100%;
+      background: #0f1419;
+      border: 1px solid #00e5ff;
+      border-radius: 10px;
+      max-height: 220px;
+      overflow-y: auto;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 229, 255, 0.2);
+      display: none;
+      z-index: 999;
+    }
+    .lang-menu.open { display: block; }
+    
+    .lang-option {
+      padding: 12px 15px;
+      color: #e8eaed;
+      font-size: 14px;
+      cursor: pointer;
+      border-bottom: 1px solid #1a1f2e;
       transition: all 0.2s;
     }
-    #voiceLangSelect:focus { border-color: #00e5ff; box-shadow: 0 0 10px rgba(0, 229, 255, 0.2); }
+    .lang-option:last-child { border-bottom: none; }
+    .lang-option:hover, .lang-option.selected {
+      background: rgba(0, 229, 255, 0.1);
+      color: #00e5ff;
+    }
     
-    body.light-theme #voiceLangSelect { background: #ffffff; color: #1a1f2e; border-color: #9b59b6; }
-    body.light-theme .lang-select-wrapper svg { stroke: #9b59b6; }
+    /* Custom Scrollbar for Lang Menu */
+    .lang-menu::-webkit-scrollbar { width: 6px; }
+    .lang-menu::-webkit-scrollbar-track { background: #1a1f2e; border-radius: 10px; }
+    .lang-menu::-webkit-scrollbar-thumb { background: #00e5ff; border-radius: 10px; }
+
+    body.light-theme .lang-trigger { background: #ffffff; color: #1a1f2e; border-color: #4a9eff; box-shadow: none; }
+    body.light-theme .lang-trigger svg { stroke: #4a9eff; }
+    body.light-theme .lang-menu { background: #ffffff; border-color: #4a9eff; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); }
+    body.light-theme .lang-option { color: #1a1f2e; border-bottom: 1px solid #f3f4f6; }
+    body.light-theme .lang-option:hover, body.light-theme .lang-option.selected { background: rgba(74, 158, 255, 0.1); color: #4a9eff; }
 
     body.light-theme .date-wrapper input { background-color: #ffffff; color: #1a1f2e; }
     body.light-theme .sidebar-header { border-bottom-color: #e5e7eb; }
@@ -363,11 +393,11 @@
     .weekly-percent-text { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font-size: 10px; font-weight: bold; color: #ffffff; text-shadow: 1px 1px 2px #000; }
 
     /* ===== Click/Press Feedback ===== */
-    button:active, .quick-btn:active, .custom-checkbox:active, .heatmap-cell:active, .menu-item:active, .hour-btn:active {
+    button:active, .quick-btn:active, .custom-checkbox:active, .heatmap-cell:active, .menu-item:active, .hour-btn:active, .lang-trigger:active, .lang-option:active {
       transform: scale(0.92) !important;
       opacity: 0.8;
     }
-    button, .menu-item, .custom-checkbox {
+    button, .menu-item, .custom-checkbox, .lang-trigger, .lang-option {
       cursor: pointer;
       transition: transform 0.1s ease, opacity 0.1s ease;
     }
@@ -585,10 +615,10 @@
       <div id="congratsIconContainer">
         <!-- Icon will be injected here via JS -->
       </div>
-      <h2 id="congratsTitle">Congratulations! 🎉</h2>
+      <h2 id="congratsTitle">Congratulations!</h2>
       <p id="congratsBody">You have successfully completed the <b id="congratsChallengeName"></b> challenge! Your dedication and consistency will take you far.</p>
       <p id="congratsQuote" style="font-style: italic; color: #9aa0a6;">"Success is the sum of small efforts, repeated day in and day out."</p>
-      <p class="congrats-footer" id="congratsFooter">Best of luck for your next journey! 🚀</p>
+      <p class="congrats-footer" id="congratsFooter">Best of luck for your next journey!</p>
       
       <div class="settings-buttons" id="congratsStartButtons" style="display: none;">
         <button id="congratsStartBtn">Let's Go!</button>
@@ -613,6 +643,17 @@
         </h3>
         <div class="progress-bar-bg"><div class="progress-bar-fill" id="overallProgressFill" style="width: 0%;"></div></div>
         <p style="text-align: right; font-size: 12px; color: #00e5ff; margin-top: 5px;" id="overallProgressText">0% Completed</p>
+      </div>
+
+      <!-- CHART JS SECTION -->
+      <div class="extras-section" style="border-color: #00e5ff;">
+        <h3>
+          <svg class="svg-icon" style="stroke: #00e5ff;" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+          Weekly Progress Chart
+        </h3>
+        <div style="width: 100%; height: 220px; margin-top: 10px;">
+          <canvas id="progressChart"></canvas>
+        </div>
       </div>
 
       <div class="extras-section">
@@ -666,6 +707,24 @@
         <button id="saveNoteBtn" style="width: 100%; padding: 10px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer;">Save Note</button>
       </div>
 
+      <!-- AI PERFORMANCE REVIEW SECTION -->
+      <div class="extras-section" style="border-color: #00e5ff;">
+        <h3>
+          <svg class="svg-icon" style="stroke: #00e5ff;" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+          AI Performance Review
+        </h3>
+        <p style="color: #9aa0a6; font-size: 13px; margin-bottom: 10px;">Get a detailed analysis of your progress by AI.</p>
+        
+        <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+          <button id="weeklyReviewBtn" style="flex: 1; padding: 10px; background: #1a1f2e; color: #00e5ff; border: 1px solid #00e5ff; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 14px;">Weekly Review</button>
+          <button id="monthlyReviewBtn" style="flex: 1; padding: 10px; background: #1a1f2e; color: #d6a1f0; border: 1px solid #d6a1f0; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 14px;">Monthly Review</button>
+        </div>
+        
+        <div id="reviewResponseBox" style="display: none; padding: 15px; background: #0f1419; border: 1px solid #00e5ff; border-radius: 10px;">
+          <p id="reviewResponseText" style="color: #e8eaed; font-size: 14px; line-height: 1.6; white-space: pre-wrap;"></p>
+        </div>
+      </div>
+
       <!-- AI COACH SECTION -->
       <div class="extras-section" style="border-color: #9b59b6;">
         <h3>
@@ -673,64 +732,72 @@
           Ask AI Coach
         </h3>
         
-        <!-- Language Selector (Styled) -->
-        <div class="lang-select-wrapper">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="2" y1="12" x2="22" y2="12"></line>
-            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-          </svg>
-          <select id="voiceLangSelect">
-            <option value="en-US">English (US)</option>
-            <option value="bn-BD">Bengali</option>
-            <option value="hi-IN">Hindi</option>
-            <option value="es-ES">Spanish</option>
-            <option value="fr-FR">French</option>
-            <option value="de-DE">German</option>
-            <option value="zh-CN">Chinese</option>
-            <option value="ja-JP">Japanese</option>
-            <option value="ar-SA">Arabic</option>
-            <option value="ru-RU">Russian</option>
-            <option value="pt-BR">Portuguese</option>
-            <option value="it-IT">Italian</option>
-            <option value="ko-KR">Korean</option>
-            <option value="tr-TR">Turkish</option>
-            <option value="vi-VN">Vietnamese</option>
-            <option value="th-TH">Thai</option>
-            <option value="id-ID">Indonesian</option>
-            <option value="ms-MY">Malay</option>
-            <option value="ur-PK">Urdu</option>
-            <option value="ta-IN">Tamil</option>
-            <option value="te-IN">Telugu</option>
-            <option value="mr-IN">Marathi</option>
-            <option value="gu-IN">Gujarati</option>
-            <option value="kn-IN">Kannada</option>
-            <option value="ml-IN">Malayalam</option>
-            <option value="pa-IN">Punjabi</option>
-            <option value="nl-NL">Dutch</option>
-            <option value="pl-PL">Polish</option>
-            <option value="sv-SE">Swedish</option>
-            <option value="da-DK">Danish</option>
-            <option value="fi-FI">Finnish</option>
-            <option value="no-NO">Norwegian</option>
-            <option value="el-GR">Greek</option>
-            <option value="he-IL">Hebrew</option>
-            <option value="cs-CZ">Czech</option>
-            <option value="hu-HU">Hungarian</option>
-            <option value="ro-RO">Romanian</option>
-            <option value="uk-UA">Ukrainian</option>
-            <option value="fa-IR">Persian</option>
-            <option value="sw-KE">Swahili</option>
-            <option value="af-ZA">Afrikaans</option>
-            <option value="fil-PH">Filipino</option>
-            <option value="my-MM">Burmese</option>
-            <option value="km-KH">Khmer</option>
-            <option value="si-LK">Sinhala</option>
-            <option value="ne-NP">Nepali</option>
-            <option value="sr-RS">Serbian</option>
-            <option value="hr-HR">Croatian</option>
-          </select>
+        <!-- ===== CUSTOM LANGUAGE DROPDOWN ===== -->
+        <div class="custom-lang-wrapper">
+          <button class="lang-trigger" id="langTrigger">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              </svg>
+              <span id="selectedLangText">English (US)</span>
+            </div>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="lang-menu" id="langMenu">
+            <div class="lang-option selected" data-value="en-US">English (US)</div>
+            <div class="lang-option" data-value="bn-BD">Bengali</div>
+            <div class="lang-option" data-value="hi-IN">Hindi</div>
+            <div class="lang-option" data-value="es-ES">Spanish</div>
+            <div class="lang-option" data-value="fr-FR">French</div>
+            <div class="lang-option" data-value="de-DE">German</div>
+            <div class="lang-option" data-value="zh-CN">Chinese</div>
+            <div class="lang-option" data-value="ja-JP">Japanese</div>
+            <div class="lang-option" data-value="ar-SA">Arabic</div>
+            <div class="lang-option" data-value="ru-RU">Russian</div>
+            <div class="lang-option" data-value="pt-BR">Portuguese</div>
+            <div class="lang-option" data-value="it-IT">Italian</div>
+            <div class="lang-option" data-value="ko-KR">Korean</div>
+            <div class="lang-option" data-value="tr-TR">Turkish</div>
+            <div class="lang-option" data-value="vi-VN">Vietnamese</div>
+            <div class="lang-option" data-value="th-TH">Thai</div>
+            <div class="lang-option" data-value="id-ID">Indonesian</div>
+            <div class="lang-option" data-value="ms-MY">Malay</div>
+            <div class="lang-option" data-value="ur-PK">Urdu</div>
+            <div class="lang-option" data-value="ta-IN">Tamil</div>
+            <div class="lang-option" data-value="te-IN">Telugu</div>
+            <div class="lang-option" data-value="mr-IN">Marathi</div>
+            <div class="lang-option" data-value="gu-IN">Gujarati</div>
+            <div class="lang-option" data-value="kn-IN">Kannada</div>
+            <div class="lang-option" data-value="ml-IN">Malayalam</div>
+            <div class="lang-option" data-value="pa-IN">Punjabi</div>
+            <div class="lang-option" data-value="nl-NL">Dutch</div>
+            <div class="lang-option" data-value="pl-PL">Polish</div>
+            <div class="lang-option" data-value="sv-SE">Swedish</div>
+            <div class="lang-option" data-value="da-DK">Danish</div>
+            <div class="lang-option" data-value="fi-FI">Finnish</div>
+            <div class="lang-option" data-value="no-NO">Norwegian</div>
+            <div class="lang-option" data-value="el-GR">Greek</div>
+            <div class="lang-option" data-value="he-IL">Hebrew</div>
+            <div class="lang-option" data-value="cs-CZ">Czech</div>
+            <div class="lang-option" data-value="hu-HU">Hungarian</div>
+            <div class="lang-option" data-value="ro-RO">Romanian</div>
+            <div class="lang-option" data-value="uk-UA">Ukrainian</div>
+            <div class="lang-option" data-value="fa-IR">Persian</div>
+            <div class="lang-option" data-value="sw-KE">Swahili</div>
+            <div class="lang-option" data-value="af-ZA">Afrikaans</div>
+            <div class="lang-option" data-value="fil-PH">Filipino</div>
+            <div class="lang-option" data-value="my-MM">Burmese</div>
+            <div class="lang-option" data-value="km-KH">Khmer</div>
+            <div class="lang-option" data-value="si-LK">Sinhala</div>
+            <div class="lang-option" data-value="ne-NP">Nepali</div>
+            <div class="lang-option" data-value="sr-RS">Serbian</div>
+            <div class="lang-option" data-value="hr-HR">Croatian</div>
+          </div>
+          <input type="hidden" id="voiceLangSelect" value="en-US">
         </div>
+        <!-- ======================= -->
 
         <!-- AI Input Box with Mic -->
         <div style="display: flex; gap: 8px; margin-bottom: 10px;">
@@ -796,7 +863,10 @@
   <!-- TIMER MODAL -->
   <div id="timerModal" class="modal-overlay">
     <div class="modal-box" style="text-align: center;">
-      <h2>⏱️ Set Timer</h2>
+      <h2>
+        <svg class="svg-icon" style="width:22px; height:22px; stroke:#00e5ff;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        Set Timer
+      </h2>
       <p id="timerHabitName" style="color:#00e5ff; margin-bottom:20px; font-weight:bold; font-size:16px;"></p>
       
       <!-- Timer Buttons Grid -->
@@ -852,65 +922,104 @@
     </div>
   </div>
 
-  <!-- MAIN GUIDE MODAL -->
-  <div id="introModal" class="modal-overlay">
-    <div class="modal-box" style="text-align: left;">
-      <h2 style="color: #00e5ff; font-size: 24px; text-align: center; margin-bottom: 15px;">Welcome to GRITGO!</h2>
-      <p style="color: #9aa0a6; font-size: 13px; text-align: center; margin-bottom: 20px;">Here is your complete guide on how to use the app:</p>
-      
-      <div style="background: #0f1419; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #2a3142;">
-        <h3 style="color: #e8eaed; font-size: 15px; margin-bottom: 10px;">1. Daily Habits</h3>
-        <p style="color: #9aa0a6; font-size: 13px; line-height: 1.6;">
-          • <b>Add/Edit:</b> Click <b>"Add Habit"</b> to create a new habit. Click <b>"Edit habits"</b> to rename, reorder (↑↓), or delete habits.<br>
-          • <b>Checkbox:</b> Tap the number box next to a habit to complete it. It turns blue with a checkmark.<br>
-          • <b>Search:</b> Use the search bar to find a habit by its name or number.
+<!-- MAIN GUIDE MODAL -->
+<div id="introModal" class="modal-overlay">
+  <div class="modal-box" style="text-align: left;">
+    <h2 style="color: #00e5ff; font-size: 26px; text-align: center; margin-bottom: 10px; text-shadow: 0 0 10px rgba(0, 229, 255, 0.4);">Welcome to GRITGO!</h2>
+    <p style="color: #c3c9d1; font-size: 14px; text-align: center; margin-bottom: 25px;">Here is your complete guide on how to use the app:</p>
+    
+    <!-- Section 1 -->
+    <div style="display: flex; gap: 15px; background: #0f1419; padding: 18px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #2a3142; align-items: flex-start;">
+      <div style="background: rgba(74, 158, 255, 0.15); width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4a9eff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+      </div>
+      <div>
+        <h3 style="color: #ffffff; font-size: 16px; margin-bottom: 8px;">1. Daily Habits & Search</h3>
+        <p style="color: #c3c9d1; font-size: 13px; line-height: 1.6;">
+          • <b>Add/Edit:</b> Click <b>"Add Habit"</b> to create a habit. Click <b>"Edit habits"</b> to rename or delete.<br>
+          • <b>Checkbox:</b> Tap the number box next to a habit to complete it.<br>
+          • <b>Search:</b> Use the search bar to find a habit quickly.
         </p>
       </div>
-
-      <div style="background: #0f1419; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #2a3142;">
-        <h3 style="color: #e8eaed; font-size: 15px; margin-bottom: 10px;">2. Heatmap & Past Dates</h3>
-        <p style="color: #9aa0a6; font-size: 13px; line-height: 1.6;">
-          • <b>Heatmap:</b> Each box represents a day. If you complete all habits, the box glows in Aqua color.<br>
-          • <b>Past Edit:</b> Forgot to check a habit yesterday? Tap on any past box in the heatmap to open that day and edit it.
-        </p>
-      </div>
-
-      <div style="background: #0f1419; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #2a3142;">
-        <h3 style="color: #e8eaed; font-size: 15px; margin-bottom: 10px;">3. Quick Actions (Below Heatmap)</h3>
-        <p style="color: #9aa0a6; font-size: 13px; line-height: 1.6;">
-          • <b>Check All (Blue check):</b> Instantly checks all habits for today in one click. Great for a perfect day!<br>
-          • <b>Reset All (Black reset):</b> Unchecks all habits for today if you made a mistake.
-        </p>
-      </div>
-
-      <div style="background: #0f1419; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #2a3142;">
-        <h3 style="color: #e8eaed; font-size: 15px; margin-bottom: 10px;">4. Stats & Progress</h3>
-        <p style="color: #9aa0a6; font-size: 13px; line-height: 1.6;">
-          • <b>Overall %:</b> Shows the percentage of habits you completed TODAY.<br>
-          • <b>Challenge Progress:</b> Shows how many DAYS have passed in your challenge.<br>
-          • <b>Streak & Perfect Days:</b> Tracks how many consecutive days you completed 100% of your habits.
-        </p>
-      </div>
-
-      <div style="background: #0f1419; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #2a3142;">
-        <h3 style="color: #e8eaed; font-size: 15px; margin-bottom: 10px;">5. Extras & Insights</h3>
-        <p style="color: #9aa0a6; font-size: 13px; line-height: 1.6;">
-          • <b>Achievements:</b> Unlock badges by maintaining streaks.<br>
-          • <b>Calendar & Notes:</b> View your monthly progress and write a daily note.
-        </p>
-      </div>
-
-      <div style="background: #0f1419; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #2a3142;">
-        <h3 style="color: #e8eaed; font-size: 15px; margin-bottom: 10px;">6. Sleep & Backup</h3>
-        <p style="color: #9aa0a6; font-size: 13px; line-height: 1.6;">
-          • <b>Sleep Tracker:</b> Log your sleep to see your Brain State. (Note: It remains <b>Locked</b> until your challenge starts).<br>
-          • <b>Backup:</b> Always export your data (JSON) so you don't lose progress if you clear your browser.
-        </p>
-      </div>
-
-      <button id="introClose" style="width: 100%; padding: 14px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; background: linear-gradient(135deg, #00e5ff, #0088cc); color: #05080f; font-size: 16px;">Got It! Let's Start</button>
     </div>
+
+    <!-- Section 2 -->
+    <div style="display: flex; gap: 15px; background: #0f1419; padding: 18px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #2a3142; align-items: flex-start;">
+      <div style="background: rgba(0, 229, 255, 0.15); width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+      </div>
+      <div>
+        <h3 style="color: #ffffff; font-size: 16px; margin-bottom: 8px;">2. Advanced Timer</h3>
+        <p style="color: #c3c9d1; font-size: 13px; line-height: 1.6;">
+          • <b>Custom Time:</b> Choose from 5m, 30m, 1h, or type your own time (e.g., <b>45</b> for mins or <b>2h</b> for hours).<br>
+          • <b>Auto-Check:</b> When the timer ends, a sound will play, and the habit will be automatically checked!
+        </p>
+      </div>
+    </div>
+
+    <!-- Section 3 -->
+    <div style="display: flex; gap: 15px; background: #0f1419; padding: 18px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #2a3142; align-items: flex-start;">
+      <!-- AI TEXT ICON -->
+      <div style="background: rgba(155, 89, 182, 0.15); width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0;">
+        <span style="color: #9b59b6; font-size: 18px; font-weight: 800; letter-spacing: -1px;">AI</span>
+      </div>
+      <div>
+        <h3 style="color: #ffffff; font-size: 16px; margin-bottom: 8px;">3. Smart AI Coach</h3>
+        <p style="color: #c3c9d1; font-size: 13px; line-height: 1.6;">
+          • <b>Voice Input:</b> Click the <b>Mic</b> icon and speak. Select from <b>48 languages</b> using the dropdown!<br>
+          • <b>AI Voice Reply:</b> If you speak, the AI replies with voice. If you type, it replies with text.<br>
+          • <b>Voice Commands:</b> Say or type <i>"Set timer for 1h"</i> and the AI will start a timer for you.<br>
+          • <b>AI Reviews:</b> Get your Weekly & Monthly progress analyzed by the AI in the Extras section.
+        </p>
+      </div>
+    </div>
+
+    <!-- Section 4 -->
+    <div style="display: flex; gap: 15px; background: #0f1419; padding: 18px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #2a3142; align-items: flex-start;">
+      <div style="background: rgba(74, 170, 74, 0.15); width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4aaa4a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </div>
+      <div>
+        <h3 style="color: #ffffff; font-size: 16px; margin-bottom: 8px;">4. Heatmap & Edits</h3>
+        <p style="color: #c3c9d1; font-size: 13px; line-height: 1.6;">
+          • <b>Heatmap:</b> Each box represents a day. Complete all habits to make it glow Aqua.<br>
+          • <b>Past Edit:</b> Tap on any past box in the heatmap to open that day and edit it.
+        </p>
+      </div>
+    </div>
+
+    <!-- Section 5 -->
+    <div style="display: flex; gap: 15px; background: #0f1419; padding: 18px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #2a3142; align-items: flex-start;">
+      <div style="background: rgba(241, 196, 15, 0.15); width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f1c40f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg>
+      </div>
+      <div>
+        <h3 style="color: #ffffff; font-size: 16px; margin-bottom: 8px;">5. Progress & Charts</h3>
+        <p style="color: #c3c9d1; font-size: 13px; line-height: 1.6;">
+          • <b>Extras & Insights:</b> Opens the dashboard where you can see your Weekly Line Chart and 7-Day Habits bar.<br>
+          • <b>Day Streak:</b> Tracks how many consecutive days you completed 100% of your habits.<br>
+          • <b>Quick Actions:</b> Use the Blue check to mark all done, and Black reset to uncheck.
+        </p>
+      </div>
+    </div>
+
+    <!-- Section 6 -->
+    <div style="display: flex; gap: 15px; background: #0f1419; padding: 18px; border-radius: 12px; margin-bottom: 25px; border: 1px solid #2a3142; align-items: flex-start;">
+      <div style="background: rgba(214, 161, 240, 0.15); width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d6a1f0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </div>
+      <div>
+        <h3 style="color: #ffffff; font-size: 16px; margin-bottom: 8px;">6. Sleep & Backup</h3>
+        <p style="color: #c3c9d1; font-size: 13px; line-height: 1.6;">
+          • <b>Sleep Tracker:</b> Log your sleep to see your Brain State. (Locked until challenge starts).<br>
+          • <b>Backup:</b> Always export your data from Settings so you don't lose progress.
+        </p>
+      </div>
+    </div>
+
+    <button id="introClose" style="width: 100%; padding: 16px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; background: linear-gradient(135deg, #00e5ff, #0088cc); color: #05080f; font-size: 16px; box-shadow: 0 4px 15px rgba(0, 229, 255, 0.3);">Got It! Let's Start</button>
   </div>
+</div>
 
   <div id="addHabitModal" class="modal-overlay">
     <div class="modal-box">
@@ -1092,12 +1201,15 @@
     </div>
   </div>
 
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <script>
     window.onerror = function(msg, url, line) { console.error("Code Error: " + msg + " at line " + line); };
 
     // ===== Haptic Feedback & Press Feel =====
     document.addEventListener('pointerdown', function(e) {
-      const clickable = e.target.closest('button, .quick-btn, .custom-checkbox, .heatmap-cell, .menu-item, .hour-btn, .timer-btn');
+      const clickable = e.target.closest('button, .quick-btn, .custom-checkbox, .heatmap-cell, .menu-item, .hour-btn, .timer-btn, .lang-trigger, .lang-option');
       if (clickable) {
         clickable.style.transition = 'transform 0.1s';
         clickable.style.transform = 'scale(0.92)';
@@ -1106,7 +1218,7 @@
     });
 
     document.addEventListener('pointerup', function(e) {
-      const clickable = e.target.closest('button, .quick-btn, .custom-checkbox, .heatmap-cell, .menu-item, .hour-btn, .timer-btn');
+      const clickable = e.target.closest('button, .quick-btn, .custom-checkbox, .heatmap-cell, .menu-item, .hour-btn, .timer-btn, .lang-trigger, .lang-option');
       if (clickable) {
         clickable.style.transform = '';
         setTimeout(() => clickable.style.transition = '', 100);
@@ -1114,7 +1226,7 @@
     });
 
     document.addEventListener('pointercancel', function(e) {
-      const clickable = e.target.closest('button, .quick-btn, .custom-checkbox, .heatmap-cell, .menu-item, .hour-btn, .timer-btn');
+      const clickable = e.target.closest('button, .quick-btn, .custom-checkbox, .heatmap-cell, .menu-item, .hour-btn, .timer-btn, .lang-trigger, .lang-option');
       if (clickable) {
         clickable.style.transform = '';
         setTimeout(() => clickable.style.transition = '', 100);
@@ -1155,6 +1267,9 @@
         localStorage.setItem("gritgo_theme", "dark");
         themeToggleBtn.innerHTML = sunIcon;
         showToast("Dark Mode Enabled");
+      }
+      if (typeof myProgressChart !== 'undefined' && myProgressChart) {
+          renderChart(); // Update chart colors on theme change
       }
     });
 
@@ -1209,7 +1324,15 @@
     }
 
     function getDateKey(date) {
-      const d = date ? new Date(date) : new Date();
+      let d;
+      if (date) {
+        d = new Date(date);
+      } else {
+        d = new Date();
+        const ds = (typeof challengeData !== "undefined" && challengeData.dayStart) || "00:00";
+        const [h, m] = ds.split(":").map(Number);
+        d.setMinutes(d.getMinutes() - ((h || 0) * 60 + (m || 0)));
+      }
       if (isNaN(d.getTime())) return "";
       return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
     }
@@ -1286,6 +1409,8 @@
       
       checkChallengeStatus();
       checkLateNightWarning(); 
+      const lastBackup = parseInt(localStorage.getItem("gritgo_last_backup")) || 0;
+      if (Date.now() - lastBackup > 7 * 86400000) setTimeout(() => showToast("💾 Backup নেওয়ার সময় হয়েছে!"), 3000);
     }
     
     function checkLateNightWarning() {
@@ -1299,11 +1424,11 @@
 
         if (totalHabits > 0 && completedToday < totalHabits) {
           setTimeout(() => {
-            showToast("⚠️ It's getting late! Finish your remaining habits and get some sleep. 😴");
+            showToast("It's getting late! Finish your remaining habits and get some sleep.");
           }, 1500);
         } else {
           setTimeout(() => {
-            showToast("🌃 Great job today! Now go get some rest. Good night! 😴");
+            showToast("Great job today! Now go get some rest. Good night!");
           }, 1500);
         }
       }
@@ -1443,6 +1568,80 @@
 
       const noteKey = getDateKey();
       document.getElementById("dailyNoteInput").value = challengeData.notes[noteKey] || "";
+
+      // রেন্ডার চার্ট
+      renderChart();
+    }
+
+    // ===== CHART JS LOGIC =====
+    let myProgressChart = null;
+    function renderChart() {
+      const canvas = document.getElementById("progressChart");
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      
+      if (myProgressChart) { myProgressChart.destroy(); }
+
+      const labels = [];
+      const data = [];
+      let baseDate = new Date();
+      const totalHabits = challengeData.habits.length;
+      const isLight = document.body.classList.contains("light-theme");
+      const textColor = isLight ? '#4b5563' : '#9aa0a6';
+      const gridColor = isLight ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.05)';
+
+      for (let i = 6; i >= 0; i--) {
+        let d = new Date(baseDate);
+        d.setDate(d.getDate() - i);
+        labels.push(d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric' }));
+        let dateKey = getDateKey(d);
+        let log = challengeData.habitLogs[dateKey] || {};
+        let completed = Object.values(log).filter(v => v === true).length;
+        let percent = totalHabits === 0 ? 0 : Math.round((completed / totalHabits) * 100);
+        data.push(percent);
+      }
+
+      let gradient = ctx.createLinearGradient(0, 0, 0, 300);
+      gradient.addColorStop(0, 'rgba(0, 229, 255, 0.5)');
+      gradient.addColorStop(1, 'rgba(0, 229, 255, 0.0)');
+
+      myProgressChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Completion %',
+            data: data,
+            borderColor: '#00e5ff',
+            backgroundColor: gradient,
+            borderWidth: 2,
+            pointBackgroundColor: '#00e5ff',
+            pointBorderColor: isLight ? '#fff' : '#0f1419',
+            pointRadius: 4,
+            fill: true,
+            tension: 0.4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 100,
+              grid: { color: gridColor },
+              ticks: { color: textColor, callback: function(value) { return value + "%" } }
+            },
+            x: {
+              grid: { display: false },
+              ticks: { color: textColor }
+            }
+          }
+        }
+      });
     }
 
     document.getElementById("saveNoteBtn").addEventListener("click", () => {
@@ -1455,12 +1654,148 @@
       showToast("Note saved!");
     });
 
+    // ===== CUSTOM LANGUAGE DROPDOWN LOGIC =====
+    const langTrigger = document.getElementById("langTrigger");
+    const langMenu = document.getElementById("langMenu");
+    const selectedLangText = document.getElementById("selectedLangText");
+    const voiceLangSelect = document.getElementById("voiceLangSelect"); 
+    
+    const savedLang = localStorage.getItem("gritgo_lang");
+    if (savedLang) {
+      voiceLangSelect.value = savedLang;
+      const activeOpt = langMenu.querySelector(`[data-value="${savedLang}"]`);
+      if (activeOpt) {
+        selectedLangText.textContent = activeOpt.textContent;
+        langMenu.querySelectorAll('.lang-option').forEach(opt => opt.classList.remove('selected'));
+        activeOpt.classList.add('selected');
+      }
+    }
+
+    langTrigger.addEventListener("click", (e) => {
+      e.stopPropagation();
+      langMenu.classList.toggle("open");
+    });
+
+    document.querySelectorAll(".lang-option").forEach(option => {
+      option.addEventListener("click", () => {
+        const val = option.getAttribute("data-value");
+        voiceLangSelect.value = val;
+        selectedLangText.textContent = option.textContent;
+        localStorage.setItem("gritgo_lang", val);
+        langMenu.querySelectorAll('.lang-option').forEach(opt => opt.classList.remove('selected'));
+        option.classList.add('selected');
+        langMenu.classList.remove("open");
+      });
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!langTrigger.contains(e.target) && !langMenu.contains(e.target)) {
+        langMenu.classList.remove("open");
+      }
+    });
+
+    // ===== AI WEEKLY & MONTHLY REVIEW LOGIC =====
+    async function generateAIReview(type) {
+      const GROQ_API_KEY = "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"; 
+      
+      const btnW = document.getElementById("weeklyReviewBtn");
+      const btnM = document.getElementById("monthlyReviewBtn");
+      const responseBox = document.getElementById("reviewResponseBox");
+      const responseText = document.getElementById("reviewResponseText");
+
+      btnW.disabled = true;
+      btnM.disabled = true;
+      responseBox.style.display = "block";
+      responseText.textContent = `Analyzing your ${type} data... Please wait...`;
+
+      let daysToLookBack = type === 'weekly' ? 7 : 30;
+      let today = new Date();
+      let totalCompleted = 0;
+      let totalPossible = challengeData.habits.length * daysToLookBack;
+      let habitStats = {};
+      
+      challengeData.habits.forEach(h => habitStats[h.name] = 0);
+      let notesToRead = [];
+
+      for (let i = 0; i < daysToLookBack; i++) {
+        let d = new Date(today);
+        d.setDate(d.getDate() - i);
+        let dateKey = getDateKey(d);
+        
+        let log = challengeData.habitLogs[dateKey] || {};
+        challengeData.habits.forEach(h => {
+          if (log[h.id] === true) {
+            totalCompleted++;
+            habitStats[h.name]++;
+          }
+        });
+
+        if (challengeData.notes && challengeData.notes[dateKey]) {
+          notesToRead.push(`[${dateKey}]: ${challengeData.notes[dateKey]}`);
+        }
+      }
+
+      let completionRate = totalPossible > 0 ? Math.round((totalCompleted / totalPossible) * 100) : 0;
+      
+      let habitSummary = "";
+      for (let name in habitStats) {
+        habitSummary += `- ${name}: Completed ${habitStats[name]} out of ${daysToLookBack} days.\n`;
+      }
+
+      let notesSummary = notesToRead.length > 0 ? notesToRead.join("\n") : "No notes written.";
+
+      let prompt = `Here is my progress report for the last ${daysToLookBack} days:
+      - Overall Completion Rate: ${completionRate}%
+      - Total Habits: ${challengeData.habits.length}
+      - Habit Breakdown:\n${habitSummary}
+      - My Daily Notes:\n${notesSummary}
+
+      Please act as my strict but encouraging habit coach. Analyze this data and give me a ${type} review.
+      Format the response with these sections:
+      1. Overall Summary (1 sentence)
+      2. What I did well
+      3. Where I struggled (mention specific habits if possible)
+      4. Actionable advice for next week/month.
+      
+      Keep it short, motivating, and use 1 or 2 emojis.`;
+
+      try {
+        const aiRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+          method: 'POST',
+          headers: { 
+            'Authorization': `Bearer ${GROQ_API_KEY}`, 
+            'Content-Type': 'application/json' 
+          },
+          body: JSON.stringify({
+            model: 'openai/gpt-oss-120b',
+            messages: [{ role: 'user', content: prompt }],
+            temperature: 0.7,
+            max_tokens: 1500
+          })
+        });
+
+        if (!aiRes.ok) throw new Error("Failed to connect to AI");
+
+        const aiData = await aiRes.json();
+        responseText.textContent = aiData.choices[0].message.content.trim();
+
+      } catch (error) {
+        responseText.textContent = "Error: Could not generate review. Please check your API Key or internet.";
+        console.error(error);
+      } finally {
+        btnW.disabled = false;
+        btnM.disabled = false;
+      }
+    }
+
+    document.getElementById("weeklyReviewBtn").addEventListener("click", () => generateAIReview('weekly'));
+    document.getElementById("monthlyReviewBtn").addEventListener("click", () => generateAIReview('monthly'));
+
     // ===== VOICE INPUT (Speech to Text) =====
     let isVoiceInput = false; 
     let isSettingFromVoice = false; 
     const voiceInputBtn = document.getElementById("voiceInputBtn");
     const aiQuestionInput = document.getElementById("aiQuestionInput");
-    const voiceLangSelect = document.getElementById("voiceLangSelect"); 
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
     if (SpeechRecognition) {
@@ -1526,7 +1861,7 @@
     // ===== SMART TIMER PARSE & AI LOGIC =====
     function parseTimerCommand(text) {
       const lowerText = text.toLowerCase();
-      if (lowerText.includes("টাইমার") || lowerText.includes("timer") || lowerText.includes("set time") || lowerText.includes("temp") || lowerText.includes("temporizador") || lowerText.includes("minuteur") || lowerText.includes("timer") || lowerText.includes("wecker")) {
+      if (lowerText.includes("টাইমার") || lowerText.includes("timer") || lowerText.includes("set time") || lowerText.includes("temporizador") || lowerText.includes("minuteur") || lowerText.includes("wecker")) {
         const hMatch = lowerText.match(/(\d+(?:\.\d+)?)\s*(h|hour|hours|ঘন্টা|ঘণ্টা|hora|heures|stunden)/);
         const mMatch = lowerText.match(/(\d+)\s*(m|min|mins|minutes|মিনিট|minutos)/);
         if (hMatch) return parseFloat(hMatch[1]) * 60; 
@@ -1668,7 +2003,7 @@
           clearInterval(timerInterval);
           document.getElementById("floatingTimer").style.display = "none";
           playTimerSound();
-          showToast(`⏰ Timer finished for ${timerTarget.name}!`);
+          showToast(`Timer finished for ${timerTarget.name}!`);
           
           if (timerTarget.id && timerTarget.dateKey) {
             if (!challengeData.habitLogs[timerTarget.dateKey]) challengeData.habitLogs[timerTarget.dateKey] = {};
@@ -2092,11 +2427,24 @@
         if (Object.values(log).filter(val => val === true).length === totalHabits) perfectDays++; 
       });
 
+      // ===== FIXED STREAK LOGIC =====
       let streak = 0;
-      for (let i = dates.length - 1; i >= 0; i--) {
-        const log = challengeData.habitLogs[dates[i]] || {};
-        if (Object.values(log).filter(val => val === true).length === totalHabits) streak++; else break;
+      let checkIdx = dates.length - 1;
+      const isTodayPerfect = completedToday === totalHabits;
+
+      if (!isTodayPerfect && dates.length > 1) {
+          checkIdx = dates.length - 2; // Start from yesterday if today isn't perfect
       }
+
+      for (let i = checkIdx; i >= 0; i--) {
+          const log = challengeData.habitLogs[dates[i]] || {};
+          if (Object.values(log).filter(val => val === true).length === totalHabits) {
+              streak++;
+          } else {
+              break;
+          }
+      }
+      
       document.getElementById("streakStat").textContent = streak;
       document.getElementById("perfectStat").textContent = perfectDays;
       document.getElementById("overallStat").textContent = Math.round((completedToday / totalHabits) * 100) + "%";
@@ -2161,8 +2509,15 @@
     document.getElementById("reportClose").addEventListener("click", () => { weeklyReportModal.classList.remove("active"); renderSleepTracker(); });
 
     function checkSleepWeek() {
+      if (challengeData.startDate) {
+        if (challengeData.startDate > getDateKey()) return; 
+        if (sleepState.weekStartDate < challengeData.startDate) {
+          sleepState = { weekStartDate: challengeData.startDate, days: [null, null, null, null, null, null, null] };
+          localStorage.setItem("gritgo_sleep_state", JSON.stringify(sleepState));
+        }
+      }
       const today = getDateKey(); const start = new Date(sleepState.weekStartDate + "T00:00:00"); const now = new Date(today + "T00:00:00");
-      const diffTime = Math.abs(now - start); const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      const diffTime = Math.max(0, now - start); const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
       if (diffDays >= 7) {
         let totalHours = 0; let validDays = 0;
         sleepState.days.forEach(h => { if(h !== null) { totalHours += h; validDays++; } });
@@ -2254,7 +2609,7 @@
       }
 
       const today = getDateKey(); const start = new Date(sleepState.weekStartDate + "T00:00:00"); const now = new Date(today + "T00:00:00");
-      const diffDays = Math.floor(Math.abs(now - start) / (1000 * 60 * 60 * 24)); const currentIndex = Math.min(diffDays, 6);
+      const diffDays = Math.floor(Math.max(0, now - start) / (1000 * 60 * 60 * 24)); const currentIndex = Math.min(diffDays, 6);
       let displayHours = sleepState.days[currentIndex] !== null ? sleepState.days[currentIndex] : (currentIndex > 0 ? sleepState.days[currentIndex - 1] : null);
       updateBrainPreview(displayHours);
 
@@ -2285,7 +2640,7 @@
     document.getElementById("saveSleepBtn").addEventListener("click", () => {
       if (selectedSleepHours === null) { showToast("Please select your sleep hours."); return; }
       const today = getDateKey(); const start = new Date(sleepState.weekStartDate + "T00:00:00"); const now = new Date(today + "T00:00:00");
-      const diffDays = Math.floor(Math.abs(now - start) / (1000 * 60 * 60 * 24)); const currentIndex = Math.min(diffDays, 6);
+      const diffDays = Math.floor(Math.max(0, now - start) / (1000 * 60 * 60 * 24)); const currentIndex = Math.min(diffDays, 6);
       sleepState.days[currentIndex] = selectedSleepHours; localStorage.setItem("gritgo_sleep_state", JSON.stringify(sleepState));
       showToast("Sleep data saved!"); renderSleepTracker();
     });
@@ -2347,12 +2702,12 @@
     }
 
     function showStartPopup(seenKey) {
-      document.getElementById("congratsTitle").textContent = "Best of Luck! 🚀";
+      document.getElementById("congratsTitle").textContent = "Best of Luck!";
       document.getElementById("congratsTitle").style.color = "#00e5ff";
       document.getElementById("congratsIconContainer").innerHTML = `<svg class="congrats-icon" style="stroke: #00e5ff;" viewBox="0 0 24 24"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path></svg>`;
       document.getElementById("congratsBody").innerHTML = `Your journey for <b id="congratsChallengeName">${challengeData.title}</b> starts today. Stay disciplined, show up every day, and you will achieve greatness!`;
       document.getElementById("congratsQuote").style.display = "none";
-      document.getElementById("congratsFooter").innerHTML = "Best of Luck for your journey! 💪";
+      document.getElementById("congratsFooter").innerHTML = "Best of Luck for your journey!";
       
       document.getElementById("congratsStartButtons").style.display = "flex";
       document.getElementById("congratsEndButtons").style.display = "none";
@@ -2361,12 +2716,12 @@
     }
 
     function showEndPopup(seenKey) {
-      document.getElementById("congratsTitle").textContent = "Congratulations! 🎉";
+      document.getElementById("congratsTitle").textContent = "Congratulations!";
       document.getElementById("congratsTitle").style.color = "#f1c40f";
       document.getElementById("congratsIconContainer").innerHTML = `<svg class="congrats-icon" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>`;
       document.getElementById("congratsBody").innerHTML = `You have successfully completed the <b id="congratsChallengeName">${challengeData.title}</b> challenge! Your dedication and consistency will take you far.`;
       document.getElementById("congratsQuote").style.display = "block";
-      document.getElementById("congratsFooter").innerHTML = "Best of luck for your next journey! 🚀";
+      document.getElementById("congratsFooter").innerHTML = "Best of luck for your next journey!";
       
       document.getElementById("congratsStartButtons").style.display = "none";
       document.getElementById("congratsEndButtons").style.display = "flex";
@@ -2379,14 +2734,14 @@
     function sendLocalNotification() {
       if (!("Notification" in window)) return;
       if (Notification.permission === "granted") {
-        new Notification("Challenge Completed! 🎉", {
+        new Notification("Challenge Completed!", {
           body: `You successfully completed "${challengeData.title}"!`,
           icon: "icon-192.png"
         });
       } else if (Notification.permission !== "denied") {
         Notification.requestPermission().then(permission => {
           if (permission === "granted") {
-            new Notification("Challenge Completed! 🎉", {
+            new Notification("Challenge Completed!", {
               body: `You successfully completed "${challengeData.title}"!`,
               icon: "icon-192.png"
             });
@@ -2406,14 +2761,14 @@
       const endSeenKey = "gritgo_end_seen_" + challengeData.title + "_" + challengeData.startDate;
       localStorage.setItem(endSeenKey, "true");
       document.getElementById("congratsModal").classList.remove("active");
-      showToast("Best of luck! Keep growing! 🌟"); 
+      showToast("Best of luck! Keep growing!"); 
     });
 
     document.getElementById("congratsThankBtn").addEventListener("click", () => {
       const endSeenKey = "gritgo_end_seen_" + challengeData.title + "_" + challengeData.startDate;
       localStorage.setItem(endSeenKey, "true");
       
-      const message = `GRITGO Thank You Note:\n\nI have successfully completed the "${challengeData.title}" (${challengeData.duration} Days) challenge! Thank you so much for this amazing app. Best of luck to you too! ❤️🚀`;
+      const message = `GRITGO Thank You Note:\n\nI have successfully completed the "${challengeData.title}" (${challengeData.duration} Days) challenge! Thank you so much for this amazing app. Best of luck to you too!`;
       const whatsappNumber = "8801888214016"; 
       window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, "_blank");
       document.getElementById("congratsModal").classList.remove("active");
@@ -2452,6 +2807,7 @@
         updateStats(); 
         document.getElementById("settingsModal").classList.remove("active"); 
         showToast("Settings saved!"); 
+        checkSleepWeek();
         
         checkChallengeStatus();
       } catch(e) { alert(e.message); } 
@@ -2485,6 +2841,7 @@
       if (navigator.clipboard && window.isSecureContext) {
         try {
           await navigator.clipboard.writeText(text);
+          localStorage.setItem("gritgo_last_backup", Date.now());
           showToast("Copied to Clipboard!");
           return;
         } catch (err) { console.log("Clipboard API failed:", err); }
@@ -2497,7 +2854,7 @@
       let ok = false;
       try { ok = document.execCommand("copy"); } catch (e) { console.log(e); }
 
-      if (ok) { showToast("Copied to Clipboard!"); } 
+      if (ok) { localStorage.setItem("gritgo_last_backup", Date.now()); showToast("Copied to Clipboard!"); } 
       else { showToast("Text is selected — long-press and tap Copy"); }
     };
 
@@ -2578,7 +2935,7 @@
 
         checkChallengeStatus();
 
-        showToast("New Day Started! Keep going! 🌅");
+        showToast("New Day Started! Keep going!");
       }
     }, 10000);
 
@@ -2603,13 +2960,13 @@
 
       const startNotiKey = `gritgo_start_noti_v2_${todayKey}`;
       if (currentMins >= startMins && !localStorage.getItem(startNotiKey)) {
-        sendBrowserNotification("Good Morning 🌅", `Start Your Day With ${firstHabit} 😊`);
+        sendBrowserNotification("Good Morning", `Start Your Day With ${firstHabit}`);
         localStorage.setItem(startNotiKey, "true");
       }
 
       const endNotiKey = `gritgo_end_noti_v2_${todayKey}`;
       if (currentMins >= endMins && !localStorage.getItem(endNotiKey)) {
-        sendBrowserNotification("Good Night 🌃", `End Your Day With ${lastHabit} 😊`);
+        sendBrowserNotification("Good Night", `End Your Day With ${lastHabit}`);
         localStorage.setItem(endNotiKey, "true");
       }
     }
