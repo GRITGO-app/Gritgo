@@ -102,7 +102,7 @@
     body.light-theme .badge-card { background: #f5f7fa; border-color: #d1d5db; }
     body.light-theme .badge-card.unlocked { background: #ffffff; border-color: #00e5ff; }
     body.light-theme .badge-name { color: #1a1f2e; }
-    body.light-theme #addHabitModal .modal-box, body.light-theme #deleteModal .modal-box, body.light-theme #resetModal .modal-box, body.light-theme #dayModal .modal-box, body.light-theme #feedbackModal .modal-box, body.light-theme #pastEditPromptModal .modal-box, body.light-theme #guidePromptModal .modal-box, body.light-theme #backupModal .modal-box, body.light-theme #restoreModal .modal-box, body.light-theme #congratsModal .modal-box, body.light-theme #timerModal .modal-box, body.light-theme #aiModal .modal-box, body.light-theme #profileModal .modal-box, body.light-theme #clearChatModal .modal-box, body.light-theme #csvExportModal .modal-box { background-color: #ffffff; }
+    body.light-theme #addHabitModal .modal-box, body.light-theme #deleteModal .modal-box, body.light-theme #resetModal .modal-box, body.light-theme #dayModal .modal-box, body.light-theme #feedbackModal .modal-box, body.light-theme #pastEditPromptModal .modal-box, body.light-theme #guidePromptModal .modal-box, body.light-theme #backupModal .modal-box, body.light-theme #restoreModal .modal-box, body.light-theme #congratsModal .modal-box, body.light-theme #timerModal .modal-box, body.light-theme #aiModal .modal-box, body.light-theme #profileModal .modal-box, body.light-theme #clearChatModal .modal-box, body.light-theme #csvExportModal .modal-box, body.light-theme #msgOptionsModal .modal-box { background-color: #ffffff; }
     body.light-theme .settings-buttons button:not(#settingsSave):not(#addHabitSave):not(#feedbackSubmit):not(#saveSleepBtn):not(#saveNoteBtn):not(#pastEditConfirm):not(#startLearningBtn):not(#congratsStartBtn) { background-color: #e5e7eb; color: #1a1f2e; }
     
     body.light-theme #exportData, body.light-theme #importData, body.light-theme #exportCsv { background-color: #f8f9fa; border-color: #cbd5e1; color: #1a1f2e; }
@@ -334,11 +334,23 @@
     .chat-bubble { max-width: 85%; padding: 8px 12px; border-radius: 12px; font-size: 13px; line-height: 1.4; word-wrap: break-word; white-space: pre-wrap; }
     .chat-bubble.user { align-self: flex-end; background: linear-gradient(135deg, #9b59b6, #8e44ad); color: white; border-bottom-right-radius: 2px; }
     .chat-bubble.ai { align-self: flex-start; background: #1a1f2e; border: 1px solid #2a3142; color: #e8eaed; border-bottom-left-radius: 2px; }
-    .chat-input-row { display: flex; gap: 8px; align-items: stretch; }
+    .chat-input-row { display: flex; gap: 6px; align-items: stretch; }
     
     /* Chat Voice Button */
-    #chatVoiceBtn { background: #2a3142; color: #9b59b6; border: 1px solid #9b59b6; border-radius: 10px; width: 45px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; flex-shrink: 0; }
+    #chatVoiceBtn { background: #2a3142; color: #9b59b6; border: 1px solid #9b59b6; border-radius: 10px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; flex-shrink: 0; }
     #chatVoiceBtn.listening { background: #ff6b4a; color: white; border-color: #ff6b4a; animation: pulseMic 1s infinite alternate; }
+
+    /* Chat Image Button */
+    #chatImageBtn { background: transparent; color: #9b59b6; border: 1px solid #9b59b6; padding: 4px 8px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    body.light-theme #chatImageBtn { background: #f3e8ff; color: #7e22ce; border-color: #d8b4fe; }
+
+    /* Chat Image Preview */
+    #imagePreviewContainer { display: none; margin-bottom: 8px; position: relative; align-self: flex-start; }
+    #imagePreview { max-height: 120px; max-width: 100%; border-radius: 10px; border: 1px solid #9b59b6; display: block; }
+    #removeImageBtn { position: absolute; top: -8px; right: -8px; background: #ff6b4a; color: white; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; font-weight: bold; font-size: 16px; line-height: 1; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(0,0,0,0.5); }
+
+    /* Chat Image in bubble */
+    .chat-bubble img.chat-img { max-width: 100%; border-radius: 8px; margin-top: 6px; display: block; }
 
     /* Custom Category Dropdown */
     .custom-category-wrapper { position: relative; width: 100%; z-index: 100; margin-top: 6px; }
@@ -549,6 +561,23 @@
     </div>
   </div>
 
+  <div id="msgOptionsModal" class="modal-overlay" style="z-index: 6000; background: rgba(0,0,0,0.7); align-items: flex-end; padding-bottom: 20px;">
+    <div class="modal-box" style="padding: 15px; border-radius: 15px; width: 100%; max-width: 400px;">
+      <div style="display: flex; gap: 10px; justify-content: space-between; margin-bottom: 10px;">
+        <button id="optCopyBtn" style="flex:1; padding: 15px 10px; background: #2a3142; color: #00e5ff; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> Copy
+        </button>
+        <button id="optEditBtn" style="flex:1; padding: 15px 10px; background: #2a3142; color: #4a9eff; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg> Edit
+        </button>
+        <button id="optDeleteBtn" style="flex:1; padding: 15px 10px; background: #2a3142; color: #ff6b4a; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg> Delete
+        </button>
+      </div>
+      <button id="optCancelBtn" style="width: 100%; padding: 15px; background: transparent; color: #9aa0a6; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 14px;">Cancel</button>
+    </div>
+  </div>
+
   <div id="congratsModal" class="modal-overlay">
     <div class="modal-box">
       <div id="congratsIconContainer"></div>
@@ -609,6 +638,9 @@
             AI Coach
           </div>
           <div style="display: flex; gap: 8px;">
+            <button id="chatImageBtn" title="Send Image" style="background: transparent; border: 1px solid #9b59b6; color: #9b59b6; padding: 4px 8px; border-radius: 6px; cursor: pointer; display: flex; align-items: center;">
+              <svg style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+            </button>
             <button id="openProfileBtn" title="My Profile" style="background: transparent; border: 1px solid #9b59b6; color: #9b59b6; padding: 4px 8px; border-radius: 6px; cursor: pointer; display: flex; align-items: center;">
               <svg style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
             </button>
@@ -683,15 +715,23 @@
           <div id="miniChatHistory">
             <!-- Messages will appear here -->
           </div>
+          
+          <!-- Image Preview Area -->
+          <div id="imagePreviewContainer">
+            <img id="imagePreview" alt="Preview">
+            <button id="removeImageBtn" type="button">×</button>
+          </div>
+          
           <div class="chat-input-row">
             <button id="chatVoiceBtn" title="Voice Input">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg>
             </button>
-            <textarea id="aiQuestionInput" rows="2" placeholder="Type a message..." style="flex: 1; background: #1a1f2e; border-color: #9b59b6; margin-bottom: 0; resize: none;"></textarea>
-            <button id="askAiBtn" style="background: linear-gradient(135deg, #9b59b6, #8e44ad); color: white; padding: 0 15px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center;">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+            <textarea id="aiQuestionInput" rows="1" placeholder="Type a message..." style="flex: 1; background: #1a1f2e; border-color: #9b59b6; margin-bottom: 0; resize: none; height: 40px; padding: 10px 12px; font-size: 14px;"></textarea>
+            <button id="askAiBtn" style="background: linear-gradient(135deg, #9b59b6, #8e44ad); color: white; padding: 0 14px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; height: 40px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
             </button>
           </div>
+          <input type="file" id="chatImageInput" accept="image/*" style="display: none;">
         </div>
       </div>
 
@@ -847,7 +887,6 @@
     </div>
   </div>
 
-  <!-- CSV Export Modal (আলাদা করা হয়েছে) -->
   <div id="csvExportModal" class="modal-overlay">
     <div class="modal-box">
       <h2>
@@ -959,6 +998,7 @@
           <h3 style="color: #ffffff; font-size: 16px; margin-bottom: 8px;">3. Smart AI Coach</h3>
           <p style="color: #c3c9d1; font-size: 13px; line-height: 1.6;">
             • <b>Voice Input:</b> Click the <b>Mic</b> icon and speak. Select from <b>48 languages</b> using the dropdown!<br>
+            • <b>📷 Send Photos:</b> Click the <b>Image</b> icon to send a photo to AI. It can analyze your diet, workout, study setup, or anything!<br>
             • <b>AI Voice Reply:</b> If you speak, the AI replies with voice. If you type, it replies with text.<br>
             • <b>Voice Commands:</b> Say or type <i>"Set timer for 1h"</i> and the AI will start a timer for you.<br>
             • <b>AI Reviews:</b> Get your Weekly & Monthly progress analyzed by the AI in the Extras section.
@@ -1221,58 +1261,58 @@
     window.onerror = function(msg, url, line) { console.error("Code Error: " + msg + " at line " + line); };
 
     // ============================================================
-    // 🔑 AI CONFIG — এখানে তোমার নতুন Groq API Key বসাও
-    // ============================================================
-    const AI_CONFIG = {
-      KEY: "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",  // ← এখানে নতুন Key বসাও
-      MODELS: ["openai/gpt-oss-120b", "openai/gpt-oss-20b"],
-      URL: "https://api.groq.com/openai/v1/chat/completions"
-    };
+// 🔑 AI CONFIG — Groq API Key & Models
+// ============================================================
+const AI_CONFIG = {
+  KEY: "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",
+  // ✅ এখানে সচল মডেলগুলো বসানো হলো
+  MODELS: ["openai/gpt-oss-120b", "openai/gpt-oss-20b"],
+  VISION_MODELS: ["qwen/qwen3.8-27b"], 
+  URL: "https://api.groq.com/openai/v1/chat/completions"
+};
+let chatHistory = JSON.parse(localStorage.getItem("gritgo_chat_history")) || [];
+let userProfile = JSON.parse(localStorage.getItem("gritgo_user_profile")) || { name: "", age: "", bio: "" };
 
-    // AI Chat History & User Profile Memory
-    let chatHistory = JSON.parse(localStorage.getItem("gritgo_chat_history")) || [];
-    let userProfile = JSON.parse(localStorage.getItem("gritgo_user_profile")) || { name: "", age: "", bio: "" };
+async function callGroq(messages, options = {}) {
+  if (!AI_CONFIG.KEY || AI_CONFIG.KEY === "PASTE_YOUR_GROQ_KEY_HERE" || AI_CONFIG.KEY.length < 20) {
+    throw new Error("API Key Not Available. Please Set your API KEY on AI_CONFIG.KEY");
+  }
+  const errors = [];
+  const models = options.hasImage ? AI_CONFIG.VISION_MODELS : AI_CONFIG.MODELS;
+  const targetTemp = options.temperature ?? (options.isCoding ? 0.2 : 0.7); // কোডিং এর ক্ষেত্রে কম টেম্পারেচার (নির্ভুলতার জন্য)
 
-    // ============================================================
-    // 🧠 Central AI caller — model fallback + clear errors
-    // ============================================================
-    async function callGroq(messages, options = {}) {
-      if (!AI_CONFIG.KEY || AI_CONFIG.KEY === "PASTE_YOUR_GROQ_KEY_HERE" || AI_CONFIG.KEY.length < 20) {
-        throw new Error("API Key সেট করা হয়নি। উপরের AI_CONFIG.KEY এ তোমার আসল Key বসাও।");
+  for (const model of models) {
+    try {
+      const res = await fetch(AI_CONFIG.URL, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${AI_CONFIG.KEY}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          model,
+          messages,
+          temperature: targetTemp,
+          max_tokens: options.max_tokens ?? 2048
+        })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        const msg = (data && data.error && data.error.message) || `HTTP ${res.status}`;
+        errors.push(`${model} → ${msg}`);
+        if (res.status === 401 || res.status === 403) break;
+        continue;
       }
-      const errors = [];
-      for (const model of AI_CONFIG.MODELS) {
-        try {
-          const res = await fetch(AI_CONFIG.URL, {
-            method: "POST",
-            headers: {
-              "Authorization": `Bearer ${AI_CONFIG.KEY}`,
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              model,
-              messages,
-              temperature: options.temperature ?? 0.7,
-              max_tokens: options.max_tokens ?? 1024
-            })
-          });
-          const data = await res.json();
-          if (!res.ok) {
-            const msg = (data && data.error && data.error.message) || `HTTP ${res.status}`;
-            errors.push(`${model} → ${msg}`);
-            if (res.status === 401 || res.status === 403) break;
-            continue;
-          }
-          if (data && data.choices && data.choices[0] && data.choices[0].message) {
-            return data.choices[0].message.content.trim();
-          }
-          errors.push(`${model} → unexpected response`);
-        } catch (e) {
-          errors.push(`${model} → ${e.message}`);
-        }
+      if (data && data.choices && data.choices[0] && data.choices[0].message) {
+        return data.choices[0].message.content.trim();
       }
-      throw new Error("AI ফেইল করেছে:\n" + errors.join("\n"));
+      errors.push(`${model} → unexpected response`);
+    } catch (e) {
+      errors.push(`${model} → ${e.message}`);
     }
+  }
+  throw new Error("AI Failed:\n" + errors.join("\n"));
+}
 
     document.addEventListener('pointerdown', function(e) {
       const clickable = e.target.closest('button, .quick-btn, .custom-checkbox, .heatmap-cell, .menu-item, .hour-btn, .timer-btn, .lang-trigger, .lang-option, .mood-btn');
@@ -1557,111 +1597,359 @@
     });
     document.getElementById("closeProfileBtn").addEventListener("click", () => profileModal.classList.remove("active"));
     document.getElementById("saveProfileBtn").addEventListener("click", () => {
-  const newProfile = {
-    name: document.getElementById("profileName").value.trim(),
-    age: document.getElementById("profileAge").value.trim(),
-    bio: document.getElementById("profileBio").value.trim()
-  };
+      const newProfile = {
+        name: document.getElementById("profileName").value.trim(),
+        age: document.getElementById("profileAge").value.trim(),
+        bio: document.getElementById("profileBio").value.trim()
+      };
+      if (!newProfile.name && !newProfile.bio) {
+        showToast("Please write something before saving!");
+        return;
+      }
+      userProfile = newProfile;
+      localStorage.setItem("gritgo_user_profile", JSON.stringify(userProfile));
+      profileModal.classList.remove("active");
+      showToast("Profile Saved! AI will remember this.");
+    });
+// --- Clear Chat এর ইভেন্ট লিসেনার এখানে বসাচ্ছি ---
 
-  // ভ্যালিডেশন: নাম বা বায়ো এর মধ্যে অন্তত একটা থাকতে হবে
-  if (!newProfile.name && !newProfile.bio) {
-    showToast("Please write something before saving!", "warning");
-    return;
-  }
+const clearChatBtn = document.getElementById("clearChatBtn");
+const clearChatModal = document.getElementById("clearChatModal");
 
-  userProfile = newProfile;
-  localStorage.setItem("gritgo_user_profile", JSON.stringify(userProfile));
-  profileModal.classList.remove("active");
-  showToast("Profile Saved! AI will remember this.", "success");
+if (clearChatBtn) {
+  clearChatBtn.addEventListener("click", () => {
+    clearChatModal.classList.add("active");
+  });
+}
+
+document.getElementById("clearChatCancel").addEventListener("click", () => {
+  clearChatModal.classList.remove("active");
 });
+
+document.getElementById("clearChatConfirm").addEventListener("click", () => {
+  chatHistory = []; 
+  localStorage.removeItem("gritgo_chat_history"); 
+  renderChatMessages(); 
+  clearChatModal.classList.remove("active"); 
+  showToast("Chat history cleared!"); 
+});
+
+// -------------------------------------------------
+    let selectedMessageIndex = -1;
 
     function renderChatMessages() {
       const container = document.getElementById("miniChatHistory");
       container.innerHTML = "";
       if (chatHistory.length === 0) {
-        // Centered empty state
-        container.innerHTML = `<div style="display: flex; align-items: center; justify-content: center; height: 100%; min-height: 180px; color: #9aa0a6; text-align: center;">Ask Anything to your (AI) Coach!</div>`;
+        container.innerHTML = `<div style="display: flex; align-items: center; justify-content: center; height: 100%; min-height: 180px; color: #9aa0a6; text-align: center;">Ask Anything to your (AI) Coach! You can send photos too.</div>`;
       }
-      chatHistory.forEach(msg => {
+      
+      chatHistory.forEach((msg, index) => {
         const bubble = document.createElement("div");
         bubble.className = `chat-bubble ${msg.role === 'user' ? 'user' : 'ai'}`;
-        bubble.textContent = msg.content;
+        
+        let pressTimer;
+        const startPress = (e) => {
+          pressTimer = setTimeout(() => {
+            if (navigator.vibrate) navigator.vibrate(50);
+            openMsgOptions(index, msg.role, msg.image);
+          }, 500);
+        };
+        const cancelPress = () => { clearTimeout(pressTimer); };
+
+        bubble.addEventListener('touchstart', startPress, {passive: true});
+        bubble.addEventListener('touchend', cancelPress);
+        bubble.addEventListener('touchmove', cancelPress);
+        bubble.addEventListener('mousedown', startPress);
+        bubble.addEventListener('mouseup', cancelPress);
+        bubble.addEventListener('mouseleave', cancelPress);
+
+        if (msg.image) {
+          if (msg.content) {
+            const textSpan = document.createElement("div");
+            textSpan.textContent = msg.content;
+            bubble.appendChild(textSpan);
+          }
+          const img = document.createElement("img");
+          img.src = msg.image;
+          img.className = "chat-img";
+          bubble.appendChild(img);
+        } else {
+          bubble.textContent = msg.content;
+        }
         container.appendChild(bubble);
       });
       container.scrollTop = container.scrollHeight;
     }
 
-    // Custom Clear Chat Logic
-    const clearChatModal = document.getElementById("clearChatModal");
-    document.getElementById("clearChatBtn").addEventListener("click", () => {
-      clearChatModal.classList.add("active");
+    const msgOptionsModal = document.getElementById("msgOptionsModal");
+
+    function openMsgOptions(index, role, hasImage) {
+      selectedMessageIndex = index;
+      msgOptionsModal.classList.add("active");
+      const editBtn = document.getElementById("optEditBtn");
+      if (role === 'user' && !hasImage) {
+        editBtn.style.display = "flex";
+      } else {
+        editBtn.style.display = "none";
+      }
+    }
+
+    document.getElementById("optCancelBtn").addEventListener("click", () => msgOptionsModal.classList.remove("active"));
+
+    document.getElementById("optCopyBtn").addEventListener("click", async () => {
+      if (selectedMessageIndex !== -1) {
+        const text = chatHistory[selectedMessageIndex].content;
+        try {
+          await navigator.clipboard.writeText(text);
+          showToast("Copied!");
+        } catch (err) { showToast("Failed to copy"); }
+      }
+      msgOptionsModal.classList.remove("active");
     });
-    document.getElementById("clearChatCancel").addEventListener("click", () => {
-      clearChatModal.classList.remove("active");
-    });
-    document.getElementById("clearChatConfirm").addEventListener("click", () => {
-      chatHistory = [];
-      localStorage.setItem("gritgo_chat_history", JSON.stringify(chatHistory));
-      renderChatMessages();
-      clearChatModal.classList.remove("active");
-      showToast("Chat cleared!");
-    });
 
-    document.getElementById("askAiBtn").addEventListener("click", async () => {
-      const input = document.getElementById("aiQuestionInput");
-      const text = input.value.trim();
-      if (!text) return;
+    document.getElementById("optEditBtn").addEventListener("click", () => {
+      if (selectedMessageIndex !== -1) {
+        const msg = chatHistory[selectedMessageIndex];
+        
+        // ১. মেসেজের লেখাটা ইনপুট বক্সে বসিয়ে দেবে
+        const inputEl = document.getElementById("aiQuestionInput");
+        inputEl.value = msg.content;
+        
+        // ২. ইনপুট বক্সের সাইজ অটো ঠিক করে দেবে
+        inputEl.style.height = "40px";
+        inputEl.style.height = (inputEl.scrollHeight) + "px";
 
-      input.value = "";
-      input.style.height = "45px";
-
-      chatHistory.push({ role: 'user', content: text });
-      renderChatMessages();
-
-      const loadingId = 'loading_' + Date.now();
-      const container = document.getElementById("miniChatHistory");
-      const loadingBubble = document.createElement("div");
-      loadingBubble.className = "chat-bubble ai";
-      loadingBubble.id = loadingId;
-      loadingBubble.textContent = "Thinking...";
-      container.appendChild(loadingBubble);
-      container.scrollTop = container.scrollHeight;
-
-      try {
-        const systemPrompt = {
-          role: 'system',
-          content: `You are a smart, supportive AI Habit Coach inside the GRITGO app.
-          The user's profile: Name: ${userProfile.name || "Unknown"}, Age: ${userProfile.age || "Unknown"}, About: ${userProfile.bio || "No bio provided"}.
-          The user's current challenge: "${challengeData.title}" (Day ${getCurrentDayNumber()} of ${challengeData.duration}).
-          The user's habits: ${challengeData.habits.map(h => h.name).join(', ') || 'No habits yet'}.
-          Current local time: ${new Date().toLocaleTimeString()}.
-          
-          IMPORTANT RULES:
-          1. Always remember their profile details and past conversations. Treat them like a friend and mentor.
-          2. If they are struggling, motivate them based on their bio.
-          3. Keep responses short, conversational, and do not use emojis.`
-        };
-
-        const messagesToSend = [systemPrompt, ...chatHistory.slice(-10)];
-        const aiReply = await callGroq(messagesToSend, { temperature: 0.8, max_tokens: 500 });
-
-        document.getElementById(loadingId)?.remove();
-        chatHistory.push({ role: 'assistant', content: aiReply });
+        // ৩. ওই মেসেজ এবং তার পরের সব মেসেজ চ্যাট থেকে মুছে ফেলবে
+        chatHistory = chatHistory.slice(0, selectedMessageIndex); 
+        
+        // ৪. চ্যাট হিস্ট্রি সেভ করবে
         localStorage.setItem("gritgo_chat_history", JSON.stringify(chatHistory));
         renderChatMessages();
-
-      } catch (error) {
-        document.getElementById(loadingId).textContent = "Error: " + error.message;
+        
+        // ৫. কার্সর ইনপুট বক্সে ফোকাস করবে
+        inputEl.focus();
       }
+      msgOptionsModal.classList.remove("active");
     });
+
+    document.getElementById("optDeleteBtn").addEventListener("click", () => {
+      if (selectedMessageIndex !== -1) {
+        chatHistory.splice(selectedMessageIndex, 1);
+        localStorage.setItem("gritgo_chat_history", JSON.stringify(chatHistory));
+        renderChatMessages();
+        showToast("Message deleted");
+      }
+      msgOptionsModal.classList.remove("active");
+    });
+
+    let pendingImageBase64 = null;
+    let pendingImageMime = null;
+
+    const chatImageBtn = document.getElementById("chatImageBtn");
+    const chatImageInput = document.getElementById("chatImageInput");
+    const imagePreviewContainer = document.getElementById("imagePreviewContainer");
+    const imagePreview = document.getElementById("imagePreview");
+    const removeImageBtn = document.getElementById("removeImageBtn");
+
+    if(chatImageBtn) {
+      chatImageBtn.addEventListener("click", () => {
+        chatImageInput.click();
+      });
+    }
+
+    chatImageInput.addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  
+  if (!file.type.startsWith("image/")) {
+    showToast("Please select an image file!");
+    chatImageInput.value = "";
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    const img = new Image();
+    img.onload = () => {
+      // অটোমেটিক ছবি রিসাইজ করার লজিক (সর্বোচ্চ 1024 পিক্সেল)
+      const canvas = document.createElement("canvas");
+      const MAX_WIDTH = 1024;
+      const MAX_HEIGHT = 1024;
+      let width = img.width;
+      let height = img.height;
+
+      if (width > height) {
+        if (width > MAX_WIDTH) {
+          height *= MAX_WIDTH / width;
+          width = MAX_WIDTH;
+        }
+      } else {
+        if (height > MAX_HEIGHT) {
+          width *= MAX_HEIGHT / height;
+          height = MAX_HEIGHT;
+        }
+      }
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, width, height);
+
+      // কোয়ালিটি 0.7 (70%) করে ছবি কমপ্রেস করা হচ্ছে
+      const dataUrl = canvas.toDataURL("image/jpeg", 0.7);
+      
+      const match = dataUrl.match(/^data:(image\/[a-zA-Z0-9+.-]+);base64,(.+)$/);
+      if (!match) { showToast("Invalid image format!"); return; }
+      
+      pendingImageMime = match[1];
+      pendingImageBase64 = match[2];
+      imagePreview.src = dataUrl;
+      imagePreviewContainer.style.display = "block";
+    };
+    img.src = ev.target.result;
+  };
+  reader.onerror = () => showToast("Image load failed");
+  reader.readAsDataURL(file);
+});
+removeImageBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  
+  // ছবি এবং ইনপুট ফিল্ড খালি করা
+  pendingImageBase64 = null;
+  pendingImageMime = null;
+  chatImageInput.value = ""; 
+  
+  // প্রিভিউ বক্স লুকানো এবং ছবির সোর্স মুছে ফেলা
+  imagePreviewContainer.style.display = "none";
+  imagePreview.src = ""; 
+});
+    document.getElementById("askAiBtn").addEventListener("click", async () => {
+  const input = document.getElementById("aiQuestionInput");
+  const text = input.value.trim();
+  const hasImage = !!pendingImageBase64;
+
+  if (!text && !hasImage) return;
+
+  input.value = "";
+  input.style.height = "40px";
+
+  let userContent;
+  let displayText;
+
+  if (hasImage) {
+    userContent = [
+      { type: "text", text: text || "এই ছবিটা দেখে আমাকে পরামর্শ দাও।" },
+      {
+        type: "image_url",
+        image_url: { url: `data:${pendingImageMime};base64,${pendingImageBase64}` }
+      }
+    ];
+    displayText = text ? `📷 ${text}` : "📷 [ছবি পাঠানো হয়েছে]";
+  } else {
+    userContent = text;
+    displayText = text;
+  }
+
+  const historyMessage = { role: 'user', content: displayText };
+  if (hasImage) {
+    historyMessage.image = `data:${pendingImageMime};base64,${pendingImageBase64}`;
+  }
+  chatHistory.push(historyMessage);
+  renderChatMessages();
+
+  const loadingId = 'loading_' + Date.now();
+  const container = document.getElementById("miniChatHistory");
+  const loadingBubble = document.createElement("div");
+  loadingBubble.className = "chat-bubble ai";
+  loadingBubble.id = loadingId;
+  loadingBubble.textContent = hasImage ? "ছবি দেখছি..." : "Thinking...";
+  container.appendChild(loadingBubble);
+  container.scrollTop = container.scrollHeight;
+
+  try {
+    // 🔥 এখানে AI-কে হ্যাবিট অ্যাড করার ইনস্ট্রাকশন দেওয়া হলো
+    const systemPrompt = {
+      role: 'system',
+      content: `You are a smart, supportive AI Habit Coach inside the GRITGO app.
+      The user's profile: Name: ${userProfile.name || "Unknown"}, Age: ${userProfile.age || "Unknown"}, About: ${userProfile.bio || "No bio provided"}.
+      The user's current challenge: "${challengeData.title}" (Day ${getCurrentDayNumber()} of ${challengeData.duration}).
+      The user's habits: ${challengeData.habits.map(h => h.name).join(', ') || 'No habits yet'}.
+      
+      IMPORTANT RULE FOR ADDING HABITS:
+      If the user asks you to add a new habit (e.g., "Add meditation", "আমার লিস্টে মেডিটেশন যোগ করো"), you must respond ONLY with a JSON format like this, and absolutely nothing else:
+      {"action": "add_habit", "name": "Habit Name Here", "category": "Category Here"}
+      Categories can be: General, Study, Health, Fitness, Work, Mindfulness, Social, Finance, Hobby, Sleep, Morning Routine.
+      
+      For any other normal conversation, reply normally as a supportive friend and mentor. Do not use emojis.`
+    };
+
+    const pastMessages = chatHistory.slice(-10, -1).map(m => ({
+      role: m.role,
+      content: m.content
+    }));
+
+    const messagesToSend = [systemPrompt, ...pastMessages, { role: 'user', content: userContent }];
+
+    let aiReply = await callGroq(messagesToSend, {
+      temperature: 0.5, 
+      max_tokens: 800,
+      hasImage
+    });
+
+    document.getElementById(loadingId)?.remove();
+
+    // 🔥 AI-এর রিপ্লাই চেক করা হচ্ছে সে হ্যাবিট অ্যাড করতে বলেছে কিনা
+    let isHabitAdded = false;
+    try {
+      const jsonMatch = aiReply.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        const parsed = JSON.parse(jsonMatch[0]);
+        if (parsed.action === "add_habit" && parsed.name) {
+          const newHabit = { 
+            id: 'h_' + Math.random().toString(36).substr(2, 9), 
+            name: parsed.name, 
+            category: parsed.category || 'General', 
+            target: 1, 
+            days: [0,1,2,3,4,5,6] 
+          };
+          challengeData.habits.push(newHabit);
+          localStorage.setItem("challengeData", JSON.stringify(challengeData));
+          
+          renderHabits(); renderTodayHabits(); renderHeatmap(); updateStats();
+          
+          aiReply = `Done! I have added "${parsed.name}" to your habits list. You can find it in your Today's list.`;
+          isHabitAdded = true;
+        }
+      }
+    } catch (e) {
+      console.log("Not a JSON habit command, showing normal reply.");
+    }
+
+    chatHistory.push({ role: 'assistant', content: aiReply });
+    localStorage.setItem("gritgo_chat_history", JSON.stringify(chatHistory));
+    renderChatMessages();
+
+    if (isHabitAdded) {
+       showToast("AI added a new habit!");
+    }
+
+    pendingImageBase64 = null;
+    pendingImageMime = null;
+    chatImageInput.value = "";
+    imagePreviewContainer.style.display = "none";
+
+  } catch (error) {
+    document.getElementById(loadingId).textContent = "Error: " + error.message;
+  }
+});
 
     const chatInput = document.getElementById("aiQuestionInput");
     chatInput.addEventListener("input", function() {
-      this.style.height = "45px";
+      this.style.height = "40px";
       this.style.height = (this.scrollHeight) + "px";
     });
 
-    // Chat Voice Input
     const chatVoiceBtn = document.getElementById("chatVoiceBtn");
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (SpeechRecognition) {
@@ -1695,7 +1983,6 @@
       chatVoiceBtn.style.display = "none";
     }
 
-    // Language Dropdown Logic
     const langTrigger = document.getElementById("langTrigger");
     const langMenu = document.getElementById("langMenu");
     const selectedLangText = document.getElementById("selectedLangText");
@@ -2382,7 +2669,6 @@
     const addHabitModal = document.getElementById("addHabitModal");
     let editingIndex = null;
 
-    // Custom Category Dropdown Logic
     const categoryTrigger = document.getElementById("categoryTrigger");
     const categoryMenu = document.getElementById("categoryMenu");
     const selectedCategoryText = document.getElementById("selectedCategoryText");
@@ -2810,16 +3096,13 @@
       if (ok) { localStorage.setItem("gritgo_last_backup", Date.now()); showToast("Copied to Clipboard!"); } else { showToast("Text is selected — long-press and tap Copy"); }
     };
 
-    // CSV Export Logic (Fixed)
     document.getElementById("exportCsv").onclick = () => {
       if (!challengeData.habits || challengeData.habits.length === 0) {
         showToast("No habits data to export!");
         return;
       }
-      
       let csvContent = "Date,Habit Name,Category,Status\n";
       const dates = Object.keys(challengeData.habitLogs).sort();
-      
       dates.forEach(date => {
         const log = challengeData.habitLogs[date] || {};
         challengeData.habits.forEach(habit => {
@@ -2827,13 +3110,10 @@
           csvContent += `"${date}","${habit.name}","${habit.category || 'General'}","${status}"\n`;
         });
       });
-
-      // ডাউনলোড না করে সরাসরি মডালে দেখাবে
       document.getElementById("csvExportText").value = csvContent;
       document.getElementById("csvExportModal").classList.add("active");
     };
 
-    // Copy CSV Logic
     document.getElementById("copyCsvBtn").onclick = async () => {
       const text = document.getElementById("csvExportText").value;
       if (navigator.clipboard && window.isSecureContext) {
@@ -2919,5 +3199,6 @@
     setInterval(checkHabitReminders, 10000);
     if ("serviceWorker" in navigator) { navigator.serviceWorker.register("service-worker.js").catch(err => console.log(err)); }
   </script>
+
 </body>
 </html>
