@@ -18,7 +18,7 @@
     body.light-theme { background-color: #f0f2f5; color: #1a1f2e; }
     body.light-theme .header span, body.light-theme #mainTitle, body.light-theme .today-header h2, body.light-theme .extras-section h3, body.light-theme .tracker-section h3, body.light-theme .modal-box h2 { color: #000000; }
     body.light-theme .header button { color: #1a1f2e; }
-    body.light-theme .stat-card, body.light-theme .modal-box, body.light-theme .menu-item, body.light-theme .today-buttons button, body.light-theme .edit-buttons button, body.light-theme .extras-section, body.light-theme .tracker-section, body.light-theme #addHabitModalInput, body.light-theme #newHabitInput, body.light-theme #habitSearchInput, body.light-theme #dayModalSearchInput, body.light-theme #settingsDayStart, body.light-theme #settingsDayEnd, body.light-theme #setupDayStart, body.light-theme #setupDayEnd, body.light-theme #aiQuestionInput, body.light-theme #aiHabitPrompt { background-color: #ffffff; border-color: #d1d5db; color: #1a1f2e; }
+    body.light-theme .stat-card, body.light-theme .modal-box, body.light-theme .menu-item, body.light-theme .today-buttons button, body.light-theme .edit-buttons button, body.light-theme .extras-section, body.light-theme .tracker-section, body.light-theme #addHabitModalInput, body.light-theme #newHabitInput, body.light-theme #habitSearchInput, body.light-theme #dayModalSearchInput, body.light-theme #settingsDayStart, body.light-theme #settingsDayEnd, body.light-theme #setupDayStart, body.light-theme #setupDayEnd, body.light-theme #aiQuestionInput, body.light-theme #aiHabitPrompt, body.light-theme #addHabitCategory { background-color: #ffffff; border-color: #d1d5db; color: #1a1f2e; }
     
     body.light-theme .stat-card span:first-child { color: #000000; }
     body.light-theme .stat-card span:last-child { color: #4b5563; font-weight: 600; }
@@ -102,10 +102,10 @@
     body.light-theme .badge-card { background: #f5f7fa; border-color: #d1d5db; }
     body.light-theme .badge-card.unlocked { background: #ffffff; border-color: #00e5ff; }
     body.light-theme .badge-name { color: #1a1f2e; }
-    body.light-theme #addHabitModal .modal-box, body.light-theme #deleteModal .modal-box, body.light-theme #resetModal .modal-box, body.light-theme #dayModal .modal-box, body.light-theme #feedbackModal .modal-box, body.light-theme #pastEditPromptModal .modal-box, body.light-theme #guidePromptModal .modal-box, body.light-theme #backupModal .modal-box, body.light-theme #restoreModal .modal-box, body.light-theme #congratsModal .modal-box, body.light-theme #timerModal .modal-box, body.light-theme #aiModal .modal-box { background-color: #ffffff; }
+    body.light-theme #addHabitModal .modal-box, body.light-theme #deleteModal .modal-box, body.light-theme #resetModal .modal-box, body.light-theme #dayModal .modal-box, body.light-theme #feedbackModal .modal-box, body.light-theme #pastEditPromptModal .modal-box, body.light-theme #guidePromptModal .modal-box, body.light-theme #backupModal .modal-box, body.light-theme #restoreModal .modal-box, body.light-theme #congratsModal .modal-box, body.light-theme #timerModal .modal-box, body.light-theme #aiModal .modal-box, body.light-theme #profileModal .modal-box, body.light-theme #clearChatModal .modal-box, body.light-theme #csvExportModal .modal-box { background-color: #ffffff; }
     body.light-theme .settings-buttons button:not(#settingsSave):not(#addHabitSave):not(#feedbackSubmit):not(#saveSleepBtn):not(#saveNoteBtn):not(#pastEditConfirm):not(#startLearningBtn):not(#congratsStartBtn) { background-color: #e5e7eb; color: #1a1f2e; }
     
-    body.light-theme #exportData, body.light-theme #importData { background-color: #f8f9fa; border-color: #cbd5e1; color: #1a1f2e; }
+    body.light-theme #exportData, body.light-theme #importData, body.light-theme #exportCsv { background-color: #f8f9fa; border-color: #cbd5e1; color: #1a1f2e; }
     body.light-theme #resetAllData { background-color: transparent; }
     body.light-theme #themeToggleBtn { background-color: #ffffff; border-color: #cbd5e1; color: #1a1f2e; }
 
@@ -162,7 +162,6 @@
     .tracker-btn { display: flex; align-items: center; justify-content: center; width: 100%; padding: 12px 20px; background: #1e1b2e; color: #d6a1f0; border: 1px solid #9b59b6; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer; box-shadow: 0 0 15px rgba(155, 89, 182, 0.2); gap: 8px; }
     .extras-btn { display: flex; align-items: center; justify-content: center; width: 100%; padding: 12px 20px; background: #1a1f2e; color: #00e5ff; border: 1px solid #00e5ff; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer; box-shadow: 0 0 15px rgba(0, 229, 255, 0.1); gap: 8px; }
     
-    /* নতুন AI বাটনের স্টাইল */
     .ai-btn { 
       display: flex; align-items: center; justify-content: center; 
       padding: 12px; background: #0f1419; color: #00e5ff; 
@@ -200,12 +199,12 @@
 
     .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #0f1419; z-index: 2000; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
     .modal-overlay.active { display: flex; }
-    #backupModal, #restoreModal { z-index: 3000; }
+    #backupModal, #restoreModal, #csvExportModal { z-index: 3000; }
 
     .modal-box { background-color: #1a1f2e; border-radius: 20px; padding: 25px; width: 100%; max-width: 400px; max-height: 90vh; overflow-y: auto; border: 1px solid #2a3142; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
     .modal-box h2 { color: #ffffff; margin-bottom: 20px; font-size: 22px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px; }
     .modal-box label { display: block; color: #9aa0a6; font-size: 13px; margin-bottom: 6px; margin-top: 12px; }
-    .modal-box input, .modal-box textarea { width: 100%; padding: 12px 15px; background-color: #0f1419; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 15px; outline: none; -webkit-user-select: auto; user-select: auto; -webkit-touch-callout: default; }
+    .modal-box input, .modal-box textarea, .modal-box select { width: 100%; padding: 12px 15px; background-color: #0f1419; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 15px; outline: none; -webkit-user-select: auto; user-select: auto; -webkit-touch-callout: default; }
     .modal-box input:focus, .modal-box textarea:focus { border-color: #4a9eff; }
 
     #settingsModal .modal-box, #extrasModal .modal-box, #trackerModal .modal-box, #introModal .modal-box, #aiModal .modal-box { height: 100dvh; max-height: 100dvh; width: 100%; max-width: 100%; border-radius: 0; border: none; padding: 20px; margin: 0; }
@@ -219,9 +218,9 @@
 
     .settings-buttons { display: flex; gap: 10px; margin-top: 20px; }
     .settings-buttons button { flex: 1; padding: 14px; border: none; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
-    #settingsCancel, #addHabitCancel, #deleteCancel, #resetCancel, #dayModalClose, #feedbackCancel, #trackerClose, #introClose, #extrasClose, #aiClose, #closePromptBtn, #pastEditCancel, #closeBackupBtn, #closeRestoreBtn, #congratsCancelBtn, #timerCancel { background-color: #2a3142; color: #e8eaed; }
-    #settingsSave, #addHabitSave, #feedbackSubmit, #saveSleepBtn, #saveNoteBtn, #pastEditConfirm, #congratsStartBtn { background: linear-gradient(135deg, #4a9eff, #2a7fdb); color: white; }
-    #deleteConfirm, #resetConfirm { background: linear-gradient(135deg, #ff6b4a, #d35400); color: white; }
+    #settingsCancel, #addHabitCancel, #deleteCancel, #resetCancel, #dayModalClose, #feedbackCancel, #trackerClose, #introClose, #extrasClose, #aiClose, #closePromptBtn, #pastEditCancel, #closeBackupBtn, #closeRestoreBtn, #congratsCancelBtn, #timerCancel, #closeProfileBtn, #clearChatCancel, #closeCsvBtn { background-color: #2a3142; color: #e8eaed; }
+    #settingsSave, #addHabitSave, #feedbackSubmit, #saveSleepBtn, #saveNoteBtn, #pastEditConfirm, #congratsStartBtn, #saveProfileBtn { background: linear-gradient(135deg, #4a9eff, #2a7fdb); color: white; }
+    #deleteConfirm, #resetConfirm, #clearChatConfirm { background: linear-gradient(135deg, #ff6b4a, #d35400); color: white; }
     #congratsThankBtn { background: linear-gradient(135deg, #f1c40f, #f39c12); color: #05080f; }
     
     #resetAllData { width: 100%; margin-top: 15px; padding: 12px; background: transparent; color: #ff6b4a; border: 1px solid #ff6b4a; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;}
@@ -326,6 +325,59 @@
     body.light-theme .search-icon { stroke: #6b7280; }
     #dayModalSearchInput { width: 100%; padding: 12px 15px 12px 42px !important; background-color: #0f1419; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 14px; outline: none; }
     #dayModalSearchInput:focus { border-color: #4a9eff; }
+    
+    .category-badge { font-size: 9px; padding: 2px 6px; border-radius: 10px; background: #2a3142; color: #9aa0a6; margin-left: 6px; font-weight: bold; text-transform: uppercase; }
+
+    /* Inline AI Chat Styles */
+    .mini-chat-container { display: flex; flex-direction: column; gap: 10px; }
+    #miniChatHistory { max-height: 200px; min-height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; background: #0f1419; padding: 10px; border-radius: 10px; border: 1px solid #2a3142; }
+    .chat-bubble { max-width: 85%; padding: 8px 12px; border-radius: 12px; font-size: 13px; line-height: 1.4; word-wrap: break-word; white-space: pre-wrap; }
+    .chat-bubble.user { align-self: flex-end; background: linear-gradient(135deg, #9b59b6, #8e44ad); color: white; border-bottom-right-radius: 2px; }
+    .chat-bubble.ai { align-self: flex-start; background: #1a1f2e; border: 1px solid #2a3142; color: #e8eaed; border-bottom-left-radius: 2px; }
+    .chat-input-row { display: flex; gap: 8px; align-items: stretch; }
+    
+    /* Chat Voice Button */
+    #chatVoiceBtn { background: #2a3142; color: #9b59b6; border: 1px solid #9b59b6; border-radius: 10px; width: 45px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; flex-shrink: 0; }
+    #chatVoiceBtn.listening { background: #ff6b4a; color: white; border-color: #ff6b4a; animation: pulseMic 1s infinite alternate; }
+
+    /* Custom Category Dropdown */
+    .custom-category-wrapper { position: relative; width: 100%; z-index: 100; margin-top: 6px; }
+    .category-trigger { 
+      display: flex; align-items: center; justify-content: space-between; 
+      width: 100%; padding: 12px 15px; 
+      background: #0f1419; color: #e8eaed; 
+      border: 1px solid #2a3142; border-radius: 10px; 
+      font-size: 15px; cursor: pointer; text-align: left; transition: all 0.2s;
+    }
+    .category-trigger:focus, .category-trigger:hover { border-color: #4a9eff; }
+    .category-trigger svg { 
+      width: 16px; height: 16px; stroke: #9aa0a6; 
+      margin-left: auto; 
+      flex-shrink: 0; 
+    }
+    .category-menu { 
+      position: absolute; top: 110%; left: 0; width: 100%; 
+      background: #1a1f2e; border: 1px solid #4a9eff; border-radius: 12px; 
+      max-height: 220px; overflow-y: auto; 
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 15px rgba(74, 158, 255, 0.2); 
+      display: none; z-index: 9999; opacity: 0; transform: translateY(-10px); transition: all 0.2s ease;
+    }
+    .category-menu.open { display: block; opacity: 1; transform: translateY(0); }
+    .category-menu::-webkit-scrollbar { width: 6px; }
+    .category-menu::-webkit-scrollbar-track { background: #0f1419; border-radius: 10px; }
+    .category-menu::-webkit-scrollbar-thumb { background: #4a9eff; border-radius: 10px; }
+    .category-option { 
+      padding: 12px 15px; color: #e8eaed; font-size: 14px; cursor: pointer; 
+      border-bottom: 1px solid #2a3142; transition: all 0.2s; display: flex; align-items: center;
+    }
+    .category-option:last-child { border-bottom: none; }
+    .category-option:hover, .category-option.selected { background: rgba(74, 158, 255, 0.15); color: #4a9eff; padding-left: 20px; }
+
+    /* Light Theme Overrides */
+    body.light-theme .category-trigger { background: #ffffff; color: #1a1f2e; border-color: #d1d5db; }
+    body.light-theme .category-menu { background: #ffffff; border-color: #4a9eff; box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
+    body.light-theme .category-option { color: #1a1f2e; border-bottom: 1px solid #f3f4f6; }
+    body.light-theme .category-option:hover, body.light-theme .category-option.selected { background: rgba(74, 158, 255, 0.1); color: #4a9eff; }
   </style>
 </head>
 <body>
@@ -335,7 +387,9 @@
   <div id="sidebar">
     <div class="sidebar-header">
       <h2>GRITGO</h2>
-      <button class="close-btn" id="closeSidebarBtn">✕</button>
+      <button class="close-btn" id="closeSidebarBtn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
     </div>
     <div class="sidebar-menu">
       <div class="menu-item" id="menuSettingsBtn">
@@ -401,10 +455,9 @@
     <div class="btn-group">
       <button id="openTrackerBtn" class="tracker-btn">
         <svg class="svg-icon" viewBox="0 0 24 24"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg>
-        Open Weekly Progress & Sleep Tracker
+        Weekly Progress & Sleep Tracker
       </button>
       
-      <!-- এখানে Extras এবং AI বাটন পাশাপাশি বসানো হয়েছে -->
       <div style="display: flex; gap: 10px; width: 100%;">
         <button id="openExtrasBtn" class="extras-btn" style="flex: 1.5;">
           <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5L12 3z"></path><path d="M19 13l1 3l3 1l-3 1l-1 3l-1-3l-3-1l3-1l1-3z"></path></svg>
@@ -463,6 +516,39 @@
     
   </div>
 
+  <!-- Modals -->
+  <div id="profileModal" class="modal-overlay" style="z-index: 6000;">
+    <div class="modal-box">
+      <h2>AI Profile</h2>
+      <p style="color: #9aa0a6; font-size: 13px; margin-bottom: 15px; text-align: center;">This helps the AI know who you are and reply personally.</p>
+      
+      <label>Your Name:</label>
+      <input type="text" id="profileName" placeholder="Name...">
+      
+      <label>Your Age:</label>
+      <input type="text" id="profileAge" placeholder="Age...">
+      
+      <label>About Me (Goals, Preferences, Struggles):</label>
+      <textarea id="profileBio" rows="4" placeholder="Write Something About  you..."></textarea>
+
+      <div class="settings-buttons">
+        <button id="closeProfileBtn">Cancel</button>
+        <button id="saveProfileBtn">Save Profile</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="clearChatModal" class="modal-overlay" style="z-index: 6000;">
+    <div class="modal-box">
+      <h2>⚠️Clear Chat?</h2>
+      <p style="text-align:center; color:#9aa0a6; margin-bottom:10px;">Are you sure you want to clear all your chat history with the AI Coach?</p>
+      <div class="settings-buttons">
+        <button id="clearChatCancel">Cancel</button>
+        <button id="clearChatConfirm">Clear</button>
+      </div>
+    </div>
+  </div>
+
   <div id="congratsModal" class="modal-overlay">
     <div class="modal-box">
       <div id="congratsIconContainer"></div>
@@ -482,12 +568,10 @@
     </div>
   </div>
 
-  <!-- নতুন AI Modal (৩টা AI বক্স এখানে থাকবে) -->
   <div id="aiModal" class="modal-overlay">
     <div class="modal-box">
       <h2>AI Features</h2>
       
-      <!-- AI Habit Generator -->
       <div class="extras-section" style="border-color: #4a9eff;">
         <h3>
           <svg class="svg-icon" style="stroke: #4a9eff;" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10H12V2z"></path><path d="M12 12 2.1 12"></path><path d="M12 12 18.5 18.5"></path></svg>
@@ -501,7 +585,6 @@
         <div id="generatedHabitsBox" style="display: none; flex-direction: column; gap: 8px;"></div>
       </div>
 
-      <!-- AI Performance Review -->
       <div class="extras-section" style="border-color: #00e5ff;">
         <h3>
           <svg class="svg-icon" style="stroke: #00e5ff;" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
@@ -519,14 +602,23 @@
         </div>
       </div>
 
-      <!-- Ask AI Coach -->
       <div class="extras-section" style="border-color: #9b59b6;">
-        <h3>
-          <svg class="svg-icon" style="stroke: #9b59b6;" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
-          Ask AI Coach
+        <h3 style="display: flex; justify-content: space-between;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <svg class="svg-icon" style="stroke: #9b59b6;" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+            AI Coach
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button id="openProfileBtn" title="My Profile" style="background: transparent; border: 1px solid #9b59b6; color: #9b59b6; padding: 4px 8px; border-radius: 6px; cursor: pointer; display: flex; align-items: center;">
+              <svg style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            </button>
+            <button id="clearChatBtn" title="Clear Chat" style="background: transparent; border: 1px solid #9b59b6; color: #9b59b6; padding: 4px 8px; border-radius: 6px; cursor: pointer; display: flex; align-items: center;">
+              <svg style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+            </button>
+          </div>
         </h3>
         
-        <div class="custom-lang-wrapper">
+        <div class="custom-lang-wrapper" style="margin-bottom: 10px;">
           <button class="lang-trigger" id="langTrigger">
             <div style="display: flex; align-items: center; gap: 10px;">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
@@ -587,20 +679,19 @@
           <input type="hidden" id="voiceLangSelect" value="en-US">
         </div>
 
-        <div style="display: flex; gap: 8px; margin-bottom: 10px;">
-          <textarea id="aiQuestionInput" rows="2" placeholder="Ask anything..." style="flex: 1; background: #1a1f2e; border-color: #9b59b6; margin-bottom: 0;"></textarea>
-          <button id="voiceInputBtn" title="Voice Input" style="display: flex; align-items: center; justify-content: center;">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg>
-          </button>
-        </div>
-
-        <button id="askAiBtn" style="width: 100%; padding: 12px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; background: linear-gradient(135deg, #9b59b6, #8e44ad); color: white; display: flex; align-items: center; justify-content: center; gap: 8px;">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
-          Ask AI
-        </button>
-        
-        <div id="aiResponseBox" style="display: none; margin-top: 15px; padding: 15px; background: #0f1419; border: 1px solid #9b59b6; border-radius: 10px;">
-          <p id="aiResponseText" style="color: #e8eaed; font-size: 14px; line-height: 1.6; white-space: pre-wrap;"></p>
+        <div class="mini-chat-container">
+          <div id="miniChatHistory">
+            <!-- Messages will appear here -->
+          </div>
+          <div class="chat-input-row">
+            <button id="chatVoiceBtn" title="Voice Input">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg>
+            </button>
+            <textarea id="aiQuestionInput" rows="2" placeholder="Type a message..." style="flex: 1; background: #1a1f2e; border-color: #9b59b6; margin-bottom: 0; resize: none;"></textarea>
+            <button id="askAiBtn" style="background: linear-gradient(135deg, #9b59b6, #8e44ad); color: white; padding: 0 15px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -630,6 +721,16 @@
         </h3>
         <div style="width: 100%; height: 220px; margin-top: 10px;">
           <canvas id="progressChart"></canvas>
+        </div>
+      </div>
+
+      <div class="extras-section" style="border-color: #d6a1f0;">
+        <h3>
+          <svg class="svg-icon" style="stroke: #d6a1f0;" viewBox="0 0 24 24"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>
+          Category Analytics
+        </h3>
+        <div style="width: 100%; height: 220px; margin-top: 10px; display: flex; justify-content: center;">
+          <canvas id="categoryChart"></canvas>
         </div>
       </div>
 
@@ -742,6 +843,22 @@
       <button id="restoreFromTextBtn" style="width:100%; padding:14px; background:linear-gradient(135deg, #4aaa4a, #2d8a2d); color:white; border:none; border-radius:10px; font-weight:bold; cursor:pointer; margin-bottom:10px;">Restore Text</button>
       <div class="settings-buttons" style="margin-top:0;">
         <button id="closeRestoreBtn" style="background-color:#2a3142; color:#e8eaed; padding:14px; border-radius:10px; border:none; font-weight:bold; cursor:pointer;">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CSV Export Modal (আলাদা করা হয়েছে) -->
+  <div id="csvExportModal" class="modal-overlay">
+    <div class="modal-box">
+      <h2>
+        <svg class="svg-icon" style="stroke: #f1c40f;" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+        CSV Data
+      </h2>
+      <p style="text-align:center; color:#9aa0a6; font-size:13px; margin-bottom:15px;">Copy this text and paste it into Excel or Google Sheets.</p>
+      <textarea id="csvExportText" readonly style="width:100%; height:180px; background:#0f1419; color:#f1c40f; border:1px solid #2a3142; border-radius:10px; padding:10px; font-family:monospace; font-size:12px; resize:none; margin-bottom:15px; -webkit-user-select:auto; user-select:auto; -webkit-touch-callout:default;"></textarea>
+      <button id="copyCsvBtn" style="width:100%; padding:14px; background:linear-gradient(135deg, #f1c40f, #f39c12); color:#05080f; border:none; border-radius:10px; font-weight:bold; cursor:pointer; margin-bottom:10px;">Copy CSV</button>
+      <div class="settings-buttons" style="margin-top:0;">
+        <button id="closeCsvBtn" style="background-color:#2a3142; color:#e8eaed; padding:14px; border-radius:10px; border:none; font-weight:bold; cursor:pointer;">Close</button>
       </div>
     </div>
   </div>
@@ -898,6 +1015,29 @@
       <h2 id="addHabitModalTitle">Add New Habit</h2>
       <label>Habit Name:</label>
       <input type="text" id="addHabitModalInput" placeholder="Type habit..." autocomplete="off">
+      
+      <label>Category:</label>
+      <div class="custom-category-wrapper">
+        <button type="button" class="category-trigger" id="categoryTrigger">
+          <span id="selectedCategoryText">General</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+        <div class="category-menu" id="categoryMenu">
+          <div class="category-option selected" data-value="General">General</div>
+          <div class="category-option" data-value="Study">Study</div>
+          <div class="category-option" data-value="Health">Health</div>
+          <div class="category-option" data-value="Fitness">Fitness</div>
+          <div class="category-option" data-value="Work">Work</div>
+          <div class="category-option" data-value="Mindfulness">Mindfulness</div>
+          <div class="category-option" data-value="Social">Social</div>
+          <div class="category-option" data-value="Finance">Finance</div>
+          <div class="category-option" data-value="Hobby">Hobby</div>
+          <div class="category-option" data-value="Sleep">Sleep</div>
+          <div class="category-option" data-value="Morning Routine">Morning Routine</div>
+        </div>
+        <input type="hidden" id="addHabitCategory" value="General">
+      </div>
+
       <div class="settings-buttons">
         <button id="addHabitCancel">Cancel</button>
         <button id="addHabitSave">+Add Habit</button>
@@ -1001,6 +1141,11 @@
         <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
         Restore Data (Paste Text)
       </button>
+
+      <button id="exportCsv" class="flex-icon" style="width:100%; margin-top:10px; padding:12px; background:#2a3142; color:#f1c40f; border:1px solid #f1c40f; border-radius:10px; font-weight:600; cursor:pointer;">
+        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+        Export Data as CSV (Excel)
+      </button>
       
       <input type="file" id="importFileInput" style="display:none;">
       
@@ -1076,13 +1221,17 @@
     window.onerror = function(msg, url, line) { console.error("Code Error: " + msg + " at line " + line); };
 
     // ============================================================
-    // 🔑 AI CONFIG — এখানে তোমার Groq API Key বসাও (শুধু এই এক জায়গায়)
+    // 🔑 AI CONFIG — এখানে তোমার নতুন Groq API Key বসাও
     // ============================================================
     const AI_CONFIG = {
-      KEY: "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",  // ← "gsk_..." এখানে বসাও
-      MODELS: ["openai/gpt-oss-120b", "openai/gpt-oss-20b"], // নতুন ও সক্রিয় মডেল
+      KEY: "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",  // ← এখানে নতুন Key বসাও
+      MODELS: ["openai/gpt-oss-120b", "openai/gpt-oss-20b"],
       URL: "https://api.groq.com/openai/v1/chat/completions"
     };
+
+    // AI Chat History & User Profile Memory
+    let chatHistory = JSON.parse(localStorage.getItem("gritgo_chat_history")) || [];
+    let userProfile = JSON.parse(localStorage.getItem("gritgo_user_profile")) || { name: "", age: "", bio: "" };
 
     // ============================================================
     // 🧠 Central AI caller — model fallback + clear errors
@@ -1280,8 +1429,9 @@
       let migrated = false;
       
       challengeData.habits = challengeData.habits.map(h => {
-        if (typeof h === 'string') { migrated = true; return { id: 'h_' + Math.random().toString(36).substr(2, 9), name: h, target: 1, days: [0,1,2,3,4,5,6] }; }
+        if (typeof h === 'string') { migrated = true; return { id: 'h_' + Math.random().toString(36).substr(2, 9), name: h, category: 'General', target: 1, days: [0,1,2,3,4,5,6] }; }
         if (!h.id) { migrated = true; return { ...h, id: 'h_' + Math.random().toString(36).substr(2, 9) }; }
+        if (!h.category) { migrated = true; return { ...h, category: 'General' }; }
         return h;
       });
 
@@ -1326,7 +1476,7 @@
       checkChallengeStatus();
       checkLateNightWarning(); 
       const lastBackup = parseInt(localStorage.getItem("gritgo_last_backup")) || 0;
-      if (Date.now() - lastBackup > 7 * 86400000) setTimeout(() => showToast("💾Time to Get Backup!"), 3000);
+      if (Date.now() - lastBackup > 7 * 86400000) setTimeout(() => showToast("Backup নেওয়ার সময় হয়েছে!"), 3000);
     }
     
     function checkLateNightWarning() {
@@ -1389,13 +1539,193 @@
     document.getElementById("openExtrasBtn").addEventListener("click", () => { extrasModal.classList.add("active"); renderExtras(); });
     document.getElementById("extrasClose").addEventListener("click", () => extrasModal.classList.remove("active"));
 
-    // নতুন AI Modal ওপেন এবং ক্লোজ করার লজিক
+    const aiModal = document.getElementById("aiModal");
     document.getElementById("openAiBtn").addEventListener("click", () => { 
-        document.getElementById("aiModal").classList.add("active"); 
+        aiModal.classList.add("active"); 
+        renderChatMessages();
     });
     document.getElementById("aiClose").addEventListener("click", () => { 
-        document.getElementById("aiModal").classList.remove("active"); 
+        aiModal.classList.remove("active"); 
     });
+
+    const profileModal = document.getElementById("profileModal");
+    document.getElementById("openProfileBtn").addEventListener("click", () => {
+      document.getElementById("profileName").value = userProfile.name || "";
+      document.getElementById("profileAge").value = userProfile.age || "";
+      document.getElementById("profileBio").value = userProfile.bio || "";
+      profileModal.classList.add("active");
+    });
+    document.getElementById("closeProfileBtn").addEventListener("click", () => profileModal.classList.remove("active"));
+    document.getElementById("saveProfileBtn").addEventListener("click", () => {
+  const newProfile = {
+    name: document.getElementById("profileName").value.trim(),
+    age: document.getElementById("profileAge").value.trim(),
+    bio: document.getElementById("profileBio").value.trim()
+  };
+
+  // ভ্যালিডেশন: নাম বা বায়ো এর মধ্যে অন্তত একটা থাকতে হবে
+  if (!newProfile.name && !newProfile.bio) {
+    showToast("Please write something before saving!", "warning");
+    return;
+  }
+
+  userProfile = newProfile;
+  localStorage.setItem("gritgo_user_profile", JSON.stringify(userProfile));
+  profileModal.classList.remove("active");
+  showToast("Profile Saved! AI will remember this.", "success");
+});
+
+    function renderChatMessages() {
+      const container = document.getElementById("miniChatHistory");
+      container.innerHTML = "";
+      if (chatHistory.length === 0) {
+        // Centered empty state
+        container.innerHTML = `<div style="display: flex; align-items: center; justify-content: center; height: 100%; min-height: 180px; color: #9aa0a6; text-align: center;">Ask Anything to your (AI) Coach!</div>`;
+      }
+      chatHistory.forEach(msg => {
+        const bubble = document.createElement("div");
+        bubble.className = `chat-bubble ${msg.role === 'user' ? 'user' : 'ai'}`;
+        bubble.textContent = msg.content;
+        container.appendChild(bubble);
+      });
+      container.scrollTop = container.scrollHeight;
+    }
+
+    // Custom Clear Chat Logic
+    const clearChatModal = document.getElementById("clearChatModal");
+    document.getElementById("clearChatBtn").addEventListener("click", () => {
+      clearChatModal.classList.add("active");
+    });
+    document.getElementById("clearChatCancel").addEventListener("click", () => {
+      clearChatModal.classList.remove("active");
+    });
+    document.getElementById("clearChatConfirm").addEventListener("click", () => {
+      chatHistory = [];
+      localStorage.setItem("gritgo_chat_history", JSON.stringify(chatHistory));
+      renderChatMessages();
+      clearChatModal.classList.remove("active");
+      showToast("Chat cleared!");
+    });
+
+    document.getElementById("askAiBtn").addEventListener("click", async () => {
+      const input = document.getElementById("aiQuestionInput");
+      const text = input.value.trim();
+      if (!text) return;
+
+      input.value = "";
+      input.style.height = "45px";
+
+      chatHistory.push({ role: 'user', content: text });
+      renderChatMessages();
+
+      const loadingId = 'loading_' + Date.now();
+      const container = document.getElementById("miniChatHistory");
+      const loadingBubble = document.createElement("div");
+      loadingBubble.className = "chat-bubble ai";
+      loadingBubble.id = loadingId;
+      loadingBubble.textContent = "Thinking...";
+      container.appendChild(loadingBubble);
+      container.scrollTop = container.scrollHeight;
+
+      try {
+        const systemPrompt = {
+          role: 'system',
+          content: `You are a smart, supportive AI Habit Coach inside the GRITGO app.
+          The user's profile: Name: ${userProfile.name || "Unknown"}, Age: ${userProfile.age || "Unknown"}, About: ${userProfile.bio || "No bio provided"}.
+          The user's current challenge: "${challengeData.title}" (Day ${getCurrentDayNumber()} of ${challengeData.duration}).
+          The user's habits: ${challengeData.habits.map(h => h.name).join(', ') || 'No habits yet'}.
+          Current local time: ${new Date().toLocaleTimeString()}.
+          
+          IMPORTANT RULES:
+          1. Always remember their profile details and past conversations. Treat them like a friend and mentor.
+          2. If they are struggling, motivate them based on their bio.
+          3. Keep responses short, conversational, and do not use emojis.`
+        };
+
+        const messagesToSend = [systemPrompt, ...chatHistory.slice(-10)];
+        const aiReply = await callGroq(messagesToSend, { temperature: 0.8, max_tokens: 500 });
+
+        document.getElementById(loadingId)?.remove();
+        chatHistory.push({ role: 'assistant', content: aiReply });
+        localStorage.setItem("gritgo_chat_history", JSON.stringify(chatHistory));
+        renderChatMessages();
+
+      } catch (error) {
+        document.getElementById(loadingId).textContent = "Error: " + error.message;
+      }
+    });
+
+    const chatInput = document.getElementById("aiQuestionInput");
+    chatInput.addEventListener("input", function() {
+      this.style.height = "45px";
+      this.style.height = (this.scrollHeight) + "px";
+    });
+
+    // Chat Voice Input
+    const chatVoiceBtn = document.getElementById("chatVoiceBtn");
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      const recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+
+      chatVoiceBtn.addEventListener("click", () => {
+        try {
+          recognition.lang = voiceLangSelect.value || "en-US"; 
+          recognition.start();
+          chatVoiceBtn.classList.add("listening");
+          showToast("Listening... Speak now");
+        } catch(e) { showToast("Mic Error: " + e.message); }
+      });
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        chatInput.value = transcript;
+        chatVoiceBtn.classList.remove("listening");
+      };
+
+      recognition.onerror = (event) => {
+        chatVoiceBtn.classList.remove("listening");
+        if(event.error === "not-allowed") { showToast("Microphone access denied."); } 
+        else { showToast("Voice Error: " + event.error); }
+      };
+
+      recognition.onend = () => { chatVoiceBtn.classList.remove("listening"); };
+    } else {
+      chatVoiceBtn.style.display = "none";
+    }
+
+    // Language Dropdown Logic
+    const langTrigger = document.getElementById("langTrigger");
+    const langMenu = document.getElementById("langMenu");
+    const selectedLangText = document.getElementById("selectedLangText");
+    const voiceLangSelect = document.getElementById("voiceLangSelect"); 
+    
+    const savedLang = localStorage.getItem("gritgo_lang");
+    if (savedLang) {
+      voiceLangSelect.value = savedLang;
+      const activeOpt = langMenu.querySelector(`[data-value="${savedLang}"]`);
+      if (activeOpt) {
+        selectedLangText.textContent = activeOpt.textContent;
+        langMenu.querySelectorAll('.lang-option').forEach(opt => opt.classList.remove('selected'));
+        activeOpt.classList.add('selected');
+      }
+    }
+
+    langTrigger.addEventListener("click", (e) => { e.stopPropagation(); langMenu.classList.toggle("open"); });
+    document.querySelectorAll(".lang-option").forEach(option => {
+      option.addEventListener("click", () => {
+        const val = option.getAttribute("data-value");
+        voiceLangSelect.value = val;
+        selectedLangText.textContent = option.textContent;
+        localStorage.setItem("gritgo_lang", val);
+        langMenu.querySelectorAll('.lang-option').forEach(opt => opt.classList.remove('selected'));
+        option.classList.add('selected');
+        langMenu.classList.remove("open");
+      });
+    });
+    document.addEventListener("click", (e) => { if (!langTrigger.contains(e.target) && !langMenu.contains(e.target)) { langMenu.classList.remove("open"); } });
+
 
     function renderExtras() {
       const isFuture = challengeData.startDate > getDateKey();
@@ -1476,6 +1806,7 @@
       });
 
       renderChart();
+      renderCategoryChart();
     }
 
     let myProgressChart = null;
@@ -1523,6 +1854,55 @@
       });
     }
 
+    let myCategoryChart = null;
+    function renderCategoryChart() {
+      const canvas = document.getElementById("categoryChart");
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      if (myCategoryChart) { myCategoryChart.destroy(); }
+
+      const categoryCount = {};
+      const colors = ['#4a9eff', '#4aaa4a', '#f1c40f', '#ff6b4a', '#d6a1f0', '#00e5ff'];
+      
+      challengeData.habits.forEach(h => {
+        const cat = h.category || 'General';
+        if (!categoryCount[cat]) categoryCount[cat] = 0;
+        
+        let completions = 0;
+        for (let date in challengeData.habitLogs) {
+          if (challengeData.habitLogs[date][h.id] === true) completions++;
+        }
+        categoryCount[cat] += completions;
+      });
+
+      const labels = Object.keys(categoryCount);
+      const data = Object.values(categoryCount);
+      const bgColors = labels.map((_, i) => colors[i % colors.length]);
+
+      if (labels.length === 0) {
+        canvas.parentElement.innerHTML = '<p style="color:#9aa0a6; text-align:center; margin-top:80px;">No data yet. Complete some habits!</p>';
+        return;
+      }
+
+      myCategoryChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: labels,
+          datasets: [{ data: data, backgroundColor: bgColors, borderWidth: 0 }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'right',
+              labels: { color: document.body.classList.contains("light-theme") ? '#1a1f2e' : '#e8eaed', font: { size: 12 } }
+            }
+          }
+        }
+      });
+    }
+
     document.getElementById("saveNoteBtn").addEventListener("click", () => {
       const noteText = document.getElementById("dailyNoteInput").value.trim();
       const noteKey = getDateKey();
@@ -1552,7 +1932,6 @@
       });
     });
 
-    // ===== AI HABIT GENERATOR =====
     document.getElementById("generateHabitsBtn").addEventListener("click", async () => {
       const prompt = document.getElementById("aiHabitPrompt").value.trim();
       const box = document.getElementById("generatedHabitsBox");
@@ -1592,7 +1971,7 @@
           habitBtn.style.fontWeight = "bold";
           
           habitBtn.onclick = () => {
-            challengeData.habits.push({ id: 'h_' + Math.random().toString(36).substr(2, 9), name: habitText, target: 1, days: [0,1,2,3,4,5,6] });
+            challengeData.habits.push({ id: 'h_' + Math.random().toString(36).substr(2, 9), name: habitText, category: 'General', target: 1, days: [0,1,2,3,4,5,6] });
             localStorage.setItem("challengeData", JSON.stringify(challengeData));
             renderHabits(); renderTodayHabits(); renderHeatmap(); updateStats();
             showToast(`Added: ${habitText}`);
@@ -1612,38 +1991,6 @@
       }
     });
 
-    // ===== CUSTOM LANGUAGE DROPDOWN =====
-    const langTrigger = document.getElementById("langTrigger");
-    const langMenu = document.getElementById("langMenu");
-    const selectedLangText = document.getElementById("selectedLangText");
-    const voiceLangSelect = document.getElementById("voiceLangSelect"); 
-    
-    const savedLang = localStorage.getItem("gritgo_lang");
-    if (savedLang) {
-      voiceLangSelect.value = savedLang;
-      const activeOpt = langMenu.querySelector(`[data-value="${savedLang}"]`);
-      if (activeOpt) {
-        selectedLangText.textContent = activeOpt.textContent;
-        langMenu.querySelectorAll('.lang-option').forEach(opt => opt.classList.remove('selected'));
-        activeOpt.classList.add('selected');
-      }
-    }
-
-    langTrigger.addEventListener("click", (e) => { e.stopPropagation(); langMenu.classList.toggle("open"); });
-    document.querySelectorAll(".lang-option").forEach(option => {
-      option.addEventListener("click", () => {
-        const val = option.getAttribute("data-value");
-        voiceLangSelect.value = val;
-        selectedLangText.textContent = option.textContent;
-        localStorage.setItem("gritgo_lang", val);
-        langMenu.querySelectorAll('.lang-option').forEach(opt => opt.classList.remove('selected'));
-        option.classList.add('selected');
-        langMenu.classList.remove("open");
-      });
-    });
-    document.addEventListener("click", (e) => { if (!langTrigger.contains(e.target) && !langMenu.contains(e.target)) { langMenu.classList.remove("open"); } });
-
-    // ===== AI WEEKLY & MONTHLY REVIEW =====
     async function generateAIReview(type) {
       const btnW = document.getElementById("weeklyReviewBtn");
       const btnM = document.getElementById("monthlyReviewBtn");
@@ -1721,7 +2068,7 @@
       4. Mood vs Habits Analysis (Compare my mood with my habit completion. If I was stressed or tired, acknowledge it kindly.)
       5. Actionable advice for next week/month.
       
-      Keep it short, motivating, and use 1 or 2 emojis.`;
+      Keep it short, motivating, and do not use emojis.`;
 
       try {
         const reply = await callGroq([
@@ -1748,139 +2095,6 @@
     document.getElementById("weeklyReviewBtn").addEventListener("click", () => generateAIReview('weekly'));
     document.getElementById("monthlyReviewBtn").addEventListener("click", () => generateAIReview('monthly'));
 
-    // ===== VOICE INPUT =====
-    let isVoiceInput = false; 
-    let isSettingFromVoice = false; 
-    const voiceInputBtn = document.getElementById("voiceInputBtn");
-    const aiQuestionInput = document.getElementById("aiQuestionInput");
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-    if (SpeechRecognition) {
-      const recognition = new SpeechRecognition();
-      recognition.continuous = false;
-      recognition.interimResults = false;
-
-      voiceInputBtn.addEventListener("click", () => {
-        try {
-          recognition.lang = voiceLangSelect.value; 
-          recognition.start();
-          voiceInputBtn.classList.add("listening");
-          showToast("Listening... Speak now");
-        } catch(e) { showToast("Mic Error: " + e.message); }
-      });
-
-      recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript;
-        isSettingFromVoice = true; 
-        aiQuestionInput.value = transcript;
-        isSettingFromVoice = false; 
-        voiceInputBtn.classList.remove("listening");
-        isVoiceInput = true; 
-      };
-
-      recognition.onerror = (event) => {
-        voiceInputBtn.classList.remove("listening");
-        if(event.error === "not-allowed") { showToast("Microphone access denied. Please allow mic permissions."); } 
-        else { showToast("Voice Error: " + event.error); }
-      };
-
-      recognition.onend = () => { voiceInputBtn.classList.remove("listening"); };
-    } else {
-      voiceInputBtn.style.display = "none"; 
-      console.log("Speech Recognition not supported in this browser.");
-    }
-
-    aiQuestionInput.addEventListener('input', () => { if (!isSettingFromVoice) { isVoiceInput = false; } });
-
-    // ===== TEXT TO SPEECH =====
-    function speakText(text) {
-      if (!("speechSynthesis" in window)) return;
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      const isBengali = /[\u0980-\u09FF]/.test(text);
-      utterance.lang = isBengali ? 'bn-BD' : 'en-US';
-      utterance.rate = 1.0; 
-      utterance.pitch = 1.0; 
-      window.speechSynthesis.speak(utterance);
-    }
-
-    // ===== SMART TIMER PARSE & AI LOGIC =====
-    function parseTimerCommand(text) {
-      const lowerText = text.toLowerCase();
-      if (lowerText.includes("টাইমার") || lowerText.includes("timer") || lowerText.includes("set time") || lowerText.includes("temporizador") || lowerText.includes("minuteur") || lowerText.includes("wecker")) {
-        const hMatch = lowerText.match(/(\d+(?:\.\d+)?)\s*(h|hour|hours|ঘন্টা|ঘণ্টা|hora|heures|stunden)/);
-        const mMatch = lowerText.match(/(\d+)\s*(m|min|mins|minutes|মিনিট|minutos)/);
-        if (hMatch) return parseFloat(hMatch[1]) * 60; 
-        else if (mMatch) return parseInt(mMatch[1]);
-      }
-      return null;
-    }
-
-    document.getElementById("askAiBtn").addEventListener("click", async () => {
-      const noteText = document.getElementById("dailyNoteInput").value.trim();
-      const questionText = document.getElementById("aiQuestionInput").value.trim();
-      const responseBox = document.getElementById("aiResponseBox");
-      const responseText = document.getElementById("aiResponseText");
-      const btn = document.getElementById("askAiBtn");
-
-      if (!noteText && !questionText) { showToast("Please write a note or ask a question first!"); return; }
-
-      const timerMins = parseTimerCommand(questionText);
-      if (timerMins !== null) {
-        openTimerModal(null, "AI Coach Command", getDateKey()); 
-        startTimer(timerMins); 
-        responseBox.style.display = "block";
-        const reply = `Sure! I have started a timer for ${timerMins >= 60 ? (timerMins/60)+' hours' : timerMins+' minutes'}. Let's get to work!`;
-        responseText.textContent = reply;
-        if (isVoiceInput) { speakText("Timer set successfully. Let's focus."); }
-        isVoiceInput = false; 
-        return;
-      }
-
-      btn.innerHTML = "Thinking...";
-      btn.disabled = true;
-      responseBox.style.display = "block";
-      responseText.textContent = "Analyzing...";
-
-      let userPrompt = "";
-      if (noteText) userPrompt += `My daily note: "${noteText}"\n`;
-      if (questionText) userPrompt += `My question to you: "${questionText}"`;
-      else userPrompt += `Based on my daily note, give me some advice for tomorrow.`;
-
-      const isBengaliInput = /[\u0980-\u09FF]/.test(userPrompt);
-      const targetLang = isBengaliInput ? "Bengali" : "English";
-
-      try {
-        const aiMessage = await callGroq([
-          { 
-            role: 'system', 
-            content: `You are a smart AI habit coach inside the GRITGO app. 
-            The user is doing a challenge called "${challengeData.title}". 
-            The user's current habits are: ${challengeData.habits.map(h => h.name).join(', ') || 'No habits added yet'}.
-            The current local time is: ${new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}.
-            
-            IMPORTANT RULES:
-            1. The user's input is in ${targetLang}. You MUST reply ONLY in ${targetLang}.
-            2. If the current time is after 10:00 PM (22:00) or before 5:00 AM, strongly advise the user to go to sleep.
-            3. Keep it short, encouraging, and personalized based on their habits. Use 1 or 2 relevant emojis to make the response friendly.` 
-          },
-          { role: 'user', content: userPrompt }
-        ], { temperature: 0.7, max_tokens: 1024 });
-
-        responseText.textContent = aiMessage;
-        if (isVoiceInput) { speakText(aiMessage); }
-        isVoiceInput = false;
-      } catch (error) {
-        responseText.textContent = "Error: " + error.message;
-        console.error(error);
-        isVoiceInput = false;
-      } finally {
-        btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg> Ask AI`;
-        btn.disabled = false;
-      }
-    });
-
-    // ===== TIMER LOGIC =====
     let timerTarget = { id: null, name: "", dateKey: null };
     let timerInterval = null;
     let timerTimeLeft = 0;
@@ -1981,7 +2195,11 @@
         const li = document.createElement("li");
         const moveUp = document.createElement("button"); moveUp.className = "move-btn"; moveUp.textContent = "↑"; moveUp.onclick = () => moveHabit(index, 'up');
         const moveDown = document.createElement("button"); moveDown.className = "move-btn"; moveDown.textContent = "↓"; moveDown.onclick = () => moveHabit(index, 'down');
-        const span = document.createElement("span"); span.textContent = (index + 1) + ". " + habit.name; span.style.flex = "1";
+        
+        const span = document.createElement("span"); 
+        span.innerHTML = `${index + 1}. ${habit.name} <span class="category-badge">${habit.category || 'General'}</span>`; 
+        span.style.flex = "1";
+        
         const editBtn = document.createElement("button"); editBtn.innerHTML = editIconSVG; editBtn.className = "edit-btn"; editBtn.onclick = () => openEditModal(index);
         const deleteBtn = document.createElement("button"); deleteBtn.innerHTML = trashIconSVG; deleteBtn.className = "delete-btn"; deleteBtn.onclick = () => openDeleteModal(index);
         li.appendChild(moveUp); li.appendChild(moveDown);
@@ -2064,12 +2282,14 @@
         const span = document.createElement("span"); span.textContent = habit; span.style.flex = "1"; span.style.color = isFuture ? "#6a7280" : "#e8eaed"; span.style.fontWeight = "500";
         if (document.body.classList.contains("light-theme")) span.style.color = isFuture ? "#9ca3af" : "#1a1f2e";
 
+        const catBadge = document.createElement("span"); catBadge.className = "category-badge"; catBadge.textContent = habitObj.category || 'General';
+
         const timerBtn = document.createElement("button"); timerBtn.innerHTML = timerIconSVG; timerBtn.className = "timer-btn"; 
         timerBtn.onclick = (e) => { e.stopPropagation(); openTimerModal(habitObj.id, habitObj.name, todayKey); };
 
         const deleteBtn = document.createElement("button"); deleteBtn.innerHTML = trashIconSVG; deleteBtn.className = "delete-btn"; deleteBtn.onclick = (e) => { e.stopPropagation(); openDeleteModal(index); };
 
-        li.appendChild(checkboxWrapper); li.appendChild(span); li.appendChild(timerBtn); li.appendChild(deleteBtn); ul.appendChild(li);
+        li.appendChild(checkboxWrapper); li.appendChild(span); li.appendChild(catBadge); li.appendChild(timerBtn); li.appendChild(deleteBtn); ul.appendChild(li);
       });
 
       if (shownCount === 0) { emptyMessage.style.display = "block"; emptyMessage.textContent = "No habits match your search"; return; }
@@ -2162,17 +2382,93 @@
     const addHabitModal = document.getElementById("addHabitModal");
     let editingIndex = null;
 
-    document.getElementById("quickAddHabitButton").onclick = () => { editingIndex = null; document.getElementById("addHabitModalTitle").textContent = "Add New Habit"; document.getElementById("addHabitModalInput").value = ""; addHabitModal.classList.add("active"); };
-    function openEditModal(index) { editingIndex = index; document.getElementById("addHabitModalTitle").textContent = "Edit Habit"; document.getElementById("addHabitModalInput").value = challengeData.habits[index].name; addHabitModal.classList.add("active"); }
-    document.getElementById("addHabitCancel").onclick = () => { addHabitModal.classList.remove("active"); editingIndex = null; };
+    // Custom Category Dropdown Logic
+    const categoryTrigger = document.getElementById("categoryTrigger");
+    const categoryMenu = document.getElementById("categoryMenu");
+    const selectedCategoryText = document.getElementById("selectedCategoryText");
+    const addHabitCategoryInput = document.getElementById("addHabitCategory");
+
+    if (categoryTrigger) {
+      categoryTrigger.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        categoryMenu.classList.toggle("open");
+      });
+    }
+
+    document.querySelectorAll(".category-option").forEach(option => {
+      option.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const val = option.getAttribute("data-value");
+        addHabitCategoryInput.value = val;
+        selectedCategoryText.textContent = option.textContent;
+        categoryMenu.querySelectorAll('.category-option').forEach(opt => opt.classList.remove('selected'));
+        option.classList.add('selected');
+        categoryMenu.classList.remove("open");
+      });
+    });
+
+    document.addEventListener("click", (e) => {
+      if (categoryMenu && categoryMenu.classList.contains("open")) {
+        if (!categoryMenu.contains(e.target) && !categoryTrigger.contains(e.target)) {
+          categoryMenu.classList.remove("open");
+        }
+      }
+    });
+
+    document.getElementById("quickAddHabitButton").onclick = () => { 
+      editingIndex = null; 
+      document.getElementById("addHabitModalTitle").textContent = "Add New Habit"; 
+      document.getElementById("addHabitModalInput").value = ""; 
+      
+      addHabitCategoryInput.value = "General";
+      selectedCategoryText.textContent = "General";
+      document.querySelectorAll('.category-option').forEach(opt => {
+        if (opt.getAttribute('data-value') === "General") opt.classList.add('selected');
+        else opt.classList.remove('selected');
+      });
+      
+      addHabitModal.classList.add("active"); 
+    };
+
+    function openEditModal(index) { 
+      editingIndex = index; 
+      document.getElementById("addHabitModalTitle").textContent = "Edit Habit"; 
+      document.getElementById("addHabitModalInput").value = challengeData.habits[index].name; 
+      
+      const cat = challengeData.habits[index].category || "General";
+      addHabitCategoryInput.value = cat;
+      selectedCategoryText.textContent = cat;
+      document.querySelectorAll('.category-option').forEach(opt => {
+        if (opt.getAttribute('data-value') === cat) opt.classList.add('selected');
+        else opt.classList.remove('selected');
+      });
+
+      addHabitModal.classList.add("active"); 
+    }
+
+    document.getElementById("addHabitCancel").onclick = () => { 
+      addHabitModal.classList.remove("active"); 
+      editingIndex = null; 
+    };
     
     document.getElementById("addHabitSave").onclick = () => {
       const text = document.getElementById("addHabitModalInput").value.trim();
+      const category = addHabitCategoryInput.value;
       if (!text) { showToast("Please enter a habit"); return; }
-      if (editingIndex !== null) { challengeData.habits[editingIndex].name = text; showToast("Habit updated!"); editingIndex = null; } 
-      else { challengeData.habits.push({ id: 'h_' + Math.random().toString(36).substr(2, 9), name: text, target: 1, days: [0,1,2,3,4,5,6] }); showToast("Habit added!"); }
+      if (editingIndex !== null) { 
+        challengeData.habits[editingIndex].name = text; 
+        challengeData.habits[editingIndex].category = category;
+        showToast("Habit updated!"); 
+        editingIndex = null; 
+      } 
+      else { 
+        challengeData.habits.push({ id: 'h_' + Math.random().toString(36).substr(2, 9), name: text, category: category, target: 1, days: [0,1,2,3,4,5,6] }); 
+        showToast("Habit added!"); 
+      }
       localStorage.setItem("challengeData", JSON.stringify(challengeData));
-      addHabitModal.classList.remove("active"); renderHabits(); renderTodayHabits(); renderHeatmap(); updateStats();
+      addHabitModal.classList.remove("active"); 
+      renderHabits(); renderTodayHabits(); renderHeatmap(); updateStats();
     };
 
     const deleteModal = document.getElementById("deleteModal"); let deletingIndex = null;
@@ -2206,7 +2502,7 @@
     document.getElementById("addHabitBtn").onclick = () => { 
       const text = document.getElementById("newHabitInput").value.trim(); 
       if (!text) return; 
-      challengeData.habits.push({ id: 'h_' + Math.random().toString(36).substr(2, 9), name: text, target: 1, days: [0,1,2,3,4,5,6] }); 
+      challengeData.habits.push({ id: 'h_' + Math.random().toString(36).substr(2, 9), name: text, category: 'General', target: 1, days: [0,1,2,3,4,5,6] }); 
       localStorage.setItem("challengeData", JSON.stringify(challengeData)); 
       document.getElementById("newHabitInput").value = ""; 
       renderHabits(); renderTodayHabits(); 
@@ -2453,8 +2749,19 @@
       }
     }
 
-    document.getElementById("congratsStartBtn").onclick = () => { const startSeenKey = "gritgo_start_seen_" + challengeData.title + "_" + challengeData.startDate; localStorage.setItem(startSeenKey, "true"); document.getElementById("congratsModal").classList.remove("active"); };
-    document.getElementById("congratsCancelBtn").addEventListener("click", () => { const endSeenKey = "gritgo_end_seen_" + challengeData.title + "_" + challengeData.startDate; localStorage.setItem(endSeenKey, "true"); document.getElementById("congratsModal").classList.remove("active"); showToast("Best of luck! Keep growing!"); });
+    document.getElementById("congratsStartBtn").addEventListener("click", () => {
+      const startSeenKey = "gritgo_start_seen_" + challengeData.title + "_" + challengeData.startDate;
+      localStorage.setItem(startSeenKey, "true");
+      document.getElementById("congratsModal").classList.remove("active");
+    });
+
+    document.getElementById("congratsCancelBtn").addEventListener("click", () => { 
+      const endSeenKey = "gritgo_end_seen_" + challengeData.title + "_" + challengeData.startDate; 
+      localStorage.setItem(endSeenKey, "true"); 
+      document.getElementById("congratsModal").classList.remove("active"); 
+      showToast("Best of luck! Keep growing!"); 
+    });
+
     document.getElementById("congratsThankBtn").addEventListener("click", () => {
       const endSeenKey = "gritgo_end_seen_" + challengeData.title + "_" + challengeData.startDate; localStorage.setItem(endSeenKey, "true");
       const message = `GRITGO Thank You Note:\n\nI have successfully completed the "${challengeData.title}" (${challengeData.duration} Days) challenge! Thank you so much for this amazing app. Best of luck to you too!`;
@@ -2479,7 +2786,14 @@
     };
     document.getElementById("resetAllData").onclick = () => { document.getElementById("settingsModal").classList.remove("active"); document.getElementById("resetModal").classList.add("active"); };
     document.getElementById("resetCancel").onclick = () => { document.getElementById("resetModal").classList.remove("active"); document.getElementById("settingsModal").classList.add("active"); };
-    document.getElementById("resetConfirm").onclick = () => { localStorage.removeItem("challengeData"); localStorage.removeItem("gritgo_sleep_state"); localStorage.removeItem("gritgo_intro_seen"); location.reload(); };
+    document.getElementById("resetConfirm").onclick = () => { 
+      localStorage.removeItem("challengeData"); 
+      localStorage.removeItem("gritgo_sleep_state"); 
+      localStorage.removeItem("gritgo_intro_seen");
+      localStorage.removeItem("gritgo_chat_history");
+      localStorage.removeItem("gritgo_user_profile");
+      location.reload(); 
+    };
     
     document.getElementById("feedbackCancel").onclick = () => document.getElementById("feedbackModal").classList.remove("active");
     document.getElementById("feedbackSubmit").onclick = () => { const text = document.getElementById("feedbackText").value.trim(); if(!text) return; window.open(`https://wa.me/8801888214016?text=${encodeURIComponent("GRITGO Feedback:\n\n" + text)}`, "_blank"); document.getElementById("feedbackModal").classList.remove("active"); };
@@ -2494,6 +2808,50 @@
       copyText.focus(); copyText.select(); copyText.setSelectionRange(0, text.length);
       let ok = false; try { ok = document.execCommand("copy"); } catch (e) { console.log(e); }
       if (ok) { localStorage.setItem("gritgo_last_backup", Date.now()); showToast("Copied to Clipboard!"); } else { showToast("Text is selected — long-press and tap Copy"); }
+    };
+
+    // CSV Export Logic (Fixed)
+    document.getElementById("exportCsv").onclick = () => {
+      if (!challengeData.habits || challengeData.habits.length === 0) {
+        showToast("No habits data to export!");
+        return;
+      }
+      
+      let csvContent = "Date,Habit Name,Category,Status\n";
+      const dates = Object.keys(challengeData.habitLogs).sort();
+      
+      dates.forEach(date => {
+        const log = challengeData.habitLogs[date] || {};
+        challengeData.habits.forEach(habit => {
+          const status = log[habit.id] === true ? "Completed" : "Missed";
+          csvContent += `"${date}","${habit.name}","${habit.category || 'General'}","${status}"\n`;
+        });
+      });
+
+      // ডাউনলোড না করে সরাসরি মডালে দেখাবে
+      document.getElementById("csvExportText").value = csvContent;
+      document.getElementById("csvExportModal").classList.add("active");
+    };
+
+    // Copy CSV Logic
+    document.getElementById("copyCsvBtn").onclick = async () => {
+      const text = document.getElementById("csvExportText").value;
+      if (navigator.clipboard && window.isSecureContext) {
+        try {
+          await navigator.clipboard.writeText(text);
+          showToast("CSV Copied to Clipboard!");
+          return;
+        } catch (err) { console.log("Clipboard API failed:", err); }
+      }
+      const copyText = document.getElementById("csvExportText");
+      copyText.focus(); copyText.select(); copyText.setSelectionRange(0, text.length);
+      let ok = false; try { ok = document.execCommand("copy"); } catch (e) {}
+      if (ok) showToast("CSV Copied to Clipboard!");
+      else showToast("Text selected — long-press and tap Copy");
+    };
+
+    document.getElementById("closeCsvBtn").onclick = () => {
+      document.getElementById("csvExportModal").classList.remove("active");
     };
 
     document.getElementById("importData").onclick = () => { document.getElementById("restoreText").value = ""; document.getElementById("restoreModal").classList.add("active"); };
