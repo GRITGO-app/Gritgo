@@ -390,10 +390,56 @@
     body.light-theme .category-menu { background: #ffffff; border-color: #4a9eff; box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
     body.light-theme .category-option { color: #1a1f2e; border-bottom: 1px solid #f3f4f6; }
     body.light-theme .category-option:hover, body.light-theme .category-option.selected { background: rgba(74, 158, 255, 0.1); color: #4a9eff; }
-  </style>
+     /* ===== Global Loader ===== */
+#globalLoader {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: #0f1419;        /* ✅ একদম কালো — কিছু দেখা যাবে না */
+  z-index: 99999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 15px;
+}
+
+#globalLoader.active { display: flex; }
+
+body.light-theme #globalLoader {
+  background: #000000;        /* ✅ লাইট থিমেও কালো */
+}
+
+.loader-ring {
+  width: 60px; height: 60px;
+  border: 4px solid rgba(0, 229, 255, 0.2);
+  border-top: 4px solid #00e5ff;
+  border-radius: 50%;
+  animation: spinRing 0.9s linear infinite;
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+}
+
+.loader-text {
+  color: #00e5ff;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+body.light-theme .loader-text { color: #00e5ff; }
+
+@keyframes spinRing {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+                                                                                                                                                                                                                                                                                                                                                                                                       </style>
 </head>
 <body>
-
+<!-- Global Loading Spinner -->
+<div id="globalLoader">
+  <div class="loader-ring"></div>
+  <div class="loader-text">Loading...</div>
+</div>
   <div id="sidebarOverlay"></div>
 
   <div id="sidebar">
@@ -464,22 +510,42 @@
       <div class="stat-card"><span id="overallStat">0%</span><span>overall</span></div>
     </div>
 
-    <div class="btn-group">
-      <button id="openTrackerBtn" class="tracker-btn">
-        <svg class="svg-icon" viewBox="0 0 24 24"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg>
-        Weekly Progress & Sleep Tracker
-      </button>
-      
-      <div style="display: flex; gap: 10px; width: 100%;">
-        <button id="openExtrasBtn" class="extras-btn" style="flex: 1.5;">
-          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5L12 3z"></path><path d="M19 13l1 3l3 1l-3 1l-1 3l-1-3l-3-1l3-1l1-3z"></path></svg>
-          Extras & Insights
-        </button>
-        <button id="openAiBtn" class="ai-btn">
-          AI
-        </button>
-      </div>
-    </div>
+    <div class="btn-group" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
+  
+  <!-- ১ম লাইন: Weekly Progress & Sleep + Daily Water -->
+  <div style="display: flex; gap: 10px; width: 100%;">
+    <button id="openTrackerBtn" class="tracker-btn" style="flex: 1; padding: 10px 5px; text-align: center; justify-content: center;">
+      <svg class="svg-icon" style="margin-bottom: 2px;" viewBox="0 0 24 24"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg>
+      <span style="font-size: 12px; line-height: 1.2;">Weekly Progress<br>& Sleep Tracker</span>
+    </button>
+    
+    <button id="openWaterBtn" class="extras-btn" style="flex: 1; color: #00e5ff; border-color: #00e5ff; box-shadow: 0 0 15px rgba(0, 229, 255, 0.1); padding: 10px 5px; text-align: center; justify-content: center;">
+      <svg class="svg-icon" style="margin-bottom: 2px;" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+      <span style="font-size: 12px; line-height: 1.2;">Daily Water<br>Tracker</span>
+    </button>
+  </div>
+
+  <!-- ২য় লাইন: Extras & Insights + AI -->
+  <div style="display: flex; gap: 10px; width: 100%;">
+    <button id="openExtrasBtn" class="extras-btn" style="flex: 1; padding: 10px 5px; text-align: center; justify-content: center;">
+      <svg class="svg-icon" style="margin-bottom: 2px;" viewBox="0 0 24 24"><path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5L12 3z"></path><path d="M19 13l1 3l3 1l-3 1l-1 3l-1-3l-3-1l3-1l1-3z"></path></svg>
+      <span style="font-size: 12px; line-height: 1.2;">Extras &<br>Insights</span>
+    </button>
+<button id="openAiBtn" style="flex: 1; padding: 10px 5px; text-align: center; justify-content: center; background: #1e1b2e; color: #d6a1f0; border: 1px solid #9b59b6; box-shadow: 0 0 15px rgba(155, 89, 182, 0.2); border-radius: 10px; font-size: 14px; font-weight: 900; letter-spacing: 1px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+  
+  <!-- 👇 AI Robot আইকন 👇 -->
+  <svg class="svg-icon" style="stroke: #d6a1f0; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;" viewBox="0 0 24 24">
+    <rect x="3" y="11" width="18" height="10" rx="2"></rect>
+    <circle cx="12" cy="5" r="2"></circle>
+    <path d="M12 7v4"></path>
+    <line x1="8" y1="16" x2="8" y2="16"></line>
+    <line x1="16" y1="16" x2="16" y2="16"></line>
+  </svg>
+  <h7>AI Coach</h7>
+</button>
+  </div>
+
+</div>
 
     <div id="heatmap"></div>
     
@@ -669,44 +735,6 @@
             <div class="lang-option" data-value="ja-JP">Japanese</div>
             <div class="lang-option" data-value="ar-SA">Arabic</div>
             <div class="lang-option" data-value="ru-RU">Russian</div>
-            <div class="lang-option" data-value="pt-BR">Portuguese</div>
-            <div class="lang-option" data-value="it-IT">Italian</div>
-            <div class="lang-option" data-value="ko-KR">Korean</div>
-            <div class="lang-option" data-value="tr-TR">Turkish</div>
-            <div class="lang-option" data-value="vi-VN">Vietnamese</div>
-            <div class="lang-option" data-value="th-TH">Thai</div>
-            <div class="lang-option" data-value="id-ID">Indonesian</div>
-            <div class="lang-option" data-value="ms-MY">Malay</div>
-            <div class="lang-option" data-value="ur-PK">Urdu</div>
-            <div class="lang-option" data-value="ta-IN">Tamil</div>
-            <div class="lang-option" data-value="te-IN">Telugu</div>
-            <div class="lang-option" data-value="mr-IN">Marathi</div>
-            <div class="lang-option" data-value="gu-IN">Gujarati</div>
-            <div class="lang-option" data-value="kn-IN">Kannada</div>
-            <div class="lang-option" data-value="ml-IN">Malayalam</div>
-            <div class="lang-option" data-value="pa-IN">Punjabi</div>
-            <div class="lang-option" data-value="nl-NL">Dutch</div>
-            <div class="lang-option" data-value="pl-PL">Polish</div>
-            <div class="lang-option" data-value="sv-SE">Swedish</div>
-            <div class="lang-option" data-value="da-DK">Danish</div>
-            <div class="lang-option" data-value="fi-FI">Finnish</div>
-            <div class="lang-option" data-value="no-NO">Norwegian</div>
-            <div class="lang-option" data-value="el-GR">Greek</div>
-            <div class="lang-option" data-value="he-IL">Hebrew</div>
-            <div class="lang-option" data-value="cs-CZ">Czech</div>
-            <div class="lang-option" data-value="hu-HU">Hungarian</div>
-            <div class="lang-option" data-value="ro-RO">Romanian</div>
-            <div class="lang-option" data-value="uk-UA">Ukrainian</div>
-            <div class="lang-option" data-value="fa-IR">Persian</div>
-            <div class="lang-option" data-value="sw-KE">Swahili</div>
-            <div class="lang-option" data-value="af-ZA">Afrikaans</div>
-            <div class="lang-option" data-value="fil-PH">Filipino</div>
-            <div class="lang-option" data-value="my-MM">Burmese</div>
-            <div class="lang-option" data-value="km-KH">Khmer</div>
-            <div class="lang-option" data-value="si-LK">Sinhala</div>
-            <div class="lang-option" data-value="ne-NP">Nepali</div>
-            <div class="lang-option" data-value="sr-RS">Serbian</div>
-            <div class="lang-option" data-value="hr-HR">Croatian</div>
           </div>
           <input type="hidden" id="voiceLangSelect" value="en-US">
         </div>
@@ -720,6 +748,13 @@
           <div id="imagePreviewContainer">
             <img id="imagePreview" alt="Preview">
             <button id="removeImageBtn" type="button">×</button>
+          </div>
+
+          <!-- + Add Habit বাটনটি এখন ইনপুট বক্সের ঠিক উপরে -->
+          <div style="display: flex; justify-content: flex-start; margin-bottom: 8px;">
+            <button id="quickAiHabitBtn" title="Add Habit" style="background: rgba(155, 89, 182, 0.1); color: #9b59b6; border: 1px solid #9b59b6; padding: 6px 14px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">
+              + Add Habit
+            </button>
           </div>
           
           <div class="chat-input-row">
@@ -753,27 +788,6 @@
         <div class="progress-bar-bg"><div class="progress-bar-fill" id="overallProgressFill" style="width: 0%;"></div></div>
         <p style="text-align: right; font-size: 12px; color: #00e5ff; margin-top: 5px;" id="overallProgressText">0% Completed</p>
       </div>
-
-      <div class="extras-section" style="border-color: #00e5ff;">
-        <h3>
-          <svg class="svg-icon" style="stroke: #00e5ff;" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
-          Weekly Progress Chart
-        </h3>
-        <div style="width: 100%; height: 220px; margin-top: 10px;">
-          <canvas id="progressChart"></canvas>
-        </div>
-      </div>
-
-      <div class="extras-section" style="border-color: #d6a1f0;">
-        <h3>
-          <svg class="svg-icon" style="stroke: #d6a1f0;" viewBox="0 0 24 24"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>
-          Category Analytics
-        </h3>
-        <div style="width: 100%; height: 220px; margin-top: 10px; display: flex; justify-content: center;">
-          <canvas id="categoryChart"></canvas>
-        </div>
-      </div>
-
       <div class="extras-section">
         <h3>
           <svg class="svg-icon" style="stroke: #f1c40f;" viewBox="0 0 24 24"><path d="M9 18h6"></path><path d="M10 22h4"></path><path d="M12 2a7 7 0 0 0-7 7c0 2.4 1.2 4.5 3 5.7V17h8v-2.3c1.8-1.2 3-3.3 3-5.7a7 7 0 0 0-7-7z"></path></svg>
@@ -1516,7 +1530,7 @@ async function callGroq(messages, options = {}) {
       checkChallengeStatus();
       checkLateNightWarning(); 
       const lastBackup = parseInt(localStorage.getItem("gritgo_last_backup")) || 0;
-      if (Date.now() - lastBackup > 7 * 86400000) setTimeout(() => showToast("Backup নেওয়ার সময় হয়েছে!"), 3000);
+      if (Date.now() - lastBackup > 7 * 86400000) setTimeout(() => showToast("Backup Time!"), 3000);
     }
     
     function checkLateNightWarning() {
@@ -1824,12 +1838,16 @@ removeImageBtn.addEventListener("click", (e) => {
   imagePreviewContainer.style.display = "none";
   imagePreview.src = ""; 
 });
-    document.getElementById("askAiBtn").addEventListener("click", async () => {
+    
+document.getElementById("askAiBtn").addEventListener("click", async () => {
   const input = document.getElementById("aiQuestionInput");
   const text = input.value.trim();
   const hasImage = !!pendingImageBase64;
 
   if (!text && !hasImage) return;
+
+  // ইনপুট থেকে "Add Habit:" বা "Add Habit" টেক্সট বাদ দেওয়া
+  let cleanedText = text.replace(/Add Habit:?/gi, "").trim();
 
   input.value = "";
   input.style.height = "40px";
@@ -1840,21 +1858,17 @@ removeImageBtn.addEventListener("click", (e) => {
   if (hasImage) {
     userContent = [
       { type: "text", text: text || "এই ছবিটা দেখে আমাকে পরামর্শ দাও।" },
-      {
-        type: "image_url",
-        image_url: { url: `data:${pendingImageMime};base64,${pendingImageBase64}` }
-      }
+      { type: "image_url", image_url: { url: `data:${pendingImageMime};base64,${pendingImageBase64}` } }
     ];
-    displayText = text ? `📷 ${text}` : "📷 [ছবি পাঠানো হয়েছে]";
+    displayText = text ? `📷 ${text}` : "[Sended]";
   } else {
-    userContent = text;
-    displayText = text;
+    userContent = cleanedText; // AI-কে ক্লিন টেক্সট পাঠানো হচ্ছে
+    displayText = text; // চ্যাটে ইউজারের লেখা যেমন আছে তেমনই দেখাবে
   }
 
   const historyMessage = { role: 'user', content: displayText };
-  if (hasImage) {
-    historyMessage.image = `data:${pendingImageMime};base64,${pendingImageBase64}`;
-  }
+  if (hasImage) historyMessage.image = `data:${pendingImageMime};base64,${pendingImageBase64}`;
+  
   chatHistory.push(historyMessage);
   renderChatMessages();
 
@@ -1863,75 +1877,86 @@ removeImageBtn.addEventListener("click", (e) => {
   const loadingBubble = document.createElement("div");
   loadingBubble.className = "chat-bubble ai";
   loadingBubble.id = loadingId;
-  loadingBubble.textContent = hasImage ? "ছবি দেখছি..." : "Thinking...";
+  loadingBubble.textContent = hasImage ? "Just a Second..." : "Thinking...";
   container.appendChild(loadingBubble);
   container.scrollTop = container.scrollHeight;
 
   try {
-    // 🔥 এখানে AI-কে হ্যাবিট অ্যাড করার ইনস্ট্রাকশন দেওয়া হলো
+    // 🔥 AI-কে নতুন ইনস্ট্রাকশন: একাধিক হ্যাবিট (একাধিক লাইনে) যোগ করা
     const systemPrompt = {
       role: 'system',
       content: `You are a smart, supportive AI Habit Coach inside the GRITGO app.
       The user's profile: Name: ${userProfile.name || "Unknown"}, Age: ${userProfile.age || "Unknown"}, About: ${userProfile.bio || "No bio provided"}.
       The user's current challenge: "${challengeData.title}" (Day ${getCurrentDayNumber()} of ${challengeData.duration}).
       The user's habits: ${challengeData.habits.map(h => h.name).join(', ') || 'No habits yet'}.
+      Current local time: ${new Date().toLocaleTimeString()}.
       
-      IMPORTANT RULE FOR ADDING HABITS:
-      If the user asks you to add a new habit (e.g., "Add meditation", "আমার লিস্টে মেডিটেশন যোগ করো"), you must respond ONLY with a JSON format like this, and absolutely nothing else:
-      {"action": "add_habit", "name": "Habit Name Here", "category": "Category Here"}
+      IMPORTANT RULES:
+      1. Always remember their profile details and past conversations. Treat them like a friend and mentor.
+      2. If they send an image, carefully analyze it and give helpful, relevant advice related to their habits, goals, or wellbeing.
+      3. If they are struggling, motivate them based on their bio.
+      4. Keep responses short, conversational, and do not use emojis.
+      
+      CRITICAL RULE FOR ADDING HABITS:
+      If the user asks to add habits (even if they provide a list of habits separated by new lines or commas), you MUST reply ONLY with a JSON array format like this, and absolutely nothing else:
+      [
+        {"action": "add_habit", "name": "Habit 1", "category": "General"},
+        {"action": "add_habit", "name": "Habit 2", "category": "Health"}
+      ]
       Categories can be: General, Study, Health, Fitness, Work, Mindfulness, Social, Finance, Hobby, Sleep, Morning Routine.
       
-      For any other normal conversation, reply normally as a supportive friend and mentor. Do not use emojis.`
+      IMPORTANT: If the user provides a long list of habits (like 10 or 40 habits), you MUST create a JSON object for EACH habit and include them all in the array. Do not skip any.`
     };
 
-    const pastMessages = chatHistory.slice(-10, -1).map(m => ({
-      role: m.role,
-      content: m.content
-    }));
-
+    const pastMessages = chatHistory.slice(-10, -1).map(m => ({ role: m.role, content: m.content }));
     const messagesToSend = [systemPrompt, ...pastMessages, { role: 'user', content: userContent }];
 
     let aiReply = await callGroq(messagesToSend, {
-      temperature: 0.5, 
-      max_tokens: 800,
+      temperature: 0.1, // খুব কম টেম্পারেচার দিলে AI ঠিকমতো লম্বা JSON বানাবে
+      max_tokens: 4000, // ৪০+ হ্যাবিটের জন্য টোকেন লিমিট বাড়ানো হলো
       hasImage
     });
 
     document.getElementById(loadingId)?.remove();
 
-    // 🔥 AI-এর রিপ্লাই চেক করা হচ্ছে সে হ্যাবিট অ্যাড করতে বলেছে কিনা
-    let isHabitAdded = false;
+    // 🔥 AI-এর রিপ্লাই চেক করা হচ্ছে (একাধিক হ্যাবিটের জন্য)
+    let addedHabitsCount = 0;
     try {
-      const jsonMatch = aiReply.match(/\{[\s\S]*\}/);
+      const jsonMatch = aiReply.match(/\[[\s\S]*\]/);
       if (jsonMatch) {
-        const parsed = JSON.parse(jsonMatch[0]);
-        if (parsed.action === "add_habit" && parsed.name) {
-          const newHabit = { 
-            id: 'h_' + Math.random().toString(36).substr(2, 9), 
-            name: parsed.name, 
-            category: parsed.category || 'General', 
-            target: 1, 
-            days: [0,1,2,3,4,5,6] 
-          };
-          challengeData.habits.push(newHabit);
-          localStorage.setItem("challengeData", JSON.stringify(challengeData));
+        const parsedArray = JSON.parse(jsonMatch[0]);
+        if (Array.isArray(parsedArray)) {
+          parsedArray.forEach(item => {
+            if (item.action === "add_habit" && item.name) {
+              challengeData.habits.push({ 
+                id: 'h_' + Math.random().toString(36).substr(2, 9), 
+                name: item.name, 
+                category: item.category || 'General', 
+                target: 1, 
+                days: [0,1,2,3,4,5,6] 
+              });
+              addedHabitsCount++;
+            }
+          });
           
-          renderHabits(); renderTodayHabits(); renderHeatmap(); updateStats();
-          
-          aiReply = `Done! I have added "${parsed.name}" to your habits list. You can find it in your Today's list.`;
-          isHabitAdded = true;
+          if (addedHabitsCount > 0) {
+            localStorage.setItem("challengeData", JSON.stringify(challengeData));
+            renderHabits(); renderTodayHabits(); renderHeatmap(); updateStats();
+            aiReply = `Done! I have added ${addedHabitsCount} new habits to your list. Check your Today's section.`;
+          }
         }
       }
     } catch (e) {
-      console.log("Not a JSON habit command, showing normal reply.");
+      console.log("JSON Parse Error:", e);
+      aiReply = "Error: AI sent a bad format. Please try again with a smaller list.";
     }
 
     chatHistory.push({ role: 'assistant', content: aiReply });
     localStorage.setItem("gritgo_chat_history", JSON.stringify(chatHistory));
     renderChatMessages();
 
-    if (isHabitAdded) {
-       showToast("AI added a new habit!");
+    if (addedHabitsCount > 0) {
+       showToast(`${addedHabitsCount} habits added successfully!`);
     }
 
     pendingImageBase64 = null;
@@ -1949,7 +1974,23 @@ removeImageBtn.addEventListener("click", (e) => {
       this.style.height = "40px";
       this.style.height = (this.scrollHeight) + "px";
     });
-
+// 👇 AI চ্যাটে "+ Add Habit" বাটনে ক্লিক করলে ইনপুট বক্সে লেখা বসবে 👇
+const quickAiHabitBtn = document.getElementById("quickAiHabitBtn");
+if (quickAiHabitBtn) {
+  quickAiHabitBtn.addEventListener("click", () => {
+    const input = document.getElementById("aiQuestionInput");
+    input.value = "Add Habit: "; // ইনপুটে লেখাটা বসে যাবে
+    input.focus(); // কার্সর ইনপুট বক্সে চলে যাবে
+    
+    // কার্সরকে একদম শেষে নিয়ে যাবে, যাতে ইউজার সহজে হ্যাবিটের নাম লিখতে পারে
+    input.setSelectionRange(input.value.length, input.value.length);
+    
+    // ইনপুট বক্সের সাইজ অটো ঠিক করার জন্য
+    input.style.height = "40px";
+    input.style.height = (input.scrollHeight) + "px";
+  });
+}
+// 👆 নতুন কোড শেষ 👆
     const chatVoiceBtn = document.getElementById("chatVoiceBtn");
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (SpeechRecognition) {
@@ -2093,8 +2134,7 @@ removeImageBtn.addEventListener("click", (e) => {
       });
 
       renderChart();
-      renderCategoryChart();
-    }
+}    
 
     let myProgressChart = null;
     function renderChart() {
@@ -2355,7 +2395,7 @@ removeImageBtn.addEventListener("click", (e) => {
       4. Mood vs Habits Analysis (Compare my mood with my habit completion. If I was stressed or tired, acknowledge it kindly.)
       5. Actionable advice for next week/month.
       
-      Keep it short, motivating, and do not use emojis.`;
+      Keep it short, motivating, and use all emojis.`;
 
       try {
         const reply = await callGroq([
@@ -2553,6 +2593,7 @@ removeImageBtn.addEventListener("click", (e) => {
             checkboxWrapper.classList.toggle("checked", isChecked);
             challengeData.habitLogs[todayKey][habitObj.id] = isChecked;
             localStorage.setItem("challengeData", JSON.stringify(challengeData));
+            renderTodayHabits();
             updateTodayCount();
             renderHeatmap();
             updateStats(); 
@@ -2566,7 +2607,22 @@ removeImageBtn.addEventListener("click", (e) => {
           };
         }
 
-        const span = document.createElement("span"); span.textContent = habit; span.style.flex = "1"; span.style.color = isFuture ? "#6a7280" : "#e8eaed"; span.style.fontWeight = "500";
+        const span = document.createElement("span"); 
+span.textContent = habit; 
+span.style.flex = "1"; 
+span.style.color = isFuture ? "#6a7280" : "#e8eaed"; 
+span.style.fontWeight = "500"; 
+span.style.fontSize = "14px";
+span.style.transition = "all 0.3s ease"; // স্মুথ ইফেক্টের জন্য
+
+// 👇 নতুন কোড: যদি হ্যাবিট চেক করা থাকে, তবে দাগ পড়বে এবং রঙ হালকা হবে 👇
+if (todayLog[habitObj.id] === true) {
+  span.style.textDecoration = "line-through";
+  span.style.opacity = "0.6"; // একটু হালকা করে দেবে
+} else {
+  span.style.textDecoration = "none";
+  span.style.opacity = "1";
+}
         if (document.body.classList.contains("light-theme")) span.style.color = isFuture ? "#9ca3af" : "#1a1f2e";
 
         const catBadge = document.createElement("span"); catBadge.className = "category-badge"; catBadge.textContent = habitObj.category || 'General';
@@ -2649,11 +2705,26 @@ removeImageBtn.addEventListener("click", (e) => {
           challengeData.habitLogs[viewingDateKey][habitObj.id] = isChecked; 
           localStorage.setItem("challengeData", JSON.stringify(challengeData));
           document.getElementById("dayModalSubtitle").textContent = `${Object.values(challengeData.habitLogs[viewingDateKey]).filter(val => val === true).length} / ${challengeData.habits.length} habits done`;
+          renderDayModalList();
           renderHeatmap(); updateStats(); 
           if(document.getElementById("extrasModal").classList.contains("active")) renderExtras();
         };
 
-        const sp = document.createElement("span"); sp.textContent = habit; sp.style.flex = "1"; sp.style.color = "#e8eaed"; sp.style.fontSize = "14px";
+        const sp = document.createElement("span"); 
+sp.textContent = habit; 
+sp.style.flex = "1"; 
+sp.style.color = "#e8eaed"; 
+sp.style.fontSize = "14px";
+sp.style.transition = "all 0.3s ease";
+
+// 👇 পুরোনো দিনের জন্যও দাগ পড়ার লজিক 👇
+if (log[habitObj.id] === true) {
+  sp.style.textDecoration = "line-through";
+  sp.style.opacity = "0.6";
+} else {
+  sp.style.textDecoration = "none";
+  sp.style.opacity = "1";
+}
         if (document.body.classList.contains("light-theme")) sp.style.color = "#1a1f2e";
         li.appendChild(cb); li.appendChild(sp); list.appendChild(li);
       });
@@ -3182,9 +3253,9 @@ removeImageBtn.addEventListener("click", (e) => {
       const startMins = sh * 60 + sm; const endMins = eh * 60 + em;
       const firstHabit = challengeData.habits[0]?.name || "your first habit"; const lastHabit = challengeData.habits[challengeData.habits.length - 1]?.name || "your last habit";
       const startNotiKey = `gritgo_start_noti_v2_${todayKey}`;
-      if (currentMins >= startMins && !localStorage.getItem(startNotiKey)) { sendBrowserNotification("Good Morning", `Start Your Day With ${firstHabit}`); localStorage.setItem(startNotiKey, "true"); }
+      if (currentMins >= startMins && !localStorage.getItem(startNotiKey)) { sendBrowserNotification("🌅Good Morning", `Start Your Day With ${firstHabit}`); localStorage.setItem(startNotiKey, "true"); }
       const endNotiKey = `gritgo_end_noti_v2_${todayKey}`;
-      if (currentMins >= endMins && !localStorage.getItem(endNotiKey)) { sendBrowserNotification("Good Night", `End Your Day With ${lastHabit}`); localStorage.setItem(endNotiKey, "true"); }
+      if (currentMins >= endMins && !localStorage.getItem(endNotiKey)) { sendBrowserNotification("🌃Good Night", `End Your Day With ${lastHabit}`); localStorage.setItem(endNotiKey, "true"); }
     }
 
     function sendBrowserNotification(title, body) {
@@ -3198,7 +3269,440 @@ removeImageBtn.addEventListener("click", (e) => {
 
     setInterval(checkHabitReminders, 10000);
     if ("serviceWorker" in navigator) { navigator.serviceWorker.register("service-worker.js").catch(err => console.log(err)); }
+ // ============================================================
+// 🔄 Loading Spinner Helper
+// ============================================================
+function showLoader(text = "Loading...", duration = 700) {
+  const loader = document.getElementById("globalLoader");
+  if (!loader) return;
+  const textEl = loader.querySelector(".loader-text");
+  if (textEl) textEl.textContent = text;
+  loader.classList.add("active");
+  
+  return new Promise(resolve => {
+    setTimeout(() => {
+      loader.classList.remove("active");
+      resolve();
+    }, duration);
+  });
+}
+
+// ============================================================
+// 🔄 Modal Opening with Loading
+// ============================================================
+async function openWithLoader(modalId, loaderText = "Loading...") {
+  await showLoader(loaderText, 700);
+  const modal = document.getElementById(modalId);
+  if (modal) modal.classList.add("active");
+}
+
+// Override existing button listeners to use loader
+document.addEventListener("DOMContentLoaded", () => {
+  // 1. Weekly Progress & Sleep Tracker
+  const trackerBtn = document.getElementById("openTrackerBtn");
+  if (trackerBtn) {
+    trackerBtn.onclick = async () => {
+      await showLoader("Loading Tracker...", 800);
+      document.getElementById("trackerModal").classList.add("active");
+      renderSleepTracker();
+      renderWeeklyProgress();
+      resetSleepButtons();
+    };
+  }
+
+  // 2. Extras & Insights
+  const extrasBtn = document.getElementById("openExtrasBtn");
+  if (extrasBtn) {
+    extrasBtn.onclick = async () => {
+      await showLoader("Loading Insights...", 800);
+      document.getElementById("extrasModal").classList.add("active");
+      renderExtras();
+    };
+  }
+
+  // 3. AI Features
+  const aiBtn = document.getElementById("openAiBtn");
+  if (aiBtn) {
+    aiBtn.onclick = async () => {
+      await showLoader("Loading AI...", 800);
+      document.getElementById("aiModal").classList.add("active");
+      renderChatMessages();
+    };
+  }
+
+  // 4. Settings
+  const settingsBtn = document.getElementById("menuSettingsBtn");
+  if (settingsBtn) {
+    settingsBtn.onclick = async () => {
+      closeSidebar();
+      document.getElementById("settingsStartDate").setAttribute("min", getLiteralDateKey());
+      document.getElementById("settingsTitle").value = challengeData.title;
+      document.getElementById("settingsDuration").value = challengeData.duration;
+      document.getElementById("settingsStartDate").value = normalizeDate(challengeData.startDate);
+      document.getElementById("settingsMotivation").value = challengeData.motivation;
+      document.getElementById("settingsDayStart").value = challengeData.dayStart || "05:00";
+      document.getElementById("settingsDayEnd").value = challengeData.dayEnd || "21:00";
+      await showLoader("Loading Settings...", 800);
+      document.getElementById("settingsModal").classList.add("active");
+      setTimeout(updateDatePlaceholders, 50);
+    };
+  }
+
+  // 5. How to Use Guide
+  const guideBtn = document.getElementById("menuGuideBtn");
+  if (guideBtn) {
+    guideBtn.onclick = async () => {
+      closeSidebar();
+      await showLoader("Loading Guide...", 800);
+      document.getElementById("guidePromptModal").classList.add("active");
+    };
+  }
+
+  // 6. Send Feedback
+  const feedbackBtn = document.getElementById("menuFeedbackBtn");
+  if (feedbackBtn) {
+    feedbackBtn.onclick = async () => {
+      closeSidebar();
+      await showLoader("Loading Feedback...", 800);
+      document.getElementById("feedbackModal").classList.add("active");
+    };
+  }
+}); 
+        setInterval(checkHabitReminders, 10000);
+    if ("serviceWorker" in navigator) { navigator.serviceWorker.register("service-worker.js").catch(err => console.log(err)); }
+
+    // ============================================================
+// 💧 WATER TRACKER LOGIC (Original Code Adapted)
+// ============================================================
+
+// localStorage-এ ডেটা সেভ হবে aquaData নামে
+let waterData = JSON.parse(localStorage.getItem("aquaData")) || { dailyGoal: 2.5, logs: {} };
+
+function getWaterDateKey(date) { 
+  const d = date || new Date(); 
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; 
+}
+
+function updateWaterUI() {
+  if (!document.getElementById("wAmountText")) return;
+
+  const todayKey = getWaterDateKey(); 
+  const todayIntake = waterData.logs[todayKey] || 0; 
+  const goal = waterData.dailyGoal; 
+  const percent = Math.min((todayIntake / goal) * 100, 100);
+
+  document.getElementById("wAmountText").innerHTML = `${todayIntake.toFixed(1)}<span style="font-size: 20px; color: #e8eaed;">L</span>`;
+  document.getElementById("wPercentText").textContent = `${Math.round(percent)}% of ${goal}L`;
+  document.getElementById("wWaveFill").style.height = `${percent}%`;
+  document.getElementById("wGoalStat").textContent = `${goal}L`;
+  
+  // Streak Calculation
+  let streak = 0; 
+  let currentDate = new Date();
+  while (true) {
+    const key = getWaterDateKey(currentDate); 
+    const intake = waterData.logs[key] || 0;
+    if (intake >= waterData.dailyGoal) { 
+      streak++; 
+      currentDate.setDate(currentDate.getDate() - 1); 
+    } else { 
+      if (streak === 0 && key === getWaterDateKey()) { 
+        currentDate.setDate(currentDate.getDate() - 1); 
+        continue; 
+      } 
+      break; 
+    }
+    if (streak > 365) break;
+  }
+  document.getElementById("wStreakStat").textContent = streak;
+
+  // Goal check styling
+  const btnGlass = document.getElementById("wBtnGlass");
+  const btnBottle = document.getElementById("wBtnBottle");
+
+  if (todayIntake >= goal) {
+    document.getElementById("wWaveFill").style.background = "linear-gradient(180deg, #00ff88, #00b8d4)";
+    document.getElementById("wAmountText").style.color = "#00ff88";
+    btnGlass.style.opacity = "0.4"; btnGlass.style.pointerEvents = "none";
+    btnBottle.style.opacity = "0.4"; btnBottle.style.pointerEvents = "none";
+  } else {
+    document.getElementById("wWaveFill").style.background = "linear-gradient(180deg, #00b8d4, #0055ff)";
+    document.getElementById("wAmountText").style.color = "#ffffff";
+    btnGlass.style.opacity = "1"; btnGlass.style.pointerEvents = "auto";
+    btnBottle.style.opacity = "1"; btnBottle.style.pointerEvents = "auto";
+  }
+}
+
+function addWater(ml) {
+  const todayKey = getWaterDateKey(); 
+  let currentIntake = waterData.logs[todayKey] || 0; 
+  const goal = waterData.dailyGoal;
+  
+  if (currentIntake >= goal) { 
+    showToast("You already reached your goal!"); 
+    return; 
+  }
+  
+  const litersToAdd = ml / 1000; 
+  let newIntake = currentIntake + litersToAdd;
+  
+  if (newIntake >= goal) { 
+    newIntake = goal; 
+    showToast("Goal Reached! You are fully hydrated!"); 
+    showConfetti(); // GRITGO-র কনফেটি
+  } else { 
+    showToast(`Added ${ml}ml! Keep it up!`); 
+  }
+  
+  waterData.logs[todayKey] = Math.round(newIntake * 100) / 100;
+  localStorage.setItem("aquaData", JSON.stringify(waterData)); 
+  updateWaterUI();
+}
+
+// Water History Calculation
+function calculateWaterHistory() {
+  let weekTotal = 0;
+  let monthTotal = 0;
+  const today = new Date();
+  const currentMonth = today.getMonth();
+  const currentYear = today.getFullYear();
+
+  for (let dateStr in waterData.logs) {
+    const [year, month, day] = dateStr.split('-').map(Number);
+    const logDate = new Date(year, month - 1, day);
+    const amount = waterData.logs[dateStr];
+
+    if (year === currentYear && month - 1 === currentMonth) {
+      monthTotal += amount;
+    }
+
+    const diffTime = Math.abs(today - logDate);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    if (diffDays <= 7) {
+      weekTotal += amount;
+    }
+  }
+
+  document.getElementById('wWeekTotal').textContent = weekTotal.toFixed(1) + 'L';
+  document.getElementById('wMonthTotal').textContent = monthTotal.toFixed(1) + 'L';
+}
+
+// Button Event Listeners
+document.addEventListener("DOMContentLoaded", () => {
+  // Open Main Water Modal
+  document.getElementById("openWaterBtn")?.addEventListener("click", async () => {
+    await showLoader("Loading Water Tracker...", 800);
+    document.getElementById("waterTrackerModal").classList.add("active");
+    updateWaterUI();
+  });
+
+  document.getElementById("closeWaterBtn")?.addEventListener("click", () => {
+    document.getElementById("waterTrackerModal").classList.remove("active");
+  });
+
+  // Add Water Buttons
+  document.getElementById("wBtnGlass")?.addEventListener("click", () => addWater(250));
+  document.getElementById("wBtnBottle")?.addEventListener("click", () => addWater(500));
+
+  // Open Settings Modal
+  document.getElementById("wSettingsButton")?.addEventListener("click", () => {
+    document.getElementById("wSettingsGoalInput").value = waterData.dailyGoal;
+    document.getElementById("wSettingsModal").classList.add("active");
+  });
+  
+  document.getElementById("wSettingsCancel")?.addEventListener("click", () => {
+    document.getElementById("wSettingsModal").classList.remove("active");
+  });
+
+  // Save Settings Goal
+  document.getElementById("wSettingsSave")?.addEventListener("click", () => {
+    const newGoal = parseFloat(document.getElementById("wSettingsGoalInput").value);
+    if (isNaN(newGoal) || newGoal < 1) { 
+      showToast("Please enter a valid goal"); 
+      return; 
+    }
+    waterData.dailyGoal = newGoal; 
+    localStorage.setItem("aquaData", JSON.stringify(waterData)); 
+    updateWaterUI();
+    document.getElementById("wSettingsModal").classList.remove("active"); 
+    showToast("Goal updated!");
+  });
+
+  // Reset Data Flow
+  document.getElementById("wResetDataBtn")?.addEventListener("click", () => { 
+    document.getElementById("wSettingsModal").classList.remove("active"); 
+    document.getElementById("wResetModal").classList.add("active"); 
+  });
+  
+  document.getElementById("wResetCancel")?.addEventListener("click", () => { 
+    document.getElementById("wResetModal").classList.remove("active"); 
+    document.getElementById("wSettingsModal").classList.add("active"); 
+  });
+  
+  document.getElementById("wResetConfirm")?.addEventListener("click", () => { 
+    localStorage.removeItem("aquaData"); 
+    location.reload(); // পুরো অ্যাপ রিলোড হবে
+  });
+
+  // Top Header Reset Button (Resets Today's Water Only)
+  document.getElementById("wResetButton")?.addEventListener("click", () => {
+    const todayKey = getWaterDateKey(); 
+    waterData.logs[todayKey] = 0;
+    localStorage.setItem("aquaData", JSON.stringify(waterData)); 
+    updateWaterUI(); 
+    showToast("Today's intake reset to 0.");
+  });
+
+  // Open History Modal
+  document.getElementById("wHistoryBtn")?.addEventListener("click", () => {
+    calculateWaterHistory();
+    document.getElementById("wHistoryModal").classList.add("active");
+  });
+  
+  document.getElementById("wHistoryClose")?.addEventListener("click", () => {
+    document.getElementById("wHistoryModal").classList.remove("active");
+  });
+  
+  // Close history modal on clicking outside
+  document.getElementById("wHistoryModal")?.addEventListener("click", function(e) { 
+    if (e.target === this) this.classList.remove("active"); 
+  });
+});
+// 👆 Water Tracker Logic শেষ 👆
   </script>
 
+</body>
+</html>
+  </script>
+<!-- Water Tracker Modal -->
+<div id="waterTrackerModal" class="modal-overlay">
+  <div class="modal-box" style="padding: 20px;">
+    
+    <!-- Header -->
+    <div class="header" style="padding: 0 0 15px 0; margin-bottom: 15px; border-bottom: 1px solid #2a3142;">
+      <button id="wSettingsButton" style="background: none; border: none; color: #e8eaed; cursor: pointer;">
+        <svg class="icon svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
+      <span style="font-size: 18px; font-weight: 700;">HydroFlow</span>
+      <button id="wResetButton" style="background: none; border: none; color: #e8eaed; cursor: pointer;">
+        <svg class="icon svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+      </button>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-container" style="display: flex; gap: 10px; margin-bottom: 20px;">
+      <div class="stat-card" style="flex: 1; background-color: #0f1419; border-radius: 14px; padding: 15px; text-align: center; border: 1px solid #2a3142;">
+        <h2 id="wStreakStat" style="color: #00e5ff; font-size: 24px; margin-bottom: 5px;">0</h2>
+        <p style="color: #9aa0a6; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Day Streak</p>
+      </div>
+      <div class="stat-card" style="flex: 1; background-color: #0f1419; border-radius: 14px; padding: 15px; text-align: center; border: 1px solid #2a3142;">
+        <h2 id="wGoalStat" style="color: #00e5ff; font-size: 24px; margin-bottom: 5px;">2.5L</h2>
+        <p style="color: #9aa0a6; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Daily Goal</p>
+      </div>
+    </div>
+
+    <!-- Water Container -->
+    <div class="water-container" style="position: relative; width: 250px; height: 250px; margin: 20px auto 30px auto; display: flex; justify-content: center; align-items: center;">
+      <div class="circle-bg" style="position: absolute; width: 100%; height: 100%; border-radius: 50%; background: #1a1f2e; box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);"></div>
+      <div class="water-wave" style="position: absolute; width: 230px; height: 230px; border-radius: 50%; overflow: hidden; background: #0f1419; box-shadow: 0 0 30px rgba(0, 229, 255, 0.2);">
+        <div class="wave-fill" id="wWaveFill" style="position: absolute; bottom: 0; left: 0; width: 100%; height: 0%; background: linear-gradient(180deg, #00b8d4, #0055ff); transition: height 0.8s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 0 20px rgba(0, 229, 255, 0.6);"></div>
+      </div>
+      <div class="water-info" style="position: relative; z-index: 10; text-align: center; text-shadow: 0 2px 10px rgba(0,0,0,0.5);">
+        <h1 id="wAmountText" style="font-size: 48px; color: #ffffff; font-weight: 800; margin-bottom: 5px;">0.0<span style="font-size: 20px; color: #e8eaed;">L</span></h1>
+        <p id="wPercentText" style="color: rgba(255, 255, 255, 0.8); font-size: 14px; font-weight: 600;">0%</p>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons" style="display: flex; gap: 12px; margin-bottom: 15px;">
+      <button class="add-btn" id="wBtnGlass" style="flex: 1; padding: 12px 10px; border: 1px solid #00e5ff; background: #1a1f2e; color: #00e5ff; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 6px;">
+        <svg class="icon svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2l1.5 18a1 1 0 0 0 1 .9h7a1 1 0 0 0 1-.9L18 2"/><path d="M5.5 8h13"/></svg>
+        +250ml <span style="font-size: 12px; font-weight: 400; opacity: 0.75;">1 Glass</span>
+      </button>
+      <button class="add-btn" id="wBtnBottle" style="flex: 1; padding: 12px 10px; border: none; background: linear-gradient(135deg, #00e5ff, #0088cc); color: #05080f; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 6px;">
+        <svg class="icon svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2h4v3l1.5 2v13a2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2V7L10 5V2z"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="15" y2="13"/></svg>
+        +500ml <span style="font-size: 12px; font-weight: 400; opacity: 0.75;">1 Bottle</span>
+      </button>
+    </div>
+
+    <button id="wHistoryBtn" style="width: 100%; padding: 15px; background: #1a1f2e; color: #00e5ff; border: 1px solid #2a3142; border-radius: 16px; font-size: 15px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 15px; transition: 0.2s;">
+      <svg class="icon svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      View History & Stats
+    </button>
+    
+    <div class="settings-buttons">
+      <button id="closeWaterBtn" style="background-color: #2a3142; color: #e8eaed; padding: 14px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; width: 100%;">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Water Settings Modal -->
+<div id="wSettingsModal" class="modal-overlay" style="z-index: 3000;">
+  <div class="modal-box" style="padding: 25px;">
+    <h2 style="color: #ffffff; margin-bottom: 20px; font-size: 22px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px;">
+      <svg class="icon svg-icon" style="color: #00e5ff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      Settings
+    </h2>
+    <label style="display: block; color: #9aa0a6; font-size: 13px; margin-bottom: 6px;">Daily Water Goal (in Liters):</label>
+    <input type="number" id="wSettingsGoalInput" step="0.5" min="1" max="10" style="width: 100%; padding: 12px 15px; background-color: #0f1419; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 15px; outline: none;">
+    
+    <div class="settings-buttons" style="margin-top: 20px;">
+      <button id="wSettingsCancel" style="background-color: #2a3142; color: #e8eaed; padding: 14px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; flex: 1;">Cancel</button>
+      <button id="wSettingsSave" style="background: linear-gradient(135deg, #00e5ff, #0088cc); color: #05080f; padding: 14px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;">
+        <svg class="icon svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Save
+      </button>
+    </div>
+    <button id="wResetDataBtn" style="width: 100%; margin-top: 15px; padding: 12px; background: transparent; color: #ff6b4a; border: 1px solid #ff6b4a; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+      <svg class="icon svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      Reset All Data
+    </button>
+  </div>
+</div>
+
+<!-- Water Reset Modal -->
+<div id="wResetModal" class="modal-overlay" style="z-index: 4000;">
+  <div class="modal-box" style="padding: 25px; text-align: center;">
+    <h2 style="color: #ff6b4a; margin-bottom: 15px; font-size: 22px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+      <svg class="icon svg-icon" style="color:#ff6b4a;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      Reset All Data?
+    </h2>
+    <p style="color: #9aa0a6; font-size: 14px; margin-bottom: 20px; line-height: 1.5;">This will permanently delete all your water intake history and streaks. Are you sure?</p>
+    <div class="settings-buttons" style="margin-top: 0;">
+      <button id="wResetCancel" style="background-color: #2a3142; color: #e8eaed; padding: 14px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; flex: 1;">Cancel</button>
+      <button id="wResetConfirm" style="background: linear-gradient(135deg, #ff6b4a, #d35400); color: white; padding: 14px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;">
+        <svg class="icon svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+        Reset All
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Water History Modal -->
+<div id="wHistoryModal" class="modal-overlay" style="z-index: 3000;">
+  <div class="modal-box" style="padding: 25px;">
+    <h2 style="color: #ffffff; margin-bottom: 20px; font-size: 22px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px;">
+      <svg class="icon svg-icon" style="color: #00e5ff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      Hydration History
+    </h2>
+    <div class="stats-container" style="display: flex; gap: 10px; margin-bottom: 25px;">
+      <div class="stat-card" style="flex: 1; background-color: #0f1419; border-radius: 14px; padding: 15px; text-align: center; border: 1px solid #2a3142;">
+        <h2 id="wWeekTotal" style="color: #00e5ff; font-size: 24px; margin-bottom: 5px;">0.0L</h2>
+        <p style="color: #9aa0a6; font-size: 11px; text-transform: uppercase;">This Week</p>
+      </div>
+      <div class="stat-card" style="flex: 1; background-color: #0f1419; border-radius: 14px; padding: 15px; text-align: center; border: 1px solid #2a3142;">
+        <h2 id="wMonthTotal" style="color: #00e5ff; font-size: 24px; margin-bottom: 5px;">0.0L</h2>
+        <p style="color: #9aa0a6; font-size: 11px; text-transform: uppercase;">This Month</p>
+      </div>
+    </div>
+    <div class="settings-buttons" style="margin-top: 0;">
+      <button id="wHistoryClose" style="background-color: #2a3142; color: #e8eaed; padding: 14px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px;">
+        <svg class="icon svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        Close
+      </button>
+    </div>
+  </div>
+</div>  
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>
