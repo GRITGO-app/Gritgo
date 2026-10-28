@@ -3155,45 +3155,30 @@ async function openVoicePopup() {
   voicePopupModal.classList.add("active");
   voicePopupStatus.textContent = "Listening...";
   voiceVisualizerIcon.style.display = "block";
-  voiceVisualizer.className = ""; 
   
-  try {
-    mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    analyser = audioContext.createAnalyser();
-    const source = audioContext.createMediaStreamSource(mediaStream);
-    source.connect(analyser);
-    analyser.fftSize = 256;
-    const dataArray = new Uint8Array(analyser.frequencyBinCount);
-    
-    function animateMic() {
-      analyser.getByteFrequencyData(dataArray);
-      let sum = 0;
-      for (let i = 0; i < dataArray.length; i++) sum += dataArray[i];
-      let average = sum / dataArray.length;
-      let scale = 1 + (average / 128) * 1.5; 
-      voiceVisualizer.style.transform = `scale(${scale})`;
-      animationFrameId = requestAnimationFrame(animateMic);
-    }
-    animateMic();
-    
-    if (recognition) {
-      recognition.lang = voiceLangSelect.value || "en-US";
+  // মাইক ডেটা না পড়ে শুধু CSS ডিজাইন অ্যানিমেশন চালু করছি
+  voiceVisualizer.className = "pulse-ai"; 
+  
+  if (recognition) {
+    recognition.lang = voiceLangSelect.value || "en-US";
+    try {
       recognition.start();
+    } catch (e) {
+      console.log("Already started");
     }
-  } catch (err) {
-    showToast("Microphone access denied or error!");
+  } else {
+    showToast("Voice not supported on this browser");
     closeVoicePopup();
   }
 }
 
 function closeVoicePopup() {
   voicePopupModal.classList.remove("active");
-  if (animationFrameId) cancelAnimationFrame(animationFrameId);
-  if (mediaStream) mediaStream.getTracks().forEach(track => track.stop());
-  if (audioContext && audioContext.state !== "closed") audioContext.close();
   voiceVisualizer.style.transform = "scale(1)";
-  if (recognition) recognition.stop();
+  voiceVisualizer.className = "";
+  if (recognition) {
+    try { recognition.stop(); } catch(e) {}
+  }
 }
 
 closeVoicePopupBtn.addEventListener("click", closeVoicePopup);
