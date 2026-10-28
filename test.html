@@ -290,6 +290,13 @@
     body.light-theme .icon-option.selected svg { stroke: #00e5ff; }
     .habit-small-icon { width: 20px; height: 20px; stroke: #00e5ff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
     body.light-theme .habit-small-icon { stroke: #4a9eff; }
+    #voicePopupModal.active { display: flex !important; animation: slideUp 0.3s ease-out forwards; }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(100px); } to { opacity: 1; transform: translateY(0); } }
+    .pulse-ai { animation: pulseAI 1s infinite alternate; }
+    @keyframes pulseAI {
+      0% { transform: scale(1); box-shadow: 0 0 20px rgba(74, 158, 255, 0.5); background: linear-gradient(135deg, #4a9eff, #00e5ff); }
+      100% { transform: scale(1.15); box-shadow: 0 0 50px rgba(0, 229, 255, 0.9); background: linear-gradient(135deg, #00e5ff, #4a9eff); }
+    }
   </style>
 </head>
 <body>
@@ -465,20 +472,29 @@
   </div>
 </div>
 
-<div id="msgOptionsModal" class="modal-overlay" style="z-index: 6000; background: rgba(0,0,0,0.7); align-items: flex-end; padding-bottom: 20px;">
-  <div class="modal-box" style="padding: 15px; border-radius: 15px; width: 100%; max-width: 400px;">
-    <div style="display: flex; gap: 10px; justify-content: space-between; margin-bottom: 10px;">
-      <button id="optCopyBtn" style="flex:1; padding: 15px 10px; background: #2a3142; color: #00e5ff; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px;">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> Copy
+<div id="msgOptionsModal" class="modal-overlay" style="z-index: 6000; background: rgba(0,0,0,0.8); align-items: flex-end; justify-content: center; padding: 10px;">
+  <div class="modal-box" style="padding: 15px; border-radius: 20px; width: 100%; max-width: 400px; background: #1a1f2e; border: 1px solid #2a3142; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); animation: slideUp 0.3s ease-out forwards;">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%;">
+      <button id="optCopyBtn" style="background: #2a3142; border-radius: 12px; padding: 15px 10px; display: flex; flex-direction: column; align-items: center; gap: 8px; border: none; cursor: pointer; color: #00e5ff; font-weight: bold; font-size: 13px; transition: 0.2s;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        Copy
       </button>
-      <button id="optEditBtn" style="flex:1; padding: 15px 10px; background: #2a3142; color: #4a9eff; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px;">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg> Edit
+      <button id="optReadLoudBtn" style="background: #2a3142; border-radius: 12px; padding: 15px 10px; display: flex; flex-direction: column; align-items: center; gap: 8px; border: none; cursor: pointer; color: #f1c40f; font-weight: bold; font-size: 13px; transition: 0.2s;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+        Read Loud
       </button>
-      <button id="optDeleteBtn" style="flex:1; padding: 15px 10px; background: #2a3142; color: #ff6b4a; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px;">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg> Delete
+      <button id="optEditBtn" style="background: #2a3142; border-radius: 12px; padding: 15px 10px; display: flex; flex-direction: column; align-items: center; gap: 8px; border: none; cursor: pointer; color: #4a9eff; font-weight: bold; font-size: 13px; transition: 0.2s;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+        Edit
+      </button>
+      <button id="optDeleteBtn" style="background: #2a3142; border-radius: 12px; padding: 15px 10px; display: flex; flex-direction: column; align-items: center; gap: 8px; border: none; cursor: pointer; color: #ff6b4a; font-weight: bold; font-size: 13px; transition: 0.2s;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+        Delete
       </button>
     </div>
-    <button id="optCancelBtn" style="width: 100%; padding: 15px; background: transparent; color: #9aa0a6; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 14px;">Cancel</button>
+    <button id="optCancelBtn" style="width: 100%; padding: 15px; background: transparent; color: #9aa0a6; border: none; border-radius: 12px; font-weight: bold; font-size: 14px; cursor: pointer; background: rgba(255,255,255,0.05); transition: 0.2s;">
+      Cancel
+    </button>
   </div>
 </div>
 
@@ -539,6 +555,10 @@
         <div style="display: flex; gap: 8px;">
           <button id="chatImageBtn" title="Send Image" style="background: transparent; border: 1px solid #9b59b6; color: #9b59b6; padding: 4px 8px; border-radius: 6px; cursor: pointer; display: flex; align-items: center;">
             <svg style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+          </button>
+          <button id="voiceReplyBtn" title="Toggle Voice Reply" style="background: transparent; border: 1px solid #9b59b6; color: #00e5ff; padding: 4px 8px; border-radius: 6px; cursor: pointer; display: flex; align-items: center;">
+            <svg id="voiceOnIcon" style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2;" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+            <svg id="voiceOffIcon" style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; display: none;" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
           </button>
           <button id="openProfileBtn" title="My Profile" style="background: transparent; border: 1px solid #9b59b6; color: #9b59b6; padding: 4px 8px; border-radius: 6px; cursor: pointer; display: flex; align-items: center;">
             <svg style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
@@ -616,7 +636,6 @@
       </h3>
       <div class="quote-text" id="dailyQuoteText">Loading...</div>
 
-      <!-- নতুন বাটন -->
       <div id="quoteActionContainer" style="display: flex; gap: 10px; justify-content: center; margin-top: 12px;">
         <button id="nextQuoteBtn" style="flex: 1; padding: 12px; background: #1a1f2e; color: #00e5ff; border: 1px solid #00e5ff; border-radius: 10px; font-weight: bold; font-size: 14px; cursor: pointer;">Next Text</button>
         <button id="saveQuoteBtn" style="flex: 1; padding: 12px; background: linear-gradient(135deg, #4a9eff, #2a7fdb); color: white; border: none; border-radius: 10px; font-weight: bold; font-size: 14px; cursor: pointer;">Save</button>
@@ -810,50 +829,34 @@
         <p style="color: #c3c9d1; font-size: 13px; line-height: 1.6;">• <b>Voice Input:</b> Click the Mic icon and speak in any language.<br>• <b>📷 Send Photos:</b> Click the Image icon to send a photo to AI.<br>• <b>AI Reviews:</b> Get your Weekly & Monthly progress analyzed by the AI.</p>
       </div>
     </div>
-    <!-- 👇 এই অংশটুকু যোগ করুন 👇 -->
-<div style="display: flex; gap: 15px; background: #0f1419; padding: 18px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #2a3142; align-items: flex-start;">
-  <div style="background: rgba(74, 170, 74, 0.15); width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0;">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4aaa4a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
-  </div>
-  <div>
-    <h3 style="color: #ffffff; font-size: 16px; margin-bottom: 8px;">4. Heatmap & Edits</h3>
-    <p style="color: #c3c9d1; font-size: 13px; line-height: 1.6;">
-      • <b>Heatmap:</b> Each box represents a day. Complete all habits to make it glow Aqua.<br>
-      • <b>Past Edit:</b> Tap on any past box in the heatmap to open that day and edit it.
-    </p>
-  </div>
-</div>
-
-<div style="display: flex; gap: 15px; background: #0f1419; padding: 18px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #2a3142; align-items: flex-start;">
-  <div style="background: rgba(241, 196, 15, 0.15); width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0;">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f1c40f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg>
-  </div>
-  <div>
-    <h3 style="color: #ffffff; font-size: 16px; margin-bottom: 8px;">5. Progress & Charts</h3>
-    <p style="color: #c3c9d1; font-size: 13px; line-height: 1.6;">
-      • <b>Extras & Insights:</b> Opens the dashboard where you can see your Weekly Line Chart and 7-Day Habits bar.<br>
-      • <b>Day Streak:</b> Tracks how many consecutive days you completed 100% of your habits.<br>
-      • <b>Quick Actions:</b> Use the Blue check to mark all done, and Black reset to uncheck.
-    </p>
-  </div>
-</div>
-
-<div style="display: flex; gap: 15px; background: #0f1419; padding: 18px; border-radius: 12px; margin-bottom: 25px; border: 1px solid #2a3142; align-items: flex-start;">
-  <div style="background: rgba(214, 161, 240, 0.15); width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0;">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d6a1f0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-  </div>
-  <div>
-    <h3 style="color: #ffffff; font-size: 16px; margin-bottom: 8px;">6. Sleep & Backup</h3>
-    <p style="color: #c3c9d1; font-size: 13px; line-height: 1.6;">
-      • <b>Sleep Tracker:</b> Log your sleep to see your Brain State. (Locked until challenge starts).<br>
-      • <b>Backup:</b> Always export your data from Settings so you don't lose progress.
-    </p>
-  </div>
-</div>
-<!-- 👆 এই অংশটুকু শেষ 👆 -->
-
-<button id="introClose" style="width: 100%; padding: 16px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; background: linear-gradient(135deg, #00e5ff, #0088cc); color: #05080f; font-size: 16px; box-shadow: 0 4px 15px rgba(0, 229, 255, 0.3);">Got It! Let's Start</button>
-  
+    <div style="display: flex; gap: 15px; background: #0f1419; padding: 18px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #2a3142; align-items: flex-start;">
+      <div style="background: rgba(74, 170, 74, 0.15); width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4aaa4a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </div>
+      <div>
+        <h3 style="color: #ffffff; font-size: 16px; margin-bottom: 8px;">4. Heatmap & Edits</h3>
+        <p style="color: #c3c9d1; font-size: 13px; line-height: 1.6;">• <b>Heatmap:</b> Each box represents a day. Complete all habits to make it glow Aqua.<br>• <b>Past Edit:</b> Tap on any past box in the heatmap to open that day and edit it.</p>
+      </div>
+    </div>
+    <div style="display: flex; gap: 15px; background: #0f1419; padding: 18px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #2a3142; align-items: flex-start;">
+      <div style="background: rgba(241, 196, 15, 0.15); width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f1c40f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg>
+      </div>
+      <div>
+        <h3 style="color: #ffffff; font-size: 16px; margin-bottom: 8px;">5. Progress & Charts</h3>
+        <p style="color: #c3c9d1; font-size: 13px; line-height: 1.6;">• <b>Extras & Insights:</b> Opens the dashboard where you can see your Weekly Line Chart and 7-Day Habits bar.<br>• <b>Day Streak:</b> Tracks how many consecutive days you completed 100% of your habits.<br>• <b>Quick Actions:</b> Use the Blue check to mark all done, and Black reset to uncheck.</p>
+      </div>
+    </div>
+    <div style="display: flex; gap: 15px; background: #0f1419; padding: 18px; border-radius: 12px; margin-bottom: 25px; border: 1px solid #2a3142; align-items: flex-start;">
+      <div style="background: rgba(214, 161, 240, 0.15); width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d6a1f0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </div>
+      <div>
+        <h3 style="color: #ffffff; font-size: 16px; margin-bottom: 8px;">6. Sleep & Backup</h3>
+        <p style="color: #c3c9d1; font-size: 13px; line-height: 1.6;">• <b>Sleep Tracker:</b> Log your sleep to see your Brain State. (Locked until challenge starts).<br>• <b>Backup:</b> Always export your data from Settings so you don't lose progress.</p>
+      </div>
+    </div>
+    <button id="introClose" style="width: 100%; padding: 16px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; background: linear-gradient(135deg, #00e5ff, #0088cc); color: #05080f; font-size: 16px; box-shadow: 0 4px 15px rgba(0, 229, 255, 0.3);">Got It! Let's Start</button>
   </div>
 </div>
 
@@ -1122,6 +1125,19 @@
   </div>
 </div>
 
+<!-- ChatGPT Style Voice Pop-up -->
+<div id="voicePopupModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 10000; align-items: flex-end; justify-content: center;">
+  <div style="background: #1a1f2e; width: 100%; max-width: 500px; border-radius: 30px 30px 0 0; padding: 30px 20px; display: flex; flex-direction: column; align-items: center; min-height: 350px; box-shadow: 0 -10px 40px rgba(0,0,0,0.5); border-top: 1px solid #2a3142;">
+    <div style="flex: 1; display: flex; align-items: center; justify-content: center; width: 100%;">
+      <div id="voiceVisualizer" style="width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, #9b59b6, #4a9eff); transition: transform 0.1s ease-out, box-shadow 0.1s ease-out; box-shadow: 0 0 30px rgba(155, 89, 182, 0.5); display: flex; align-items: center; justify-content: center;">
+        <svg id="voiceVisualizerIcon" style="width: 50px; height: 50px; stroke: white; fill: none; stroke-width: 2;" viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg>
+      </div>
+    </div>
+    <p id="voicePopupStatus" style="color: #e8eaed; font-size: 16px; font-weight: 600; margin-bottom: 25px;">Listening...</p>
+    <button id="closeVoicePopupBtn" style="width: 100%; padding: 15px; background: #2a3142; color: #ff6b4a; border: none; border-radius: 15px; font-size: 16px; font-weight: bold; cursor: pointer;">Cancel</button>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
@@ -1167,9 +1183,10 @@ function showLoader(text = "Loading...", duration = 700) {
 // ============================================================
 // 📦 STATE
 // ============================================================
+let isVoiceReplyOn = true;
 let chatHistory = JSON.parse(localStorage.getItem("gritgo_chat_history")) || [];
 let userProfile = JSON.parse(localStorage.getItem("gritgo_user_profile")) || { name: "", age: "", bio: "" };
-let challengeData = { title: "", duration: 0, startDate: "", motivation: "", habits: [], habitLogs: {}, notes: {}, moods: {}, dayStart: "05:00", dayEnd: "21:00" };
+let challengeData = { title: "", duration: 0, startDate: "", motivation: "", habits: [], habitLogs: {}, notes: {}, moods: {}, journalReplies: {}, dayStart: "05:00", dayEnd: "21:00" };
 
 let sleepState = { weekStartDate: getDateKey(), days: [null, null, null, null, null, null, null] };
 const savedSleep = localStorage.getItem("gritgo_sleep_state");
@@ -1326,16 +1343,11 @@ themeToggleBtn.addEventListener("click", () => {
 // ============================================================
 // 🔙 HISTORY API (FIXING BACK BUTTON)
 // ============================================================
-// অ্যাপ ওপেন হলে ইনিশিয়াল স্টেট পুশ করা
 history.pushState({ page: "main" }, "");
-
-// ফোনের ব্যাক বাটনে ক্লিক করলে মডাল বন্ধ হবে, অ্যাপ থেকে বের হবে না
 window.addEventListener("popstate", function (event) {
   const openModals = document.querySelectorAll('.modal-overlay.active');
   if (openModals.length > 0) {
-    // সব ওপেন মডাল বন্ধ করুন
     openModals.forEach(modal => modal.classList.remove('active'));
-    // আবার স্টেট পুশ করুন যাতে অ্যাপ বন্ধ না হয়ে যায়
     history.pushState({ page: "main" }, "");
   }
 });
@@ -1352,7 +1364,7 @@ document.getElementById("setupSaveButton").addEventListener("click", function ()
   const dayEnd = document.getElementById("setupDayEnd").value || "21:00";
   if (!title || !duration || !startDate) { showToast("Please fill required fields"); return; }
   if (startDate < getLiteralDateKey()) { showToast("Start Date cannot be in the past!"); return; }
-  challengeData = { title, duration, startDate, motivation: motivation || "Show up again.", habits: [], habitLogs: {}, notes: {}, moods: {}, dayStart, dayEnd };
+  challengeData = { title, duration, startDate, motivation: motivation || "Show up again.", habits: [], habitLogs: {}, notes: {}, moods: {}, journalReplies: {}, dayStart, dayEnd };
   localStorage.setItem("challengeData", JSON.stringify(challengeData));
   startMainApp();
 });
@@ -1446,7 +1458,7 @@ if (!localStorage.getItem("gritgo_intro_seen")) {
 }
 
 // ============================================================
-// 🎯 MODAL OPENERS (Safe with try/catch)
+// 🎯 MODAL OPENERS
 // ============================================================
 document.getElementById("openTrackerBtn").addEventListener("click", async () => {
   await showLoader("Loading Tracker...", 500);
@@ -1455,9 +1467,7 @@ document.getElementById("openTrackerBtn").addEventListener("click", async () => 
     renderSleepTracker();
     renderWeeklyProgress();
     resetSleepButtons();
-  } catch (error) {
-    console.error("Error in Tracker:", error);
-  }
+  } catch (error) { console.error("Error in Tracker:", error); }
 });
 document.getElementById("trackerClose").addEventListener("click", () => document.getElementById("trackerModal").classList.remove("active"));
 
@@ -1582,6 +1592,7 @@ document.getElementById("restoreFromTextBtn").onclick = () => {
   if (!challengeData.habitLogs) challengeData.habitLogs = {};
   if (!challengeData.dayStart) challengeData.dayStart = "05:00";
   if (!challengeData.dayEnd) challengeData.dayEnd = "21:00";
+  if (!challengeData.journalReplies) challengeData.journalReplies = {};
   localStorage.setItem("challengeData", JSON.stringify(challengeData));
   showToast("Restored!");
   setTimeout(() => location.reload(), 1200);
@@ -2274,27 +2285,6 @@ const motivationQuotes = [
   "If you look at what you have in life, you'll always have more.",
   "If you set your goals ridiculously high and it's a failure, you will fail above everyone else's success.",
   "Life is what happens when you're busy making other plans.",
-  "Spread love everywhere you go. Let no one ever come to you without leaving happier.",
-  "When you reach the end of your rope, tie a knot in it and hang on.",
-  "Always remember that you are absolutely unique. Just like everyone else.",
-  "Don't judge each day by the harvest you reap but by the seeds that you plant.",
-  "The future belongs to those who believe in the beauty of their dreams.",
-  "Tell me and I forget. Teach me and I remember. Involve me and I learn.",
-  "The best and most beautiful things in the world cannot be seen or even touched — they must be felt with the heart.",
-  "It is during our darkest moments that we must focus to see the light.",
-  "Whoever is happy will make others happy too.",
-  "Do not go where the path may lead, go instead where there is no path and leave a trail.",
-  "You will face many defeats in life, but never let yourself be defeated.",
-  "The greatest glory in living lies not in never falling, but in rising every time we fall.",
-  "In the end, it's not the years in your life that count. It's the life in your years.",
-  "Never let the fear of striking out keep you from playing the game.",
-  "Life is either a daring adventure or nothing at all.",
-  "Many of life's failures are people who did not realize how close they were to success when they gave up.",
-  "You have brains in your head. You have feet in your shoes. You can steer yourself any direction you choose.",
-  "If life were predictable it would cease to be life, and be without flavor.",
-  "If you look at what you have in life, you'll always have more.",
-  "If you set your goals ridiculously high and it's a failure, you will fail above everyone else's success.",
-  "Life is what happens when you're busy making other plans.",
   "The only thing we have to fear is fear itself.",
   "Darkness cannot drive out darkness: only light can do that. Hate cannot drive out hate: only love can do that.",
   "Do one thing every day that scares you.",
@@ -2340,7 +2330,6 @@ const motivationQuotes = [
   "Some people want it to happen, some wish it would happen, others make it happen.",
   "I’ve missed more than 9000 shots in my career. I’ve lost almost 300 games. 26 times, I’ve been trusted to take the game winning shot and missed. I’ve failed over and over and over again in my life. And that is why I succeed.",
   "Talent wins games, but teamwork and intelligence win championships.",
-  "I can accept failure, everyone fails at something. But I can't accept not trying.",
   "Everything negative - pressure, challenges - is all an opportunity for me to rise.",
   "The most important thing is you must put everybody on notice that you're here and you're for real.",
   "If you do the work you get rewarded. There are no shortcuts in life.",
@@ -2391,12 +2380,9 @@ const motivationQuotes = [
   "If you really want to do something, you'll find a way. If you don't, you'll find an excuse.",
   "There are no rules here - we're trying to accomplish something.",
   "The best way to get started is to quit talking and begin doing.",
-  "There are no secrets to success. It is the result of preparation, hard work, and learning from failure.",
   "There is no substitute for hard work.",
   "Failure is simply the opportunity to begin again, this time more intelligently.",
   "The three great essentials to achieve anything worthwhile are: Hard work, Stick-to-itiveness, and Common sense.",
-  "I have not failed. I've just found 10,000 ways that won't work.",
-  "There is no substitute for hard work.",
   "Opportunity is missed by most people because it is dressed in overalls and looks like work.",
   "Genius is one percent inspiration and ninety-nine percent perspiration.",
   "The chief danger in life is that you may take too many precautions.",
@@ -2415,36 +2401,36 @@ const motivationQuotes = [
   "The only place where success comes before work is in the dictionary.",
   "Don't let the fear of losing be greater than the excitement of winning.",
   "Success is not just about making money. It's about making a difference.",
-  "The only way to do great work is to love what you do.",
   "Your work is going to fill a large part of your life, and the only way to be truly satisfied is to do what you believe is great work. And the only way to do great work is to love what you do. If you haven't found it yet, keep looking. Don't settle.",
   "Innovation distinguishes between a leader and a follower.",
   "Sometimes when you innovate, you make mistakes. It is best to admit them quickly, and get on with improving your other innovations.",
   "Design is not just what it looks like and feels like. Design is how it works.",
   "Being the richest man in the cemetery doesn't matter to me. Going to bed at night saying we've done something wonderful... that's what matters to me.",
   "Remembering that you are going to die is the best way I know to avoid the trap of thinking you have something to lose.",
-  "Your time is limited, so don't waste it living someone else's life.",
   "Stay hungry, stay foolish."
 ];
 
 let currentQuoteText = "";
 
-function showRandomQuote() {
+function showDailyQuote() {
+  const currentDay = getCurrentDayNumber(); 
+  const index = (currentDay - 1) % motivationQuotes.length; 
+  
+  currentQuoteText = motivationQuotes[index];
+  const quoteEl = document.getElementById("dailyQuoteText");
+  if (quoteEl) quoteEl.textContent = `"${currentQuoteText}"`;
+}
+
+document.getElementById("nextQuoteBtn")?.addEventListener("click", () => {
   let newQuote;
   do {
     newQuote = motivationQuotes[Math.floor(Math.random() * motivationQuotes.length)];
   } while (newQuote === currentQuoteText && motivationQuotes.length > 1);
   
   currentQuoteText = newQuote;
-  const quoteEl = document.getElementById("dailyQuoteText");
-  if (quoteEl) quoteEl.textContent = `"${currentQuoteText}"`;
-}
-
-// Next Text বাটনের কাজ
-document.getElementById("nextQuoteBtn")?.addEventListener("click", () => {
-  showRandomQuote();
+  document.getElementById("dailyQuoteText").textContent = `"${currentQuoteText}"`;
 });
 
-// Save বাটনের কাজ
 document.getElementById("saveQuoteBtn")?.addEventListener("click", () => {
   const todayKey = getDateKey();
   localStorage.setItem("gritgo_saved_quote", JSON.stringify({ date: todayKey, text: currentQuoteText }));
@@ -2466,20 +2452,17 @@ function renderExtras() {
   document.getElementById("overallProgressFill").style.width = progressPercent + "%";
   document.getElementById("overallProgressText").textContent = progressText;
 
-  // পুরোনো কোট লোড করা অথবা নতুন দেখানো
   const todayKeyForQuote = getDateKey();
   const savedQuoteData = JSON.parse(localStorage.getItem("gritgo_saved_quote")) || {};
   const quoteActionContainer = document.getElementById("quoteActionContainer");
 
   if (savedQuoteData.date === todayKeyForQuote && savedQuoteData.text) {
-    // আজকের কোট সেভ করা থাকলে বাটন লুকিয়ে যাবে
     document.getElementById("dailyQuoteText").textContent = `"${savedQuoteData.text}"`;
     quoteActionContainer.style.display = "none";
   } else {
-    // সেভ না থাকলে বাটন দেখাবে
     quoteActionContainer.style.display = "flex";
     if (!currentQuoteText) {
-      showRandomQuote();
+      showDailyQuote();
     } else {
       document.getElementById("dailyQuoteText").textContent = `"${currentQuoteText}"`;
     }
@@ -2532,30 +2515,26 @@ function renderExtras() {
       btn.style.background = '#1a1f2e';
     }
   });
-  // 👇 Journal চেক এবং রেন্ডার লজিক (renderExtras এর ভেতরে সবার শেষে যোগ করুন) 👇
-const journalKey = getDateKey();
-const journalInput = document.getElementById("dailyJournalInput");
-const journalBtn = document.getElementById("saveJournalBtn");
-const journalResp = document.getElementById("journalAiResponse");
 
-if (challengeData.notes && challengeData.notes[journalKey]) {
-  // আজকের নোট আগেই সেভ করা আছে
-  journalInput.value = challengeData.notes[journalKey];
-  journalInput.disabled = true; 
-  journalBtn.style.display = "none"; // বাটন লুকিয়ে যাবে
-  
-  // আগের সেভ করা AI রিপ্লাই দেখাবে
-  const savedReply = (challengeData.journalReplies && challengeData.journalReplies[journalKey]) || "Note Saved";
-  journalResp.textContent = savedReply;
-  journalResp.style.display = "block";
-} else {
-  // আজকের নোট এখনো সেভ করা হয়নি
-  journalInput.value = "";
-  journalInput.disabled = false;
-  journalBtn.style.display = "block"; // বাটন দেখা যাবে
-  journalResp.style.display = "none";
-}
-// 👆 Journal চেক শেষ 👆
+  const journalKey = getDateKey();
+  const journalInput = document.getElementById("dailyJournalInput");
+  const journalBtn = document.getElementById("saveJournalBtn");
+  const journalResp = document.getElementById("journalAiResponse");
+
+  if (challengeData.notes && challengeData.notes[journalKey]) {
+    journalInput.value = challengeData.notes[journalKey];
+    journalInput.disabled = true; 
+    journalBtn.style.display = "none"; 
+    
+    const savedReply = (challengeData.journalReplies && challengeData.journalReplies[journalKey]) || "Note Saved! Have a great day.";
+    journalResp.textContent = savedReply;
+    journalResp.style.display = "block";
+  } else {
+    journalInput.value = "";
+    journalInput.disabled = false;
+    journalBtn.style.display = "block"; 
+    journalResp.style.display = "none";
+  }
 }
 
 document.querySelectorAll('.mood-btn').forEach(btn => {
@@ -2583,14 +2562,13 @@ document.getElementById("saveJournalBtn").addEventListener("click", async () => 
   
   const todayKey = getDateKey();
   if (!challengeData.notes) challengeData.notes = {};
-  if (!challengeData.journalReplies) challengeData.journalReplies = {}; // নতুন জিনিস
+  if (!challengeData.journalReplies) challengeData.journalReplies = {};
   
   challengeData.notes[todayKey] = txt;
   localStorage.setItem("challengeData", JSON.stringify(challengeData));
   
-  // বাটন এবং ইনপুট বক্স লুকিয়ে ফেলা
   document.getElementById("saveJournalBtn").style.display = "none";
-  document.getElementById("dailyJournalInput").disabled = true; // ইনপুট ডিজেবল করে দেওয়া (ঐচ্ছিক)
+  document.getElementById("dailyJournalInput").disabled = true; 
   
   const respEl = document.getElementById("journalAiResponse");
   respEl.style.display = "block";
@@ -2598,13 +2576,12 @@ document.getElementById("saveJournalBtn").addEventListener("click", async () => 
   
   try {
     const reply = await callGroq([
-      { role: 'system', content: `You are a supportive habit coach inside GRITGO app. User: ${userProfile.name || "Unknown"}. Give short (2-3 sentences) motivation based on their journal entry. No emojis.` },
+      { role: 'system', content: `You are a supportive habit coach inside GRITGO app. User: ${userProfile.name || "Unknown"}. Give short (2-3 sentences) motivation based on their journal entry. Use all emojis.` },
       { role: 'user', content: txt }
     ], { temperature: 0.7, max_tokens: 200 });
     
     respEl.textContent = reply;
     
-    // AI রিপ্লাই সেভ করে রাখা
     challengeData.journalReplies[todayKey] = reply;
     localStorage.setItem("challengeData", JSON.stringify(challengeData));
     
@@ -2702,7 +2679,7 @@ async function generateAIReview(type) {
 - Moods:\n${moodsToRead.join("\n")}
 - Notes:\n${notesToRead.join("\n") || "None"}
 
-Give a ${type} review with sections: 1) Summary 2) What went well 3) Struggles 4) Mood vs Habits 5) Advice. Keep it short and motivating. use all emojis.`;
+Give a ${type} review with sections: 1) Summary 2) What went well 3) Struggles 4) Mood vs Habits 5) Advice. Keep it short and motivating. Use all emojis.`;
   try {
     const reply = await callGroq([
       { role: 'system', content: `You are a strict but encouraging habit coach and psychologist inside GRITGO app. Challenge: "${challengeData.title}".` },
@@ -2796,7 +2773,7 @@ window.startCustomTimer = startCustomTimer;
 window.stopTimer = stopTimer;
 
 // ============================================================
-// 😴 SLEEP TRACKER (Protected with try/catch)
+// 😴 SLEEP TRACKER
 // ============================================================
 const brainIcons = {
   empty: `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"></path><path d="M12 12 2.1 12"></path><path d="M12 12 18.5 18.5"></path></svg>`,
@@ -2852,9 +2829,7 @@ function renderSleepTracker() {
     }
     document.getElementById("sleepInputSection").style.display = sleepState.days[currentIndex] !== null ? "none" : "block";
     resetSleepButtons();
-  } catch(e) {
-    console.error("Tracker Render Error:", e);
-  }
+  } catch(e) { console.error("Tracker Render Error:", e); }
 }
 
 let selectedSleepHours = null;
@@ -3004,7 +2979,7 @@ document.getElementById("congratsThankBtn").addEventListener("click", () => {
 });
 
 // ============================================================
-// 💬 AI CHAT
+// 💬 AI CHAT & VOICE SYSTEM
 // ============================================================
 const chatInput = document.getElementById("aiQuestionInput");
 const voiceLangSelect = document.getElementById("voiceLangSelect");
@@ -3037,6 +3012,238 @@ document.querySelectorAll(".lang-option").forEach(option => {
 document.addEventListener("click", (e) => {
   if (!langTrigger.contains(e.target) && !langMenu.contains(e.target)) langMenu.classList.remove("open");
 });
+
+// Text to Speech (AI Voice Reply)
+const voiceReplyBtn = document.getElementById("voiceReplyBtn");
+const voiceOnIcon = document.getElementById("voiceOnIcon");
+const voiceOffIcon = document.getElementById("voiceOffIcon");
+
+function updateVoiceBtnUI() {
+  if (isVoiceReplyOn) {
+    voiceOnIcon.style.display = "block";
+    voiceOffIcon.style.display = "none";
+    voiceReplyBtn.style.color = "#00e5ff";
+    voiceReplyBtn.style.borderColor = "#00e5ff";
+  } else {
+    voiceOnIcon.style.display = "none";
+    voiceOffIcon.style.display = "block";
+    voiceReplyBtn.style.color = "#9b59b6";
+    voiceReplyBtn.style.borderColor = "#9b59b6";
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+  }
+}
+updateVoiceBtnUI();
+
+voiceReplyBtn.addEventListener("click", () => {
+  isVoiceReplyOn = !isVoiceReplyOn;
+  localStorage.setItem("gritgo_voice_reply", isVoiceReplyOn);
+  updateVoiceBtnUI();
+  showToast(isVoiceReplyOn ? "AI Voice ON" : "AI Voice OFF");
+});
+
+// ✅ Voice Preload: ব্রাউজারে voice গুলো async লোড হয়
+if (window.speechSynthesis) {
+  window.speechSynthesis.getVoices();
+  window.speechSynthesis.onvoiceschanged = () => {
+    window.speechSynthesis.getVoices();
+  };
+}
+
+// ✅ FIXED: speakText - Read Loud আলাদা ফিচার, isVoiceReplyOn এর সাথে conflict নেই
+function speakText(text) {
+  if (!window.speechSynthesis) {
+    showToast("Voice not supported on this browser");
+    return;
+  }
+  window.speechSynthesis.cancel();
+
+  const cleanText = String(text || "").replace(/[*#_`]/g, "").replace(/\[.*?\]/g, "");
+  if (!cleanText.trim()) return;
+
+  const utterance = new SpeechSynthesisUtterance(cleanText);
+  const selectedLang = (document.getElementById("voiceLangSelect")?.value) || "en-US";
+  utterance.lang = selectedLang;
+
+  const voices = window.speechSynthesis.getVoices();
+  let preferredVoice = voices.find(v => v.lang === selectedLang);
+  if (!preferredVoice) {
+    preferredVoice = voices.find(v => v.lang.startsWith(selectedLang.split("-")[0]));
+  }
+  if (preferredVoice) utterance.voice = preferredVoice;
+
+  playAIVoiceAnimation();
+
+  utterance.onend = () => stopAIVoiceAnimation();
+  utterance.onerror = () => stopAIVoiceAnimation();
+
+  window.speechSynthesis.speak(utterance);
+}
+
+// Voice Popup & Recognition Logic
+const chatVoiceBtn = document.getElementById("chatVoiceBtn");
+const voicePopupModal = document.getElementById("voicePopupModal");
+const closeVoicePopupBtn = document.getElementById("closeVoicePopupBtn");
+const voiceVisualizer = document.getElementById("voiceVisualizer");
+const voiceVisualizerIcon = document.getElementById("voiceVisualizerIcon");
+const voicePopupStatus = document.getElementById("voicePopupStatus");
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+let pressTimer;
+let isLongPressAction = false;
+let mediaStream = null;
+let audioContext = null;
+let analyser = null;
+let animationFrameId = null;
+let recognition = null;
+let longPressRecognition = null;
+
+if (SpeechRecognition) {
+  recognition = new SpeechRecognition();
+  recognition.continuous = false;
+  recognition.interimResults = false;
+  recognition.onresult = (event) => {
+    const transcript = event.results[0][0].transcript;
+    if (voicePopupModal.classList.contains("active")) {
+      voicePopupStatus.textContent = "Thinking...";
+      closeVoicePopup();
+      chatInput.value = transcript;
+      setTimeout(() => { document.getElementById("askAiBtn").click(); }, 200);
+    } else {
+      chatInput.value = transcript;
+    }
+  };
+  recognition.onerror = (event) => {
+    chatVoiceBtn.classList.remove("listening");
+    if (event.error !== "aborted" && event.error !== "no-speech") showToast("Voice Error: " + event.error);
+  };
+  recognition.onend = () => {
+    chatVoiceBtn.classList.remove("listening");
+    if (voicePopupModal && voicePopupModal.classList.contains("active") && voicePopupStatus.textContent === "Listening...") {
+       closeVoicePopup(); 
+    }
+  };
+} else {
+  chatVoiceBtn.style.display = "none";
+}
+
+chatVoiceBtn.addEventListener("pointerdown", (e) => {
+  e.preventDefault();
+  isLongPressAction = false;
+  pressTimer = setTimeout(() => {
+    isLongPressAction = true;
+    navigator.vibrate?.(50);
+    startLongPressRecord();
+  }, 500);
+});
+
+chatVoiceBtn.addEventListener("pointerup", (e) => {
+  e.preventDefault();
+  clearTimeout(pressTimer);
+  if (!isLongPressAction) {
+    openVoicePopup();
+  } else {
+    stopLongPressRecord();
+  }
+});
+
+chatVoiceBtn.addEventListener("pointercancel", () => {
+  clearTimeout(pressTimer);
+  if (isLongPressAction) stopLongPressRecord();
+});
+
+async function openVoicePopup() {
+  voicePopupModal.classList.add("active");
+  voicePopupStatus.textContent = "Listening...";
+  voiceVisualizerIcon.style.display = "block";
+  voiceVisualizer.className = ""; 
+  
+  try {
+    mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    analyser = audioContext.createAnalyser();
+    const source = audioContext.createMediaStreamSource(mediaStream);
+    source.connect(analyser);
+    analyser.fftSize = 256;
+    const dataArray = new Uint8Array(analyser.frequencyBinCount);
+    
+    function animateMic() {
+      analyser.getByteFrequencyData(dataArray);
+      let sum = 0;
+      for (let i = 0; i < dataArray.length; i++) sum += dataArray[i];
+      let average = sum / dataArray.length;
+      let scale = 1 + (average / 128) * 1.5; 
+      voiceVisualizer.style.transform = `scale(${scale})`;
+      animationFrameId = requestAnimationFrame(animateMic);
+    }
+    animateMic();
+    
+    if (recognition) {
+      recognition.lang = voiceLangSelect.value || "en-US";
+      recognition.start();
+    }
+  } catch (err) {
+    showToast("Microphone access denied or error!");
+    closeVoicePopup();
+  }
+}
+
+function closeVoicePopup() {
+  voicePopupModal.classList.remove("active");
+  if (animationFrameId) cancelAnimationFrame(animationFrameId);
+  if (mediaStream) mediaStream.getTracks().forEach(track => track.stop());
+  if (audioContext && audioContext.state !== "closed") audioContext.close();
+  voiceVisualizer.style.transform = "scale(1)";
+  if (recognition) recognition.stop();
+}
+
+closeVoicePopupBtn.addEventListener("click", closeVoicePopup);
+
+function startLongPressRecord() {
+  chatVoiceBtn.classList.add("listening");
+  chatInput.placeholder = "Speak now (Release to insert)...";
+  
+  if (SpeechRecognition) {
+    longPressRecognition = new SpeechRecognition();
+    longPressRecognition.continuous = true;
+    longPressRecognition.interimResults = true;
+    longPressRecognition.lang = voiceLangSelect.value || "en-US";
+
+    let initialText = chatInput.value;
+
+    longPressRecognition.onresult = (event) => {
+      let interimTranscript = '';
+      let finalTranscript = '';
+      for (let i = event.resultIndex; i < event.results.length; ++i) {
+        if (event.results[i].isFinal) finalTranscript += event.results[i][0].transcript;
+        else interimTranscript += event.results[i][0].transcript;
+      }
+      chatInput.value = initialText + finalTranscript + interimTranscript;
+      chatInput.style.height = "40px";
+      chatInput.style.height = chatInput.scrollHeight + "px";
+    };
+    longPressRecognition.start();
+  }
+}
+
+function stopLongPressRecord() {
+  chatVoiceBtn.classList.remove("listening");
+  chatInput.placeholder = "Type a message...";
+  if (longPressRecognition) {
+    longPressRecognition.stop();
+  }
+}
+
+function playAIVoiceAnimation() {
+  voicePopupModal.classList.add("active");
+  voicePopupStatus.textContent = "AI is speaking...";
+  voiceVisualizerIcon.style.display = "none";
+  voiceVisualizer.className = "pulse-ai";
+}
+
+function stopAIVoiceAnimation() {
+  voiceVisualizer.className = "";
+  closeVoicePopup();
+}
 
 function renderChatMessages() {
   const container = document.getElementById("miniChatHistory");
@@ -3084,10 +3291,16 @@ let selectedMessageIndex = -1;
 function openMsgOptions(index, role, hasImage) {
   selectedMessageIndex = index;
   msgOptionsModal.classList.add("active");
+  
   const editBtn = document.getElementById("optEditBtn");
+  const readLoudBtn = document.getElementById("optReadLoudBtn");
+
   editBtn.style.display = (role === 'user' && !hasImage) ? "flex" : "none";
+  readLoudBtn.style.display = (role === 'assistant') ? "flex" : "none";
 }
+
 document.getElementById("optCancelBtn").addEventListener("click", () => msgOptionsModal.classList.remove("active"));
+
 document.getElementById("optCopyBtn").addEventListener("click", async () => {
   if (selectedMessageIndex !== -1) {
     try { await navigator.clipboard.writeText(chatHistory[selectedMessageIndex].content); showToast("Copied!"); }
@@ -3095,6 +3308,17 @@ document.getElementById("optCopyBtn").addEventListener("click", async () => {
   }
   msgOptionsModal.classList.remove("active");
 });
+
+document.getElementById("optReadLoudBtn").addEventListener("click", () => {
+  if (selectedMessageIndex !== -1) {
+    const msg = chatHistory[selectedMessageIndex];
+    if (msg.content) {
+      speakText(msg.content);
+    }
+  }
+  msgOptionsModal.classList.remove("active");
+});
+
 document.getElementById("optEditBtn").addEventListener("click", () => {
   if (selectedMessageIndex !== -1) {
     const msg = chatHistory[selectedMessageIndex];
@@ -3109,6 +3333,7 @@ document.getElementById("optEditBtn").addEventListener("click", () => {
   }
   msgOptionsModal.classList.remove("active");
 });
+
 document.getElementById("optDeleteBtn").addEventListener("click", () => {
   if (selectedMessageIndex !== -1) {
     chatHistory.splice(selectedMessageIndex, 1);
@@ -3118,7 +3343,6 @@ document.getElementById("optDeleteBtn").addEventListener("click", () => {
   }
   msgOptionsModal.classList.remove("active");
 });
-
 document.getElementById("clearChatBtn").addEventListener("click", () => document.getElementById("clearChatModal").classList.add("active"));
 document.getElementById("clearChatCancel").addEventListener("click", () => document.getElementById("clearChatModal").classList.remove("active"));
 document.getElementById("clearChatConfirm").addEventListener("click", () => {
@@ -3223,27 +3447,79 @@ document.getElementById("askAiBtn").addEventListener("click", async () => {
   container.scrollTop = container.scrollHeight;
 
   try {
+    const todayKeyForAI = getDateKey();
+    const todayLog = challengeData.habitLogs[todayKeyForAI] || {};
+    const totalHabits = challengeData.habits.length;
+    const challengeDay = getCurrentDayNumber();
+    
+    const completedHabitsList = challengeData.habits.filter(h => todayLog[h.id] === true).map(h => h.name);
+    const missedHabitsList = challengeData.habits.filter(h => todayLog[h.id] !== true).map(h => h.name);
+    
+    const todayNote = challengeData.notes[todayKeyForAI] || "No note saved today.";
+    const savedQuoteForAI = JSON.parse(localStorage.getItem("gritgo_saved_quote")) || {};
+    let todayQuote = "";
+    if (savedQuoteForAI.date === todayKeyForAI && savedQuoteForAI.text) {
+        todayQuote = savedQuoteForAI.text; 
+    } else {
+        const qIndex = (challengeDay - 1) % motivationQuotes.length;
+        todayQuote = motivationQuotes[qIndex]; 
+    }
+    
+    const waterTodayKey = getWaterDateKey();
+    const todayWater = waterData.logs[waterTodayKey] || 0;
+    const waterGoal = waterData.dailyGoal;
+    const waterMet = todayWater >= waterGoal ? "Yes (Goal Reached)" : "No";
+    
+    let currentSleep = "Not logged today.";
+    const sleepStart = new Date(sleepState.weekStartDate + "T00:00:00");
+    const sleepNow = new Date(todayKeyForAI + "T00:00:00");
+    const sleepDiff = Math.floor(Math.max(0, sleepNow - sleepStart) / (1000 * 60 * 60 * 24));
+    const sleepIndex = Math.min(sleepDiff, 6);
+    if (sleepState.days[sleepIndex] !== null) {
+        currentSleep = sleepState.days[sleepIndex] + " hours";
+    }
+    
+    const todayProgress = document.getElementById("overallStat").textContent;
+
     const systemPrompt = {
       role: 'system',
-      content: `You are a smart, supportive AI Habit Coach inside GRITGO app.
-User profile: Name: ${userProfile.name || "Unknown"}, Age: ${userProfile.age || "Unknown"}, About: ${userProfile.bio || "N/A"}.
-Challenge: "${challengeData.title}" (Day ${getCurrentDayNumber()} of ${challengeData.duration}).
-Habits: ${challengeData.habits.map(h => h.name).join(', ') || 'None'}.
-Current time: ${new Date().toLocaleTimeString()}.
+      content: `You are GRITGO AI Coach, a highly intelligent, versatile, and empathetic AI assistant (similar to ChatGPT). You have full access to the user's daily data and progress in this app. 
+      
+User Profile:
+- Name: ${userProfile.name || "User"}
+- Age: ${userProfile.age || "Unknown"}
+- Bio/Goals: ${userProfile.bio || "Not provided"}
 
-RULES:
-1. Remember their profile and past chats. Be friendly.
-2. Analyze images if sent.
-3. Short, conversational replies. use all emojis.
+Current App Data (Today):
+- Challenge: "${challengeData.title}" (Day ${challengeDay} of ${challengeData.duration})
+- Today's Overall Progress: ${todayProgress}
+- Total Habits: ${totalHabits}
+- Completed Habits Today: ${completedHabitsList.length > 0 ? completedHabitsList.join(", ") : "None"}
+- Missed Habits Today: ${missedHabitsList.length > 0 ? missedHabitsList.join(", ") : "None"}
+- Today's Journal/Note: "${todayNote}"
+- Today's Motivational Quote: ${todayQuote}
+- Water Intake: ${todayWater}L out of ${waterGoal}L goal (Goal Met: ${waterMet})
+- Sleep Logged Today: ${currentSleep}
 
-CRITICAL: If user asks to add habits, reply ONLY with a JSON array:
-[{"action": "add_habit", "name": "...", "category": "General"}]
-Categories: General, Study, Health, Fitness, Work, Mindfulness, Social, Finance, Hobby, Sleep, Morning Routine.
-Include ALL habits. Do not skip any.`
+Instructions:
+1. You are a general-purpose AI like ChatGPT. You can answer ANY question the user asks (coding, general knowledge, life advice, etc.), but ALWAYS relate it back to their goals and habits if relevant.
+2. Be conversational, friendly, and highly intelligent. You can use emojis if it makes the conversation better.
+3. Remember past messages in this conversation.
+4. If the user sends an image, analyze it and give useful insights.
+5. Keep answers concise unless the user specifically asks for a detailed or long explanation.
+
+CRITICAL RULE FOR ADDING HABITS:
+If the user asks to add habits (e.g., "Add habit: Drink water", or provides a list), you MUST reply ONLY with a JSON array like this, and absolutely nothing else:
+[
+  {"action": "add_habit", "name": "Habit 1", "category": "General"},
+  {"action": "add_habit", "name": "Habit 2", "category": "Health"}
+]
+Categories: General, Study, Health, Fitness, Work, Mindfulness, Social, Finance, Hobby, Sleep, Morning Routine.`
     };
     const pastMessages = chatHistory.slice(-10, -1).map(m => ({ role: m.role, content: m.content }));
     const messagesToSend = [systemPrompt, ...pastMessages, { role: 'user', content: userContent }];
-    let aiReply = await callGroq(messagesToSend, { temperature: 0.1, max_tokens: 10000, hasImage });
+    
+    let aiReply = await callGroq(messagesToSend, { temperature: 0.1, max_tokens: 4000, hasImage });
 
     document.getElementById(loadingId)?.remove();
 
@@ -3271,6 +3547,8 @@ Include ALL habits. Do not skip any.`
     chatHistory.push({ role: 'assistant', content: aiReply });
     localStorage.setItem("gritgo_chat_history", JSON.stringify(chatHistory));
     renderChatMessages();
+    speakText(aiReply);
+    
     if (addedHabitsCount > 0) showToast(`${addedHabitsCount} habits added!`);
     pendingImageBase64 = null;
     pendingImageMime = null;
@@ -3294,33 +3572,6 @@ document.getElementById("quickAiHabitBtn").addEventListener("click", () => {
   chatInput.style.height = "40px";
   chatInput.style.height = chatInput.scrollHeight + "px";
 });
-
-const chatVoiceBtn = document.getElementById("chatVoiceBtn");
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-if (SpeechRecognition) {
-  const recognition = new SpeechRecognition();
-  recognition.continuous = false;
-  recognition.interimResults = false;
-  chatVoiceBtn.addEventListener("click", () => {
-    try {
-      recognition.lang = voiceLangSelect.value || "en-US";
-      recognition.start();
-      chatVoiceBtn.classList.add("listening");
-      showToast("Listening...");
-    } catch (e) { showToast("Mic Error: " + e.message); }
-  });
-  recognition.onresult = (event) => {
-    chatInput.value = event.results[0][0].transcript;
-    chatVoiceBtn.classList.remove("listening");
-  };
-  recognition.onerror = (event) => {
-    chatVoiceBtn.classList.remove("listening");
-    if (event.error !== "aborted") showToast("Voice Error: " + event.error);
-  };
-  recognition.onend = () => chatVoiceBtn.classList.remove("listening");
-} else {
-  chatVoiceBtn.style.display = "none";
-}
 
 // ============================================================
 // 💧 WATER TRACKER
@@ -3496,6 +3747,7 @@ if (saved) {
   try {
     challengeData = JSON.parse(saved);
     if (!challengeData.notes) challengeData.notes = {};
+    if (!challengeData.journalReplies) challengeData.journalReplies = {};
     migrateData();
     startMainApp();
   } catch(e) { console.error("Init error:", e); }
