@@ -490,7 +490,7 @@
   <input type="file" id="bgImageInput" accept="image/*" style="display:none;">
 </div>
 
-    <label>outgoing MMessage Bubble</label>
+    <label>outgoing Message Bubble</label>
     
     <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
       <button class="theme-color-btn" data-type="user" data-val="linear-gradient(135deg, #9b59b6, #8e44ad)" style="background:linear-gradient(135deg, #9b59b6, #8e44ad); width:30px; height:30px; border-radius:50%;"></button>
@@ -1257,7 +1257,7 @@ function showLoader(text = "Loading...", duration = 700) {
 // ============================================================
 // 📦 STATE
 // ============================================================
-let isVoiceReplyOn = true;
+let isVoiceReplyOn = localStorage.getItem("gritgo_voice_reply") === "true";
 let chatHistory = JSON.parse(localStorage.getItem("gritgo_chat_history")) || [];
 let userProfile = JSON.parse(localStorage.getItem("gritgo_user_profile")) || { name: "", age: "", bio: "" };
 let challengeData = { title: "", duration: 0, startDate: "", motivation: "", habits: [], habitLogs: {}, notes: {}, moods: {}, journalReplies: {}, dayStart: "05:00", dayEnd: "21:00" };
@@ -2672,41 +2672,68 @@ document.getElementById("generateHabitsBtn").addEventListener("click", async () 
   const box = document.getElementById("generatedHabitsBox");
   const btn = document.getElementById("generateHabitsBtn");
   if (!prompt) { showToast("Write your goal first!"); return; }
+  
   btn.textContent = "Thinking...";
   btn.disabled = true;
   box.style.display = "none";
   box.innerHTML = "";
+  
+  let habitsArray = [];
+  
+  // ইউজারের লেখা থেকে সংখ্যা বের করা (যেমন: 8 Best Morning Habits -> 8)
+  let requestedNumber = 5; // ডিফল্ট ৫টি
+  const numberMatch = prompt.match(/\b(\d+)\b/);
+  if (numberMatch && parseInt(numberMatch[1]) > 0) {
+    requestedNumber = parseInt(numberMatch[1]);
+  }
+  
   try {
     const rawText = await callGroq([
-      { role: 'system', content: `You are a habit expert. Generate exactly 5 short actionable daily habits for the goal. Return ONLY comma-separated habits. No numbers, no extra text.` },
+      { 
+        role: 'system', 
+        content: `You are a habit expert. Based on the user's input, generate exactly ${requestedNumber} short, actionable daily habits. You MUST separate each habit with a comma. Do NOT use bullet points, numbers, or new lines. Just return the habits separated by commas. Example format: Drink 2L Water, Read 10 pages, Meditate 5 mins, Walk 5000 steps, Sleep by 10 PM.` 
+      },
       { role: 'user', content: prompt }
-    ], { temperature: 0.7, max_tokens: 200 });
-    const habitsArray = rawText.split(',').map(h => h.trim()).filter(h => h.length > 0);
-    box.style.display = "flex";
-    box.innerHTML = `<p style="color:#00e5ff; font-size:12px; margin-bottom:5px; font-weight:bold;">Tap to Add:</p>`;
-    habitsArray.forEach(habitText => {
-      const habitBtn = document.createElement("button");
-      habitBtn.textContent = "+ " + habitText;
-      habitBtn.style.cssText = "padding:10px;background:#1a1f2e;color:#00e5ff;border:1px solid #00e5ff;border-radius:8px;cursor:pointer;text-align:left;font-weight:bold;";
-      habitBtn.onclick = () => {
-        challengeData.habits.push({ id: 'h_' + Math.random().toString(36).substr(2, 9), name: habitText, category: 'General', target: 1, days: [0,1,2,3,4,5,6] });
-        localStorage.setItem("challengeData", JSON.stringify(challengeData));
-        renderHabits(); renderTodayHabits(); renderHeatmap(); updateStats();
-        showToast(`Added: ${habitText}`);
-        habitBtn.style.display = "none";
-      };
-      box.appendChild(habitBtn);
-    });
-  } catch (e) {
-    showToast("AI Error");
-    box.style.display = "flex";
-    box.innerHTML = `<p style="color:#ff6b4a; font-size:12px;">${e.message}</p>`;
-  } finally {
-    btn.textContent = "Generate";
-    btn.disabled = false;
-  }
-});
+    ], { temperature: 0.7, max_tokens: 4000 }); // max_tokens বাড়ানো হলো যাতে ৮-১০টি হ্যাবিট বের হতে পারে
 
+    if (rawText && rawText.trim().length > 0) {
+      habitsArray = rawText.split(/[\n,]+/)
+        .map(h => h.replace(/^[-*•\d.\s"']+|["']+$/g, '').trim()) 
+        .filter(h => h.length > 2 && !h.toLowerCase().includes("here are") && !h.toLowerCase().includes("habit"));
+    }
+  } catch (e) {
+    console.log("AI API Error:", e);
+  }
+
+  // যদি AI কিছু না দেয়, তবে ডিফল্ট দেখাবে
+  if (habitsArray.length === 0) {
+    habitsArray = ["Drink 2L Water", "Read 10 Pages", "Exercise 30 mins", "Meditate 5 mins", "Sleep by 10 PM"];
+    showToast("AI was busy, showing default habits!");
+  }
+
+  box.style.display = "flex";
+  box.innerHTML = '<p style="color:#00e5ff; font-size:12px; margin-bottom:5px; font-weight:bold;">Tap to Add:</p>';
+  
+  habitsArray.forEach(habitText => {
+    if(!habitText) return;
+    
+    const habitBtn = document.createElement("button");
+    habitBtn.textContent = "+ " + habitText;
+    habitBtn.style.cssText = "padding:10px; background:#1a1f2e; color:#00e5ff; border:1px solid #00e5ff; border-radius:8px; cursor:pointer; text-align:left; font-weight:bold; margin-bottom:5px; width:100%;";
+    
+    habitBtn.onclick = () => {
+      challengeData.habits.push({ id: 'h_' + Math.random().toString(36).substr(2, 9), name: habitText, category: 'General', target: 1, days: [0,1,2,3,4,5,6] });
+      localStorage.setItem("challengeData", JSON.stringify(challengeData));
+      renderHabits(); renderTodayHabits(); renderHeatmap(); updateStats();
+      showToast("Added: " + habitText);
+      habitBtn.style.display = "none";
+    };
+    box.appendChild(habitBtn);
+  });
+
+  btn.textContent = "Generate";
+  btn.disabled = false;
+});
 // ============================================================
 // 📝 AI REVIEW
 // ============================================================
@@ -3952,7 +3979,7 @@ const fiftyColors = [
   "#32CD32", "#1E90FF", "#FF69B4", "#7B68EE", "#2E8B57",
   "#FFFACD", "#F08080", "#3CB371", "#DDA0DD", "#BC8F8F",
   "#483D8B", "#48D1CC", "#BDB76B", "#7B68EE", "#FF8C00",
-  "#000000", "purple", 
+  "#000000", "purple", "indigo", "navy", "darkgreen",
 ];
 
 let currentColorTarget = "user"; // ডিফল্ট
@@ -3969,14 +3996,14 @@ function getContrastYIQ(hexcolor) {
 
 document.getElementById('moreUserColorsBtn')?.addEventListener('click', () => {
   currentColorTarget = "user";
-  document.getElementById('colorModalTitle').textContent = "Select Your Message Color";
+  document.getElementById('colorModalTitle').textContent = "Select Outgoing Message Color";
   renderColorGrid();
   document.getElementById('colorPaletteModal').classList.add('active');
 });
 
 document.getElementById('moreAiColorsBtn')?.addEventListener('click', () => {
   currentColorTarget = "ai";
-  document.getElementById('colorModalTitle').textContent = "Select AI Message Color";
+  document.getElementById('colorModalTitle').textContent = "Select Incoming Message Color";
   renderColorGrid();
   document.getElementById('colorPaletteModal').classList.add('active');
 });
