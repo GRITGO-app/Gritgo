@@ -248,12 +248,27 @@
     #dayModalSearchInput:focus { border-color: #4a9eff; }
     .category-badge { font-size: 9px; padding: 2px 6px; border-radius: 10px; background: #2a3142; color: #9aa0a6; margin-left: 6px; font-weight: bold; text-transform: uppercase; }
     .mini-chat-container { display: flex; flex-direction: column; gap: 10px; }
-    #miniChatHistory { max-height: 200px; min-height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; background: #0f1419; padding: 10px; border-radius: 10px; border: 1px solid #2a3142; }
-    .chat-bubble { max-width: 85%; padding: 8px 12px; border-radius: 12px; font-size: 13px; line-height: 1.4; word-wrap: break-word; white-space: pre-wrap; }
-    .chat-bubble.user { align-self: flex-end; background: linear-gradient(135deg, #9b59b6, #8e44ad); color: white; border-bottom-right-radius: 2px; }
-    .chat-bubble.ai { align-self: flex-start; background: #1a1f2e; border: 1px solid #2a3142; color: #e8eaed; border-bottom-left-radius: 2px; }
+    #miniChatHistory { 
+  max-height: 200px; min-height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; 
+  background: var(--chat-bg, #0f1419); padding: 10px; border-radius: 10px; border: 1px solid #2a3142; 
+  background-size: cover; background-position: center; transition: background 0.3s ease;
+}
+.chat-bubble { max-width: 85%; padding: 8px 12px; border-radius: 12px; font-size: 13px; line-height: 1.4; word-wrap: break-word; white-space: pre-wrap; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+.chat-bubble.user { 
+  align-self: flex-end; 
+  background: var(--user-bg, linear-gradient(135deg, #9b59b6, #8e44ad)); 
+  color: var(--user-text, white); 
+  border-bottom-right-radius: 2px; 
+}
+.chat-bubble.ai { 
+  align-self: flex-start; 
+  background: var(--ai-bg, #1a1f2e); 
+  color: var(--ai-text, #e8eaed); 
+  border: 1px solid var(--ai-border, #2a3142);
+  border-bottom-left-radius: 2px; 
+}
     .chat-input-row { display: flex; gap: 6px; align-items: stretch; }
-    #chatVoiceBtn { background: #2a3142; color: #9b59b6; border: 1px solid #9b59b6; border-radius: 10px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; flex-shrink: 0; }
+  #chatVoiceBtn { background: #2a3142; color: #9b59b6; border: 1px solid #9b59b6; border-radius: 10px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; flex-shrink: 0; touch-action: none; -webkit-user-select: none; user-select: none; }  
     #chatVoiceBtn.listening { background: #ff6b4a; color: white; border-color: #ff6b4a; animation: pulseMic 1s infinite alternate; }
     #chatImageBtn { background: transparent; color: #9b59b6; border: 1px solid #9b59b6; padding: 4px 8px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
     body.light-theme #chatImageBtn { background: #f3e8ff; color: #7e22ce; border-color: #d8b4fe; }
@@ -444,6 +459,62 @@
 </div>
 
 <!-- ============ MODALS ============ -->
+  <!-- Color Palette Modal -->
+<div id="colorPaletteModal" class="modal-overlay" style="z-index: 8000; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);">
+  <div class="modal-box" style="max-width: 380px; padding: 20px; border-radius: 20px; background: #1a1f2e;">
+    <h2 style="color: #fff; font-size: 20px; margin-bottom: 15px; text-align: center;" id="colorModalTitle">Select a Color</h2>
+    <div id="colorGrid" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; max-height: 60vh; overflow-y: auto; padding: 5px;"></div>
+    <div class="settings-buttons" style="margin-top: 20px;">
+      <button id="closeColorModalBtn" style="background: #2a3142; color: #fff; border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%;">Cancel</button>
+    </div>
+  </div>
+</div>
+  <!-- Chat Theme Settings Modal -->
+<div id="chatThemeModal" class="modal-overlay" style="z-index: 7000;">
+  <div class="modal-box">
+    <h2 style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+  <svg class="svg-icon" style="stroke: #9b59b6;" viewBox="0 0 24 24"><path d="M12 22a10 10 0 1 1 10-10c0 5-4 10-10 10z"></path><circle cx="7.5" cy="10.5" r="1.5"></circle><circle cx="12" cy="7.5" r="1.5"></circle><circle cx="16.5" cy="10.5" r="1.5"></circle></svg>
+  Chat Appearance
+</h2>
+
+<label>Chat Background</label>
+<div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
+  <button class="theme-color-btn" data-type="bg" data-val="#0f1419" style="background:#0f1419; width:30px; height:30px; border-radius:50%;"></button>
+  <button class="theme-color-btn" data-type="bg" data-val="#1e1b2e" style="background:#1e1b2e; width:30px; height:30px; border-radius:50%;"></button>
+  <button class="theme-color-btn" data-type="bg" data-val="#0a192f" style="background:#0a192f; width:30px; height:30px; border-radius:50%;"></button>
+  <button class="theme-color-btn" data-type="bg" data-val="#1a1c29" style="background:#1a1c29; width:30px; height:30px; border-radius:50%;"></button>
+  <button id="uploadBgBtn" style="background:#2a3142; color:#00e5ff; border:1px solid #00e5ff; padding:6px 12px; border-radius:8px; font-size:12px; cursor:pointer; display: flex; align-items: center; gap: 6px; font-weight: bold;">
+    <svg style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+    Gallery Image
+  </button>
+  <input type="file" id="bgImageInput" accept="image/*" style="display:none;">
+</div>
+
+    <label>outgoing MMessage Bubble</label>
+    
+    <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
+      <button class="theme-color-btn" data-type="user" data-val="linear-gradient(135deg, #9b59b6, #8e44ad)" style="background:linear-gradient(135deg, #9b59b6, #8e44ad); width:30px; height:30px; border-radius:50%;"></button>
+      <button class="theme-color-btn" data-type="user" data-val="#4a9eff" style="background:#4a9eff; width:30px; height:30px; border-radius:50%;"></button>
+      <button class="theme-color-btn" data-type="user" data-val="#ff6b4a" style="background:#ff6b4a; width:30px; height:30px; border-radius:50%;"></button>
+      <button class="theme-color-btn" data-type="user" data-val="#4aaa4a" style="background:#4aaa4a; width:30px; height:30px; border-radius:50%;"></button>
+      <button id="moreUserColorsBtn" style="background: #2a3142; color: #4a9eff; border: 1px solid #4a9eff; border-radius: 8px; padding: 6px 12px; font-size: 11px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 5px;">Choose More Colours</button>
+    </div>
+
+    <label>Incoming Message Bubble</label>
+    <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;">
+      <button class="theme-color-btn" data-type="ai" data-val="#1a1f2e" style="background:#1a1f2e; width:30px; height:30px; border-radius:50%; border: 1px solid #555;"></button>
+      <button class="theme-color-btn" data-type="ai" data-val="#2a3142" style="background:#2a3142; width:30px; height:30px; border-radius:50%;"></button>
+      <button class="theme-color-btn" data-type="ai" data-val="#182533" style="background:#182533; width:30px; height:30px; border-radius:50%;"></button>
+      <button class="theme-color-btn" data-type="ai" data-val="#ffffff" style="background:#ffffff; width:30px; height:30px; border-radius:50%;"></button>
+      <button id="moreAiColorsBtn" style="background: #2a3142; color: #4a9eff; border: 1px solid #4a9eff; border-radius: 8px; padding: 6px 12px; font-size: 11px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 5px;">Choose More Colours</button>
+    </div>
+
+    <div class="settings-buttons">
+      <button id="resetChatThemeBtn" style="background:#ff6b4a; color:white; flex:1;">Reset Default</button>
+      <button id="closeChatThemeBtn" style="flex:1;">Done</button>
+    </div>
+  </div>
+</div>
 <div id="profileModal" class="modal-overlay" style="z-index: 6000;">
   <div class="modal-box">
     <h2>AI Profile</h2>
@@ -563,6 +634,9 @@
           <button id="openProfileBtn" title="My Profile" style="background: transparent; border: 1px solid #9b59b6; color: #9b59b6; padding: 4px 8px; border-radius: 6px; cursor: pointer; display: flex; align-items: center;">
             <svg style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
           </button>
+          <button id="openChatThemeBtn" title="Chat Appearance" style="background: transparent; border: 1px solid #9b59b6; color: #9b59b6; padding: 4px 8px; border-radius: 6px; cursor: pointer; display: flex; align-items: center;">
+  <svg style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;" viewBox="0 0 24 24"><path d="M12 22a10 10 0 1 1 10-10c0 5-4 10-10 10z"></path><circle cx="7.5" cy="10.5" r="1.5"></circle><circle cx="12" cy="7.5" r="1.5"></circle><circle cx="16.5" cy="10.5" r="1.5"></circle></svg>
+</button>
           <button id="clearChatBtn" title="Clear Chat" style="background: transparent; border: 1px solid #9b59b6; color: #9b59b6; padding: 4px 8px; border-radius: 6px; cursor: pointer; display: flex; align-items: center;">
             <svg style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
           </button>
@@ -3099,58 +3173,134 @@ let longPressRecognition = null;
 
 if (SpeechRecognition) {
   recognition = new SpeechRecognition();
-  recognition.continuous = false;
-  recognition.interimResults = false;
+  recognition.continuous = true; // 💡 ব্রাউজার ১০ সেকেন্ডে বন্ধ হবে না
+  recognition.interimResults = true; // 💡 আপনি কথা বলার সময় লাইভ টেক্সট দেখাবে
+  
   recognition.onresult = (event) => {
-    const transcript = event.results[0][0].transcript;
-    if (voicePopupModal.classList.contains("active")) {
+    let interimTranscript = '';
+    let finalTranscript = '';
+    
+    for (let i = event.resultIndex; i < event.results.length; ++i) {
+      if (event.results[i].isFinal) {
+        finalTranscript += event.results[i][0].transcript;
+      } else {
+        interimTranscript += event.results[i][0].transcript;
+      }
+    }
+    
+    // আপনি যা বলছেন, পপ-আপে লাইভ দেখা যাবে
+    if (interimTranscript) {
+      voicePopupStatus.textContent = interimTranscript;
+    }
+    
+    // আপনি কথা বলা শেষ করে একটু চুপ করলে অটোমেটিক মেসেজ পাঠাবে
+    if (finalTranscript) {
       voicePopupStatus.textContent = "Thinking...";
       closeVoicePopup();
-      chatInput.value = transcript;
+      chatInput.value = finalTranscript;
       setTimeout(() => { document.getElementById("askAiBtn").click(); }, 200);
-    } else {
-      chatInput.value = transcript;
     }
   };
+  
   recognition.onerror = (event) => {
     chatVoiceBtn.classList.remove("listening");
-    if (event.error !== "aborted" && event.error !== "no-speech") showToast("Voice Error: " + event.error);
+    if (event.error === "no-speech") {
+      showToast("কিছু শোনা যায়নি, আবার চেষ্টা করুন!");
+    } else if (event.error !== "aborted") {
+      showToast("Voice Error: " + event.error);
+    }
   };
+  
   recognition.onend = () => {
     chatVoiceBtn.classList.remove("listening");
+    // যদি ব্রাউজার জোর করে বন্ধ করে দেয়, কিন্তু পপ-আপ খোলা থাকে, তবে আবার চালু করবে
     if (voicePopupModal && voicePopupModal.classList.contains("active") && voicePopupStatus.textContent === "Listening...") {
-       closeVoicePopup(); 
+       try { recognition.start(); } catch(e) {}
     }
   };
 } else {
   chatVoiceBtn.style.display = "none";
 }
 
-chatVoiceBtn.addEventListener("pointerdown", (e) => {
-  e.preventDefault();
-  isLongPressAction = false;
-  pressTimer = setTimeout(() => {
-    isLongPressAction = true;
-    navigator.vibrate?.(50);
-    startLongPressRecord();
-  }, 500);
-});
 
-chatVoiceBtn.addEventListener("pointerup", (e) => {
-  e.preventDefault();
-  clearTimeout(pressTimer);
-  if (!isLongPressAction) {
-    openVoicePopup();
-  } else {
-    stopLongPressRecord();
+chatVoiceBtn.addEventListener("contextmenu", (e) => e.preventDefault());
+
+let isVoiceRecording = false;
+let initialTextBeforeVoice = "";
+let voicePressStartTime = 0;
+
+function startVoiceRecording(e) {
+  if (e.cancelable) e.preventDefault();
+  // মোবাইলে ডাবল ইভেন্ট (Touch + Mouse) ব্লক করা হচ্ছে
+  if (e.type === "mousedown" && window.matchMedia("(pointer: coarse)").matches) return; 
+  
+  voicePressStartTime = Date.now();
+  initialTextBeforeVoice = chatInput.value;
+  isVoiceRecording = true;
+
+  chatVoiceBtn.classList.add("listening");
+  chatInput.placeholder = "Speak now...";
+
+  if (SpeechRecognition) {
+    if (longPressRecognition) {
+      try { longPressRecognition.abort(); } catch(err){}
+    }
+    longPressRecognition = new SpeechRecognition();
+    longPressRecognition.continuous = true;
+    longPressRecognition.interimResults = true;
+    longPressRecognition.lang = voiceLangSelect.value || "en-US";
+
+    longPressRecognition.onresult = (event) => {
+      let interim = '';
+      let final = '';
+      for (let i = event.resultIndex; i < event.results.length; ++i) {
+        if (event.results[i].isFinal) final += event.results[i][0].transcript;
+        else interim += event.results[i][0].transcript;
+      }
+      chatInput.value = initialTextBeforeVoice + final + interim;
+      chatInput.style.height = "40px";
+      chatInput.style.height = chatInput.scrollHeight + "px";
+    };
+    
+    longPressRecognition.onerror = (e) => {
+      if (e.error !== 'no-speech' && e.error !== 'aborted') console.log("Voice Error:", e.error);
+    };
+
+    try { longPressRecognition.start(); } catch(err) { console.log("Start err:", err); }
   }
-});
+}
 
-chatVoiceBtn.addEventListener("pointercancel", () => {
-  clearTimeout(pressTimer);
-  if (isLongPressAction) stopLongPressRecord();
-});
+function stopVoiceRecording(e) {
+  if (e.cancelable) e.preventDefault();
+  if (e.type === "mouseup" && window.matchMedia("(pointer: coarse)").matches) return;
+  
+  if (!isVoiceRecording) return;
+  isVoiceRecording = false;
 
+  chatVoiceBtn.classList.remove("listening");
+  chatInput.placeholder = "Type a message...";
+  
+  if (longPressRecognition) {
+    try { longPressRecognition.stop(); } catch(err){}
+  }
+
+  const pressDuration = Date.now() - voicePressStartTime;
+  
+  // যদি ৪০০ মিলিসেকেন্ডের কম চাপেন (শুধু ট্যাপ), তবে পপ-আপ আসবে
+  if (pressDuration < 400) {
+    chatInput.value = initialTextBeforeVoice; 
+    setTimeout(() => openVoicePopup(), 100);
+  }
+}
+
+// মোবাইল এবং কম্পিউটার两者的 জন্য ইভেন্ট লিসেনার
+chatVoiceBtn.addEventListener("touchstart", startVoiceRecording, { passive: false });
+chatVoiceBtn.addEventListener("touchend", stopVoiceRecording);
+chatVoiceBtn.addEventListener("touchcancel", stopVoiceRecording);
+
+chatVoiceBtn.addEventListener("mousedown", startVoiceRecording);
+chatVoiceBtn.addEventListener("mouseup", stopVoiceRecording);
+chatVoiceBtn.addEventListener("mouseleave", stopVoiceRecording);
 async function openVoicePopup() {
   voicePopupModal.classList.add("active");
   voicePopupStatus.textContent = "Listening...";
@@ -3182,41 +3332,6 @@ function closeVoicePopup() {
 }
 
 closeVoicePopupBtn.addEventListener("click", closeVoicePopup);
-
-function startLongPressRecord() {
-  chatVoiceBtn.classList.add("listening");
-  chatInput.placeholder = "Speak now (Release to insert)...";
-  
-  if (SpeechRecognition) {
-    longPressRecognition = new SpeechRecognition();
-    longPressRecognition.continuous = true;
-    longPressRecognition.interimResults = true;
-    longPressRecognition.lang = voiceLangSelect.value || "en-US";
-
-    let initialText = chatInput.value;
-
-    longPressRecognition.onresult = (event) => {
-      let interimTranscript = '';
-      let finalTranscript = '';
-      for (let i = event.resultIndex; i < event.results.length; ++i) {
-        if (event.results[i].isFinal) finalTranscript += event.results[i][0].transcript;
-        else interimTranscript += event.results[i][0].transcript;
-      }
-      chatInput.value = initialText + finalTranscript + interimTranscript;
-      chatInput.style.height = "40px";
-      chatInput.style.height = chatInput.scrollHeight + "px";
-    };
-    longPressRecognition.start();
-  }
-}
-
-function stopLongPressRecord() {
-  chatVoiceBtn.classList.remove("listening");
-  chatInput.placeholder = "Type a message...";
-  if (longPressRecognition) {
-    longPressRecognition.stop();
-  }
-}
 
 function playAIVoiceAnimation() {
   voicePopupModal.classList.add("active");
@@ -3723,7 +3838,191 @@ setInterval(() => {
     showToast("New Day! Keep going!");
   }
 }, 10000);
+// ============================================================
+// 🎨 CHAT THEME CUSTOMIZATION
+// ============================================================
+let chatTheme = JSON.parse(localStorage.getItem('gritgo_chat_theme')) || {
+  bg: '#0f1419',
+  bgImage: null,
+  userBg: 'linear-gradient(135deg, #9b59b6, #8e44ad)',
+  userText: 'white',
+  aiBg: '#1a1f2e',
+  aiText: '#e8eaed',
+  aiBorder: '#2a3142'
+};
 
+function applyChatTheme() {
+  const chatBox = document.getElementById('miniChatHistory');
+  if (!chatBox) return;
+  
+  if (chatTheme.bgImage) {
+    chatBox.style.backgroundImage = `url(${chatTheme.bgImage})`;
+    chatBox.style.backgroundColor = 'transparent';
+  } else {
+    chatBox.style.backgroundImage = 'none';
+    chatBox.style.backgroundColor = chatTheme.bg;
+  }
+
+  chatBox.style.setProperty('--user-bg', chatTheme.userBg);
+  chatBox.style.setProperty('--user-text', chatTheme.userText);
+  chatBox.style.setProperty('--ai-bg', chatTheme.aiBg);
+  chatBox.style.setProperty('--ai-text', chatTheme.aiText);
+  chatBox.style.setProperty('--ai-border', chatTheme.aiBorder);
+}
+
+applyChatTheme();
+
+document.getElementById("openChatThemeBtn")?.addEventListener("click", () => {
+  document.getElementById("chatThemeModal").classList.add("active");
+});
+document.getElementById("closeChatThemeBtn")?.addEventListener("click", () => {
+  document.getElementById("chatThemeModal").classList.remove("active");
+});
+
+document.querySelectorAll(".theme-color-btn").forEach(btn => {
+  btn.addEventListener("click", (e) => {
+    const type = e.target.dataset.type;
+    const val = e.target.dataset.val;
+    
+    if (type === 'bg') {
+      chatTheme.bg = val;
+      chatTheme.bgImage = null; 
+    } else if (type === 'user') {
+      chatTheme.userBg = val;
+      chatTheme.userText = val === '#ffffff' ? '#1a1f2e' : 'white'; 
+    } else if (type === 'ai') {
+      chatTheme.aiBg = val;
+      chatTheme.aiText = val === '#ffffff' ? '#1a1f2e' : '#e8eaed';
+      chatTheme.aiBorder = val === '#ffffff' ? '#d1d5db' : '#2a3142';
+    }
+    
+    localStorage.setItem('gritgo_chat_theme', JSON.stringify(chatTheme));
+    applyChatTheme();
+  });
+});
+
+const bgImageInput = document.getElementById("bgImageInput");
+document.getElementById("uploadBgBtn")?.addEventListener("click", () => bgImageInput.click());
+
+bgImageInput?.addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      const MAX = 800; 
+      let w = img.width, h = img.height;
+      if (w > h) { if (w > MAX) { h *= MAX / w; w = MAX; } } else { if (h > MAX) { w *= MAX / h; h = MAX; } }
+      canvas.width = w; canvas.height = h;
+      canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+      
+      chatTheme.bgImage = canvas.toDataURL("image/jpeg", 0.6); 
+      localStorage.setItem('gritgo_chat_theme', JSON.stringify(chatTheme));
+      applyChatTheme();
+      showToast("Background Updated!");
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+  bgImageInput.value = "";
+});
+
+document.getElementById("resetChatThemeBtn")?.addEventListener("click", () => {
+  chatTheme = {
+    bg: '#0f1419', bgImage: null, userBg: 'linear-gradient(135deg, #9b59b6, #8e44ad)', userText: 'white', aiBg: '#1a1f2e', aiText: '#e8eaed', aiBorder: '#2a3142'
+  };
+  localStorage.setItem('gritgo_chat_theme', JSON.stringify(chatTheme));
+  applyChatTheme();
+  showToast("Theme Reset");
+});
+  // ============================================================
+// 🌈 50 COLOR PALETTE LOGIC
+// ============================================================
+const fiftyColors = [
+  "#FF0000", "#FF8C00", "#FFD700", "#00FF00", "#0000FF",
+  "#8A2BE2", "#8B4513", "#2d2d2d", "#FFFFFF", "#FF1493",
+  "#00CED1", "#008080", "#000080", "#6A5ACD", "#FF6B6B",
+  "#FFC107", "#9ACD32", "#20B2AA", "#6495ED", "#BA55D3",
+  "#8B0000", "#FF4500", "#FFA500", "#6B8E23", "#4682B4",
+  "#FFB6C1", "#008B8B", "#9400D3", "#C71585", "#D2B48C",
+  "#9370DB", "#00BFFF", "#40E0D0", "#FFA07A", "#808080",
+  "#32CD32", "#1E90FF", "#FF69B4", "#7B68EE", "#2E8B57",
+  "#FFFACD", "#F08080", "#3CB371", "#DDA0DD", "#BC8F8F",
+  "#483D8B", "#48D1CC", "#BDB76B", "#7B68EE", "#FF8C00",
+  "#000000", "purple", 
+];
+
+let currentColorTarget = "user"; // ডিফল্ট
+
+function getContrastYIQ(hexcolor) {
+  if (hexcolor === "#FFFFFF" || hexcolor === "#FFFACD") return "#1a1f2e";
+  hexcolor = hexcolor.replace("#", "");
+  var r = parseInt(hexcolor.substr(0,2),16);
+  var g = parseInt(hexcolor.substr(2,2),16);
+  var b = parseInt(hexcolor.substr(4,2),16);
+  var yiq = ((r*299)+(g*587)+(b*114))/1000;
+  return (yiq >= 128) ? '#1a1f2e' : 'white';
+}
+
+document.getElementById('moreUserColorsBtn')?.addEventListener('click', () => {
+  currentColorTarget = "user";
+  document.getElementById('colorModalTitle').textContent = "Select Your Message Color";
+  renderColorGrid();
+  document.getElementById('colorPaletteModal').classList.add('active');
+});
+
+document.getElementById('moreAiColorsBtn')?.addEventListener('click', () => {
+  currentColorTarget = "ai";
+  document.getElementById('colorModalTitle').textContent = "Select AI Message Color";
+  renderColorGrid();
+  document.getElementById('colorPaletteModal').classList.add('active');
+});
+
+function renderColorGrid() {
+  const grid = document.getElementById('colorGrid');
+  grid.innerHTML = "";
+  
+  fiftyColors.forEach(color => {
+    const circle = document.createElement('div');
+    circle.style.background = color;
+    circle.style.width = "100%";
+    circle.style.paddingBottom = "100%"; // Perfect Circle
+    circle.style.borderRadius = "50%";
+    circle.style.cursor = "pointer";
+    circle.style.boxShadow = "0 2px 5px rgba(0,0,0,0.5)";
+    circle.style.border = "2px solid rgba(255,255,255,0.2)";
+    circle.style.transition = "transform 0.1s";
+    
+    circle.onclick = () => {
+      const textColor = getContrastYIQ(color);
+      if (currentColorTarget === "user") {
+        chatTheme.userBg = color;
+        chatTheme.userText = textColor;
+      } else {
+        chatTheme.aiBg = color;
+        chatTheme.aiText = textColor;
+        chatTheme.aiBorder = textColor === '#1a1f2e' ? '#d1d5db' : '#2a3142';
+      }
+      localStorage.setItem('gritgo_chat_theme', JSON.stringify(chatTheme));
+      applyChatTheme();
+      document.getElementById('colorPaletteModal').classList.remove('active');
+      showToast("Color applied!");
+    };
+    
+    circle.onmousedown = () => circle.style.transform = "scale(0.9)";
+    circle.onmouseup = () => circle.style.transform = "scale(1)";
+    
+    grid.appendChild(circle);
+  });
+}
+
+document.getElementById('closeColorModalBtn')?.addEventListener('click', () => {
+  document.getElementById('colorPaletteModal').classList.remove('active');
+});
+// ============================================================
 // ============================================================
 // 🚀 INIT
 // ============================================================
