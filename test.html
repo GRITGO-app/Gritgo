@@ -9,6 +9,16 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+    :root {
+  --app-bg: #0f1419;
+  --app-card: #1a1f2e;
+  --app-text: #e8eaed;
+  --app-accent: #00e5ff;
+}
+/* Override original colors to use variables */
+body { background-color: var(--app-bg) !important; color: var(--app-text) !important; }
+.stat-card, .menu-item, .extras-section, .tracker-section, .custom-checkbox, .today-buttons button, .edit-buttons button, #habitSearchInput, .modal-box { background-color: var(--app-card) !important; color: var(--app-text) !important; }
+#mainTitle, .header span, .today-header h2, .extras-section h3, .tracker-section h3, .modal-box h2, .stat-card span:first-child { color: var(--app-text) !important; }
     input, textarea, select { -webkit-user-select: auto; user-select: auto; -webkit-touch-callout: default; }
     body { background-color: #0f1419; color: #e8eaed; min-height: 100vh; overflow-x: hidden; touch-action: manipulation; }
     .flex-icon { display: flex; align-items: center; justify-content: center; gap: 8px; }
@@ -167,11 +177,40 @@
     #resetAllData { width: 100%; margin-top: 15px; padding: 12px; background: transparent; color: #ff6b4a; border: 1px solid #ff6b4a; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;}
     .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px); background: linear-gradient(135deg, #00e5ff, #0088cc); color: #05080f; padding: 14px 24px; border-radius: 12px; font-size: 14px; font-weight: bold; box-shadow: 0 8px 25px rgba(0, 229, 255, 0.4); z-index: 9999; opacity: 0; transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); text-align: center; }
     .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-    .custom-checkbox { width: 32px; height: 32px; border-radius: 8px; background-color: #2a3142; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; flex-shrink: 0; position: relative; }
-    .custom-checkbox .checkbox-number { color: #9aa0a6; font-size: 14px; font-weight: 600; }
-    .custom-checkbox.checked { background-color: #4a9eff; box-shadow: 0 0 10px rgba(74, 158, 255, 0.5); }
-    .custom-checkbox.checked .checkbox-number { display: none; }
-    .custom-checkbox.checked::after { content: "✓"; color: #ffffff; font-size: 18px; font-weight: bold; }
+/* নতুন চেকবক্স ডিজাইন */
+.custom-checkbox { 
+  width: 38px; 
+  height: 38px; 
+  border-radius: 10px; 
+  background-color: rgba(74, 158, 255, 0.15); 
+  border: 2px solid var(--app-accent, #4a9eff); 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  cursor: pointer; 
+  transition: all 0.2s ease; 
+  flex-shrink: 0; 
+  position: relative; 
+}
+.custom-checkbox .checkbox-number { 
+  color: var(--app-accent, #4a9eff); 
+  font-size: 16px; 
+  font-weight: 800; 
+}
+.custom-checkbox.checked { 
+  background-color: var(--app-accent, #4a9eff) !important; 
+  border: 2px solid var(--app-accent, #4a9eff) !important;
+  box-shadow: 0 0 15px var(--app-accent, #4a9eff) !important; 
+}
+.custom-checkbox.checked .checkbox-number { 
+  display: none; 
+}
+.custom-checkbox.checked::after { 
+  content: "✓"; 
+  color: #ffffff !important; 
+  font-size: 24px; 
+  font-weight: bold; 
+}
     .lock-message { display: none; padding: 15px; background: rgba(255, 107, 74, 0.1); border: 1px solid #ff6b4a; border-radius: 10px; color: #ff6b4a; text-align: center; margin-bottom: 15px; font-weight: 600; font-size: 14px; }
     .confetti-piece { position: fixed; top: -20px; width: 10px; height: 10px; z-index: 99999; animation: fall 1.5s linear forwards; }
     @keyframes fall { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(105vh) rotate(720deg); opacity: 0; } }
@@ -312,6 +351,15 @@
       0% { transform: scale(1); box-shadow: 0 0 20px rgba(74, 158, 255, 0.5); background: linear-gradient(135deg, #4a9eff, #00e5ff); }
       100% { transform: scale(1.15); box-shadow: 0 0 50px rgba(0, 229, 255, 0.9); background: linear-gradient(135deg, #00e5ff, #4a9eff); }
     }
+    
+    /* 🌟 New Chart Container Style */
+    .chart-container {
+      position: relative;
+      height: 220px;
+      width: 100%;
+      margin-top: 10px;
+      margin-bottom: 15px;
+    }
   </style>
 </head>
 <body>
@@ -327,8 +375,10 @@
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
     </button>
   </div>
-  <div class="sidebar-menu">
-    <div class="menu-item" id="menuSettingsBtn">
+<div class="sidebar-menu" style="display: flex; flex-direction: column; height: calc(100% - 65px);">
+<!-- উপরের মেনুগুলো -->
+<div style="display: flex; flex-direction: column; gap: 10px;">
+  <div class="menu-item" id="menuSettingsBtn">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
       Settings
     </div>
@@ -341,7 +391,28 @@
       Send Feedback
     </div>
   </div>
+
+  <!-- নিচের নতুন অংশ (মোটিভেশনাল কোট, ব্যাকআপ ও ভার্সন) -->
+  <div style="margin-top: auto; padding-top: 20px; border-top: 1px solid #2a3142;">
+    
+    <div style="background: rgba(0, 229, 255, 0.05); border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 10px; padding: 12px; margin-bottom: 15px;">
+      <p style="color: #00e5ff; font-size: 12px; font-style: italic; text-align: center; line-height: 1.5; margin: 0;">
+        "Success is the sum of small efforts, repeated day in and day out."
+      </p>
+    </div>
+
+    <button id="sidebarBackupBtn" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background: #1a1f2e; color: #4aaa4a; border: 1px solid #4aaa4a; padding: 10px; border-radius: 10px; font-size: 13px; font-weight: bold; cursor: pointer; margin-bottom: 15px; transition: 0.2s;">
+      <svg style="width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2;" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+      Quick Backup
+    </button>
+<button id="sidebarDeleteAllBtn" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background: #1a1f2e; color: #ff6b4a; border: 1px solid #ff6b4a; padding: 10px; border-radius: 10px; font-size: 13px; font-weight: bold; cursor: pointer; margin-bottom: 15px; transition: 0.2s;">
+  <svg style="width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2;" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+  Delete All Habits
+</button>
+    <p style="text-align: center; color: #555; font-size: 11px; margin: 0;">GRITGO v1.0.0</p>
+  </div>
 </div>
+</div> <!-- 🌟 ক্লোজিং ডিভ -->
 
 <div id="setupScreen">
   <h1>Welcome to GRITGO</h1>
@@ -370,11 +441,25 @@
       <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
     </button>
     <span id="headerTitle">GRITGO</span>
-    <div style="display: flex; gap: 5px; align-items: center;">
-      <button id="shareButton" title="Backup Data">
-        <svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
-      </button>
-    </div>
+    <div style="display: flex; gap: 12px; align-items: center;">
+  <!-- Theme Button -->
+  <button id="headerThemeBtn" title="App Theme">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="13.5" cy="6.5" r=".5"></circle>
+      <circle cx="17.5" cy="10.5" r=".5"></circle>
+      <circle cx="8.5" cy="7.5" r=".5"></circle>
+      <circle cx="6.5" cy="12.5" r=".5"></circle>
+      <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path>
+    </svg>
+  </button>
+  <!-- Profile Button -->
+  <button id="headerProfileBtn" title="AI Profile">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+      <circle cx="12" cy="7" r="4"></circle>
+    </svg>
+  </button>
+</div>
   </div>
   <div class="title-section">
     <h1 id="mainTitle">Challenge</h1>
@@ -459,6 +544,19 @@
 </div>
 
 <!-- ============ MODALS ============ -->
+  <!-- Theme Palette Modal -->
+<div id="appThemeModal" class="modal-overlay" style="z-index: 8500;">
+  <div class="modal-box" style="max-width: 400px; padding: 20px;">
+    <h2>Choose App Theme</h2>
+    <div id="themePaletteGrid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; max-height: 55vh; overflow-y: auto; padding: 10px; margin-bottom: 20px;">
+      <!-- Colors will be generated here -->
+    </div>
+    <div class="settings-buttons" style="margin-top: 0;">
+      <button id="resetAppThemeBtn" style="background: #2a3142; color: #fff; border: 1px solid #4a9eff;">Default App Theme</button>
+      <button id="cancelAppThemeBtn" style="background: #ff6b4a; color: #fff;">Cancel</button>
+    </div>
+  </div>
+</div>
   <!-- Color Palette Modal -->
 <div id="colorPaletteModal" class="modal-overlay" style="z-index: 8000; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);">
   <div class="modal-box" style="max-width: 380px; padding: 20px; border-radius: 20px; background: #1a1f2e;">
@@ -617,7 +715,7 @@
       </div>
     </div>
 
-    <div class="extras-section" style="border-color: #9b59b6;">
+    <div class="extras-section" style="border-color: #00e5ff;">
       <h3 style="display: flex; justify-content: space-between;">
         <div style="display: flex; align-items: center; gap: 8px;">
           <svg class="svg-icon" style="stroke: #9b59b6;" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
@@ -651,17 +749,119 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </button>
         <div class="lang-menu" id="langMenu">
-          <div class="lang-option selected" data-value="en-US">English (US)</div>
-          <div class="lang-option" data-value="bn-BD">Bengali</div>
-          <div class="lang-option" data-value="hi-IN">Hindi</div>
-          <div class="lang-option" data-value="es-ES">Spanish</div>
-          <div class="lang-option" data-value="fr-FR">French</div>
-          <div class="lang-option" data-value="de-DE">German</div>
-          <div class="lang-option" data-value="zh-CN">Chinese</div>
-          <div class="lang-option" data-value="ja-JP">Japanese</div>
-          <div class="lang-option" data-value="ar-SA">Arabic</div>
-          <div class="lang-option" data-value="ru-RU">Russian</div>
-        </div>
+  <div class="lang-option selected" data-value="en-US">🇺🇸 English (US)</div>
+  <div class="lang-option" data-value="en-GB">🇬🇧 English (UK)</div>
+  <div class="lang-option" data-value="bn-BD">🇧🇩 Bengali (বাংলা)</div>
+  <div class="lang-option" data-value="hi-IN">🇮🇳 Hindi (हिन्दी)</div>
+  <div class="lang-option" data-value="es-ES">🇪🇸 Spanish (España)</div>
+  <div class="lang-option" data-value="es-MX">🇲🇽 Spanish (México)</div>
+  <div class="lang-option" data-value="fr-FR">🇫🇷 French (Français)</div>
+  <div class="lang-option" data-value="de-DE">🇩🇪 German (Deutsch)</div>
+  <div class="lang-option" data-value="zh-CN">🇨🇳 Chinese (简体中文)</div>
+  <div class="lang-option" data-value="zh-TW">🇹🇼 Chinese (繁體中文)</div>
+  <div class="lang-option" data-value="ja-JP">🇯🇵 Japanese (日本語)</div>
+  <div class="lang-option" data-value="ar-SA">🇸🇦 Arabic (العربية)</div>
+  <div class="lang-option" data-value="ar-EG">🇪🇬 Arabic (مصر)</div>
+  <div class="lang-option" data-value="ru-RU">🇷🇺 Russian (Русский)</div>
+  <div class="lang-option" data-value="pt-BR">🇧🇷 Portuguese (Brasil)</div>
+  <div class="lang-option" data-value="pt-PT">🇵🇹 Portuguese (Portugal)</div>
+  <div class="lang-option" data-value="it-IT">🇮🇹 Italian (Italiano)</div>
+  <div class="lang-option" data-value="ko-KR">🇰🇷 Korean (한국어)</div>
+  <div class="lang-option" data-value="tr-TR">🇹🇷 Turkish (Türkçe)</div>
+  <div class="lang-option" data-value="vi-VN">🇻🇳 Vietnamese (Tiếng Việt)</div>
+  <div class="lang-option" data-value="id-ID">🇮🇩 Indonesian (Bahasa)</div>
+  <div class="lang-option" data-value="th-TH">🇹🇭 Thai (ไทย)</div>
+  <div class="lang-option" data-value="nl-NL">🇳🇱 Dutch (Nederlands)</div>
+  <div class="lang-option" data-value="pl-PL">🇵🇱 Polish (Polski)</div>
+  <div class="lang-option" data-value="sv-SE">🇸🇪 Swedish (Svenska)</div>
+  <div class="lang-option" data-value="ur-PK">🇵🇰 Urdu (اردو)</div>
+  <div class="lang-option" data-value="ta-IN">🇮🇳 Tamil (தமிழ்)</div>
+  <div class="lang-option" data-value="te-IN">🇮🇳 Telugu (తెలుగు)</div>
+  <div class="lang-option" data-value="ml-IN">🇮🇳 Malayalam (മലയാളം)</div>
+  <div class="lang-option" data-value="gu-IN">🇮🇳 Gujarati (ગુજરાતી)</div>
+  <div class="lang-option" data-value="mr-IN">🇮🇳 Marathi (मराठी)</div>
+  <div class="lang-option" data-value="pa-IN">🇮🇳 Punjabi (ਪੰਜਾਬੀ)</div>
+  <div class="lang-option" data-value="fa-IR">🇮🇷 Persian (فارسی)</div>
+  <div class="lang-option" data-value="he-IL">🇮🇱 Hebrew (עברית)</div>
+  <div class="lang-option" data-value="el-GR">🇬🇷 Greek (Ελληνικά)</div>
+  <div class="lang-option" data-value="da-DK">🇩🇰 Danish (Dansk)</div>
+  <div class="lang-option" data-value="fi-FI">🇫🇮 Finnish (Suomi)</div>
+  <div class="lang-option" data-value="no-NO">🇳🇴 Norwegian (Norsk)</div>
+  <div class="lang-option" data-value="cs-CZ">🇨🇿 Czech (Čeština)</div>
+  <div class="lang-option" data-value="hu-HU">🇭🇺 Hungarian (Magyar)</div>
+  <div class="lang-option" data-value="ro-RO">🇷🇴 Romanian (Română)</div>
+  <div class="lang-option" data-value="uk-UA">🇺🇦 Ukrainian (Українська)</div>
+  <div class="lang-option" data-value="bg-BG">🇧🇬 Bulgarian (Български)</div>
+  <div class="lang-option" data-value="hr-HR">🇭🇷 Croatian (Hrvatski)</div>
+  <div class="lang-option" data-value="sr-RS">🇷🇸 Serbian (Српски)</div>
+  <div class="lang-option" data-value="sk-SK">🇸🇰 Slovak (Slovenčina)</div>
+  <div class="lang-option" data-value="sl-SI">🇸🇮 Slovenian (Slovenščina)</div>
+  <div class="lang-option" data-value="lt-LT">🇱🇹 Lithuanian (Lietuvių)</div>
+  <div class="lang-option" data-value="lv-LV">🇱🇻 Latvian (Latviešu)</div>
+  <div class="lang-option" data-value="et-EE">🇪🇪 Estonian (Eesti)</div>
+  <div class="lang-option" data-value="is-IS">🇮🇸 Icelandic (Íslenska)</div>
+  <div class="lang-option" data-value="ga-IE">🇮🇪 Irish (Gaeilge)</div>
+  <div class="lang-option" data-value="cy-GB">🏴 Welsh (Cymraeg)</div>
+  <div class="lang-option" data-value="af-ZA">🇿🇦 Afrikaans</div>
+  <div class="lang-option" data-value="sw-KE">🇰🇪 Swahili (Kiswahili)</div>
+  <div class="lang-option" data-value="zu-ZA">🇿🇦 Zulu (isiZulu)</div>
+  <div class="lang-option" data-value="am-ET">🇪🇹 Amharic (አማርኛ)</div>
+  <div class="lang-option" data-value="fil-PH">🇵🇭 Filipino</div>
+  <div class="lang-option" data-value="ms-MY">🇲🇾 Malay (Melayu)</div>
+  <div class="lang-option" data-value="ne-NP">🇳🇵 Nepali (नेपाली)</div>
+  <div class="lang-option" data-value="si-LK">🇱🇰 Sinhala (සිංහල)</div>
+  <div class="lang-option" data-value="km-KH">🇰🇭 Khmer (ខ្មែរ)</div>
+  <div class="lang-option" data-value="lo-LA">🇱🇦 Lao (ລາວ)</div>
+  <div class="lang-option" data-value="my-MM">🇲🇲 Burmese (မြန်မာ)</div>
+  <div class="lang-option" data-value="ka-GE">🇬🇪 Georgian (ქართული)</div>
+  <div class="lang-option" data-value="hy-AM">🇦🇲 Armenian (Հայերեն)</div>
+  <div class="lang-option" data-value="az-AZ">🇦🇿 Azerbaijani (Azərbaycan)</div>
+  <div class="lang-option" data-value="kk-KZ">🇰🇿 Kazakh (Қазақ)</div>
+  <div class="lang-option" data-value="uz-UZ">🇺🇿 Uzbek (Oʻzbek)</div>
+  <div class="lang-option" data-value="mn-MN">🇲🇳 Mongolian (Монгол)</div>
+  <div class="lang-option" data-value="ca-ES">🏴 Catalan (Català)</div>
+  <div class="lang-option" data-value="eu-ES">🏴 Basque (Euskara)</div>
+  <div class="lang-option" data-value="gl-ES">🇪🇸 Galician (Galego)</div>
+  <div class="lang-option" data-value="mt-MT">🇲🇹 Maltese (Malti)</div>
+  <div class="lang-option" data-value="sq-AL">🇦🇱 Albanian (Shqip)</div>
+  <div class="lang-option" data-value="mk-MK">🇲🇰 Macedonian (Македонски)</div>
+  <div class="lang-option" data-value="bs-BA">🇧🇦 Bosnian (Bosanski)</div>
+  <div class="lang-option" data-value="be-BY">🇧🇾 Belarusian (Беларуская)</div>
+  <div class="lang-option" data-value="ky-KG">🇰🇬 Kyrgyz (Кыргыз)</div>
+  <div class="lang-option" data-value="tg-TJ">🇹🇯 Tajik (Тоҷикӣ)</div>
+  <div class="lang-option" data-value="tk-TM">🇹🇲 Turkmen (Türkmen)</div>
+  <div class="lang-option" data-value="ps-AF">🇦🇫 Pashto (پښتو)</div>
+  <div class="lang-option" data-value="ku-TR">🇹🇷 Kurdish (Kurdî)</div>
+  <div class="lang-option" data-value="so-SO">🇸🇴 Somali (Soomaali)</div>
+  <div class="lang-option" data-value="yo-NG">🇳🇬 Yoruba (Yorùbá)</div>
+  <div class="lang-option" data-value="ig-NG">🇳🇬 Igbo (Asụsụ Igbo)</div>
+  <div class="lang-option" data-value="ha-NG">🇳🇬 Hausa</div>
+  <div class="lang-option" data-value="mg-MG">🇲🇬 Malagasy</div>
+  <div class="lang-option" data-value="ny-MW">🇲🇼 Chichewa</div>
+  <div class="lang-option" data-value="sn-ZW">🇿🇼 Shona</div>
+  <div class="lang-option" data-value="st-LS">🇱🇸 Sesotho</div>
+  <div class="lang-option" data-value="tn-BW">🇧🇼 Tswana</div>
+  <div class="lang-option" data-value="xh-ZA">🇿🇦 Xhosa (isiXhosa)</div>
+  <div class="lang-option" data-value="tw-GH">🇬🇭 Twi</div>
+  <div class="lang-option" data-value="wo-SN">🇸🇳 Wolof</div>
+  <div class="lang-option" data-value="bm-ML">🇲🇱 Bambara</div>
+  <div class="lang-option" data-value="ti-ER">🇪🇷 Tigrinya</div>
+  <div class="lang-option" data-value="om-ET">🇪🇹 Oromo</div>
+  <div class="lang-option" data-value="lb-LU">🇱🇺 Luxembourgish</div>
+  <div class="lang-option" data-value="rm-CH">🇨🇭 Romansh</div>
+  <div class="lang-option" data-value="fo-FO">🇫🇴 Faroese</div>
+  <div class="lang-option" data-value="kl-GL">🇬🇱 Greenlandic</div>
+  <div class="lang-option" data-value="mi-NZ">🇳🇿 Maori</div>
+  <div class="lang-option" data-value="sm-WS">🇼🇸 Samoan</div>
+  <div class="lang-option" data-value="to-TO">🇹🇴 Tongan</div>
+  <div class="lang-option" data-value="fj-FJ">🇫🇯 Fijian</div>
+  <div class="lang-option" data-value="haw-US">🇺🇸 Hawaiian</div>
+  <div class="lang-option" data-value="qu-PE">🇵🇪 Quechua</div>
+  <div class="lang-option" data-value="gn-PY">🇵🇾 Guarani</div>
+  <div class="lang-option" data-value="ay-BO">🇧🇴 Aymara</div>
+  <div class="lang-option" data-value="ht-HT">🇭🇹 Haitian Creole</div>
+  <div class="lang-option" data-value="eo">🌐 Esperanto</div>
+</div>
         <input type="hidden" id="voiceLangSelect" value="en-US">
       </div>
       <div class="mini-chat-container">
@@ -703,6 +903,21 @@
       <p style="text-align: right; font-size: 12px; color: #00e5ff; margin-top: 5px;" id="overallProgressText">0% Completed</p>
     </div>
     
+    <!-- 🌟 New Feature: Habit Consistency Chart -->
+    <div class="extras-section" id="habitTrendSection" style="display: none; border-color: #9b59b6;">
+      <h3>
+        <svg class="svg-icon" style="stroke: #9b59b6;" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+        30-Day Habit Trends
+      </h3>
+      <p style="color: #9aa0a6; font-size: 12px; margin-bottom: 10px;">See which habits are improving and which need attention.</p>
+      <div class="chart-container">
+        <canvas id="habitTrendChart"></canvas>
+      </div>
+      <div id="habitTrendInsights" style="font-size: 13px; color: #e8eaed; line-height: 1.6; background: #0f1419; padding: 12px; border-radius: 8px; border-left: 3px solid #9b59b6;">
+         <!-- Dynamic text will be injected here -->
+      </div>
+    </div>
+
     <div class="extras-section">
       <h3>
         <svg class="svg-icon" style="stroke: #f1c40f;" viewBox="0 0 24 24"><path d="M9 18h6"></path><path d="M10 22h4"></path><path d="M12 2a7 7 0 0 0-7 7c0 2.4 1.2 4.5 3 5.7V17h8v-2.3c1.8-1.2 3-3.3 3-5.7a7 7 0 0 0-7-7z"></path></svg>
@@ -1023,8 +1238,15 @@
   <div class="modal-box">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
       <h2 style="margin-bottom: 0; text-align: left;">Settings</h2>
-      <button id="themeToggleBtn" style="width: 34px; height: 34px; border-radius: 8px; background: #2a3142; color: #fff; border: 1px solid #4a9eff; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: all 0.2s;"></button>
+      <button id="themeToggleBtn" style="padding: 0 12px; height: 34px; border-radius: 8px; background: #2a3142; color: #fff; border: 1px solid #4a9eff; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: all 0.2s; gap: 6px; font-size: 12px; font-weight: bold;">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a10 10 0 1 1 10-10c0 5-4 10-10 10z"></path><circle cx="7.5" cy="10.5" r="1.5"></circle><circle cx="12" cy="7.5" r="1.5"></circle><circle cx="16.5" cy="10.5" r="1.5"></circle></svg>
+  Choose App Theme
+</button>
     </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; background: #0f1419; padding: 10px 15px; border-radius: 10px; border: 1px solid #2a3142;">
+  <span style="color: #9aa0a6; font-size: 14px; font-weight: bold;">"Hey GROQ" Wake Word</span>
+  <button id="settingsWakeWordBtn" style="background: #2a3142; color: #ff6b4a; border: 1px solid #ff6b4a; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; transition: all 0.3s;">OFF</button>
+</div>
     <label>Challenge Name:</label>
     <input type="text" id="settingsTitle">
     <label>Duration (days):</label>
@@ -1213,7 +1435,16 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+<div id="deleteAllHabitsModal" class="modal-overlay">
+  <div class="modal-box">
+    <h2 style="color: #ff6b4a;">⚠️Delete All Habits?</h2>
+    <p style="text-align:center; color:#9aa0a6; margin-bottom:15px; font-size: 14px;">This will permanently remove all your habits and their completion history. This action cannot be undone. Are you sure?</p>
+    <div class="settings-buttons">
+      <button id="cancelDeleteAllBtn" style="background-color: #2a3142; color: #e8eaed; font-weight: bold;">Cancel</button>
+      <button id="confirmDeleteAllBtn" style="background: linear-gradient(135deg, #ff6b4a, #d35400); color: white; font-weight: bold;">Delete</button>
+    </div>
+  </div>
+</div>
 <script>
 // ============================================================
 // 🔑 AI CONFIG
@@ -1224,7 +1455,63 @@ const AI_CONFIG = {
   VISION_MODELS: ["qwen/qwen3.8-27b"],
   URL: "https://api.groq.com/openai/v1/chat/completions"
 };
+const appThemes = [
+  { name: "Default Aqua", main: "#00e5ff", bg: "#0f1419", card: "#1a1f2e", text: "#e8eaed", heatmap: ["#1a1f2e", "#1a5b6e", "#008fa3", "#00e5ff"] },
+  { name: "Crimson Gold", main: "#ff3333", bg: "#1a0a0a", card: "#2a1212", text: "#fce8e8", heatmap: ["#2a1212", "#6b2a2a", "#a83a3a", "#ffd700"] },
+  { name: "Sapphire Amber", main: "#4a9eff", bg: "#0a121f", card: "#121f33", text: "#e8f0ff", heatmap: ["#121f33", "#1e3c66", "#326bb3", "#ffb300"] },
+  { name: "Emerald Coral", main: "#2ecc71", bg: "#0a1a0f", card: "#122a18", text: "#e8fce8", heatmap: ["#122a18", "#1e5c2d", "#2e994a", "#ff7f50"] },
+  { name: "Amethyst Lime", main: "#9b59b6", bg: "#140a1a", card: "#221230", text: "#f5e8fc", heatmap: ["#221230", "#4a2666", "#7a3d99", "#aaff00"] },
+  { name: "Ruby Silver", main: "#e74c3c", bg: "#1a0f0f", card: "#2b1919", text: "#fceaea", heatmap: ["#2b1919", "#5c2727", "#943d3d", "#bdc3c7"] },
+  { name: "Midnight Yellow", main: "#f1c40f", bg: "#0d111a", card: "#161b2b", text: "#fef9e7", heatmap: ["#161b2b", "#3b4773", "#5e6da8", "#f1c40f"] },
+  { name: "Rose Cyan", main: "#e84393", bg: "#1a0e14", card: "#2e1822", text: "#ffe8f2", heatmap: ["#2e1822", "#6b2a4a", "#b03d76", "#00e5ff"] },
+  { name: "Orange Blue", main: "#e67e22", bg: "#1a120a", card: "#2e1f12", text: "#fdf2e9", heatmap: ["#2e1f12", "#6b421e", "#b36b32", "#3498db"] },
+  { name: "Forest Peach", main: "#27ae60", bg: "#0b1a12", card: "#122b1e", text: "#e9f7ef", heatmap: ["#122b1e", "#1e5c33", "#2e8c4a", "#ffb38a"] },
+  { name: "Indigo Pink", main: "#5f27cd", bg: "#0e0a1a", card: "#18122e", text: "#f0e8ff", heatmap: ["#18122e", "#31216b", "#4b32a8", "#ff9ff3"] },
+  { name: "Teal Maroon", main: "#1abc9c", bg: "#0a1a16", card: "#122e27", text: "#e8f8f5", heatmap: ["#122e27", "#1e6654", "#2e9980", "#800000"] },
+  { name: "Charcoal White", main: "#95a5a6", bg: "#121212", card: "#1e1e1e", text: "#ffffff", heatmap: ["#1e1e1e", "#4d4d4d", "#7a7a7a", "#ffffff"] },
+  { name: "Neon Green", main: "#39ff14", bg: "#0a1a0a", card: "#122e12", text: "#e8ffe8", heatmap: ["#122e12", "#1e661e", "#2e992e", "#39ff14"] },
+  { name: "Sunset Red", main: "#ff4500", bg: "#1a0a05", card: "#2e120a", text: "#ffe8e0", heatmap: ["#2e120a", "#6b2a1e", "#b34d32", "#ffd700"] },
+  { name: "Deep Ocean", main: "#00bfff", bg: "#05101a", card: "#0a1c2e", text: "#e0f4ff", heatmap: ["#0a1c2e", "#12577a", "#1e8cb3", "#ffffff"] },
+  { name: "Magenta Gold", main: "#ff00ff", bg: "#1a051a", card: "#2e0a2e", text: "#ffe0ff", heatmap: ["#2e0a2e", "#6b1e6b", "#b332b3", "#ffd700"] },
+  { name: "Lime Purple", main: "#c0ff00", bg: "#101a05", card: "#1c2e0a", text: "#f4ffe0", heatmap: ["#1c2e0a", "#3d6b12", "#5e8c1e", "#9b59b6"] },
+  { name: "Sky Pink", main: "#87ceeb", bg: "#0a121a", card: "#12202e", text: "#e0f0ff", heatmap: ["#12202e", "#2a4d6b", "#3d7a9e", "#ff69b4"] },
+  { name: "Rust Mint", main: "#b7410e", bg: "#1a0e0a", card: "#2e1812", text: "#ffe8e0", heatmap: ["#2e1812", "#6b2a1e", "#a8402e", "#98ff98"] },
+  { name: "Mustard Navy", main: "#ffdb58", bg: "#0a0e1a", card: "#121828", text: "#fffae6", heatmap: ["#121828", "#1e2a4d", "#2e3d6b", "#1e3a8a"] },
+  { name: "Olive Ruby", main: "#808000", bg: "#121208", card: "#1e1e10", text: "#f5f5dc", heatmap: ["#1e1e10", "#4d4d20", "#7a7a30", "#e6194b"] },
+  { name: "Plum Cyan", main: "#8e44ad", bg: "#140a1a", card: "#22122e", text: "#f5e0ff", heatmap: ["#22122e", "#47245c", "#6b328c", "#00e5ff"] },
+  { name: "Coral Teal", main: "#ff7f50", bg: "#1a0e0a", card: "#2e1a12", text: "#ffe8e0", heatmap: ["#2e1a12", "#6b3a2a", "#a85a3d", "#008080"] },
+  { name: "Turquoise Red", main: "#40e0d0", bg: "#0a1a19", card: "#122e2c", text: "#e0fffd", heatmap: ["#122e2c", "#1e5c56", "#2e8c84", "#ff0000"] },
+  { name: "Lavender Gold", main: "#e6e6fa", bg: "#0f0f1a", card: "#18182e", text: "#ffffff", heatmap: ["#18182e", "#31316b", "#4b4ba8", "#ffd700"] },
+  { name: "Crimson Lime", main: "#dc143c", bg: "#1a0a0e", card: "#2e1218", text: "#ffe0e6", heatmap: ["#2e1218", "#6b1e2a", "#a8323d", "#c0ff00"] },
+  { name: "Azure Orange", main: "#007fff", bg: "#050f1a", card: "#0a1a2e", text: "#e0f0ff", heatmap: ["#0a1a2e", "#124a6b", "#1e7ab3", "#ffa500"] },
+  { name: "Mint Purple", main: "#98ff98", bg: "#0a1a12", card: "#122e1e", text: "#e0ffe0", heatmap: ["#122e1e", "#1e5c33", "#2e8c4a", "#800080"] },
+  { name: "Burgundy Silver", main: "#800020", bg: "#1a0a0d", card: "#2e1218", text: "#ffe0e6", heatmap: ["#2e1218", "#6b1e2a", "#a8323d", "#c0c0c0"] },
+  { name: "Aquamarine Red", main: "#7fffd4", bg: "#0a1a16", card: "#122e27", text: "#e0fff8", heatmap: ["#122e27", "#1e6654", "#2e9980", "#ff3333"] },
+  { name: "Bronze Blue", main: "#cd7f32", bg: "#1a120a", card: "#2e2012", text: "#fdf2e9", heatmap: ["#2e2012", "#6b4220", "#a86332", "#0000ff"] },
+  { name: "Ivory Navy", main: "#fffff0", bg: "#0a0a1a", card: "#121228", text: "#ffffff", heatmap: ["#121228", "#1e1e4d", "#2e2e6b", "#000080"] },
+  { name: "Scarlet Green", main: "#ff2400", bg: "#1a0a05", card: "#2e120a", text: "#ffe8e0", heatmap: ["#2e120a", "#6b2a1e", "#a8402e", "#00ff00"] },
+  { name: "Violet Yellow", main: "#8a2be2", bg: "#140a1a", card: "#22122e", text: "#f0e0ff", heatmap: ["#22122e", "#47245c", "#6b328c", "#ffff00"] },
+  { name: "Aqua Maroon", main: "#00ffff", bg: "#0a1a1a", card: "#122e2e", text: "#e0ffff", heatmap: ["#122e2e", "#1e5c5c", "#2e8c8c", "#800000"] },
+  { name: "Tangerine Purple", main: "#f28500", bg: "#1a100a", card: "#2e1c12", text: "#fff0e0", heatmap: ["#2e1c12", "#6b3a20", "#a85a30", "#800080"] },
+  { name: "Mint Maroon", main: "#aaffc3", bg: "#0a1a0f", card: "#122e18", text: "#e0ffe8", heatmap: ["#122e18", "#1e5c2d", "#2e8c42", "#800000"] },
+  { name: "Cerulean Coral", main: "#2a52be", bg: "#050f1a", card: "#0a1a2e", text: "#e0e8ff", heatmap: ["#0a1a2e", "#12405c", "#1e6b8c", "#ff7f50"] },
+  { name: "Fuchsia Gold", main: "#ff77ff", bg: "#1a0a1a", card: "#2e122e", text: "#ffe0ff", heatmap: ["#2e122e", "#6b206b", "#a830a8", "#ffd700"] },
+  { name: "Sage Pink", main: "#77815c", bg: "#12120e", card: "#1e1e16", text: "#f0f0e0", heatmap: ["#1e1e16", "#4d4d33", "#7a7a4d", "#ff69b4"] },
+  { name: "Brick Cyan", main: "#cb4154", bg: "#1a0e10", card: "#2e181c", text: "#ffe0e4", heatmap: ["#2e181c", "#6b2a33", "#a8404a", "#00e5ff"] },
+  { name: "Periwinkle Orange", main: "#ccccff", bg: "#0f0f1a", card: "#1a1a2e", text: "#ffffff", heatmap: ["#1a1a2e", "#33335c", "#4d4d8c", "#ffa500"] },
+  { name: "Khaki Indigo", main: "#c3b091", bg: "#12120e", card: "#1e1e16", text: "#fdf5e6", heatmap: ["#1e1e16", "#4d4d33", "#7a7a4d", "#4b0082"] },
+  { name: "Salmon Teal", main: "#fa8072", bg: "#1a100e", card: "#2e1c18", text: "#ffe8e4", heatmap: ["#2e1c18", "#6b3a2e", "#a85a4a", "#008080"] },
+  { name: "Amber Navy", main: "#ffbf00", bg: "#0a0e1a", card: "#121828", text: "#fffce0", heatmap: ["#121828", "#1e2a4d", "#2e3d6b", "#000080"] },
+  { name: "Jade Rose", main: "#00a86b", bg: "#0a1a12", card: "#122e1e", text: "#e0ffe8", heatmap: ["#122e1e", "#1e5c33", "#2e8c4a", "#ff007f"] },
+  { name: "Steel Gold", main: "#71797e", bg: "#121212", card: "#1e1e1e", text: "#f5f5f5", heatmap: ["#1e1e1e", "#4d4d4d", "#7a7a7a", "#ffd700"] },
+  { name: "Cobalt Peach", main: "#0047ab", bg: "#050f1a", card: "#0a1a2e", text: "#e0e8ff", heatmap: ["#0a1a2e", "#123d73", "#1e5c99", "#ffb38a"] },
+  { name: "Carmine Mint", main: "#960018", bg: "#1a0a0c", card: "#2e1216", text: "#ffe0e4", heatmap: ["#2e1216", "#6b1e27", "#a8323b", "#98ff98"] },
+  { name: "Ultramarine Coral", main: "#3f00ff", bg: "#0a051a", card: "#121030", text: "#e8e0ff", heatmap: ["#121030", "#1e1a5c", "#2e278c", "#ff7f50"] },
+  { name: "Spring Green Red", main: "#00ff7f", bg: "#0a1a12", card: "#122e1e", text: "#e0ffe8", heatmap: ["#122e1e", "#1e5c33", "#2e8c4a", "#ff0000"] },
+  { name: "Crimson Cyan", main: "#990000", bg: "#1a0a0a", card: "#2e1212", text: "#ffe0e0", heatmap: ["#2e1212", "#6b1e1e", "#a83232", "#00e5ff"] }
+];
 
+let currentTheme = JSON.parse(localStorage.getItem("gritgo_custom_theme")) || appThemes[0];
 // ============================================================
 // 🔥 HABIT ICONS
 // ============================================================
@@ -1239,6 +1526,20 @@ const habitIconsList = {
   heart: `<svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>`,
   star: `<svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>`
 };
+
+// ============================================================
+// 🌟 FIXED AUDIO CONTEXT (For Sound)
+// ============================================================
+let sharedAudioCtx = null;
+function getSharedAudioContext() {
+  if (!sharedAudioCtx) {
+    sharedAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  if (sharedAudioCtx.state === 'suspended') {
+    sharedAudioCtx.resume();
+  }
+  return sharedAudioCtx;
+}
 
 // ============================================================
 // 🔄 Loading Spinner
@@ -1272,6 +1573,7 @@ if (savedSleep) {
 }
 
 let waterData = JSON.parse(localStorage.getItem("aquaData")) || { dailyGoal: 2.5, logs: {} };
+let habitTrendChartInstance = null; // 🌟 Chart instance variable
 
 // ============================================================
 // 🛠 HELPERS
@@ -1344,6 +1646,68 @@ function updateMotivation() {
 }
 
 // ============================================================
+// 🎵 FIXED: Sound & Haptics
+// ============================================================
+function playCheckSound(isAllComplete = false) {
+  if (navigator.vibrate) {
+    navigator.vibrate(isAllComplete ? [50, 50, 50] : 30);
+  }
+
+  try {
+    const audioCtx = getSharedAudioContext();
+    const oscillator = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    
+    if (isAllComplete) {
+      // Celebration Chime
+      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(600, audioCtx.currentTime);
+      oscillator.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.15);
+      gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.6);
+      oscillator.start();
+      oscillator.stop(audioCtx.currentTime + 0.6);
+    } else {
+      // Satisfying Pop/Ding
+      oscillator.type = 'triangle';
+      oscillator.frequency.setValueAtTime(400, audioCtx.currentTime);
+      oscillator.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.1);
+      gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+      oscillator.start();
+      oscillator.stop(audioCtx.currentTime + 0.1);
+    }
+  } catch(e) { console.log("Audio block by browser"); }
+}
+// 🌟 নতুন: টিক তুলে নিলে সাউন্ড বাজবে
+function playUncheckSound() {
+  if (navigator.vibrate) {
+    navigator.vibrate([40, 40]);
+  }
+
+  try {
+    const audioCtx = getSharedAudioContext();
+    const oscillator = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    
+    oscillator.type = 'square';
+    oscillator.frequency.setValueAtTime(300, audioCtx.currentTime); 
+    oscillator.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.15);
+    
+    gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+    
+    oscillator.start();
+    oscillator.stop(audioCtx.currentTime + 0.15);
+  } catch(e) { console.log("Audio block by browser"); }
+}
+// ============================================================
 // 🤖 AI: Groq Call
 // ============================================================
 async function callGroq(messages, options = {}) {
@@ -1388,31 +1752,6 @@ document.querySelectorAll(".date-wrapper input").forEach(i => {
   i.addEventListener("blur", updateDatePlaceholders);
 });
 document.getElementById("setupStartDate").setAttribute("min", getLiteralDateKey());
-
-// ============================================================
-// 🎨 THEME
-// ============================================================
-const themeToggleBtn = document.getElementById("themeToggleBtn");
-const sunIcon = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`;
-const moonIcon = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
-if (localStorage.getItem("gritgo_theme") === "light") {
-  document.body.classList.add("light-theme");
-  themeToggleBtn.innerHTML = moonIcon;
-} else {
-  themeToggleBtn.innerHTML = sunIcon;
-}
-themeToggleBtn.addEventListener("click", () => {
-  document.body.classList.toggle("light-theme");
-  if (document.body.classList.contains("light-theme")) {
-    localStorage.setItem("gritgo_theme", "light");
-    themeToggleBtn.innerHTML = moonIcon;
-    showToast("Light Mode Enabled");
-  } else {
-    localStorage.setItem("gritgo_theme", "dark");
-    themeToggleBtn.innerHTML = sunIcon;
-    showToast("Dark Mode Enabled");
-  }
-});
 
 // ============================================================
 // 🔙 HISTORY API (FIXING BACK BUTTON)
@@ -1619,7 +1958,6 @@ document.getElementById("feedbackSubmit").onclick = () => {
 // ============================================================
 // 💾 BACKUP / RESTORE / CSV
 // ============================================================
-document.getElementById("shareButton").onclick = () => { document.getElementById("backupText").value = JSON.stringify(challengeData); document.getElementById("backupModal").classList.add("active"); };
 document.getElementById("exportData").onclick = () => { document.getElementById("backupText").value = JSON.stringify(challengeData); document.getElementById("backupModal").classList.add("active"); };
 document.getElementById("closeBackupBtn").onclick = () => document.getElementById("backupModal").classList.remove("active");
 document.getElementById("copyBackupBtn").onclick = async () => {
@@ -1745,7 +2083,7 @@ function renderTodayHabits() {
   ul.style.listStyle = "none";
   ul.style.marginTop = "15px";
   let completedCount = 0, shownCount = 0;
-  Object.values(todayLog).forEach(val => { if (val === true) completedCount++; });
+  challengeData.habits.forEach(h => { if (todayLog[h.id] === true) completedCount++; });
 
   challengeData.habits.forEach((habitObj, index) => {
     const habit = habitObj.name;
@@ -1777,19 +2115,34 @@ function renderTodayHabits() {
         renderHeatmap();
         updateStats();
         if (document.getElementById("extrasModal").classList.contains("active")) renderExtras();
-        const newCompleted = Object.values(challengeData.habitLogs[todayKey]).filter(v => v === true).length;
-        if (isChecked && newCompleted === challengeData.habits.length) showConfetti();
-      };
+        
+            // 🌟 FIXED LOGIC: Count only currently active habits
+    let newCompleted = 0;
+    challengeData.habits.forEach(h => { if (challengeData.habitLogs[todayKey][h.id] === true) newCompleted++; });
+    
+    if (isChecked && newCompleted === challengeData.habits.length) {
+        playCheckSound(true); 
+        showConfetti(); 
+    } else if (isChecked) {
+        playCheckSound(false); 
+    } else if (!isChecked) {
+        playUncheckSound(); // 🌟 টিক তুলে নিলে সাউন্ড
     }
+  };
+}
 
-    const span = document.createElement("span");
+const span = document.createElement("span");
     span.textContent = habit;
     span.style.flex = "1";
     span.style.color = isFuture ? "#6a7280" : "#e8eaed";
     span.style.fontWeight = "500";
     span.style.fontSize = "14px";
-    if (todayLog[habitObj.id] === true) { span.style.textDecoration = "line-through"; span.style.opacity = "0.6"; }
-    if (document.body.classList.contains("light-theme")) span.style.color = isFuture ? "#9ca3af" : "#1a1f2e";
+    if (todayLog[habitObj.id] === true) { 
+    span.style.textDecoration = "line-through"; 
+    span.style.opacity = "0.7"; 
+    span.style.color = (typeof currentTheme !== 'undefined' && currentTheme.heatmap) ? currentTheme.heatmap[3] : "#00e5ff"; 
+}
+    
 
     const catBadge = document.createElement("span"); catBadge.className = "category-badge"; catBadge.textContent = habitObj.category || 'General';
     const timerBtn = document.createElement("button"); timerBtn.innerHTML = timerIconSVG; timerBtn.className = "timer-btn"; timerBtn.onclick = (e) => { e.stopPropagation(); openTimerModal(habitObj.id, habitObj.name, todayKey); };
@@ -1804,12 +2157,16 @@ function renderTodayHabits() {
   const todayButtons = document.querySelector(".today-buttons");
   todayButtons.parentNode.insertBefore(ul, todayButtons);
   if (!isFuture) todayCount.textContent = completedCount + " / " + challengeData.habits.length;
+  
+  updateCheckAllBtnUI(); // 🌟 নতুন এই লাইনটি যোগ করুন
 }
 
 function updateTodayCount() {
   const todayKey = getDateKey();
   const todayLog = challengeData.habitLogs[todayKey] || {};
-  document.getElementById("todayCount").textContent = Object.values(todayLog).filter(v => v === true).length + " / " + challengeData.habits.length;
+  let completedToday = 0;
+  challengeData.habits.forEach(h => { if (todayLog[h.id] === true) completedToday++; });
+  document.getElementById("todayCount").textContent = completedToday + " / " + challengeData.habits.length;
 }
 
 document.getElementById("habitSearchInput").addEventListener("input", renderTodayHabits);
@@ -1824,25 +2181,35 @@ function renderHeatmap() {
   const todayKey = getDateKey();
   const startKey = normalizeDate(challengeData.startDate);
   let currentKey = startKey;
+
+  const hmColors = (typeof currentTheme !== 'undefined' && currentTheme.heatmap) ? currentTheme.heatmap : ["#1a1f2e", "#1a5b6e", "#008fa3", "#00e5ff"];
+
   for (let i = 0; i < challengeData.duration; i++) {
     const dayLog = challengeData.habitLogs[currentKey] || {};
-    const completedCount = Object.values(dayLog).filter(v => v === true).length;
+    let completedCount = 0;
+    challengeData.habits.forEach(h => { if (dayLog[h.id] === true) completedCount++; });
+    
     const cell = document.createElement("div");
     cell.className = "heatmap-cell";
+    
+    cell.style.setProperty("background-color", hmColors[0], "important");
+
     if (completedCount > 0 && challengeData.habits.length > 0) {
       const p = completedCount / challengeData.habits.length;
-      if (p >= 1) { cell.style.setProperty("background", "linear-gradient(135deg, #00e5ff, #00b8d4)", "important"); cell.style.setProperty("box-shadow", "0 0 12px rgba(0, 229, 255, 0.8)", "important"); }
-      else if (p >= 0.66) cell.style.setProperty("background-color", "#4aaa4a", "important");
-      else if (p >= 0.33) cell.style.setProperty("background-color", "#3a7a3a", "important");
-      else cell.style.setProperty("background-color", "#2a4a2a", "important");
+      if (p >= 1) { 
+        cell.style.setProperty("background", hmColors[3], "important"); 
+        cell.style.setProperty("box-shadow", `0 0 12px ${hmColors[3]}`, "important"); 
+      }
+      else if (p >= 0.66) cell.style.setProperty("background-color", hmColors[2], "important");
+      else if (p >= 0.33) cell.style.setProperty("background-color", hmColors[1], "important");
+      else cell.style.setProperty("background-color", hmColors[0], "important");
     }
+    
     if (currentKey === todayKey) {
       cell.style.setProperty("border", "2px solid #ffffff", "important");
       cell.style.setProperty("box-sizing", "border-box", "important");
     }
-    if (document.body.classList.contains("light-theme") && currentKey === todayKey) {
-      cell.style.setProperty("border", "2px solid #1a1f2e", "important");
-    }
+    
     const cellKey = currentKey;
     cell.onclick = () => promptPastEdit(cellKey);
     heatmap.appendChild(cell);
@@ -1856,7 +2223,10 @@ function renderHeatmap() {
 function updateStats() {
   const todayKey = getDateKey();
   const todayLog = challengeData.habitLogs[todayKey] || {};
-  const completedToday = Object.values(todayLog).filter(v => v === true).length;
+  
+  let completedToday = 0;
+  challengeData.habits.forEach(h => { if (todayLog[h.id] === true) completedToday++; });
+  
   const totalHabits = challengeData.habits.length;
   if (totalHabits === 0) {
     document.getElementById("streakStat").textContent = 0;
@@ -1868,25 +2238,65 @@ function updateStats() {
   let curr = normalizeDate(challengeData.startDate);
   let safety = 0;
   while (curr <= todayKey && safety < 500) { dates.push(curr); curr = nextDateKey(curr); safety++; }
+  
   let perfectDays = 0;
   dates.forEach(key => {
     const log = challengeData.habitLogs[key] || {};
-    if (Object.values(log).filter(v => v === true).length === totalHabits) perfectDays++;
+    let dayCompleted = 0;
+    challengeData.habits.forEach(h => { if (log[h.id] === true) dayCompleted++; });
+    if (dayCompleted === totalHabits) perfectDays++;
   });
+  
   let streak = 0;
   let checkIdx = dates.length - 1;
   const isTodayPerfect = completedToday === totalHabits;
   if (!isTodayPerfect && dates.length > 1) checkIdx = dates.length - 2;
   for (let i = checkIdx; i >= 0; i--) {
     const log = challengeData.habitLogs[dates[i]] || {};
-    if (Object.values(log).filter(v => v === true).length === totalHabits) streak++;
+    let dayCompleted = 0;
+    challengeData.habits.forEach(h => { if (log[h.id] === true) dayCompleted++; });
+    if (dayCompleted === totalHabits) streak++;
     else break;
   }
   document.getElementById("streakStat").textContent = streak;
   document.getElementById("perfectStat").textContent = perfectDays;
-  document.getElementById("overallStat").textContent = Math.round((completedToday / totalHabits) * 100) + "%";
+  
+  document.getElementById("overallStat").textContent = Math.min(100, Math.round((completedToday / totalHabits) * 100)) + "%";
 }
+function updateCheckAllBtnUI() {
+  const btn = document.getElementById("checkAllBtn");
+  if (!btn) return;
 
+  const todayKey = getDateKey();
+  const todayLog = challengeData.habitLogs[todayKey] || {};
+  const totalHabits = challengeData.habits.length;
+  
+  let completedCount = 0;
+  challengeData.habits.forEach(h => { if (todayLog[h.id] === true) completedCount++; });
+
+  const themeColor = currentTheme.main;
+
+  if (totalHabits === 0 || completedCount === 0) {
+    btn.style.background = 'rgba(255, 255, 255, 0.05)';
+    btn.style.boxShadow = 'none';
+    btn.style.opacity = '0.5';
+    btn.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+    btn.querySelector('svg').style.stroke = '#9aa0a6';
+  } else if (completedCount === totalHabits) {
+    btn.style.background = `linear-gradient(135deg, ${themeColor}, #2a7fdb)`;
+    btn.style.boxShadow = `0 0 15px ${themeColor}`;
+    btn.style.opacity = '1';
+    btn.style.border = 'none';
+    btn.querySelector('svg').style.stroke = '#ffffff';
+  } else {
+    const ratio = completedCount / totalHabits;
+    btn.style.background = `linear-gradient(135deg, ${themeColor}, #2a7fdb)`;
+    btn.style.boxShadow = `0 0 ${10 * ratio}px ${themeColor}`;
+    btn.style.opacity = (0.5 + (ratio * 0.5)).toString();
+    btn.style.border = 'none';
+    btn.querySelector('svg').style.stroke = '#ffffff';
+  }
+}
 // ============================================================
 // ☑️ QUICK ACTIONS
 // ============================================================
@@ -1899,6 +2309,7 @@ document.getElementById("checkAllBtn").addEventListener("click", () => {
   localStorage.setItem("challengeData", JSON.stringify(challengeData));
   renderTodayHabits(); renderHeatmap(); updateStats();
   if (document.getElementById("extrasModal").classList.contains("active")) renderExtras();
+  playCheckSound(true); // 🔊 Sound for Check All
   showConfetti(); showToast("All checked!");
 });
 document.getElementById("resetAllBtn").addEventListener("click", () => {
@@ -1911,6 +2322,7 @@ document.getElementById("resetAllBtn").addEventListener("click", () => {
   localStorage.setItem("challengeData", JSON.stringify(challengeData));
   renderTodayHabits(); renderHeatmap(); updateStats();
   if (document.getElementById("extrasModal").classList.contains("active")) renderExtras();
+  if (navigator.vibrate) navigator.vibrate(20); // Haptic for reset
   showToast("All unchecked.");
 });
 
@@ -1942,7 +2354,9 @@ document.getElementById("pastEditConfirm").addEventListener("click", () => { doc
 function renderDayModalList() {
   const list = document.getElementById("dayModalList"); list.innerHTML = "";
   const log = challengeData.habitLogs[viewingDateKey] || {};
-  const completedCount = Object.values(log).filter(v => v === true).length;
+  let completedCount = 0;
+  challengeData.habits.forEach(h => { if (log[h.id] === true) completedCount++; });
+  
   document.getElementById("dayModalSubtitle").textContent = `${completedCount} / ${challengeData.habits.length} habits done`;
   const searchTerm = document.getElementById("dayModalSearchInput").value.trim();
   const isNumberSearch = /^\d+$/.test(searchTerm);
@@ -1968,9 +2382,14 @@ function renderDayModalList() {
       if (!challengeData.habitLogs[viewingDateKey]) challengeData.habitLogs[viewingDateKey] = {};
       challengeData.habitLogs[viewingDateKey][habitObj.id] = isChecked;
       localStorage.setItem("challengeData", JSON.stringify(challengeData));
-      document.getElementById("dayModalSubtitle").textContent = `${Object.values(challengeData.habitLogs[viewingDateKey]).filter(v => v === true).length} / ${challengeData.habits.length} habits done`;
+      
+      let newCompleted = 0;
+      challengeData.habits.forEach(h => { if (challengeData.habitLogs[viewingDateKey][h.id] === true) newCompleted++; });
+      document.getElementById("dayModalSubtitle").textContent = `${newCompleted} / ${challengeData.habits.length} habits done`;
+      
       renderDayModalList();
       renderHeatmap(); updateStats();
+      if (isChecked) playCheckSound(false); // 🔊 Sound in past edit
       if (document.getElementById("extrasModal").classList.contains("active")) renderExtras();
     };
     const sp = document.createElement("span");
@@ -2487,9 +2906,8 @@ const motivationQuotes = [
 let currentQuoteText = "";
 
 function showDailyQuote() {
-  const currentDay = getCurrentDayNumber(); 
-  const index = (currentDay - 1) % motivationQuotes.length; 
-  
+  const epochDays = Math.floor(new Date().setHours(0, 0, 0, 0) / 86400000);
+  const index = epochDays % motivationQuotes.length;
   currentQuoteText = motivationQuotes[index];
   const quoteEl = document.getElementById("dailyQuoteText");
   if (quoteEl) quoteEl.textContent = `"${currentQuoteText}"`;
@@ -2512,6 +2930,145 @@ document.getElementById("saveQuoteBtn")?.addEventListener("click", () => {
   showToast("Motivation saved for today!");
 });
 
+
+// 🌟 NEW: Habit Consistency Chart Renderer (Feature 9)
+function renderHabitTrends() {
+  const section = document.getElementById("habitTrendSection");
+  const canvas = document.getElementById("habitTrendChart");
+  const insightDiv = document.getElementById("habitTrendInsights");
+  
+  if (!challengeData.habits || challengeData.habits.length === 0) {
+    section.style.display = "none";
+    return;
+  }
+
+  const todayKey = getDateKey();
+  const startKey = challengeData.startDate;
+  
+  if (todayKey < startKey) {
+    section.style.display = "none";
+    return;
+  }
+
+  // Calculate available days
+  const startDateObj = new Date(startKey + "T00:00:00");
+  const todayDateObj = new Date(todayKey + "T00:00:00");
+  const diffTime = Math.abs(todayDateObj - startDateObj);
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1; // Including today
+
+  if (diffDays < 2) {
+    section.style.display = "none"; // Need at least 2 days for comparison
+    return;
+  }
+
+  section.style.display = "block";
+
+  const lookBackDays = Math.min(30, diffDays);
+  const midPoint = Math.floor(lookBackDays / 2);
+  
+  const firstHalfLogs = {};
+  const secondHalfLogs = {};
+  
+  challengeData.habits.forEach(h => {
+    firstHalfLogs[h.name] = 0;
+    secondHalfLogs[h.name] = 0;
+  });
+
+  let d = new Date(todayDateObj);
+  for (let i = 0; i < lookBackDays; i++) {
+    const dKey = getDateKey(d);
+    const log = challengeData.habitLogs[dKey] || {};
+    
+    challengeData.habits.forEach(h => {
+      const isCompleted = log[h.id] === true;
+      if (i < midPoint) {
+        if (isCompleted) firstHalfLogs[h.name]++;
+      } else {
+        if (isCompleted) secondHalfLogs[h.name]++;
+      }
+    });
+    
+    d.setDate(d.getDate() - 1);
+  }
+
+  const habitsData = challengeData.habits.map(h => {
+     const firstPct = Math.round((firstHalfLogs[h.name] / midPoint) * 100) || 0;
+     const secondPct = Math.round((secondHalfLogs[h.name] / (lookBackDays - midPoint)) * 100) || 0;
+     const diff = secondPct - firstPct;
+     return { name: h.name, firstPct, secondPct, diff };
+  });
+
+  // Sort by difference to find best/worst
+  const sortedByDiff = [...habitsData].sort((a, b) => b.diff - a.diff);
+  const mostImproved = sortedByDiff[0];
+  const mostDeclined = sortedByDiff[sortedByDiff.length - 1];
+
+  // Insights Text
+  let insightText = "";
+  if (mostImproved && mostImproved.diff > 0) {
+    insightText += `<div style="margin-bottom:6px; color:#4aaa4a;">📈 <b>Most Improved:</b> ${mostImproved.name} (${mostImproved.diff > 0 ? '+' : ''}${mostImproved.diff}%)</div>`;
+  }
+  if (mostDeclined && mostDeclined.diff < 0) {
+    insightText += `<div style="color:#ff6b4a;">📉 <b>Needs Attention:</b> ${mostDeclined.name} (${mostDeclined.diff}%)</div>`;
+  }
+  if (!insightText) {
+     insightText = "<div style='color:#9aa0a6; text-align:center;'>Keep up the consistent work! No major changes yet.</div>";
+  }
+  insightDiv.innerHTML = insightText;
+
+  // Render Chart.js
+  if (habitTrendChartInstance) {
+    habitTrendChartInstance.destroy();
+  }
+
+  const ctx = canvas.getContext('2d');
+  const labels = habitsData.map(h => h.name.length > 12 ? h.name.substring(0, 12) + '...' : h.name);
+  
+  habitTrendChartInstance = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Past Half',
+          data: habitsData.map(h => h.firstPct),
+          backgroundColor: 'rgba(155, 89, 182, 0.6)',
+          borderColor: '#9b59b6',
+          borderWidth: 1,
+          borderRadius: 4
+        },
+        {
+          label: 'Recent Half',
+          data: habitsData.map(h => h.secondPct),
+          backgroundColor: 'rgba(0, 229, 255, 0.6)',
+          borderColor: '#00e5ff',
+          borderWidth: 1,
+          borderRadius: 4
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: 100,
+          ticks: { color: '#9aa0a6', font: { size: 10 } },
+          grid: { color: 'rgba(255,255,255,0.05)' }
+        },
+        x: {
+          ticks: { color: '#9aa0a6', font: { size: 9 } },
+          grid: { display: false }
+        }
+      },
+      plugins: {
+        legend: { labels: { color: '#e8eaed', font: { size: 10 }, boxWidth: 12 } }
+      }
+    }
+  });
+}
+
 function renderExtras() {
   const isFuture = challengeData.startDate > getDateKey();
   let progressPercent = 0, progressText = "";
@@ -2525,6 +3082,9 @@ function renderExtras() {
   }
   document.getElementById("overallProgressFill").style.width = progressPercent + "%";
   document.getElementById("overallProgressText").textContent = progressText;
+
+  // 🌟 Render New Trend Chart
+  renderHabitTrends();
 
   const todayKeyForQuote = getDateKey();
   const savedQuoteData = JSON.parse(localStorage.getItem("gritgo_saved_quote")) || {};
@@ -2552,7 +3112,9 @@ function renderExtras() {
   while (curr <= todayKey && safety < 500) { dates.push(curr); curr = nextDateKey(curr); safety++; }
   dates.forEach(key => {
     const log = challengeData.habitLogs[key] || {};
-    if (Object.values(log).filter(v => v === true).length === totalHabits && totalHabits > 0) perfectCount++;
+    let dayCompleted = 0;
+    challengeData.habits.forEach(h => { if (log[h.id] === true) dayCompleted++; });
+    if (dayCompleted === totalHabits && totalHabits > 0) perfectCount++;
   });
   document.getElementById("badge-first").classList.toggle("unlocked", perfectCount >= 1 || streak >= 1);
   document.getElementById("badge-streak7").classList.toggle("unlocked", streak >= 7);
@@ -2571,7 +3133,9 @@ function renderExtras() {
     const el = document.createElement("div"); el.className = "cal-day"; el.textContent = i;
     const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
     const log = challengeData.habitLogs[dateStr] || {};
-    if (totalHabits > 0 && Object.values(log).filter(v => v === true).length === totalHabits) el.classList.add("done");
+    let dayDone = 0;
+    challengeData.habits.forEach(h => { if (log[h.id] === true) dayDone++; });
+    if (totalHabits > 0 && dayDone === totalHabits) el.classList.add("done");
     if (dateStr === todayKey) el.classList.add("today");
     calendarDiv.appendChild(el);
   }
@@ -2664,63 +3228,86 @@ document.getElementById("saveJournalBtn").addEventListener("click", async () => 
   }
 });
 
-// ============================================================
-// 📈 AI HABIT GENERATOR
+
+  // ============================================================
+// 📈 AI HABIT GENERATOR (Bengali Digit Fix)
 // ============================================================
 document.getElementById("generateHabitsBtn").addEventListener("click", async () => {
   const prompt = document.getElementById("aiHabitPrompt").value.trim();
   const box = document.getElementById("generatedHabitsBox");
   const btn = document.getElementById("generateHabitsBtn");
   if (!prompt) { showToast("Write your goal first!"); return; }
-  
+
   btn.textContent = "Thinking...";
   btn.disabled = true;
   box.style.display = "none";
   box.innerHTML = "";
-  
+
   let habitsArray = [];
-  
-  // ইউজারের লেখা থেকে সংখ্যা বের করা (যেমন: 8 Best Morning Habits -> 8)
-  let requestedNumber = 5; // ডিফল্ট ৫টি
-  const numberMatch = prompt.match(/\b(\d+)\b/);
-  if (numberMatch && parseInt(numberMatch[1]) > 0) {
-    requestedNumber = parseInt(numberMatch[1]);
+
+  // 🌟 বাংলা সংখ্যাকে ইংরেজি সংখ্যায় কনভার্ট করার লজিক
+  function convertToEnglishDigits(str) {
+    const bengaliDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+    return str.replace(/[০-৯]/g, match => bengaliDigits.indexOf(match));
   }
-  
+
+  const englishPrompt = convertToEnglishDigits(prompt); // কনভার্ট করা হলো
+
+  let requestedNumber = 5;
+  // এখন ইংরেজি সংখ্যার ওপর রেগুলার এক্সপ্রেশন চালানো হবে
+  const numberMatch = englishPrompt.match(/\b(\d+)\b/); 
+  if (numberMatch && parseInt(numberMatch[1]) > 0) {
+    requestedNumber = Math.min(parseInt(numberMatch[1]), 50); 
+  } else {
+    showToast("Tip: Type a number like '২০' or '20' to get more!");
+  }
+
   try {
     const rawText = await callGroq([
-      { 
-        role: 'system', 
-        content: `You are a habit expert. Based on the user's input, generate exactly ${requestedNumber} short, actionable daily habits. You MUST separate each habit with a comma. Do NOT use bullet points, numbers, or new lines. Just return the habits separated by commas. Example format: Drink 2L Water, Read 10 pages, Meditate 5 mins, Walk 5000 steps, Sleep by 10 PM.` 
+      {
+        role: 'system',
+        content: `You are a strict, precise habit expert. You MUST generate EXACTLY ${requestedNumber} habits. 
+        
+CRITICAL RULES:
+1. COUNT CAREFULLY. Count your habits internally. You must output EXACTLY ${requestedNumber} habits. Do not stop until you reach this number.
+2. Separate EVERY habit with a comma (,). Do not use new lines.
+3. Do NOT use bullet points, numbers, quotes, or prefixes like "- " or "1.".
+4. Each habit must be short (2-8 words), actionable, and repeatable daily.
+5. You can understand the user's language, but always try to output the habits in the language they asked (e.g., if Bengali, output in Bengali).`
       },
-      { role: 'user', content: prompt }
-    ], { temperature: 0.7, max_tokens: 4000 }); // max_tokens বাড়ানো হলো যাতে ৮-১০টি হ্যাবিট বের হতে পারে
+      {
+        role: 'user',
+        content: `Topic: ${prompt}. Generate exactly ${requestedNumber} habits.`
+      }
+    ], { temperature: 0.2, max_tokens: 8000 });
 
     if (rawText && rawText.trim().length > 0) {
-      habitsArray = rawText.split(/[\n,]+/)
-        .map(h => h.replace(/^[-*•\d.\s"']+|["']+$/g, '').trim()) 
-        .filter(h => h.length > 2 && !h.toLowerCase().includes("here are") && !h.toLowerCase().includes("habit"));
+      habitsArray = rawText
+        .split(/[\n,]+|(?=\d+[\.\)]\s)/) 
+        .map(h => h.replace(/^[-*•\d\.\)\s"']+|["']+$/g, '').trim())
+        .filter(h => h.length > 2 && h.length < 120)
+        .filter(h => !/^(here are|here's|sure[,\s]|okay[,\s]|below are|list of)/i.test(h))
+        .slice(0, requestedNumber); 
     }
   } catch (e) {
     console.log("AI API Error:", e);
   }
 
-  // যদি AI কিছু না দেয়, তবে ডিফল্ট দেখাবে
   if (habitsArray.length === 0) {
-    habitsArray = ["Drink 2L Water", "Read 10 Pages", "Exercise 30 mins", "Meditate 5 mins", "Sleep by 10 PM"];
-    showToast("AI was busy, showing default habits!");
+    habitsArray = ["Drink 2L Water", "Read 10 Pages", "Exercise 30 mins", "Meditate 5 mins", "Sleep by 10 PM"].slice(0, requestedNumber);
+    showToast("AI busy — showing defaults!");
+  } else if (habitsArray.length < requestedNumber) {
+    showToast(`AI gave ${habitsArray.length} habits (requested ${requestedNumber}). Try again.`);
   }
 
   box.style.display = "flex";
-  box.innerHTML = '<p style="color:#00e5ff; font-size:12px; margin-bottom:5px; font-weight:bold;">Tap to Add:</p>';
-  
+  box.innerHTML = `<p style="color:#00e5ff; font-size:12px; margin-bottom:5px; font-weight:bold;">Tap to Add (${habitsArray.length} habits):</p>`;
+
   habitsArray.forEach(habitText => {
-    if(!habitText) return;
-    
+    if (!habitText) return;
     const habitBtn = document.createElement("button");
     habitBtn.textContent = "+ " + habitText;
     habitBtn.style.cssText = "padding:10px; background:#1a1f2e; color:#00e5ff; border:1px solid #00e5ff; border-radius:8px; cursor:pointer; text-align:left; font-weight:bold; margin-bottom:5px; width:100%;";
-    
     habitBtn.onclick = () => {
       challengeData.habits.push({ id: 'h_' + Math.random().toString(36).substr(2, 9), name: habitText, category: 'General', target: 1, days: [0,1,2,3,4,5,6] });
       localStorage.setItem("challengeData", JSON.stringify(challengeData));
@@ -2734,6 +3321,8 @@ document.getElementById("generateHabitsBtn").addEventListener("click", async () 
   btn.textContent = "Generate";
   btn.disabled = false;
 });
+
+
 // ============================================================
 // 📝 AI REVIEW
 // ============================================================
@@ -2858,7 +3447,7 @@ function stopTimer() {
 }
 function playTimerSound() {
   try {
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const audioCtx = getSharedAudioContext();
     const oscillator = audioCtx.createOscillator();
     const gainNode = audioCtx.createGain();
     oscillator.type = 'sine';
@@ -2956,6 +3545,7 @@ document.getElementById("saveSleepBtn").addEventListener("click", () => {
   sleepState.days[currentIndex] = selectedSleepHours;
   localStorage.setItem("gritgo_sleep_state", JSON.stringify(sleepState));
   showToast("Sleep data saved!");
+  if (navigator.vibrate) navigator.vibrate(40); // Haptic on save
   renderSleepTracker();
 });
 
@@ -2973,7 +3563,8 @@ function renderWeeklyProgress() {
     const dateKey = getDateKey(d);
     const displayDate = d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
     const log = challengeData.habitLogs[dateKey] || {};
-    const completed = Object.values(log).filter(v => v === true).length;
+    let completed = 0;
+    challengeData.habits.forEach(h => { if (log[h.id] === true) completed++; });
     const percent = Math.round((completed / totalHabits) * 100);
     const displayPercent = (dateKey < challengeData.startDate) ? 0 : percent;
     list.insertAdjacentHTML("beforeend", `
@@ -3142,7 +3733,6 @@ voiceReplyBtn.addEventListener("click", () => {
   showToast(isVoiceReplyOn ? "AI Voice ON" : "AI Voice OFF");
 });
 
-// ✅ Voice Preload: ব্রাউজারে voice গুলো async লোড হয়
 if (window.speechSynthesis) {
   window.speechSynthesis.getVoices();
   window.speechSynthesis.onvoiceschanged = () => {
@@ -3150,7 +3740,6 @@ if (window.speechSynthesis) {
   };
 }
 
-// ✅ FIXED: speakText - Read Loud আলাদা ফিচার, isVoiceReplyOn এর সাথে conflict নেই
 function speakText(text) {
   if (!window.speechSynthesis) {
     showToast("Voice not supported on this browser");
@@ -3200,8 +3789,8 @@ let longPressRecognition = null;
 
 if (SpeechRecognition) {
   recognition = new SpeechRecognition();
-  recognition.continuous = true; // 💡 ব্রাউজার ১০ সেকেন্ডে বন্ধ হবে না
-  recognition.interimResults = true; // 💡 আপনি কথা বলার সময় লাইভ টেক্সট দেখাবে
+  recognition.continuous = true; 
+  recognition.interimResults = true; 
   
   recognition.onresult = (event) => {
     let interimTranscript = '';
@@ -3215,12 +3804,10 @@ if (SpeechRecognition) {
       }
     }
     
-    // আপনি যা বলছেন, পপ-আপে লাইভ দেখা যাবে
     if (interimTranscript) {
       voicePopupStatus.textContent = interimTranscript;
     }
     
-    // আপনি কথা বলা শেষ করে একটু চুপ করলে অটোমেটিক মেসেজ পাঠাবে
     if (finalTranscript) {
       voicePopupStatus.textContent = "Thinking...";
       closeVoicePopup();
@@ -3240,7 +3827,6 @@ if (SpeechRecognition) {
   
   recognition.onend = () => {
     chatVoiceBtn.classList.remove("listening");
-    // যদি ব্রাউজার জোর করে বন্ধ করে দেয়, কিন্তু পপ-আপ খোলা থাকে, তবে আবার চালু করবে
     if (voicePopupModal && voicePopupModal.classList.contains("active") && voicePopupStatus.textContent === "Listening...") {
        try { recognition.start(); } catch(e) {}
     }
@@ -3258,7 +3844,6 @@ let voicePressStartTime = 0;
 
 function startVoiceRecording(e) {
   if (e.cancelable) e.preventDefault();
-  // মোবাইলে ডাবল ইভেন্ট (Touch + Mouse) ব্লক করা হচ্ছে
   if (e.type === "mousedown" && window.matchMedia("(pointer: coarse)").matches) return; 
   
   voicePressStartTime = Date.now();
@@ -3313,14 +3898,12 @@ function stopVoiceRecording(e) {
 
   const pressDuration = Date.now() - voicePressStartTime;
   
-  // যদি ৪০০ মিলিসেকেন্ডের কম চাপেন (শুধু ট্যাপ), তবে পপ-আপ আসবে
   if (pressDuration < 400) {
     chatInput.value = initialTextBeforeVoice; 
     setTimeout(() => openVoicePopup(), 100);
   }
 }
 
-// মোবাইল এবং কম্পিউটার两者的 জন্য ইভেন্ট লিসেনার
 chatVoiceBtn.addEventListener("touchstart", startVoiceRecording, { passive: false });
 chatVoiceBtn.addEventListener("touchend", stopVoiceRecording);
 chatVoiceBtn.addEventListener("touchcancel", stopVoiceRecording);
@@ -3333,7 +3916,6 @@ async function openVoicePopup() {
   voicePopupStatus.textContent = "Listening...";
   voiceVisualizerIcon.style.display = "block";
   
-  // মাইক ডেটা না পড়ে শুধু CSS ডিজাইন অ্যানিমেশন চালু করছি
   voiceVisualizer.className = "pulse-ai"; 
   
   if (recognition) {
@@ -3628,13 +4210,14 @@ Current App Data (Today):
 - Water Intake: ${todayWater}L out of ${waterGoal}L goal (Goal Met: ${waterMet})
 - Sleep Logged Today: ${currentSleep}
 
+
 Instructions:
 1. You are a general-purpose AI like ChatGPT. You can answer ANY question the user asks (coding, general knowledge, life advice, etc.), but ALWAYS relate it back to their goals and habits if relevant.
 2. Be conversational, friendly, and highly intelligent. You can use emojis if it makes the conversation better.
 3. Remember past messages in this conversation.
 4. If the user sends an image, analyze it and give useful insights.
 5. Keep answers concise unless the user specifically asks for a detailed or long explanation.
-
+6. LANGUAGE RULE (CRITICAL): You MUST reply in the EXACT same language the user speaks. If they ask in Bengali, reply in Bengali. If they ask in Hindi, reply in Hindi. If they ask in Arabic, reply in Arabic. Match their language perfectly.
 CRITICAL RULE FOR ADDING HABITS:
 If the user asks to add habits (e.g., "Add habit: Drink water", or provides a list), you MUST reply ONLY with a JSON array like this, and absolutely nothing else:
 [
@@ -3674,7 +4257,7 @@ Categories: General, Study, Health, Fitness, Work, Mindfulness, Social, Finance,
     chatHistory.push({ role: 'assistant', content: aiReply });
     localStorage.setItem("gritgo_chat_history", JSON.stringify(chatHistory));
     renderChatMessages();
-    speakText(aiReply);
+   if (isVoiceReplyOn) speakText(aiReply); 
     
     if (addedHabitsCount > 0) showToast(`${addedHabitsCount} habits added!`);
     pendingImageBase64 = null;
@@ -3751,7 +4334,7 @@ function addWater(ml) {
   if (current >= goal) { showToast("Goal reached!"); return; }
   const add = ml / 1000;
   let newIntake = current + add;
-  if (newIntake >= goal) { newIntake = goal; showToast("Goal reached!"); showConfetti(); }
+  if (newIntake >= goal) { newIntake = goal; showToast("Goal reached!"); showConfetti(); playCheckSound(true); }
   else showToast(`Added ${ml}ml!`);
   waterData.logs[todayKey] = Math.round(newIntake * 100) / 100;
   localStorage.setItem("aquaData", JSON.stringify(waterData));
@@ -3855,6 +4438,7 @@ setInterval(() => {
   const current = getDateKey();
   if (current !== lastAppDate) {
     lastAppDate = current;
+    currentQuoteText = "";
     updateMotivation();
     renderTodayHabits();
     renderHeatmap();
@@ -3982,7 +4566,7 @@ const fiftyColors = [
   "#000000", "purple", "indigo", "navy", "darkgreen",
 ];
 
-let currentColorTarget = "user"; // ডিফল্ট
+let currentColorTarget = "user"; 
 
 function getContrastYIQ(hexcolor) {
   if (hexcolor === "#FFFFFF" || hexcolor === "#FFFACD") return "#1a1f2e";
@@ -4016,7 +4600,7 @@ function renderColorGrid() {
     const circle = document.createElement('div');
     circle.style.background = color;
     circle.style.width = "100%";
-    circle.style.paddingBottom = "100%"; // Perfect Circle
+    circle.style.paddingBottom = "100%"; 
     circle.style.borderRadius = "50%";
     circle.style.cursor = "pointer";
     circle.style.boxShadow = "0 2px 5px rgba(0,0,0,0.5)";
@@ -4069,6 +4653,326 @@ if (saved) {
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("service-worker.js").catch(err => console.log("SW:", err));
 }
+  // ============================================================
+// 🎨 50+ APP THEMES & HEATMAP MATCHER
+// ============================================================
+
+
+function applyAppTheme(theme) {
+  currentTheme = theme;
+  localStorage.setItem("gritgo_custom_theme", JSON.stringify(theme));
+  
+  document.documentElement.style.setProperty('--app-bg', theme.bg);
+  document.documentElement.style.setProperty('--app-card', theme.card);
+  document.documentElement.style.setProperty('--app-text', theme.text);
+  document.documentElement.style.setProperty('--app-accent', theme.main);
+document.documentElement.style.setProperty('--app-check-color', theme.heatmap[3]);
+
+  function hexToRgb(hex) {
+    if (!hex) return null;
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : null;
+  }
+
+  updateCheckAllBtnUI();
+const btnIds = ['openTrackerBtn', 'openWaterBtn', 'openExtrasBtn', 'openAiBtn'];
+const isDefault = theme.name === "Default Aqua";
+const defaultPurple = "#d6a1f0"; 
+
+const btnColors = [
+  isDefault ? defaultPurple : theme.main,        
+  theme.heatmap[3],                              
+  theme.heatmap[3],                              
+  isDefault ? defaultPurple : theme.main         
+];
+
+  btnIds.forEach((id, index) => {
+    const btn = document.getElementById(id);
+    if (btn) {
+      const color = btnColors[index];
+      const rgb = hexToRgb(color);
+      
+      const bgColor = rgb ? `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.1)` : theme.card;
+      const glow = rgb ? `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.3)` : theme.main;
+
+      btn.style.background = bgColor;
+      btn.style.color = color;
+      btn.style.borderColor = color;
+      btn.style.boxShadow = `0 0 15px ${glow}`;
+      
+      btn.querySelectorAll('svg').forEach(svg => {
+        svg.style.stroke = color;
+      });
+    }
+  });
+  
+  renderHeatmap(); 
+}
+
+function renderThemeGrid() {
+  const grid = document.getElementById("themePaletteGrid");
+  grid.innerHTML = "";
+  
+  appThemes.forEach(theme => {
+    const btn = document.createElement("button");
+    btn.style.cssText = `aspect-ratio: 1; border-radius: 50%; border: 2px solid transparent; cursor: pointer; position: relative; overflow: hidden; display: flex; padding: 0;`;
+    
+    const left = document.createElement("div");
+    left.style.cssText = `width: 50%; height: 100%; background: ${theme.main};`;
+    
+    const right = document.createElement("div");
+    right.style.cssText = `width: 50%; height: 100%; background: ${theme.heatmap[3]};`;
+    
+    btn.appendChild(left);
+    btn.appendChild(right);
+    
+    if (currentTheme.name === theme.name) {
+      btn.style.border = `3px solid #ffffff`;
+      btn.style.boxShadow = `0 0 10px ${theme.main}`;
+    }
+
+    btn.onclick = () => {
+      applyAppTheme(theme);
+      renderThemeGrid(); 
+      showToast(`${theme.name} Theme Applied!`);
+      document.getElementById("appThemeModal").classList.remove("active");
+    };
+    
+    grid.appendChild(btn);
+  });
+}
+
+document.getElementById("themeToggleBtn").addEventListener("click", () => {
+  document.getElementById("appThemeModal").classList.add("active");
+  renderThemeGrid();
+});
+
+document.getElementById("cancelAppThemeBtn").addEventListener("click", () => {
+  document.getElementById("appThemeModal").classList.remove("active");
+});
+
+document.getElementById("resetAppThemeBtn").addEventListener("click", () => {
+  applyAppTheme(appThemes[0]); 
+  renderThemeGrid();
+  showToast("Default Theme Restored!");
+  document.getElementById("appThemeModal").classList.remove("active");
+});
+
+applyAppTheme(currentTheme);
+// ============================================================
+// 🎙️ HEY GROQ (PERSISTENT WAKE WORD DETECTOR)
+// ============================================================
+let wakeWordRecognition = null;
+let isWakeWordEnabled = localStorage.getItem("gritgo_wake_word") === "true";
+let isWakeWordListening = false;
+
+function updateWakeWordBtnUI() {
+  const btn = document.getElementById("settingsWakeWordBtn");
+  if (!btn) return;
+  if (isWakeWordEnabled) {
+    btn.textContent = "ON";
+    btn.style.color = "#00ff88";
+    btn.style.borderColor = "#00ff88";
+    btn.style.background = "rgba(0, 255, 136, 0.1)";
+  } else {
+    btn.textContent = "OFF";
+    btn.style.color = "#ff6b4a";
+    btn.style.borderColor = "#ff6b4a";
+    btn.style.background = "rgba(255, 107, 74, 0.1)";
+  }
+}
+
+function initWakeWord() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) return;
+
+  wakeWordRecognition = new SpeechRecognition();
+  wakeWordRecognition.continuous = true;
+  wakeWordRecognition.interimResults = true;
+  wakeWordRecognition.lang = 'en-US'; 
+
+  wakeWordRecognition.onresult = (event) => {
+    let transcript = '';
+    for (let i = event.resultIndex; i < event.results.length; ++i) {
+      transcript += event.results[i][0].transcript.toLowerCase();
+    }
+    
+    const wakePhrases = ["hey groq", "hey grok", "hey rock", "hey bro", "hey groot"];
+    const isTriggered = wakePhrases.some(phrase => transcript.includes(phrase));
+
+    if (isTriggered && isWakeWordEnabled && !document.getElementById("aiModal").classList.contains("active")) {
+      
+      try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioCtx.createOscillator();
+        oscillator.type = 'sine';
+        oscillator.frequency.value = 1200;
+        oscillator.connect(audioCtx.destination);
+        oscillator.start();
+        setTimeout(() => oscillator.stop(), 200);
+      } catch(e) {}
+
+      document.getElementById("openAiBtn").click();
+      
+      setTimeout(() => {
+        if (typeof openVoicePopup === 'function') {
+           openVoicePopup();
+        }
+      }, 800);
+      
+      try { wakeWordRecognition.stop(); } catch(e) {}
+    }
+  };
+
+  wakeWordRecognition.onend = () => {
+    isWakeWordListening = false;
+    if (isWakeWordEnabled && !document.getElementById("aiModal").classList.contains("active")) {
+      setTimeout(() => {
+        if (isWakeWordEnabled && !isWakeWordListening) {
+          try { 
+            wakeWordRecognition.start(); 
+            isWakeWordListening = true;
+          } catch(e) {}
+        }
+      }, 300);
+    }
+  };
+
+  wakeWordRecognition.onerror = (event) => {
+    isWakeWordListening = false;
+    if (event.error === 'not-allowed') {
+      showToast("Microphone permission required!");
+      isWakeWordEnabled = false;
+      localStorage.setItem("gritgo_wake_word", false);
+      updateWakeWordBtnUI();
+    }
+  };
+
+  startWakeWordListening();
+}
+
+function startWakeWordListening() {
+  if (!isWakeWordEnabled) return;
+  if (!wakeWordRecognition) initWakeWord();
+  if (!isWakeWordListening) {
+    try { 
+      wakeWordRecognition.start(); 
+      isWakeWordListening = true;
+    } catch(e) {}
+  }
+}
+
+function stopWakeWordListening() {
+  if (wakeWordRecognition) {
+    try { wakeWordRecognition.stop(); } catch(e) {}
+  }
+  isWakeWordListening = false;
+}
+
+document.getElementById("settingsWakeWordBtn").addEventListener("click", () => {
+  isWakeWordEnabled = !isWakeWordEnabled;
+  localStorage.setItem("gritgo_wake_word", isWakeWordEnabled);
+  updateWakeWordBtnUI();
+  
+  if (isWakeWordEnabled) {
+    startWakeWordListening();
+    showToast("Hey GROQ is ON");
+  } else {
+    stopWakeWordListening();
+    showToast("Hey GROQ is OFF");
+  }
+});
+
+document.addEventListener('click', () => {
+  if (isWakeWordEnabled && !isWakeWordListening && !document.getElementById("aiModal").classList.contains("active")) {
+    startWakeWordListening();
+  }
+});
+document.addEventListener('touchstart', () => {
+  if (isWakeWordEnabled && !isWakeWordListening && !document.getElementById("aiModal").classList.contains("active")) {
+    startWakeWordListening();
+  }
+});
+
+const originalAiClose = document.getElementById("aiClose");
+if (originalAiClose) {
+  originalAiClose.addEventListener("click", () => {
+    if (isWakeWordEnabled) {
+      setTimeout(() => { startWakeWordListening(); }, 1000); 
+    }
+  });
+}
+
+updateWakeWordBtnUI();
+if (isWakeWordEnabled) {
+  startWakeWordListening();
+}
+document.getElementById("sidebarBackupBtn").addEventListener("click", () => {
+  closeSidebar();
+  document.getElementById("backupText").value = JSON.stringify(challengeData);
+  document.getElementById("backupModal").classList.add("active");
+});
+// Header Theme & Profile Buttons Logic
+document.getElementById("headerThemeBtn").addEventListener("click", () => {
+  document.getElementById("appThemeModal").classList.add("active");
+  renderThemeGrid();
+});
+
+document.getElementById("headerProfileBtn").addEventListener("click", () => {
+  document.getElementById("profileName").value = userProfile.name || "";
+  document.getElementById("profileAge").value = userProfile.age || "";
+  document.getElementById("profileBio").value = userProfile.bio || "";
+  document.getElementById("profileModal").classList.add("active");
+});                          // ← 🟢 এই লাইনটা নতুন যোগ করলেন!
+
+
+// Delete All Habits Logic
+document.getElementById("sidebarDeleteAllBtn").addEventListener("click", () => {
+  closeSidebar();
+  
+  // 🌟 চেক করা হচ্ছে হ্যাবিট আছে কি না
+  if (!challengeData.habits || challengeData.habits.length === 0) {
+    showToast("You don't have any habits to delete! ");
+    return; // পপ-আপ না খুলে কোড এখানেই থেমে যাবে
+  }
+
+  document.getElementById("deleteAllHabitsModal").classList.add("active");
+});
+
+document.getElementById("cancelDeleteAllBtn").addEventListener("click", () => {
+  document.getElementById("deleteAllHabitsModal").classList.remove("active");
+});
+
+document.getElementById("confirmDeleteAllBtn").addEventListener("click", () => {
+  // Clear habits and their logs
+  challengeData.habits = [];
+  challengeData.habitLogs = {};
+  
+  // Save to local storage
+  localStorage.setItem("challengeData", JSON.stringify(challengeData));
+  
+  // Close modal
+  document.getElementById("deleteAllHabitsModal").classList.remove("active");
+  
+  // Re-render UI
+  renderHabits();
+  renderTodayHabits();
+  renderHeatmap();
+  updateStats();
+  
+  if (document.getElementById("extrasModal").classList.contains("active")) {
+    renderExtras();
+  }
+  
+  // Haptic feedback
+  if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
+  
+  showToast("All habits deleted successfully!");
+});
 </script>
 </body>
 </html>
