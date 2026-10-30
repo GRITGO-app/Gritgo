@@ -1376,16 +1376,21 @@ body { background-color: var(--app-bg) !important; color: var(--app-text) !impor
           <div id="brainText" class="brain-text">No Sleep Data Yet</div>
         </div>
         <div class="week-grid" id="weekGrid"></div>
-        <div id="sleepInputSection">
-          <label style="margin-top: 0; margin-bottom: 10px; display: block; color: #9aa0a6; font-size: 13px;">Select Hours Slept:</label>
-          <div class="hours-grid" id="hoursGrid">
-            <button class="hour-btn" data-val="1">1h</button><button class="hour-btn" data-val="2">2h</button><button class="hour-btn" data-val="3">3h</button><button class="hour-btn" data-val="4">4h</button><button class="hour-btn" data-val="5">5h</button><button class="hour-btn" data-val="6">6h</button><button class="hour-btn" data-val="7">7h</button><button class="hour-btn" data-val="8">8h</button><button class="hour-btn" data-val="9">9h</button><button class="hour-btn" data-val="10">10h</button><button class="hour-btn" data-val="11">11h</button><button class="hour-btn" data-val="12">12h</button>
-          </div>
-          <button id="saveSleepBtn" style="width:100%; padding:12px; border:none; border-radius:10px; font-weight:bold; cursor:pointer;">Save Today's Sleep</button>
-          
-        </div>
+          <div id="sleepInputSection">
+      <label style="margin-top: 0; margin-bottom: 10px; display: block; color: #9aa0a6; font-size: 13px;">Select Hours Slept:</label>
+      <div class="hours-grid" id="hoursGrid">
+        <button class="hour-btn" data-val="1">1h</button><button class="hour-btn" data-val="2">2h</button><button class="hour-btn" data-val="3">3h</button><button class="hour-btn" data-val="4">4h</button><button class="hour-btn" data-val="5">5h</button><button class="hour-btn" data-val="6">6h</button><button class="hour-btn" data-val="7">7h</button><button class="hour-btn" data-val="8">8h</button><button class="hour-btn" data-val="9">9h</button><button class="hour-btn" data-val="10">10h</button><button class="hour-btn" data-val="11">11h</button><button class="hour-btn" data-val="12">12h</button>
       </div>
-    </div>
+      <button id="saveSleepBtn" style="width:100%; padding:12px; border:none; border-radius:10px; font-weight:bold; cursor:pointer;">Save Today's Sleep</button>
+    </div> <!-- 🌟 sleepInputSection এখানে বন্ধ -->
+
+    <!-- 🌟 Edit Sleep Button (সেকশনের বাইরে) -->
+    <button id="editSleepBtn" style="display: none; width: 100%; padding: 10px; margin-top: 10px; background: transparent; color: #00e5ff; border: 1px solid #00e5ff; border-radius: 10px; font-size: 13px; font-weight: bold; cursor: pointer; align-items: center; justify-content: center; gap: 6px;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+      Edit Sleep Data
+    </button>
+  </div>
+</div>  
     <!-- 🌟 Sleep AI Reply Box — sleepInputSection এর বাইরে! -->
 <div id="sleepAiReplyBox" style="
   display: none;
@@ -3769,7 +3774,29 @@ function renderSleepTracker() {
       weekGrid.appendChild(box);
     }
     document.getElementById("sleepInputSection").style.display = sleepState.days[currentIndex] !== null ? "none" : "block";
-    resetSleepButtons();
+
+// 🌟 Edit Sleep Button Logic
+if (!sleepState.lastSavedTime) sleepState.lastSavedTime = {};
+const editBtn = document.getElementById("editSleepBtn");
+if (editBtn) {
+  if (sleepState.days[currentIndex] !== null) {
+    const lastSaved = (sleepState.lastSavedTime && sleepState.lastSavedTime[currentIndex]) ? sleepState.lastSavedTime[currentIndex] : 0;
+    if (lastSaved === 0) {
+      editBtn.style.display = "none";
+    } else {
+      const hoursPassed = (Date.now() - lastSaved) / (1000 * 60 * 60);
+      if (hoursPassed < 12) {
+        editBtn.style.display = "flex";
+      } else {
+        editBtn.style.display = "none";
+      }
+    }
+  } else {
+    editBtn.style.display = "none";
+  }
+}
+
+resetSleepButtons();
   } catch(e) { console.error("Tracker Render Error:", e); }
 }
 
@@ -3798,7 +3825,12 @@ document.getElementById("saveSleepBtn").addEventListener("click", () => {
   const diffDays = Math.floor(Math.max(0, now - start) / (1000 * 60 * 60 * 24));
   const currentIndex = Math.min(diffDays, 6);
   sleepState.days[currentIndex] = selectedSleepHours;
-  localStorage.setItem("gritgo_sleep_state", JSON.stringify(sleepState));
+
+// 🌟 সেভ করার সময় টাইমস্ট্যাম্প সেভ করা
+if (!sleepState.lastSavedTime) sleepState.lastSavedTime = {};
+sleepState.lastSavedTime[currentIndex] = Date.now();
+
+localStorage.setItem("gritgo_sleep_state", JSON.stringify(sleepState));
   showToast("Sleep data saved!");
   if (navigator.vibrate) navigator.vibrate(40);
   
@@ -3807,7 +3839,27 @@ document.getElementById("saveSleepBtn").addEventListener("click", () => {
   // ⬇️ ধরে রাখা ভ্যালু পাঠান
   showSleepAiReply(hoursToShow);
 });
-
+// 🌟 Edit Sleep Button Click Logic
+document.getElementById("editSleepBtn").addEventListener("click", () => {
+  const today = getDateKey();
+  const start = new Date(sleepState.weekStartDate + "T00:00:00");
+  const now = new Date(today + "T00:00:00");
+  const diffDays = Math.floor(Math.max(0, now - start) / (1000 * 60 * 60 * 24));
+  const currentIndex = Math.min(diffDays, 6);
+  
+  // ডাটা রিসেট করা
+  sleepState.days[currentIndex] = null;
+  if (sleepState.lastSavedTime) sleepState.lastSavedTime[currentIndex] = null;
+  localStorage.setItem("gritgo_sleep_state", JSON.stringify(sleepState));
+  
+  showToast("Sleep data cleared. Select again!");
+  
+  // AI Reply বক্স হাইড করা
+  const aiBox = document.getElementById("sleepAiReplyBox");
+  if (aiBox) aiBox.style.display = "none";
+  
+  renderSleepTracker();
+});
 // ============================================================
 // 😴 SLEEP AI REPLY FUNCTION
 // ============================================================
