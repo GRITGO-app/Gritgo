@@ -175,8 +175,35 @@ body { background-color: var(--app-bg) !important; color: var(--app-text) !impor
     #deleteConfirm, #resetConfirm, #clearChatConfirm { background: linear-gradient(135deg, #ff6b4a, #d35400); color: white; }
     #congratsThankBtn { background: linear-gradient(135deg, #f1c40f, #f39c12); color: #05080f; }
     #resetAllData { width: 100%; margin-top: 15px; padding: 12px; background: transparent; color: #ff6b4a; border: 1px solid #ff6b4a; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;}
-    .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px); background: linear-gradient(135deg, #00e5ff, #0088cc); color: #05080f; padding: 14px 24px; border-radius: 12px; font-size: 14px; font-weight: bold; box-shadow: 0 8px 25px rgba(0, 229, 255, 0.4); z-index: 9999; opacity: 0; transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); text-align: center; }
-    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    /* 🌟 নতুন প্রিমিয়াম ডার্ক টোস্ট (সব টোস্টের জন্য) */
+.toast { 
+  position: fixed; 
+  top: 20px; 
+  left: 50%; 
+  transform: translateX(-50%) translateY(-100px); 
+  background: rgba(26, 31, 46, 0.95); 
+  backdrop-filter: blur(10px); 
+  color: #e8eaed; 
+  padding: 12px 20px; 
+  border-radius: 12px; 
+  font-size: 14px; 
+  font-weight: 600; 
+  border: 1px solid rgba(0, 229, 255, 0.3); 
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), 0 0 15px rgba(0, 229, 255, 0.15); 
+  z-index: 9999; 
+  opacity: 0; 
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
+  text-align: center; 
+  max-width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; 
+}
+.toast.show { 
+  transform: translateX(-50%) translateY(0); 
+  opacity: 1; 
+}
 /* নতুন চেকবক্স ডিজাইন */
 .custom-checkbox { 
   width: 38px; 
@@ -360,6 +387,27 @@ body { background-color: var(--app-bg) !important; color: var(--app-text) !impor
       margin-top: 10px;
       margin-bottom: 15px;
     }
+     /* 🌟 AI Reply Fade Out Animation */
+@keyframes fadeOutReply {
+  0% { opacity: 1; transform: translateY(0); }
+  80% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-10px); display: none; }
+}
+   /* 🌟 AI Review Loading Spinner */
+.loading-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(0, 229, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #00e5ff;
+  animation: spinLoader 0.8s linear infinite;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+@keyframes spinLoader {
+  to { transform: rotate(360deg); }
+}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
   </style>
 </head>
 <body>
@@ -908,6 +956,15 @@ body { background-color: var(--app-bg) !important; color: var(--app-text) !impor
     
     <!-- 🌟 New Feature: Habit Consistency Chart -->
     <div class="extras-section" id="habitTrendSection" style="display: none; border-color: #9b59b6;">
+    <!-- 🌟 নতুন ফিচার: Individual Habit Success Rate -->
+<div class="extras-section" id="habitSuccessRateSection" style="border-color: #00e5ff; display: none;">
+  <h3>
+    <svg class="svg-icon" style="stroke: #00e5ff;" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+    Habit Success Rate
+  </h3>
+  <p style="color: #9aa0a6; font-size: 12px; margin-bottom: 10px;">Your consistency for each habit since the start.</p>
+  <div id="successRateList" style="display: flex; flex-direction: column; gap: 10px;"></div>
+</div>  
       <h3>
         <svg class="svg-icon" style="stroke: #9b59b6;" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
         30-Day Habit Trends
@@ -1249,6 +1306,11 @@ body { background-color: var(--app-bg) !important; color: var(--app-text) !impor
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; background: #0f1419; padding: 10px 15px; border-radius: 10px; border: 1px solid #2a3142;">
   <span style="color: #9aa0a6; font-size: 14px; font-weight: bold;">"Hey GROQ" Wake Word</span>
   <button id="settingsWakeWordBtn" style="background: #2a3142; color: #ff6b4a; border: 1px solid #ff6b4a; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; transition: all 0.3s;">OFF</button>
+</div>
+    <!-- 🌟 Auto Theme Toggle -->
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; background: #0f1419; padding: 10px 15px; border-radius: 10px; border: 1px solid #2a3142;">
+  <span style="color: #9aa0a6; font-size: 14px; font-weight: bold;">Auto Theme (Day/Night)</span>
+  <button id="settingsAutoThemeBtn" style="background: #2a3142; color: #ff6b4a; border: 1px solid #ff6b4a; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; transition: all 0.3s;">OFF</button>
 </div>
     <label>Challenge Name:</label>
     <input type="text" id="settingsTitle">
@@ -1919,7 +1981,12 @@ document.getElementById("settingsSave").onclick = () => {
     const s = normalizeDate(document.getElementById("settingsStartDate").value);
     const m = document.getElementById("settingsMotivation").value.trim();
     if (!t || !d || !s) { showToast("Fill required fields"); return; }
-    if (s < getLiteralDateKey()) { showToast("Start date cannot be in the past!"); return; }
+    // 🌟 ফিক্স: যদি আগের তারিখটাই থাকে, তবে এরর দেবে না। শুধু নতুন করে পুরোনো তারিখ দিলে এরর দেবে।
+const originalStartDate = challengeData.startDate;
+if (s < getLiteralDateKey() && s !== originalStartDate) { 
+  showToast("Start date cannot be in the past!"); 
+  return; 
+}
     challengeData.title = t;
     challengeData.duration = d;
     challengeData.startDate = s;
@@ -3057,14 +3124,18 @@ function renderHabitTrends() {
   const mostImproved = sortedByDiff[0];
   const mostDeclined = sortedByDiff[sortedByDiff.length - 1];
 
-  // Insights Text
-  let insightText = "";
-  if (mostImproved && mostImproved.diff > 0) {
-    insightText += `<div style="margin-bottom:6px; color:#4aaa4a;">📈 <b>Most Improved:</b> ${mostImproved.name} (${mostImproved.diff > 0 ? '+' : ''}${mostImproved.diff}%)</div>`;
-  }
-  if (mostDeclined && mostDeclined.diff < 0) {
-    insightText += `<div style="color:#ff6b4a;">📉 <b>Needs Attention:</b> ${mostDeclined.name} (${mostDeclined.diff}%)</div>`;
-  }
+// Insights Text (SVG আইকন সহ)
+let insightText = "";
+const upArrowSvg = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4aaa4a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 4px;"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>`;
+
+const downArrowSvg = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff6b4a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 4px;"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"></polyline><polyline points="17 18 23 18 23 12"></polyline></svg>`;
+
+if (mostImproved && mostImproved.diff > 0) {
+  insightText += `<div style="margin-bottom:6px; color:#4aaa4a; display: flex; align-items: center;">${upArrowSvg} <b>Most Improved:</b> &nbsp;${mostImproved.name} (${mostImproved.diff > 0 ? '+' : ''}${mostImproved.diff}%)</div>`;
+}
+if (mostDeclined && mostDeclined.diff < 0) {
+  insightText += `<div style="color:#ff6b4a; display: flex; align-items: center;">${downArrowSvg} <b>Needs Attention:</b> &nbsp;${mostDeclined.name} (${mostDeclined.diff}%)</div>`;
+}
   if (!insightText) {
      insightText = "<div style='color:#9aa0a6; text-align:center;'>Keep up the consistent work! No major changes yet.</div>";
   }
@@ -3139,7 +3210,52 @@ function renderExtras() {
 
   // 🌟 Render New Trend Chart
   renderHabitTrends();
+// 🌟 নতুন ফিচার: Success Rate লজিক
+const rateSection = document.getElementById("habitSuccessRateSection");
+const rateList = document.getElementById("successRateList");
+if (challengeData.habits.length > 0 && !isFuture) {
+  rateSection.style.display = "block";
+  rateList.innerHTML = "";
+  
+// চ্যালেঞ্জ শুরু থেকে আজ পর্যন্ত মোট দিন বের করা
+const startKey = challengeData.startDate;
+let daysPassed = 0;
+let currentD = new Date(startKey + "T00:00:00");
+const todayD = new Date(getDateKey() + "T00:00:00"); // 👈 এই লাইনটি ঠিক করা হলো
+  while (currentD <= todayD && daysPassed < 500) {
+    daysPassed++;
+    currentD.setDate(currentD.getDate() + 1);
+  }
 
+  challengeData.habits.forEach(h => {
+    let completedCount = 0;
+    let checkD = new Date(startKey + "T00:00:00");
+    for (let i = 0; i < daysPassed; i++) {
+      const key = getDateKey(checkD);
+      if (challengeData.habitLogs[key] && challengeData.habitLogs[key][h.id] === true) {
+        completedCount++;
+      }
+      checkD.setDate(checkD.getDate() + 1);
+    }
+    
+    const percent = Math.round((completedCount / daysPassed) * 100) || 0;
+    
+    // প্রোগ্রেস বার তৈরি করা
+    rateList.insertAdjacentHTML("beforeend", `
+      <div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; color: #e8eaed;">
+          <span>${h.name}</span>
+          <span style="color: ${percent >= 70 ? '#4aaa4a' : (percent >= 40 ? '#f1c40f' : '#ff6b4a')}; font-weight: bold;">${percent}%</span>
+        </div>
+        <div class="progress-bar-bg" style="height: 8px;">
+          <div class="progress-bar-fill" style="width: ${percent}%; background: ${percent >= 70 ? '#4aaa4a' : (percent >= 40 ? '#f1c40f' : '#ff6b4a')};"></div>
+        </div>
+      </div>
+    `);
+  });
+} else {
+  rateSection.style.display = "none";
+}
   const todayKeyForQuote = getDateKey();
   const savedQuoteData = JSON.parse(localStorage.getItem("gritgo_saved_quote")) || {};
   const quoteActionContainer = document.getElementById("quoteActionContainer");
@@ -3276,7 +3392,11 @@ document.getElementById("saveJournalBtn").addEventListener("click", async () => 
     
     challengeData.journalReplies[todayKey] = reply;
     localStorage.setItem("challengeData", JSON.stringify(challengeData));
-    
+    // 🌟 AI রিপ্লাই ৩০ সেকেন্ড পর ফেইড আউট হবে
+respEl.style.animation = "none"; 
+setTimeout(() => {
+  respEl.style.animation = "fadeOutReply 30s forwards"; 
+}, 50);
   } catch (e) { 
     respEl.textContent = "AI Error: " + e.message; 
   }
@@ -3398,7 +3518,9 @@ async function generateAIReview(type) {
   }
   btnW.disabled = true; btnM.disabled = true;
   responseBox.style.display = "block";
-  responseText.textContent = `Analyzing ${type} data...`;
+  btnW.disabled = true; btnM.disabled = true;
+responseBox.style.display = "block";
+responseText.innerHTML = `<div style="display: flex; align-items: center; justify-content: center; gap: 10px; padding: 20px; color: #00e5ff; font-weight: bold;"><div class="loading-spinner"></div> Analyzing ${type} data...</div>`;
   const daysToLookBack = type === 'weekly' ? 7 : 30;
   let today = new Date();
   let totalCompleted = 0;
@@ -4783,18 +4905,16 @@ async function triggerProactiveAI(triggerType = 'daily') {
     if (triggerType === 'daily') {
         localStorage.setItem("gritgo_last_ai_checkin", todayKey);
     }
-
-    // 🌟 showToast এর মাধ্যমে স্ক্রিনে দেখানো
-    const shortToastMsg = aiMessage.length > 40 ? aiMessage.substring(0, 40) + "..." : aiMessage;
-    showToast("🤖 " + shortToastMsg);
-    
+// 🌟 শুধু টেক্সট মেসেজটি দেখাবে
+const shortToastMsg = aiMessage.length > 40 ? aiMessage.substring(0, 40) + "..." : aiMessage;
+showToast(shortToastMsg);
     // ভয়েস অন থাকলে সেই ভাষায় কথা বলবে
     if (isVoiceReplyOn) speakText(aiMessage);
 
   } catch (error) {
     console.error("Proactive AI Error:", error);
     // 🌟 এরর হলে স্ক্রিনে দেখাবে
-    showToast("🤖 AI Error: " + error.message);
+    showToast("AI Error: " + error.message);
   }
 }
 
@@ -5163,6 +5283,68 @@ document.getElementById("confirmDeleteAllBtn").addEventListener("click", () => {
   
   showToast("All habits deleted successfully!");
 });
+// ============================================================
+// 🌗 AUTO THEME (DAY/NIGHT MODE)
+// ============================================================
+let isAutoThemeOn = localStorage.getItem("gritgo_auto_theme") === "true";
+let autoThemeInterval = null;
+
+function applyAutoTheme() {
+  if (!isAutoThemeOn) return;
+  
+  const now = new Date();
+  const hour = now.getHours();
+  // দিনের বেলা (সকাল ৬টা থেকে সন্ধ্যা ৬টা) = Light, রাতে = Dark
+  const isDayTime = (hour >= 6 && hour < 18);
+
+  if (isDayTime) {
+    document.body.classList.add("light-theme");
+  } else {
+    document.body.classList.remove("light-theme");
+  }
+}
+
+function updateAutoThemeBtnUI() {
+  const btn = document.getElementById("settingsAutoThemeBtn");
+  if (!btn) return;
+  if (isAutoThemeOn) {
+    btn.textContent = "ON";
+    btn.style.color = "#00ff88";
+    btn.style.borderColor = "#00ff88";
+    btn.style.background = "rgba(0, 255, 136, 0.1)";
+  } else {
+    btn.textContent = "OFF";
+    btn.style.color = "#ff6b4a";
+    btn.style.borderColor = "#ff6b4a";
+    btn.style.background = "rgba(255, 107, 74, 0.1)";
+    // অটো থিম অফ করলে ইউজারের সিলেক্ট করা থিম ফিরে আসবে
+    document.body.classList.remove("light-theme");
+  }
+}
+
+document.getElementById("settingsAutoThemeBtn")?.addEventListener("click", () => {
+  isAutoThemeOn = !isAutoThemeOn;
+  localStorage.setItem("gritgo_auto_theme", isAutoThemeOn);
+  updateAutoThemeBtnUI();
+  
+  if (isAutoThemeOn) {
+    applyAutoTheme();
+    showToast("Auto Theme ON (Day/Night)");
+    // প্রতি ১ মিনিটে চেক করবে সময় বদলেছে কি না
+    if (autoThemeInterval) clearInterval(autoThemeInterval);
+    autoThemeInterval = setInterval(applyAutoTheme, 60000); 
+  } else {
+    showToast("Auto Theme OFF");
+    if (autoThemeInterval) clearInterval(autoThemeInterval);
+  }
+});
+
+// অ্যাপ ওপেন হওয়ার সময় অটো থিম চালু থাকলে সেটি প্রয়োগ করা
+updateAutoThemeBtnUI();
+if (isAutoThemeOn) {
+  applyAutoTheme();
+  autoThemeInterval = setInterval(applyAutoTheme, 60000);
+}
 </script>
 </body>
 </html>
