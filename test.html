@@ -510,12 +510,15 @@ body { background-color: var(--app-bg) !important; color: var(--app-text) !impor
   </div>
   <p class="heatmap-hint">Brighter means more habits done.</p>
 
-  <div class="search-section">
-    <div class="search-wrapper">
-      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-      <input type="text" id="habitSearchInput" placeholder="Search by number or name..." autocomplete="off">
-    </div>
+<div class="search-section" style="display: flex; gap: 10px; align-items: stretch;">
+  <div class="search-wrapper" style="flex: 1;">
+    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+    <input type="text" id="habitSearchInput" placeholder="Search by number or name..." autocomplete="off">
   </div>
+  <button id="toggleHideCompletedBtn" title="Hide Completed Habits" style="background: #1a1f2e; border: 1px solid #2a3142; color: #9aa0a6; border-radius: 10px; padding: 0 12px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center;">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+  </button>
+</div>
 
   <div class="today-section">
     <div class="today-header">
@@ -1958,7 +1961,11 @@ document.getElementById("feedbackSubmit").onclick = () => {
 // ============================================================
 // 💾 BACKUP / RESTORE / CSV
 // ============================================================
-document.getElementById("exportData").onclick = () => { document.getElementById("backupText").value = JSON.stringify(challengeData); document.getElementById("backupModal").classList.add("active"); };
+document.getElementById("exportData").onclick = () => { 
+  const fullBackup = { challengeData: challengeData, waterData: waterData, sleepState: sleepState };
+  document.getElementById("backupText").value = JSON.stringify(fullBackup); 
+  document.getElementById("backupModal").classList.add("active"); 
+};
 document.getElementById("closeBackupBtn").onclick = () => document.getElementById("backupModal").classList.remove("active");
 document.getElementById("copyBackupBtn").onclick = async () => {
   const text = document.getElementById("backupText").value;
@@ -1993,20 +2000,38 @@ document.getElementById("pasteClipboardBtn").onclick = async () => {
   if (!navigator.clipboard || !window.isSecureContext) { showToast("Long-press box and Paste"); document.getElementById("restoreText").focus(); return; }
   try { const text = await navigator.clipboard.readText(); document.getElementById("restoreText").value = text; showToast("Pasted!"); } catch(e) { showToast("Permission denied"); }
 };
+// ✅ নতুন কোড (এটি বসাবেন)
 document.getElementById("restoreFromTextBtn").onclick = () => {
   const text = document.getElementById("restoreText").value.trim();
   if (!text) { showToast("Paste backup text first!"); return; }
+  
   let imported;
   try { imported = JSON.parse(text); } catch(e) { showToast("Invalid JSON!"); return; }
-  if (!imported || typeof imported !== "object" || !Array.isArray(imported.habits)) { showToast("Invalid backup"); return; }
-  challengeData = imported;
+
+  // 🌟 নতুন ফরম্যাট চেক (হ্যাবিট + পানি + ঘুম)
+  if (imported.challengeData) {
+    challengeData = imported.challengeData;
+    if (imported.waterData) waterData = imported.waterData;
+    if (imported.sleepState) sleepState = imported.sleepState;
+  } else if (Array.isArray(imported.habits)) {
+    // পুরোনো ফরম্যাট সাপোর্ট (শুধু হ্যাবিট থাকলে)
+    challengeData = imported;
+  } else {
+    showToast("Invalid backup format"); return;
+  }
+
   if (!challengeData.notes) challengeData.notes = {};
   if (!challengeData.habitLogs) challengeData.habitLogs = {};
   if (!challengeData.dayStart) challengeData.dayStart = "05:00";
   if (!challengeData.dayEnd) challengeData.dayEnd = "21:00";
   if (!challengeData.journalReplies) challengeData.journalReplies = {};
+
+  // সব ডেটা সেভ করা
   localStorage.setItem("challengeData", JSON.stringify(challengeData));
-  showToast("Restored!");
+  localStorage.setItem("aquaData", JSON.stringify(waterData));
+  localStorage.setItem("gritgo_sleep_state", JSON.stringify(sleepState));
+  
+  showToast("Full backup restored successfully!");
   setTimeout(() => location.reload(), 1200);
 };
 
@@ -2047,7 +2072,8 @@ function moveHabit(index, direction) {
   localStorage.setItem("challengeData", JSON.stringify(challengeData));
   renderHabits(); renderTodayHabits(); renderHeatmap(); updateStats();
 }
-
+let hideCompleted = localStorage.getItem("gritgo_hide_completed") === "true";
+  
 function renderTodayHabits() {
   const oldList = document.getElementById("todayHabitList"); if (oldList) oldList.remove();
   const emptyMessage = document.getElementById("emptyMessage");
@@ -2089,9 +2115,12 @@ function renderTodayHabits() {
     const habit = habitObj.name;
     const habitNumber = String(index + 1);
     if (searchNumber && habitNumber !== searchNumber) return;
-    if (searchText && !habit.toLowerCase().includes(searchText)) return;
-    shownCount++;
+if (searchText && !habit.toLowerCase().includes(searchText)) return;
 
+// 🌟 নতুন লাইন: হাইড লজিক
+if (hideCompleted && todayLog[habitObj.id] === true) return;
+
+shownCount++;
     const li = document.createElement("li");
     li.style.cssText = "display:flex;align-items:center;gap:12px;padding:12px;background:#1a1f2e;border-radius:10px;margin-bottom:8px;";
     if (document.body.classList.contains("light-theme")) li.style.background = "#ffffff";
@@ -2121,9 +2150,10 @@ function renderTodayHabits() {
     challengeData.habits.forEach(h => { if (challengeData.habitLogs[todayKey][h.id] === true) newCompleted++; });
     
     if (isChecked && newCompleted === challengeData.habits.length) {
-        playCheckSound(true); 
-        showConfetti(); 
-    } else if (isChecked) {
+    playCheckSound(true); 
+    showConfetti(); 
+    triggerProactiveAI('congrats'); // 🌟 নতুন লাইন: সব হ্যাবিট শেষ হলে AI অভিনন্দন জানাবে
+} else if (isChecked) {
         playCheckSound(false); 
     } else if (!isChecked) {
         playUncheckSound(); // 🌟 টিক তুলে নিলে সাউন্ড
@@ -2170,7 +2200,31 @@ function updateTodayCount() {
 }
 
 document.getElementById("habitSearchInput").addEventListener("input", renderTodayHabits);
+document.getElementById("toggleHideCompletedBtn").addEventListener("click", () => {
+  hideCompleted = !hideCompleted;
+  localStorage.setItem("gritgo_hide_completed", hideCompleted);
+  
+  const btn = document.getElementById("toggleHideCompletedBtn");
+  if (hideCompleted) {
+    btn.style.color = "#00e5ff";
+    btn.style.borderColor = "#00e5ff";
+    btn.style.background = "rgba(0, 229, 255, 0.1)";
+  } else {
+    btn.style.color = "#9aa0a6";
+    btn.style.borderColor = "#2a3142";
+    btn.style.background = "#1a1f2e";
+  }
+  renderTodayHabits();
+});
 
+setTimeout(() => {
+  const btn = document.getElementById("toggleHideCompletedBtn");
+  if (btn && hideCompleted) {
+    btn.style.color = "#00e5ff";
+    btn.style.borderColor = "#00e5ff";
+    btn.style.background = "rgba(0, 229, 255, 0.1)";
+  }
+}, 500);
 // ============================================================
 // 🗓 HEATMAP
 // ============================================================
@@ -4190,14 +4244,24 @@ document.getElementById("askAiBtn").addEventListener("click", async () => {
     
     const todayProgress = document.getElementById("overallStat").textContent;
 
-    const systemPrompt = {
+        const systemPrompt = {
       role: 'system',
-      content: `You are GRITGO AI Coach, a highly intelligent, versatile, and empathetic AI assistant (similar to ChatGPT). You have full access to the user's daily data and progress in this app. 
+      content: `You are GRITGO AI Coach, a highly intelligent, versatile, and empathetic AI assistant. You have full access to the user's daily data and progress. 
       
 User Profile:
 - Name: ${userProfile.name || "User"}
 - Age: ${userProfile.age || "Unknown"}
 - Bio/Goals: ${userProfile.bio || "Not provided"}
+
+APP GUIDE (How to use GRITGO - Use this to answer questions about the app):
+- **Dashboard**: Shows today's habits, heatmap, streaks, and overall progress.
+- **Adding Habits**: Click '+Add Habit' (quick add) or 'Edit habits' to add, delete, or reorder habits.
+- **Timer**: Click the small clock icon next to any habit to set a focus timer.
+- **Water Tracker**: Click 'Daily Water Tracker' button. You can log 250ml or 500ml. Click the gear icon to change the daily goal.
+- **Extras & Insights**: Click 'Extras & Insights' button. Here you will find: Daily Motivation quotes, Achievements (badges), Mini Calendar, Mood Tracker, Daily Journal (AI replies to it), and 30-Day Habit Trends chart.
+- **Sleep Tracker**: Click 'Weekly Progress & Sleep Tracker'. Log your sleep hours here to see your 'Brain State'.
+- **AI Features**: Click the 'AI Habit Coach' button. Here you can generate new habits using AI, get Weekly/Monthly progress reviews, and chat with me (with voice and image support).
+- **Settings**: Open the sidebar (top left hamburger menu) -> click 'Settings'. Here you can backup/restore data, export CSV, change app themes, and reset data.
 
 Current App Data (Today):
 - Challenge: "${challengeData.title}" (Day ${challengeDay} of ${challengeData.duration})
@@ -4218,6 +4282,8 @@ Instructions:
 4. If the user sends an image, analyze it and give useful insights.
 5. Keep answers concise unless the user specifically asks for a detailed or long explanation.
 6. LANGUAGE RULE (CRITICAL): You MUST reply in the EXACT same language the user speaks. If they ask in Bengali, reply in Bengali. If they ask in Hindi, reply in Hindi. If they ask in Arabic, reply in Arabic. Match their language perfectly.
+7. If the user asks "How to use this app?" or "Where is X feature?", guide them using the APP GUIDE provided above. Give them step-by-step instructions.
+
 CRITICAL RULE FOR ADDING HABITS:
 If the user asks to add habits (e.g., "Add habit: Drink water", or provides a list), you MUST reply ONLY with a JSON array like this, and absolutely nothing else:
 [
@@ -4633,6 +4699,109 @@ function renderColorGrid() {
 document.getElementById('closeColorModalBtn')?.addEventListener('click', () => {
   document.getElementById('colorPaletteModal').classList.remove('active');
 });
+  // ============================================================
+// 🧠 PROACTIVE AI CHECK-IN (ডাইনামিক ল্যাঙ্গুয়েজ ও ইনস্ট্যান্ট কংগ্রাচুলেশন)
+// ============================================================
+function getLanguageName(langCode) {
+  const langMap = {
+    'en-US': 'English', 'en-GB': 'English', 'bn-BD': 'Bengali', 'hi-IN': 'Hindi',
+    'es-ES': 'Spanish', 'es-MX': 'Spanish', 'fr-FR': 'French', 'de-DE': 'German',
+    'zh-CN': 'Chinese', 'zh-TW': 'Chinese', 'ja-JP': 'Japanese', 'ar-SA': 'Arabic',
+    'ru-RU': 'Russian', 'pt-BR': 'Portuguese', 'it-IT': 'Italian', 'ko-KR': 'Korean',
+    'tr-TR': 'Turkish', 'vi-VN': 'Vietnamese', 'id-ID': 'Indonesian', 'th-TH': 'Thai',
+    'ur-PK': 'Urdu', 'ta-IN': 'Tamil', 'te-IN': 'Telugu', 'ml-IN': 'Malayalam'
+  };
+  return langMap[langCode] || 'English';
+}
+
+async function triggerProactiveAI(triggerType = 'daily') {
+  const todayKey = getDateKey();
+  
+  // যদি ডেইলি চেক হয়, তবে দিনে একবারই মেসেজ দেবে
+  if (triggerType === 'daily') {
+    const lastCheckDate = localStorage.getItem("gritgo_last_ai_checkin");
+    if (lastCheckDate === todayKey) return;
+  }
+
+  if (!challengeData.startDate || challengeData.startDate > todayKey || challengeData.habits.length === 0) return;
+
+  // ডেটা প্রস্তুত করা
+  let yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yKey = getDateKey(yesterday);
+  const yLog = challengeData.habitLogs[yKey] || {};
+  let yCompleted = 0;
+  challengeData.habits.forEach(h => { if (yLog[h.id] === true) yCompleted++; });
+  
+  const tLog = challengeData.habitLogs[todayKey] || {};
+  let tCompleted = 0;
+  challengeData.habits.forEach(h => { if (tLog[h.id] === true) tCompleted++; });
+  
+  const totalHabits = challengeData.habits.length;
+  const todayWater = waterData.logs[getWaterDateKey()] || 0;
+  const waterGoal = waterData.dailyGoal;
+
+  // ইউজারের সিলেক্ট করা ভাষা নেওয়া
+  const selectedLangCode = document.getElementById("voiceLangSelect") ? document.getElementById("voiceLangSelect").value : "en-US";
+  const targetLanguage = getLanguageName(selectedLangCode);
+
+  // AI-কে দেওয়ার জন্য কনটেক্সট
+  let instruction = "";
+  if (triggerType === 'congrats') {
+    instruction = `The user just completed ALL their habits today! Write a short (1-2 sentences) energetic congratulatory message. Tell them you are proud. Wish them a good day/night.`;
+  } else {
+    instruction = `Analyze the user's data below and write a short (1-2 sentences) proactive message. 
+    - If they did 0 habits yesterday, say "Never miss twice!" and push them to start today.
+    - If water is low, remind them to drink water.
+    - If they are doing well, praise them.`;
+  }
+
+  const prompt = `${instruction}
+  CRITICAL: You MUST write the message in ${targetLanguage} language.
+  
+  User Data:
+  - Today's Habits: ${tCompleted}/${totalHabits}
+  - Yesterday's Habits: ${yCompleted}/${totalHabits}
+  - Water Today: ${todayWater}L out of ${waterGoal}L goal.
+  - Current Time: ${new Date().toLocaleTimeString()}
+  `;
+
+  try {
+    const aiMessage = await callGroq([
+      { role: 'user', content: prompt }
+    ], { temperature: 0.7, max_tokens: 150 });
+
+    // মেসেজটি চ্যাট হিস্ট্রিতে সেভ করা
+    chatHistory.push({ role: 'assistant', content: aiMessage });
+    localStorage.setItem("gritgo_chat_history", JSON.stringify(chatHistory));
+    
+    // যদি চ্যাট ওপেন থাকে, সাথে সাথে দেখাবে
+    if (document.getElementById("aiModal").classList.contains("active")) {
+        renderChatMessages();
+    }
+
+    if (triggerType === 'daily') {
+        localStorage.setItem("gritgo_last_ai_checkin", todayKey);
+    }
+
+    // 🌟 showToast এর মাধ্যমে স্ক্রিনে দেখানো
+    const shortToastMsg = aiMessage.length > 40 ? aiMessage.substring(0, 40) + "..." : aiMessage;
+    showToast("🤖 " + shortToastMsg);
+    
+    // ভয়েস অন থাকলে সেই ভাষায় কথা বলবে
+    if (isVoiceReplyOn) speakText(aiMessage);
+
+  } catch (error) {
+    console.error("Proactive AI Error:", error);
+    // 🌟 এরর হলে স্ক্রিনে দেখাবে
+    showToast("🤖 AI Error: " + error.message);
+  }
+}
+
+// অ্যাপ ওপেন হওয়ার ৩ সেকেন্ড পর ডেইলি চেক করবে
+setTimeout(() => {
+  triggerProactiveAI('daily');
+}, 3000);
 // ============================================================
 // ============================================================
 // 🚀 INIT
@@ -4764,11 +4933,12 @@ document.getElementById("resetAppThemeBtn").addEventListener("click", () => {
 
 applyAppTheme(currentTheme);
 // ============================================================
-// 🎙️ HEY GROQ (PERSISTENT WAKE WORD DETECTOR)
+// 🎙️ HEY GROQ (PERSISTENT WAKE WORD DETECTOR) - UPDATED
 // ============================================================
 let wakeWordRecognition = null;
 let isWakeWordEnabled = localStorage.getItem("gritgo_wake_word") === "true";
 let isWakeWordListening = false;
+let wakeWordRestartTimeout = null;
 
 function updateWakeWordBtnUI() {
   const btn = document.getElementById("settingsWakeWordBtn");
@@ -4788,7 +4958,10 @@ function updateWakeWordBtnUI() {
 
 function initWakeWord() {
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SpeechRecognition) return;
+  if (!SpeechRecognition) {
+    showToast("Voice Not Support in This Browser!");
+    return;
+  }
 
   wakeWordRecognition = new SpeechRecognition();
   wakeWordRecognition.continuous = true;
@@ -4801,7 +4974,13 @@ function initWakeWord() {
       transcript += event.results[i][0].transcript.toLowerCase();
     }
     
-    const wakePhrases = ["hey groq", "hey grok", "hey rock", "hey bro", "hey groot"];
+    // 🌟 ডিবাগ করার জন্য: ব্রাউজার কি শুনছে তা দেখতে পাবেন
+    if (transcript.trim().length > 2) {
+        console.log("Listening...", transcript); 
+    }
+
+    // "Hey Groq" এর কাছাকাছি যেকোনো উচ্চারণ ধরার চেষ্টা
+    const wakePhrases = ["hey groq", "hey grok", "hey rock", "hey bro", "hey groot", "hey croc", "hey drop"];
     const isTriggered = wakePhrases.some(phrase => transcript.includes(phrase));
 
     if (isTriggered && isWakeWordEnabled && !document.getElementById("aiModal").classList.contains("active")) {
@@ -4816,6 +4995,8 @@ function initWakeWord() {
         setTimeout(() => oscillator.stop(), 200);
       } catch(e) {}
 
+      showToast("Hey Groq Triggered! 🎙️"); // স্ক্রিনে দেখাবে
+      
       document.getElementById("openAiBtn").click();
       
       setTimeout(() => {
@@ -4830,22 +5011,28 @@ function initWakeWord() {
 
   wakeWordRecognition.onend = () => {
     isWakeWordListening = false;
+    // 🌟 ফিক্স: ১ সেকেন্ড পর আবার চালু হবে, যাতে ব্রাউজার ক্র্যাশ না করে
     if (isWakeWordEnabled && !document.getElementById("aiModal").classList.contains("active")) {
-      setTimeout(() => {
+      clearTimeout(wakeWordRestartTimeout);
+      wakeWordRestartTimeout = setTimeout(() => {
         if (isWakeWordEnabled && !isWakeWordListening) {
           try { 
             wakeWordRecognition.start(); 
             isWakeWordListening = true;
-          } catch(e) {}
+          } catch(e) { 
+            console.log("Restart Error:", e); 
+          }
         }
-      }, 300);
+      }, 1000); 
     }
   };
 
   wakeWordRecognition.onerror = (event) => {
     isWakeWordListening = false;
+    console.log("Wake Word Error:", event.error);
+    
     if (event.error === 'not-allowed') {
-      showToast("Microphone permission required!");
+      showToast("Allow Microphone Permission!");
       isWakeWordEnabled = false;
       localStorage.setItem("gritgo_wake_word", false);
       updateWakeWordBtnUI();
@@ -4858,15 +5045,20 @@ function initWakeWord() {
 function startWakeWordListening() {
   if (!isWakeWordEnabled) return;
   if (!wakeWordRecognition) initWakeWord();
+  
   if (!isWakeWordListening) {
     try { 
       wakeWordRecognition.start(); 
       isWakeWordListening = true;
-    } catch(e) {}
+      console.log("🎙️ Wake Word Listening Started...");
+    } catch(e) {
+      console.log("Start Error:", e);
+    }
   }
 }
 
 function stopWakeWordListening() {
+  clearTimeout(wakeWordRestartTimeout);
   if (wakeWordRecognition) {
     try { wakeWordRecognition.stop(); } catch(e) {}
   }
@@ -4880,19 +5072,15 @@ document.getElementById("settingsWakeWordBtn").addEventListener("click", () => {
   
   if (isWakeWordEnabled) {
     startWakeWordListening();
-    showToast("Hey GROQ is ON");
+    showToast("Hey GROQ is ON - Say 'Hey Groq'");
   } else {
     stopWakeWordListening();
     showToast("Hey GROQ is OFF");
   }
 });
 
+// মোবাইলে ইউজার ইন্টারঅ্যাকশনের পর আবার চালু করা
 document.addEventListener('click', () => {
-  if (isWakeWordEnabled && !isWakeWordListening && !document.getElementById("aiModal").classList.contains("active")) {
-    startWakeWordListening();
-  }
-});
-document.addEventListener('touchstart', () => {
   if (isWakeWordEnabled && !isWakeWordListening && !document.getElementById("aiModal").classList.contains("active")) {
     startWakeWordListening();
   }
@@ -4911,9 +5099,11 @@ updateWakeWordBtnUI();
 if (isWakeWordEnabled) {
   startWakeWordListening();
 }
+// ✅ নতুন কোড (এটি বসাবেন)
 document.getElementById("sidebarBackupBtn").addEventListener("click", () => {
   closeSidebar();
-  document.getElementById("backupText").value = JSON.stringify(challengeData);
+  const fullBackup = { challengeData: challengeData, waterData: waterData, sleepState: sleepState };
+  document.getElementById("backupText").value = JSON.stringify(fullBackup);
   document.getElementById("backupModal").classList.add("active");
 });
 // Header Theme & Profile Buttons Logic
