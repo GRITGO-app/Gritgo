@@ -1312,6 +1312,14 @@ body { background-color: var(--app-bg) !important; color: var(--app-text) !impor
   <span style="color: #9aa0a6; font-size: 14px; font-weight: bold;">Auto Theme (Day/Night)</span>
   <button id="settingsAutoThemeBtn" style="background: #2a3142; color: #ff6b4a; border: 1px solid #ff6b4a; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; transition: all 0.3s;">OFF</button>
 </div>
+   <!-- 🌟 AI Persona Custom Button -->
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; background: #0f1419; padding: 10px 15px; border-radius: 10px; border: 1px solid #2a3142;">
+  <span style="color: #9aa0a6; font-size: 14px; font-weight: bold;">AI Coach Persona</span>
+<button id="openPersonaModalBtn" onclick="openPersonaModal()" style="background: #2a3142; color: #00e5ff; border: 1px solid #00e5ff; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; outline: none; display: flex; align-items: center; gap: 6px;">
+    <span id="currentPersonaLabel">Normal</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+</button>
+</div>
     <label>Challenge Name:</label>
     <input type="text" id="settingsTitle">
     <label>Duration (days):</label>
@@ -1374,13 +1382,45 @@ body { background-color: var(--app-bg) !important; color: var(--app-text) !impor
             <button class="hour-btn" data-val="1">1h</button><button class="hour-btn" data-val="2">2h</button><button class="hour-btn" data-val="3">3h</button><button class="hour-btn" data-val="4">4h</button><button class="hour-btn" data-val="5">5h</button><button class="hour-btn" data-val="6">6h</button><button class="hour-btn" data-val="7">7h</button><button class="hour-btn" data-val="8">8h</button><button class="hour-btn" data-val="9">9h</button><button class="hour-btn" data-val="10">10h</button><button class="hour-btn" data-val="11">11h</button><button class="hour-btn" data-val="12">12h</button>
           </div>
           <button id="saveSleepBtn" style="width:100%; padding:12px; border:none; border-radius:10px; font-weight:bold; cursor:pointer;">Save Today's Sleep</button>
+          
         </div>
       </div>
     </div>
+    <!-- 🌟 Sleep AI Reply Box — sleepInputSection এর বাইরে! -->
+<div id="sleepAiReplyBox" style="
+  display: none;
+  margin-top: 15px;
+  padding: 12px 15px;
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.08), rgba(74, 158, 255, 0.08));
+  border-left: 4px solid #00e5ff;
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #e8eaed;
+  opacity: 0;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  transform: translateY(-10px);
+  position: relative;
+  box-shadow: 0 4px 15px rgba(0, 229, 255, 0.15);
+">
+  <div style="display: flex; gap: 8px; align-items: flex-start;">
+    <span id="sleepAiIcon" style="font-size: 16px; flex-shrink: 0;">🤖</span>
+    <div style="flex: 1;">
+      <div id="sleepAiHeader" style="font-size: 11px; color: #00e5ff; font-weight: bold; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">AI Sleep Coach</div>
+      <div id="sleepAiReplyText" style="color: #e8eaed;">...</div>
+    </div>
+  </div>
+</div>
+
+<div class="tracker-section">
+  <h3>
+    <svg class="svg-icon" style="stroke: #00e5ff;" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+    Last 7 Days Habits
+  </h3>
     <div class="tracker-section">
       <h3>
         <svg class="svg-icon" style="stroke: #00e5ff;" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
-        Last 7 Days Habits
+        Habits
       </h3>
       <div id="weeklyProgressList"></div>
     </div>
@@ -1388,6 +1428,7 @@ body { background-color: var(--app-bg) !important; color: var(--app-text) !impor
       <button id="trackerClose">Close</button>
     </div>
   </div>
+</div>
 </div>
 
 <div id="weeklyReportModal" class="modal-overlay">
@@ -1498,7 +1539,20 @@ body { background-color: var(--app-bg) !important; color: var(--app-text) !impor
     <button id="closeVoicePopupBtn" style="width: 100%; padding: 15px; background: #2a3142; color: #ff6b4a; border: none; border-radius: 15px; font-size: 16px; font-weight: bold; cursor: pointer;">Cancel</button>
   </div>
 </div>
+<!-- 🌟 AI Persona Modal -->
+<div id="personaModal" class="modal-overlay" style="z-index: 9000;">
+  <div class="modal-box" style="max-width: 350px; padding: 20px;">
+    <h2 style="margin-bottom: 20px;">Choose AI Persona</h2>
+    
+    <div id="personaList" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
+      <!-- Persona options will be injected here -->
+    </div>
 
+    <div class="settings-buttons" style="margin-top: 0;">
+    <button id="closePersonaModalBtn" onclick="closePersonaModal()" style="background: #2a3142; color: #e8eaed; width: 100%;">Cancel</button>  
+    </div>
+  </div>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <div id="deleteAllHabitsModal" class="modal-overlay">
   <div class="modal-box">
@@ -2009,12 +2063,26 @@ if (s < getLiteralDateKey() && s !== originalStartDate) {
 document.getElementById("resetAllData").onclick = () => { document.getElementById("settingsModal").classList.remove("active"); document.getElementById("resetModal").classList.add("active"); };
 document.getElementById("resetCancel").onclick = () => { document.getElementById("resetModal").classList.remove("active"); document.getElementById("settingsModal").classList.add("active"); };
 document.getElementById("resetConfirm").onclick = () => {
-  localStorage.removeItem("challengeData");
-  localStorage.removeItem("gritgo_sleep_state");
-  localStorage.removeItem("gritgo_intro_seen");
-  localStorage.removeItem("gritgo_chat_history");
-  localStorage.removeItem("gritgo_user_profile");
-  localStorage.removeItem("gritgo_saved_quote");
+  // 🌟 সব GRITGO ডেটা মুছে ফেলার জন্য
+  localStorage.removeItem("challengeData");           // ✅ হ্যাবিট, লগ, চ্যালেঞ্জ
+  localStorage.removeItem("aquaData");                // ✅💧 পানি ডেটা (এটাই মিসিং ছিল!)
+  localStorage.removeItem("gritgo_sleep_state");      // ✅ ঘুম ডেটা
+  localStorage.removeItem("gritgo_intro_seen");       // ✅ intro দেখা flag
+  localStorage.removeItem("gritgo_chat_history");     // ✅ AI চ্যাট হিস্ট্রি
+  localStorage.removeItem("gritgo_user_profile");     // ✅ ইউজার প্রোফাইল
+  localStorage.removeItem("gritgo_saved_quote");      // ✅ সেভ করা কোট
+  localStorage.removeItem("gritgo_hide_completed");   // ✅ হাইড কমপ্লিটেড সেটিং
+  localStorage.removeItem("gritgo_custom_theme");     // ✅ অ্যাপ থিম
+  localStorage.removeItem("gritgo_chat_theme");       // ✅ চ্যাট থিম
+  localStorage.removeItem("gritgo_ai_persona");       // ✅ AI Persona
+  localStorage.removeItem("gritgo_auto_theme");       // ✅ অটো থিম
+  localStorage.removeItem("gritgo_wake_word");        // ✅ Wake Word
+  localStorage.removeItem("gritgo_voice_reply");      // ✅ ভয়েস রিপ্লাই
+  localStorage.removeItem("gritgo_lang");             // ✅ ভাষা সেটিং
+  localStorage.removeItem("gritgo_last_ai_checkin");  // ✅ শেষ AI চেক-ইন
+  localStorage.removeItem("gritgo_last_backup");      // ✅ শেষ ব্যাকআপ
+  
+  // সব রিসেট হয়ে পেজ রিলোড হবে
   location.reload();
 };
 document.getElementById("feedbackCancel").onclick = () => document.getElementById("feedbackModal").classList.remove("active");
@@ -3384,7 +3452,7 @@ document.getElementById("saveJournalBtn").addEventListener("click", async () => 
   
   try {
     const reply = await callGroq([
-      { role: 'system', content: `You are a supportive habit coach inside GRITGO app. User: ${userProfile.name || "Unknown"}. Give short (2-3 sentences) motivation based on their journal entry. Use all emojis.` },
+      { role: 'system', content: `${getPersonaPrompt()} You are a supportive habit coach inside GRITGO app. User: ${userProfile.name || "Unknown"}. Give short (2-3 sentences) motivation based on their journal entry. Use all emojis.` },
       { role: 'user', content: txt }
     ], { temperature: 0.7, max_tokens: 200 });
     
@@ -3412,7 +3480,7 @@ document.getElementById("generateHabitsBtn").addEventListener("click", async () 
   const btn = document.getElementById("generateHabitsBtn");
   if (!prompt) { showToast("Write your goal first!"); return; }
 
-  btn.textContent = "Thinking...";
+  btn.textContent = "Generating...";
   btn.disabled = true;
   box.style.display = "none";
   box.innerHTML = "";
@@ -3433,7 +3501,7 @@ document.getElementById("generateHabitsBtn").addEventListener("click", async () 
   if (numberMatch && parseInt(numberMatch[1]) > 0) {
     requestedNumber = Math.min(parseInt(numberMatch[1]), 50); 
   } else {
-    showToast("Tip: Type a number like '২০' or '20' to get more!");
+    
   }
 
   try {
@@ -3548,9 +3616,9 @@ responseText.innerHTML = `<div style="display: flex; align-items: center; justif
 Give a ${type} review with sections: 1) Summary 2) What went well 3) Struggles 4) Mood vs Habits 5) Advice. Keep it short and motivating. Use all emojis.`;
   try {
     const reply = await callGroq([
-      { role: 'system', content: `You are a strict but encouraging habit coach and psychologist inside GRITGO app. Challenge: "${challengeData.title}".` },
-      { role: 'user', content: prompt }
-    ], { temperature: 0.7, max_tokens: 1500 });
+  { role: 'system', content: `${getPersonaPrompt()} You are a strict but encouraging habit coach and psychologist inside GRITGO app. Challenge: "${challengeData.title}".` },
+  { role: 'user', content: prompt }
+], { temperature: 0.7, max_tokens: 1500 });
     responseText.textContent = reply;
   } catch (e) {
     responseText.textContent = "Error: " + e.message;
@@ -3667,6 +3735,13 @@ function updateBrainPreview(hours) {
 
 function renderSleepTracker() {
   try {
+    // 🌟 নতুন: AI Reply বক্স রিসেট
+    const aiBox = document.getElementById("sleepAiReplyBox");
+    if (aiBox) {
+      aiBox.style.display = "none";
+      aiBox.style.opacity = "0";
+    }
+    
     const isFuture = challengeData.startDate > getDateKey();
     if (isFuture) {
       document.getElementById("sleepTrackerLock").style.display = "block";
@@ -3713,6 +3788,10 @@ document.getElementById("hoursGrid").addEventListener("click", (e) => {
 });
 document.getElementById("saveSleepBtn").addEventListener("click", () => {
   if (selectedSleepHours === null) { showToast("Select sleep hours."); return; }
+  
+  // ⬇️ ভ্যালু আগে ধরে রাখুন (renderSleepTracker এর আগে)
+  const hoursToShow = selectedSleepHours;
+  
   const today = getDateKey();
   const start = new Date(sleepState.weekStartDate + "T00:00:00");
   const now = new Date(today + "T00:00:00");
@@ -3721,9 +3800,133 @@ document.getElementById("saveSleepBtn").addEventListener("click", () => {
   sleepState.days[currentIndex] = selectedSleepHours;
   localStorage.setItem("gritgo_sleep_state", JSON.stringify(sleepState));
   showToast("Sleep data saved!");
-  if (navigator.vibrate) navigator.vibrate(40); // Haptic on save
+  if (navigator.vibrate) navigator.vibrate(40);
+  
   renderSleepTracker();
+  
+  // ⬇️ ধরে রাখা ভ্যালু পাঠান
+  showSleepAiReply(hoursToShow);
 });
+
+// ============================================================
+// 😴 SLEEP AI REPLY FUNCTION
+// ============================================================
+let sleepAiTimeout = null;
+
+
+  function showSleepAiReply(hours) {
+console.log("🚨 AI Reply function triggered! Hours:", hours); // 👈 এই লাইনটা নতুন যোগ করুন
+const box = document.getElementById("sleepAiReplyBox");
+  const textEl = document.getElementById("sleepAiReplyText");
+  
+  if (!box || !textEl) {
+    console.error("Sleep AI Reply Box not found in DOM");
+    return;
+  }
+  
+  // পুরনো timeout থাকলে বাতিল
+  if (sleepAiTimeout) {
+    clearTimeout(sleepAiTimeout);
+  }
+  
+  // আগে লুকিয়ে রাখি (fade out করে)
+  box.style.opacity = "0";
+  box.style.transform = "translateY(-10px)";
+  box.style.display = "none";
+  
+  // AI Reply তৈরি করা — hour অনুযায়ী
+  let replyText = "";
+  let icon = "";
+  let borderColor = "#00e5ff";
+  let bgColor = "rgba(0, 229, 255, 0.08)";
+  
+  if (hours >= 1 && hours <= 6) {
+    icon = "⚠️";
+    borderColor = "#ff6b4a";
+    bgColor = "rgba(255, 107, 74, 0.1)";
+    const tips = {
+      1: "Only 1 hour?! 🤬 That's not sleep, that's a nap. Your brain is SCREAMING for rest. You're going to crash today. GO TO BED EARLY TONIGHT — no excuses!",
+      2: "2 hours of sleep? 😡 That's dangerous for your health. Your focus, memory, and mood will be destroyed today. Sleep at least 7 hours tonight or you'll pay for it!",
+      3: "3 hours?! 😤 Your brain is running on fumes. You can't build good habits when you're sleep-deprived. Prioritize rest tonight — your goals depend on it!",
+      4: "4 hours is nowhere near enough. 😠 Your body needs 7-9 hours to recover. You're sabotaging your progress. Hit the pillow earlier tonight!",
+      5: "5 hours — better than nothing, but still not enough. 😠 You need 7-9 hours for peak performance. Try to sleep 1-2 hours earlier tonight!",
+      6: "6 hours is borderline sleep-deprived. 😤 Your body needs more. Aim for at least 7-8 hours tonight — your brain will thank you tomorrow."
+    };
+    replyText = tips[hours] || "You're sleep-deprived. Get more rest!";
+  } else if (hours === 7) {
+    icon = "👍";
+    borderColor = "#f1c40f";
+    bgColor = "rgba(241, 196, 15, 0.1)";
+    replyText = "7 hours is decent — good job! 💪 But you can do better. Try to get 1-2 more hours tonight for optimal brain function and recovery. Small improvement, big impact!";
+  } else if (hours === 8 || hours === 9) {
+    icon = "🎉";
+    borderColor = "#00e5ff";
+    bgColor = "rgba(0, 229, 255, 0.1)";
+    const perfectTips = {
+      8: "PERFECT! 🎉 8 hours is the golden standard. Your brain is fresh, your body is recovered, and you're ready to crush your goals today. KEEP THIS UP! 🔥",
+      9: "EXCELLENT! 🎉 9 hours of sleep — your body and brain are fully recharged. You're in peak condition today. This is how champions rest! 💯"
+    };
+    replyText = perfectTips[hours] || "Perfect sleep! Keep it up!";
+  } else if (hours >= 10 && hours <= 12) {
+    icon = "😴";
+    borderColor = "#9b59b6";
+    bgColor = "rgba(155, 89, 182, 0.1)";
+    const jammedTips = {
+      10: "10 hours?! 😴 Bro, you're not sleeping — you're hibernating! Too much sleep can make you groggy and lazy. Try to stick to 7-9 hours for best results!",
+      11: "11 hours?! 😴 Now you're just being lazy. Oversleeping can cause headaches and fatigue. Set an alarm and wake up at a reasonable time tomorrow!",
+      12: "12 HOURS?! 😴 You're officially JAMMED. This much sleep will make you MORE tired, not less. Get back on a healthy 7-9 hour schedule tomorrow!"
+    };
+    replyText = jammedTips[hours] || "Too much sleep can make you groggy. Aim for 7-9 hours!";
+  } else {
+    replyText = "Sleep logged. Aim for 7-9 hours for optimal health and performance!";
+  }
+  
+  // Box style সেট করা
+  box.style.borderLeftColor = borderColor;
+  box.style.background = `linear-gradient(135deg, ${bgColor}, rgba(74, 158, 255, 0.08))`;
+  
+  // ✅ এখানে আপনার প্রশ্নের উত্তর (querySelector এর বদলে এগুলো বসবে)
+  const iconEl = document.getElementById("sleepAiIcon");
+  if (iconEl) iconEl.textContent = icon;
+  
+  const headerEl = document.getElementById("sleepAiHeader");
+  if (headerEl) headerEl.style.color = borderColor;
+  
+  // Text সেট করা
+  textEl.textContent = replyText;
+  
+  // Box দেখানো (fade in)
+  box.style.display = "block";
+  
+  setTimeout(() => {
+    box.style.opacity = "1";
+    box.style.transform = "translateY(0)";
+  }, 50);
+  
+  // 🔊 সাউন্ড
+  try {
+    const audioCtx = getSharedAudioContext();
+    const oscillator = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    oscillator.type = 'sine';
+    oscillator.frequency.value = 800;
+    gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    oscillator.start();
+    oscillator.stop(audioCtx.currentTime + 0.3);
+  } catch(e) {}
+  
+  // 🌟 1 মিনিট (60,000 ms) পরে fade out হয়ে যাবে
+  sleepAiTimeout = setTimeout(() => {
+    box.style.opacity = "0";
+    box.style.transform = "translateY(-10px)";
+    setTimeout(() => {
+      box.style.display = "none";
+    }, 500); 
+  }, 60000);
+}  
 
 function renderWeeklyProgress() {
   const list = document.getElementById("weeklyProgressList");
@@ -4368,8 +4571,7 @@ document.getElementById("askAiBtn").addEventListener("click", async () => {
 
         const systemPrompt = {
       role: 'system',
-      content: `You are GRITGO AI Coach, a highly intelligent, versatile, and empathetic AI assistant. You have full access to the user's daily data and progress. 
-      
+      content: `${getPersonaPrompt()} You are GRITGO AI Coach, a highly intelligent...
 User Profile:
 - Name: ${userProfile.name || "User"}
 - Age: ${userProfile.age || "Unknown"}
@@ -4878,15 +5080,16 @@ async function triggerProactiveAI(triggerType = 'daily') {
     - If they are doing well, praise them.`;
   }
 
-  const prompt = `${instruction}
-  CRITICAL: You MUST write the message in ${targetLanguage} language.
-  
-  User Data:
-  - Today's Habits: ${tCompleted}/${totalHabits}
-  - Yesterday's Habits: ${yCompleted}/${totalHabits}
-  - Water Today: ${todayWater}L out of ${waterGoal}L goal.
-  - Current Time: ${new Date().toLocaleTimeString()}
-  `;
+  // ✅ সঠিক কোড (এটি বসাবেন)
+const prompt = `${getPersonaPrompt()} ${instruction}
+CRITICAL: You MUST write the message in ${targetLanguage} language.
+
+User Data:
+- Today's Habits: ${tCompleted}/${totalHabits}
+- Yesterday's Habits: ${yCompleted}/${totalHabits}
+- Water Today: ${todayWater}L out of ${waterGoal}L goal.
+- Current Time: ${new Date().toLocaleTimeString()}
+`;
 
   try {
     const aiMessage = await callGroq([
@@ -4903,11 +5106,14 @@ async function triggerProactiveAI(triggerType = 'daily') {
     }
 
     if (triggerType === 'daily') {
-        localStorage.setItem("gritgo_last_ai_checkin", todayKey);
-    }
-// 🌟 শুধু টেক্সট মেসেজটি দেখাবে
-const shortToastMsg = aiMessage.length > 40 ? aiMessage.substring(0, 40) + "..." : aiMessage;
-showToast(shortToastMsg);
+    localStorage.setItem("gritgo_last_ai_checkin", todayKey);
+}
+
+// ✅ সমাধান: AI মেসেজ খালি থাকলে টোস্ট দেখাবে না
+if (aiMessage && aiMessage.trim().length > 0) {
+    const shortToastMsg = aiMessage.length > 40 ? aiMessage.substring(0, 40) + "..." : aiMessage;
+    showToast(shortToastMsg);
+}
     // ভয়েস অন থাকলে সেই ভাষায় কথা বলবে
     if (isVoiceReplyOn) speakText(aiMessage);
 
@@ -5345,6 +5551,278 @@ if (isAutoThemeOn) {
   applyAutoTheme();
   autoThemeInterval = setInterval(applyAutoTheme, 60000);
 }
-</script>
+// ============================================================
+// 🎭 AI PERSONA LOGIC (FIXED VERSION) ✅
+// ============================================================
+let currentPersona = localStorage.getItem("gritgo_ai_persona") || "normal";
+
+const personaData = [
+  { id: "normal", name: "Normal", desc: "Friendly & Supportive", icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>` },
+  { id: "strict", name: "Strict Coach", desc: "No excuses, get to work", icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff6b4a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg>` },
+  { id: "zen", name: "Zen Master", desc: "Calm & Mindful", icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d6a1f0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16s-2-1.5-2-3 1.5-2 2-2 2 .5 2 2-2 3-2 3z"></path><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>` },
+  { id: "funny", name: "Funny Friend", desc: "Jokes & Sarcasm", icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f1c40f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>` }
+];
+
+function renderPersonaList() {
+  const personaList = document.getElementById("personaList");
+  if (!personaList) { 
+  console.error("❌ personaList not found in DOM!"); 
+  showToast("Reload the page!"); 
+  return; 
+}
+  personaList.innerHTML = "";
+  personaData.forEach(persona => {
+    const isSelected = currentPersona === persona.id;
+    const div = document.createElement("div");
+    div.style.cssText = `display: flex; align-items: center; justify-content: space-between; padding: 12px; background: ${isSelected ? 'rgba(0, 229, 255, 0.1)' : '#0f1419'}; border: 1px solid ${isSelected ? '#00e5ff' : '#2a3142'}; border-radius: 10px; cursor: pointer; transition: all 0.2s;`;
+    
+    div.innerHTML = `
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 36px; height: 36px; border-radius: 8px; background: #1a1f2e; display: flex; align-items: center; justify-content: center;">
+          ${persona.icon}
+        </div>
+        <div>
+          <div style="color: ${isSelected ? '#00e5ff' : '#e8eaed'}; font-size: 14px; font-weight: bold;">${persona.name}</div>
+          <div style="color: #9aa0a6; font-size: 11px;">${persona.desc}</div>
+        </div>
+      </div>
+      ${isSelected ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>` : ''}
+    `;
+    
+    div.onclick = () => {
+      currentPersona = persona.id;
+      localStorage.setItem("gritgo_ai_persona", currentPersona);
+      updatePersonaUI();
+      showToast("AI Persona: " + persona.name);
+      const modal = document.getElementById("personaModal");
+      if (modal) modal.classList.remove("active");
+    };
+    
+    personaList.appendChild(div);
+  });
+}
+
+function updatePersonaUI() {
+  const label = document.getElementById("currentPersonaLabel");
+  if (label) {
+    const found = personaData.find(p => p.id === currentPersona);
+    label.textContent = found ? found.name : "Normal";
+  }
+}
+
+function getPersonaPrompt() {
+  if (currentPersona === "strict") {
+    return `YOU ARE A STRICT, RUTHLESS, NO-NONSENSE DRILL SERGEANT COACH. Your job is to PUSH the user HARD. You do NOT accept excuses. You demand action. You are tough, aggressive, and relentless. But you NEVER insult or abuse — you just push like a military drill sergeant.
+
+🚨 CRITICAL EMOJI RULE FOR STRICT COACH — MUST FOLLOW:
+
+You are REQUIRED to use these ANGRY emojis FREQUENTLY in every reply to show intensity and anger at the user's laziness/excuses:
+- 🤬 (face with symbols on mouth) — use this to show you're furious
+- 😠 (angry face) — use this for mild anger/disapproval
+- 😡 (pouting face) — use this to show rage
+- 😤 (face with steam from nose) — use this to show frustration and impatience
+
+📌 HOW TO USE THEM:
+1. START many replies with one of these emojis (like 🤬 or 😡).
+2. Use them WHEN the user makes excuses, procrastinates, skips habits, or shows weakness.
+3. Sprinkle them throughout — 2-4 times per reply is good.
+4. Combine with other intense emojis: 💪 🔥 ⚡ 🎯 ⏰ ⚔️ 👊 ✊ 🚀 💯
+5. When the user is doing WELL, you can be slightly less angry but STILL use 😤 or 😠 to show intensity.
+
+🗣️ YOUR LANGUAGE STYLE:
+- ALL CAPS for emphasis: "GET UP", "STOP WHINING", "DO IT NOW"
+- Commanding verbs: "MOVE", "PUSH", "FIGHT", "GRIND"
+- Short, punchy sentences. No long paragraphs.
+- No soft motivation. No "it's okay" or "you're doing great".
+- Example tone: "🤬 You skipped your workout? UNACCEPTABLE. 😡 Get off your ass and DO IT NOW. 😤 No excuses. MOVE!"
+
+❌ NEVER USE:
+- Soft emojis: 😊 🌸 💖 ✨ 🥰 😌
+- Soft language: "It's fine", "You're doing great", "Take it easy"
+
+✅ ALWAYS USE:
+- 🤬 😠 😡 😤 + 💪 🔥 ⚡ 🎯 👊 ⚔️ ✊ 🚀
+
+Remember: You are ANGRY and DEMANDING. You care about the user's success, but you show it through FURY, not kindness.`;
+  } else if (currentPersona === "zen") {
+    return `YOU ARE A CALM, MINDFUL ZEN MASTER. Speak gently. Focus on inner peace, breathing, and balance. Avoid harsh words.
+
+🌿 CRITICAL EMOJI RULE FOR ZEN MASTER:
+- You must ONLY use these emojis: 🧘 🌸 🍃 ☯️ 🌙 ✨ ☪️ 🪷 🌊 🌱 💫 🙏 🕯️ 🌤️ 🦋
+- NEVER use angry, aggressive, or loud emojis.
+- Use soft, peaceful, slow language. Short sentences. Calm tone.`;
+  } else if (currentPersona === "funny") {
+    return `YOU ARE A FUNNY, SARCASTIC BEST FRIEND. Use jokes, playful teasing, and humor to motivate the user.
+
+😄 CRITICAL EMOJI RULE FOR FUNNY FRIEND:
+- You can use fun/playful emojis: 😂 🤣 😜 😎 🙃 😅 🤪 😏 🍕 🎉 💩 🐒 🤡 🎭 🎪
+- NEVER use angry emojis (🤬 😠 😡 😤) — you're funny, not mean.
+- Use sarcasm and jokes, but never hurt the user's feelings.`;
+  }
+  return `You are a friendly, supportive, and encouraging coach.
+
+😊 EMOJI RULE FOR NORMAL:
+- Use friendly and positive emojis: 😊 👍 💪 ✨ 🌟 💯 🎯 🌱 🚀 😎 🎉 💡 🙌 👏 💖
+- NEVER use angry emojis (🤬 😠 😡 😤).
+- Be warm, encouraging, and personal.`;
+}
+
+// ============================================================
+// 🎭 AI PERSONA - INSTANT BIND (script শেষে, নিশ্চিত কাজ করবে)
+// ============================================================
+function bindPersonaUI() {
+  updatePersonaUI();
+  
+  const openBtn = document.getElementById("openPersonaModalBtn");
+  const closeBtn = document.getElementById("closePersonaModalBtn");
+  
+  if (openBtn && !openBtn.dataset.personaBound) {
+    openBtn.dataset.personaBound = "true";
+    openBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      console.log("🎭 Persona button clicked!");
+      renderPersonaList();
+      const modal = document.getElementById("personaModal");
+      if (modal) {
+        modal.classList.add("active");
+        console.log("✅ Persona modal opened");
+      } else {
+        console.error("❌ personaModal not found!");
+        showToast("Persona modal missing!");
+      }
+    });
+    console.log("✅ Persona Open Button Bound");
+  }
+  
+  if (closeBtn && !closeBtn.dataset.personaBound) {
+    closeBtn.dataset.personaBound = "true";
+    closeBtn.addEventListener("click", () => {
+      const modal = document.getElementById("personaModal");
+      if (modal) modal.classList.remove("active");
+    });
+  }
+}
+
+// 🚀 Multiple safety attempts (কোনো অবস্থাতেই মিস হবে না)
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", bindPersonaUI);
+} else {
+  bindPersonaUI();
+}
+setTimeout(bindPersonaUI, 200);
+setTimeout(bindPersonaUI, 1000);
+window.addEventListener("load", bindPersonaUI);
+ // 🧪 ডায়াগনস্টিক - Console এ চেক করার জন্য
+console.log("=== PERSONA DEBUG ===");
+console.log("openPersonaModalBtn:", document.getElementById("openPersonaModalBtn"));
+console.log("personaModal:", document.getElementById("personaModal"));
+console.log("personaList:", document.getElementById("personaList"));
+console.log("closePersonaModalBtn:", document.getElementById("closePersonaModalBtn"));
+console.log("=== END DEBUG ==="); 
+// 🎭 Persona Modal Open/Close (গ্লোবাল ফাংশন)
+function openPersonaModal() {
+  console.log("🎭 openPersonaModal called");
+  const modal = document.getElementById("personaModal");
+  const list = document.getElementById("personaList");
+  
+  if (!modal) {
+    alert("❌ personaModal নেই!");
+    return;
+  }
+  
+  // Persona লিস্ট তৈরি করো
+  if (list) {
+    list.innerHTML = "";
+    const personas = [
+      { id: "normal", name: "Normal", desc: "Friendly & Supportive", color: "#00e5ff" },
+      { id: "strict", name: "Strict Coach", desc: "No excuses, get to work", color: "#ff6b4a" },
+      { id: "zen", name: "Zen Master", desc: "Calm & Mindful", color: "#d6a1f0" },
+      { id: "funny", name: "Funny Friend", desc: "Jokes & Sarcasm", color: "#f1c40f" }
+    ];
+    
+    const current = localStorage.getItem("gritgo_ai_persona") || "normal";
+    
+    personas.forEach(p => {
+      const isSelected = current === p.id;
+      const div = document.createElement("div");
+      div.style.cssText = `display:flex;justify-content:space-between;align-items:center;padding:12px;background:${isSelected ? 'rgba(0,229,255,0.1)' : '#0f1419'};border:1px solid ${isSelected ? '#00e5ff' : '#2a3142'};border-radius:10px;cursor:pointer;margin-bottom:8px;`;
+      div.innerHTML = `
+        <div>
+          <div style="color:${isSelected ? '#00e5ff' : '#e8eaed'};font-size:14px;font-weight:bold;">${p.name}</div>
+          <div style="color:#9aa0a6;font-size:11px;">${p.desc}</div>
+        </div>
+        ${isSelected ? '<span style="color:#00e5ff;font-size:18px;">✓</span>' : ''}
+      `;
+      div.onclick = function() {
+        localStorage.setItem("gritgo_ai_persona", p.id);
+        if (typeof currentPersona !== 'undefined') currentPersona = p.id;
+        const lbl = document.getElementById("currentPersonaLabel");
+        if (lbl) lbl.textContent = p.name;
+        alert("✅ AI Persona সেট হয়েছে: " + p.name);
+        modal.classList.remove("active");
+      };
+      list.appendChild(div);
+    });
+  }
+  
+  modal.classList.add("active");
+  console.log("✅ Modal opened");
+}
+
+function closePersonaModal() {
+  const modal = document.getElementById("personaModal");
+  if (modal) modal.classList.remove("active");
+}
+
+// গ্লোবাল স্কোপে পাঠিয়ে দাও
+window.openPersonaModal = openPersonaModal;
+window.closePersonaModal = closePersonaModal;
+
+console.log("✅ Persona functions loaded!");
+// 🎭 EMERGENCY PERSONA FIX - সবার শেষে
+window.openPersonaModal = function() {
+  console.log("🎭 Emergency openPersonaModal called");
+  const modal = document.getElementById("personaModal");
+  if (!modal) { alert("personaModal missing!"); return; }
+  
+  const list = document.getElementById("personaList");
+  if (list) {
+    list.innerHTML = "";
+    const personas = [
+      { id: "normal", name: "Normal", desc: "Friendly & Supportive" },
+      { id: "strict", name: "Strict Coach", desc: "No excuses, get to work" },
+      { id: "zen", name: "Zen Master", desc: "Calm & Mindful" },
+      { id: "funny", name: "Funny Friend", desc: "Jokes & Sarcasm" }
+    ];
+    const current = localStorage.getItem("gritgo_ai_persona") || "normal";
+    personas.forEach(function(p) {
+      const isSel = current === p.id;
+      const div = document.createElement("div");
+      div.style.cssText = "display:flex;justify-content:space-between;align-items:center;padding:14px;background:" + (isSel ? 'rgba(0,229,255,0.15)' : '#0f1419') + ";border:1px solid " + (isSel ? '#00e5ff' : '#2a3142') + ";border-radius:10px;cursor:pointer;margin-bottom:8px;";
+      div.innerHTML = '<div><div style="color:' + (isSel ? '#00e5ff' : '#e8eaed') + ';font-size:15px;font-weight:bold;">' + p.name + '</div><div style="color:#9aa0a6;font-size:11px;margin-top:2px;">' + p.desc + '</div></div>' + (isSel ? '<span style="color:#00e5ff;font-size:20px;">✓</span>' : '');
+      div.onclick = function() {
+        localStorage.setItem("gritgo_ai_persona", p.id);
+        try { currentPersona = p.id; } catch(e) {}
+        const lbl = document.getElementById("currentPersonaLabel");
+        if (lbl) lbl.textContent = p.name;
+        try { updatePersonaUI(); } catch(e) {}
+        alert("✅ Persona: " + p.name);
+        modal.classList.remove("active");
+      };
+      list.appendChild(div);
+    });
+  }
+  
+  modal.classList.add("active");
+};
+
+window.closePersonaModal = function() {
+  const modal = document.getElementById("personaModal");
+  if (modal) modal.classList.remove("active");
+};
+
+console.log("✅ Emergency persona functions loaded at END");
+</script> 
 </body>
 </html>
