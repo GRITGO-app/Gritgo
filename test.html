@@ -407,7 +407,14 @@ body { background-color: var(--app-bg) !important; color: var(--app-text) !impor
 }
 @keyframes spinLoader {
   to { transform: rotate(360deg); }
-}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+}
+   #quitModal .modal-box { height: 100dvh; max-height: 100dvh; width: 100%; max-width: 100%; border-radius: 0; border: none; padding: 20px; margin: 0; }
+#quitModal { padding: 0; } 
+   .lang-search-wrap { position: sticky; top: 0; padding: 8px; background: #0f1419; border-bottom: 1px solid #1a1f2e; z-index: 2; }
+#langSearchInput { width: 100%; padding: 10px 12px; background: #1a1f2e; border: 1px solid #2a3142; border-radius: 8px; color: #e8eaed; font-size: 14px; outline: none; }
+#langSearchInput:focus { border-color: #00e5ff; }
+body.light-theme .lang-search-wrap { background: #ffffff; border-bottom-color: #e5e7eb; }
+body.light-theme #langSearchInput { background: #f3f4f6; color: #1a1f2e; border-color: #d1d5db; }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
   </style>
 </head>
 <body>
@@ -799,8 +806,11 @@ body { background-color: var(--app-bg) !important; color: var(--app-text) !impor
           </div>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </button>
-        <div class="lang-menu" id="langMenu">
-  <div class="lang-option selected" data-value="en-US">🇺🇸 English (US)</div>
+         <div class="lang-menu" id="langMenu">
+  <div class="lang-search-wrap">
+    <input type="text" id="langSearchInput" placeholder="Search country or flag..." autocomplete="off">
+  </div>
+  <div class="lang-option selected" data-value="en-US">🇺🇸 English (US)</div>      
   <div class="lang-option" data-value="en-GB">🇬🇧 English (UK)</div>
   <div class="lang-option" data-value="bn-BD">🇧🇩 Bengali (বাংলা)</div>
   <div class="lang-option" data-value="hi-IN">🇮🇳 Hindi (हिन्दी)</div>
@@ -912,7 +922,7 @@ body { background-color: var(--app-bg) !important; color: var(--app-text) !impor
   <div class="lang-option" data-value="ay-BO">🇧🇴 Aymara</div>
   <div class="lang-option" data-value="ht-HT">🇭🇹 Haitian Creole</div>
   <div class="lang-option" data-value="eo">🌐 Esperanto</div>
-</div>
+</div>          
         <input type="hidden" id="voiceLangSelect" value="en-US">
       </div>
       <div class="mini-chat-container">
@@ -922,7 +932,8 @@ body { background-color: var(--app-bg) !important; color: var(--app-text) !impor
           <button id="removeImageBtn" type="button">×</button>
         </div>
         <div style="display: flex; justify-content: flex-start; margin-bottom: 8px;">
-          <button id="quickAiHabitBtn" title="Add Habit" style="background: rgba(155, 89, 182, 0.1); color: #9b59b6; border: 1px solid #9b59b6; padding: 6px 14px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">+ Add Habit</button>
+          <button id="quickAiHabitBtn" title="Add Habit" style="background: rgba(155, 89, 182, 0.1); color: #9b59b6; border: 1px solid #9b59b6; padding: 6px 14px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">+Add Habit</button>
+        <button id="quickAiCravingBtn" title="Craving Help" style="background: rgba(255, 107, 74, 0.1); color: #ff6b4a; border: 1px solid #ff6b4a; padding: 6px 14px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; margin-left: 8px;">Craving</button>  
         </div>
         <div class="chat-input-row">
           <button id="chatVoiceBtn" title="Voice Input">
@@ -963,7 +974,7 @@ body { background-color: var(--app-bg) !important; color: var(--app-text) !impor
     Habit Success Rate
   </h3>
   <p style="color: #9aa0a6; font-size: 12px; margin-bottom: 10px;">Your consistency for each habit since the start.</p>
-  <div id="successRateList" style="display: flex; flex-direction: column; gap: 10px;"></div>
+ <div id="successRateList" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-height: 180px; overflow-y: auto; padding-right: 5px;"></div> 
 </div>  
       <h3>
         <svg class="svg-icon" style="stroke: #9b59b6;" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
@@ -1057,6 +1068,14 @@ body { background-color: var(--app-bg) !important; color: var(--app-text) !impor
       <button id="saveJournalBtn" style="width: 100%; padding: 10px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; background: linear-gradient(135deg, #4aaa4a, #2d8a2d); color: white;">Save</button>
       <div id="journalAiResponse" style="display: none; margin-top: 10px; padding: 10px; background: #0f1419; border-radius: 10px; border-left: 3px solid #4aaa4a; color: #e8eaed; font-size: 13px; line-height: 1.5;"></div>
     </div>
+    <div class="extras-section" style="border-color: #ff6b4a;">
+  <h3>
+    <svg class="svg-icon" style="stroke: #ff6b4a;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
+    Quit Habit Tracker
+  </h3>
+  <p style="color: #9aa0a6; font-size: 12px; margin-bottom: 10px;">Quit your Bad Habits</p>
+  <button id="openQuitBtn" style="width:100%; padding:12px; background:#1a1f2e; color:#ff6b4a; border:1px solid #ff6b4a; border-radius:10px; font-weight:bold; cursor:pointer;">Open Quit Tracker</button>
+</div>
     <div class="settings-buttons">
       <button id="extrasClose">Close</button>
     </div>
@@ -1395,6 +1414,7 @@ body { background-color: var(--app-bg) !important; color: var(--app-text) !impor
 <div id="sleepAiReplyBox" style="
   display: none;
   margin-top: 15px;
+  margin-bottom: 20px;
   padding: 12px 15px;
   background: linear-gradient(135deg, rgba(0, 229, 255, 0.08), rgba(74, 158, 255, 0.08));
   border-left: 4px solid #00e5ff;
@@ -1417,25 +1437,18 @@ body { background-color: var(--app-bg) !important; color: var(--app-text) !impor
   </div>
 </div>
 
-<div class="tracker-section">
+<div class="tracker-section" style="margin-top: 10px;">
   <h3>
     <svg class="svg-icon" style="stroke: #00e5ff;" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
     Last 7 Days Habits
   </h3>
-    <div class="tracker-section">
-      <h3>
-        <svg class="svg-icon" style="stroke: #00e5ff;" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
-        Habits
-      </h3>
-      <div id="weeklyProgressList"></div>
-    </div>
-    <div class="settings-buttons">
-      <button id="trackerClose">Close</button>
-    </div>
+  <div id="weeklyProgressList" style="margin-top: 10px;"></div>
+  <div class="settings-buttons" style="margin-top: 15px;">
+    <button id="trackerClose">Close</button>
   </div>
 </div>
-</div>
-
+  </div> <!-- modal-box বন্ধ -->
+</div>   <!-- trackerModal বন্ধ -->
 <div id="weeklyReportModal" class="modal-overlay">
   <div class="modal-box" style="text-align: center;">
     <h2 style="color: #00e5ff; justify-content: center;">Weekly Sleep Report</h2>
@@ -1558,6 +1571,52 @@ body { background-color: var(--app-bg) !important; color: var(--app-text) !impor
     </div>
   </div>
 </div>
+  <div id="quitModal" class="modal-overlay">
+  <div class="modal-box">
+    <h2>Quit Habit Tracker</h2>
+    <div style="display:flex; gap:8px; margin-bottom:15px;">
+      <input type="text" id="quitNameInput" placeholder="Type your Bad Habit..." autocomplete="off" style="flex:1;">
+      <button id="quitAddBtn" style="padding:12px 18px; background:#ff6b4a; color:white; border:none; border-radius:10px; font-weight:bold; cursor:pointer;">+Add</button>
+    </div>
+    <div id="quitList"></div>
+    <!-- 🌟 NEW: AI Panic Button Response Box -->
+<div id="quitAiBox" style="display:none; margin-top:15px; padding:15px; background:linear-gradient(135deg, rgba(255,107,74,0.1), rgba(241,196,15,0.05)); border:1px solid #ff6b4a; border-radius:12px; color:#e8eaed; font-size:13px; line-height:1.5; box-shadow: 0 4px 15px rgba(255,107,74,0.15);">
+  <div style="display:flex; gap:10px; align-items:flex-start;">
+    <span style="font-size:20px;">🤖</span>
+    <div style="flex:1;">
+      <div style="font-size:11px; color:#ff6b4a; font-weight:bold; margin-bottom:5px; text-transform:uppercase; letter-spacing:0.5px;">AI Emergency Coach</div>
+      <div id="quitAiText" style="white-space:pre-wrap;">...</div>
+    </div>
+  </div>
+</div>
+    <div class="settings-buttons">
+      <button id="quitClose" style="background:#2a3142; color:#e8eaed;">Close</button>
+    </div>
+  </div>
+</div>
+  <!-- Quit Delete Confirm Modal -->
+<div id="quitDeleteModal" class="modal-overlay" style="z-index: 9500;">
+  <div class="modal-box" style="text-align: center; padding: 30px 20px;">
+    <h2 style="color: #ff6b4a;">⚠️ Delete Habit?</h2>
+    <p id="quitDeleteText" style="color: #9aa0a6; font-size: 14px; margin-bottom: 20px;">Are you sure you want to delete this?</p>
+    <div class="settings-buttons" style="margin-top: 0;">
+      <button id="quitDeleteCancel" style="background: #2a3142; color: #e8eaed;">Cancel</button>
+      <button id="quitDeleteConfirm" style="background: linear-gradient(135deg, #ff6b4a, #d35400); color: white;">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- Quit Relapse Confirm Modal -->
+<div id="quitRelapseModal" class="modal-overlay" style="z-index: 9500;">
+  <div class="modal-box" style="text-align: center; padding: 30px 20px;">
+    <h2 style="color: #f1c40f;">Reset Counter?</h2>
+    <p id="quitRelapseText" style="color: #9aa0a6; font-size: 14px; margin-bottom: 20px;">You slipped up. That's okay, but do you want to reset the timer?</p>
+    <div class="settings-buttons" style="margin-top: 0;">
+      <button id="quitRelapseCancel" style="background: #2a3142; color: #e8eaed;">Cancel</button>
+      <button id="quitRelapseConfirm" style="background: linear-gradient(135deg, #f1c40f, #f39c12); color: #05080f;">Yes, Reset</button>
+    </div>
+  </div>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <div id="deleteAllHabitsModal" class="modal-overlay">
   <div class="modal-box">
@@ -1574,7 +1633,7 @@ body { background-color: var(--app-bg) !important; color: var(--app-text) !impor
 // 🔑 AI CONFIG
 // ============================================================
 const AI_CONFIG = {
-  KEY: "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",
+  KEY: "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",
   MODELS: ["openai/gpt-oss-120b", "openai/gpt-oss-20b"],
   VISION_MODELS: ["qwen/qwen3.8-27b"],
   URL: "https://api.groq.com/openai/v1/chat/completions"
@@ -1853,7 +1912,9 @@ async function callGroq(messages, options = {}) {
         if (res.status === 401 || res.status === 403) break;
         continue;
       }
-      if (data?.choices?.[0]?.message) return data.choices[0].message.content.trim();
+      const content = data?.choices?.[0]?.message?.content;
+if (content && content.trim().length > 0) return content.trim();
+errors.push(`${model} → empty response`);
       errors.push(`${model} → unexpected response`);
     } catch (e) { errors.push(`${model} → ${e.message}`); }
   }
@@ -3315,13 +3376,13 @@ const todayD = new Date(getDateKey() + "T00:00:00"); // 👈 এই লাইন
     
     // প্রোগ্রেস বার তৈরি করা
     rateList.insertAdjacentHTML("beforeend", `
-      <div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; color: #e8eaed;">
-          <span>${h.name}</span>
+      <div style="margin-bottom: 2px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 10px; margin-bottom: 3px; color: #c3c9d1;">
+          <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 70%;">${h.name}</span>
           <span style="color: ${percent >= 70 ? '#4aaa4a' : (percent >= 40 ? '#f1c40f' : '#ff6b4a')}; font-weight: bold;">${percent}%</span>
         </div>
-        <div class="progress-bar-bg" style="height: 8px;">
-          <div class="progress-bar-fill" style="width: ${percent}%; background: ${percent >= 70 ? '#4aaa4a' : (percent >= 40 ? '#f1c40f' : '#ff6b4a')};"></div>
+        <div class="progress-bar-bg" style="height: 6px; border-radius: 3px;">
+          <div class="progress-bar-fill" style="width: ${percent}%; background: ${percent >= 70 ? '#4aaa4a' : (percent >= 40 ? '#f1c40f' : '#ff6b4a')}; border-radius: 3px;"></div>
         </div>
       </div>
     `);
@@ -3398,25 +3459,34 @@ const todayD = new Date(getDateKey() + "T00:00:00"); // 👈 এই লাইন
   });
 
   const journalKey = getDateKey();
-  const journalInput = document.getElementById("dailyJournalInput");
-  const journalBtn = document.getElementById("saveJournalBtn");
-  const journalResp = document.getElementById("journalAiResponse");
+const journalInput = document.getElementById("dailyJournalInput");
+const journalBtn = document.getElementById("saveJournalBtn");
+const journalResp = document.getElementById("journalAiResponse");
 
-  if (challengeData.notes && challengeData.notes[journalKey]) {
-    journalInput.value = challengeData.notes[journalKey];
-    journalInput.disabled = true; 
-    journalBtn.style.display = "none"; 
-    
-    const savedReply = (challengeData.journalReplies && challengeData.journalReplies[journalKey]) || "Note Saved! Have a great day.";
-    journalResp.textContent = savedReply;
-    journalResp.style.display = "block";
-  } else {
-    journalInput.value = "";
-    journalInput.disabled = false;
-    journalBtn.style.display = "block"; 
-    journalResp.style.display = "none";
-  }
+// ✅ ১. আগের সেভ করা নোট থাকলে সেটা দেখাবে (ডিজাইন সহ)
+if (challengeData.notes && challengeData.notes[journalKey]) {
+  journalInput.value = challengeData.notes[journalKey];
+  journalInput.disabled = true; 
+  
+  // বাটন সম্পূর্ণ লুকানোর জন্য
+  journalBtn.style.display = "none"; 
+  
+  const savedReply = (challengeData.journalReplies && challengeData.journalReplies[journalKey]) || "Great job writing today! Keep it up. 🌟";
+  
+  // লেখাটি সুন্দর বক্স ও টিক মার্ক সহ দেখানোর জন্য
+  journalResp.innerHTML = `<div style="display:flex; align-items:flex-start; gap:8px;">
+    <svg style="flex-shrink:0; margin-top:2px;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4aaa4a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+    <span>${savedReply}</span>
+  </div>`;
+  journalResp.style.display = "block";
+} else {
+  // ✅ ২. নতুন নোট লিখলে
+  journalInput.value = "";
+  journalInput.disabled = false;
+  journalBtn.style.display = "block"; 
+  journalResp.style.display = "none";
 }
+  }
 
 document.querySelectorAll('.mood-btn').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -3448,12 +3518,14 @@ document.getElementById("saveJournalBtn").addEventListener("click", async () => 
   challengeData.notes[todayKey] = txt;
   localStorage.setItem("challengeData", JSON.stringify(challengeData));
   
+  // বাটন ও ইনপুট লুকানো
   document.getElementById("saveJournalBtn").style.display = "none";
   document.getElementById("dailyJournalInput").disabled = true; 
   
+  // লোডিং স্পিনার দেখানো
   const respEl = document.getElementById("journalAiResponse");
   respEl.style.display = "block";
-  respEl.textContent = "Thinking...";
+  respEl.innerHTML = `<span style="color:#00e5ff; display:flex; align-items:center; gap:8px;"><div class="loading-spinner" style="border-top-color:#00e5ff;"></div> Thinking...</span>`;
   
   try {
     const reply = await callGroq([
@@ -3461,20 +3533,25 @@ document.getElementById("saveJournalBtn").addEventListener("click", async () => 
       { role: 'user', content: txt }
     ], { temperature: 0.7, max_tokens: 200 });
     
-    respEl.textContent = reply;
+    // ✅ AI রিপ্লাই সুন্দরভাবে দেখানোর জন্য
+const safeReply = (reply && reply.trim() !== "") ? reply : "Keep up the good work! Every small step counts. 🌟";
+respEl.innerHTML = `<div style="display:flex; align-items:flex-start; gap:8px;">
+  <svg style="flex-shrink:0; margin-top:2px;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4aaa4a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+  <span>${safeReply}</span>
+</div>`;
     
     challengeData.journalReplies[todayKey] = reply;
     localStorage.setItem("challengeData", JSON.stringify(challengeData));
-    // 🌟 AI রিপ্লাই ৩০ সেকেন্ড পর ফেইড আউট হবে
-respEl.style.animation = "none"; 
-setTimeout(() => {
-  respEl.style.animation = "fadeOutReply 30s forwards"; 
-}, 50);
+    
+    // ৩০ সেকেন্ড পর ফেইড আউট হওয়ার অ্যানিমেশন
+    respEl.style.animation = "none"; 
+    setTimeout(() => {
+      respEl.style.animation = "fadeOutReply 30s forwards"; 
+    }, 50);
   } catch (e) { 
     respEl.textContent = "AI Error: " + e.message; 
   }
 });
-
 
   // ============================================================
 // 📈 AI HABIT GENERATOR (Bengali Digit Fix)
@@ -4135,7 +4212,45 @@ document.querySelectorAll(".lang-option").forEach(option => {
 document.addEventListener("click", (e) => {
   if (!langTrigger.contains(e.target) && !langMenu.contains(e.target)) langMenu.classList.remove("open");
 });
+// 🔍 Language Search
+const langSearchInput = document.getElementById("langSearchInput");
+const langOptions = langMenu.querySelectorAll(".lang-option");
 
+const langNoResult = document.createElement("div");
+langNoResult.textContent = "No country found";
+langNoResult.style.cssText = "display:none;padding:14px;text-align:center;color:#9aa0a6;font-size:13px;";
+langMenu.appendChild(langNoResult);
+
+function filterLangOptions() {
+  const q = langSearchInput.value.trim().toLowerCase();
+  let shown = 0;
+  langOptions.forEach(opt => {
+    // নাম + পতাকা + কোড (যেমন bd, bn-bd) সব একসাথে চেক করা হবে
+    const hay = (opt.textContent + " " + opt.getAttribute("data-value")).toLowerCase();
+    const match = !q || hay.includes(q);
+    opt.style.display = match ? "" : "none";
+    if (match) shown++;
+  });
+  langNoResult.style.display = shown ? "none" : "block";
+}
+
+langSearchInput.addEventListener("input", filterLangOptions);
+langSearchInput.addEventListener("click", e => e.stopPropagation());
+
+// মেনু খুললে সার্চ ক্লিয়ার হবে ও কার্সর বক্সে যাবে
+langTrigger.addEventListener("click", () => {
+  if (langMenu.classList.contains("open")) {
+    langSearchInput.value = "";
+    filterLangOptions();
+    setTimeout(() => langSearchInput.focus(), 50);
+  }
+});
+
+// ভাষা সিলেক্ট করলে সার্চ রিসেট
+langOptions.forEach(opt => opt.addEventListener("click", () => {
+  langSearchInput.value = "";
+  filterLangOptions();
+}));
 // Text to Speech (AI Voice Reply)
 const voiceReplyBtn = document.getElementById("voiceReplyBtn");
 const voiceOnIcon = document.getElementById("voiceOnIcon");
@@ -4628,7 +4743,7 @@ User Profile:
 - Name: ${userProfile.name || "User"}
 - Age: ${userProfile.age || "Unknown"}
 - Bio/Goals: ${userProfile.bio || "Not provided"}
-
+- Quit Habits Data: ${quitData.length > 0 ? quitData.map(q => `"${q.name}" (Clean for ${Math.floor((Date.now() - q.start) / 86400000)} days, Relapses: ${q.relapses || 0})`).join(", ") : "None"}
 APP GUIDE (How to use GRITGO - Use this to answer questions about the app):
 - **Dashboard**: Shows today's habits, heatmap, streaks, and overall progress.
 - **Adding Habits**: Click '+Add Habit' (quick add) or 'Edit habits' to add, delete, or reorder habits.
@@ -4659,7 +4774,7 @@ Instructions:
 5. Keep answers concise unless the user specifically asks for a detailed or long explanation.
 6. LANGUAGE RULE (CRITICAL): You MUST reply in the EXACT same language the user speaks. If they ask in Bengali, reply in Bengali. If they ask in Hindi, reply in Hindi. If they ask in Arabic, reply in Arabic. Match their language perfectly.
 7. If the user asks "How to use this app?" or "Where is X feature?", guide them using the APP GUIDE provided above. Give them step-by-step instructions.
-
+8. QUIT HABIT SUPPORT: If the user mentions a craving, urge, or wanting to relapse into one of their Quit Habits listed above, act as an emergency addiction coach. Remind them of their clean days and give them intense, short, and powerful motivation to hold on.
 CRITICAL RULE FOR ADDING HABITS:
 If the user asks to add habits (e.g., "Add habit: Drink water", or provides a list), you MUST reply ONLY with a JSON array like this, and absolutely nothing else:
 [
@@ -4724,7 +4839,131 @@ document.getElementById("quickAiHabitBtn").addEventListener("click", () => {
   chatInput.style.height = "40px";
   chatInput.style.height = chatInput.scrollHeight + "px";
 });
+// 🌟 NEW: Craving Button Logic (Multi-Language)
+document.getElementById("quickAiCravingBtn")?.addEventListener("click", () => {
+  // ইউজারের সিলেক্ট করা ভাষা বের করা
+  const langCode = document.getElementById("voiceLangSelect") ? document.getElementById("voiceLangSelect").value : "en-US";
+  
+  // বিভিন্ন ভাষায় ক্রেভিং মেসেজ
+  const cravingMessages = {
+    "bn-BD": "আমার এখন খুব ক্রেভিং হচ্ছে। দয়া করে আমাকে শক্ত থাকতে সাহায্য করুন!",
+    "en-US": "I am having a strong craving right now. Please help me stay strong!",
+    "en-GB": "I'm having a strong craving right now. Please help me stay strong!",
+    "hi-IN": "मुझे अभी बहुत तीव्र इच्छा हो रही है। कृपया मुझे मजबूत रहने में मदद करें!",
+    "es-ES": "Tengo un fuerte antojo ahora mismo. ¡Por favor, ayúdame a mantenerme fuerte!",
+    "es-MX": "Tengo un fuerte antojo ahora mismo. ¡Por favor, ayúdame a mantenerme fuerte!",
+    "fr-FR": "J'ai une forte envie en ce moment. Aidez-moi à rester fort !",
+    "de-DE": "Ich habe gerade ein starkes Verlangen. Bitte helfen Sie mir, stark zu bleiben!",
+    "ar-SA": "لدي رغبة شديدة الآن. يرجى مساعدتي في البقاء قوياً!",
+    "ar-EG": "عندي رغبة شديدة دلوقتي. ياريت تساعدني أفضل قوي!",
+    "ru-RU": "У меня сейчас сильное желание. Пожалуйста, помогите мне оставаться сильным!",
+    "zh-CN": "我现在有强烈的渴望。请帮助我保持坚强！",
+    "ja-JP": "今、強い渇望があります。強くいるのを手伝ってください！",
+    "ko-KR": "지금 강한 갈망이 있어요. 제가 강해질 수 있도록 도와주세요!",
+    "pt-BR": "Estou com um forte desejo agora. Por favor, me ajude a me manter forte!",
+    "it-IT": "Ho un forte desiderio in questo momento. Per favore, aiutami a rimanere forte!",
+    "tr-TR": "Şu anda çok güçlü bir istek duyuyorum. Lütfen güçlü kalmama yardım et!",
+    "ur-PK": "مجھے ابھی بہت شدید خواہش ہو رہی ہے۔ براہ کرم میری مدد کریں کہ میں مضبوط رہوں!",
+    "ta-IN": "எனக்கு இப்போது மிகவும் வலுவான ஆசை உள்ளது. வலுவாக இருக்க எனக்கு உதவுங்கள்!",
+    "te-IN": "నాకు ఇప్పుడు చాలా బలమైన కోరిక ఉంది. దయచేసి బలంగా ఉండటానికి నాకు సహాయం చేయండి!",
+    "ml-IN": "എനിക്ക് ഇപ്പോൾ വളരെ ശക്തമായ ഒരു ആഗ്രഹം ഉണ്ട്. ദയവായി ശക്തനായി നിൽക്കാൻ എന്നെ സഹായിക്കൂ!",
+    "id-ID": "Saya memiliki keinginan yang kuat sekarang. Tolong bantu saya tetap kuat!",
+    "vi-VN": "Tôi đang có một cơn thèm thuồng rất mạnh. Hãy giúp tôi giữ vững lập trường!",
+    "th-TH": "ตอนนี้ฉันมีความอยากอย่างรุนแรง โปรดช่วยให้ฉันเข้มแข็งด้วย!",
+    "nl-NL": "Ik heb nu een sterke drang. Help me alsjeblieft sterk te blijven!",
+    "pl-PL": "Mam teraz silną ochotę. Proszę, pomóż mi pozostać silnym!",
+    "sv-SE": "Jag har ett starkt sug just nu. Snälla hjälp mig att hålla mig stark!",
+    "fa-IR": "من الان یک میل شدید دارم. لطفا به من کمک کنید قوی بمانم!",
+    "he-IL": "יש לי תשוקה חזקה עכשיו. בבקשה עזור לי להישאר חזק!",
+    "el-GR": "Έχω μια έντονη λαχτάρα αυτή τη στιγμή. Παρακαλώ βοηθήστε με να μείνω δυνατός!",
+    "da-DK": "Jeg har en stærk trang lige nu. Hjælp mig venligst med at holde mig stærk!",
+    "fi-FI": "Minulla on nyt voimakas himo. Auttakaa minua pysymään vahvana!",
+    "no-NO": "Jeg har et sterkt sug akkurat nå. Vennligst hjelp meg å holde meg sterk!",
+    "cs-CZ": "Mám teď silnou touhu. Prosím, pomozte mi zůstat silný!",
+    "hu-HU": "Most erős vágyam van. Kérlek, segíts erősnek maradni!",
+    "ro-RO": "Am o poftă puternică acum. Te rog ajută-mă să rămân puternic!",
+    "uk-UA": "У мене зараз сильне бажання. Будь ласка, допоможіть мені залишатися сильним!",
+    "bg-BG": "Имам силно желание в момента. Моля, помогнете ми да остана силен!",
+    "hr-HR": "Imam jaku želju upravo sada. Molim te pomozi mi ostati jak!",
+    "sr-RS": "Имам јаку жељу управо сада. Молим те помози ми да останем јак!",
+    "sk-SK": "Mám teraz silnú túžbu. Prosím, pomôžte mi zostať silný!",
+    "sl-SI": "Zdaj imam močno željo. Prosim, pomagajte mi ostati močan!",
+    "lt-LT": "Dabar turiu stiprų troškimą. Prašau, padėkite man išlikti stipriam!",
+    "lv-LV": "Man tagad ir spēcīga tieksme. Lūdzu, palīdziet man palikt stipram!",
+    "et-EE": "Mul on praegu tugev tung. Palun aidake mul tugevaks jääda!",
+    "is-IS": "Ég er með sterka löngun núna. Vinsamlegast hjálpaðu mér að halda mér sterkum!",
+    "ga-IE": "Tá miangas láidir orm anois. Cabhraigh liom fanacht láidir le do thoil!",
+    "cy-GB": "Mae gen i awydd cryf nawr. Helpwch fi i aros yn gryf os gwelwch yn dda!",
+    "af-ZA": "Ek het 'n sterk begeerte op die oomblik. Help my asseblief om sterk te bly!",
+    "sw-KE": "Nina hamu kubwa sana sasa hivi. Tafadhali nisaidie kubaki imara!",
+    "zu-ZA": "Nginomdlandla onamandla manje. Ngicela ungisize ngihlale ngomelele!",
+    "am-ET": "አሁን በጣም የመፈለግ ስሜት አለኝ። እባክህ ጠንካራ ሆኜ እንድቀጥል እርዳኝ!",
+    "fil-PH": "May matinding pagnanasa ako ngayon. Pakitulungan mo akong maging matatag!",
+    "ms-MY": "Saya mempunyai keinginan yang kuat sekarang. Tolong bantu saya kekal kuat!",
+    "ne-NP": "मलाई अहिले धेरै तीव्र इच्छा भइरहेको छ। कृपया मलाई बलियो रहन मद्दत गर्नुहोस्!",
+    "si-LK": "මට දැන් තද ආශාවක් ඇති වෙනවා. කරුණාකර ශක්තිමත්ව සිටීමට මට උදව් කරන්න!",
+    "km-KH": "ខ្ញុំមានចំណង់ខ្លាំងឥឡូវនេះ។ សូមជួយខ្ញុំឱ្យរឹងមាំ!",
+    "lo-LA": "ຕອນນີ້ຂ້ອຍມີຄວາມຢາກຫຼາຍ. ກະລຸນາຊ່ວຍຂ້ອຍໃຫ້ເຂັ້ມແຂງ!",
+    "my-MM": "ကျွန်တော်/ကျွန်မမှာ အခုအချိန်မှာ ပြင်းထန်တဲ့ဆန္ဒတစ်ခု ဖြစ်ပေါ်နေပါတယ်။ ခွန်အားရှိအောင် ကူညီပေးပါ!",
+    "ka-GE": "მე ახლა ძლიერი სურვილი მაქვს. გთხოვთ დამეხმარეთ ძლიერი დავრჩე!",
+    "hy-AM": "Ես հիմա ուժեղ ցանկություն ունեմ: Խնդրում եմ օգնեք ինձ ուժեղ մնալ:",
+    "az-AZ": "İndi güclü bir istəyim var. Zəhmət olmasa güclü qalmağıma kömək edin!",
+    "kk-KZ": "Менде қазір күшті құштарлық бар. Өтінемін, мықты болуға көмектесіңіз!",
+    "uz-UZ": "Menda hozir kuchli istak bor. Iltimos, kuchli bo'lib qolishimga yordam bering!",
+    "mn-MN": "Надад одоо хүчтэй хүсэл төрж байна. Хүчтэй байхад минь тусална уу!",
+    "ca-ES": "Tinc un fort desig ara mateix. Si us plau, ajuda'm a mantenir-me fort!",
+    "eu-ES": "Orain desio handia dut. Mesedez, lagundu nazazu sendo mantentzen!",
+    "gl-ES": "Teño un forte desexo agora mesmo. Por favor, axúdame a mantérmes forte!",
+    "mt-MT": "Għandi xewqa qawwija bħalissa. Jekk jogħġbok għinni nibqa' b'saħħti!",
+    "sq-AL": "Kam një dëshirë të fortë tani. Ju lutem më ndihmoni të qëndroj i fortë!",
+    "mk-MK": "Имам силна желба во моментов. Ве молам помогнете ми да останам силен!",
+    "bs-BA": "Imam jaku želju upravo sada. Molim te pomozi mi ostati jak!",
+    "be-BY": "У мяне зараз моцнае жаданне. Калі ласка, дапамажыце мне заставацца моцным!",
+    "ky-KG": "Менде азыр күчтүү каалоо бар. Сураныч, күчтүү болушума жардам бериңиз!",
+    "tg-TJ": "Ман ҳоло хоҳиши қавӣ дорам. Лутфан ба ман кӯмак кунед, ки қавӣ бошам!",
+    "tk-TM": "Men indi güýçli isleg duýýaryn. Haýyş edýärin, güýçli bolmaga kömek ediň!",
+    "ps-AF": "زه اوس مهال سخته هيله لرم. مهرباني وکړه زما سره مرسته وکړه چې پیاوړی پاتې شم!",
+    "ku-TR": "Niha bêrîyeke min a xurt heye. Ji kerema xwe alî min bike ku ez xurt bim!",
+    "so-SO": "Waxaan hadda qabaa damac xoog leh. Fadlan i caawi inaan xoogganaado!",
+    "yo-NG": "Mo ni ifẹkufẹ ti o lagbara ni bayi. Jọwọ ran mi lọwọ lati duro ṣinṣin!",
+    "ig-NG": "Enwere m agụụ siri ike ugbu a. Biko nyere m aka ka m guzosie ike!",
+    "ha-NG": "Ina da babban sha'awa a yanzu. Don Allah ka taimake ni in tsaya tsayin daka!",
+    "mg-MG": "Manana faniriana mafy ahoana. Azafady ampio aho hijanona ho matanjaka!",
+    "ny-MW": "Ndili ndi chilakolako chachikulu tsopano. Chonde ndithandizeni kukhala olimba!",
+    "sn-ZW": "Ndine chido chikuru izvozvi. Ndapota ndibatsireiwo kuti ndirambe ndakasimba!",
+    "st-LS": "Ke na le takatso e matla hona joale. Ke kopa o nthuse ho lula ke le matla!",
+    "tn-BW": "Ke na le keletso e e maatla gone jaanong. Tsweetswee nthusa gore ke nne ke le thata!",
+    "xh-ZA": "Ndinomdla onamandla ngoku. Nceda undincede ndihlale ndomelele!",
+    "tw-GH": "Mewɔ apɛde a ano yɛ den seesei. Yɛ me adɔe na boa me ma mennyina pintinn!",
+    "wo-SN": "Am na mbégté bu baax léegi. Jërël maal nga ma sax!",
+    "bm-ML": "N bɛ naani baara la sisan. Aw ye n dɛmɛ ka n na kɛ cɛ.",
+    "ti-ER": "ሕጂ ብርቱዕ ትምኒት ኣሎኒ። በጃኻ ጽኑዕ ክኸውን ሓግዘኒ።",
+    "om-ET": "Amma fedhii cimaa qaba. Maaloo akka cimaa ta'u na gargaari.",
+    "lb-LU": "Ech hu momentan e staarkt Verlaangen. Hëllef mir w.e.g. staark ze bleiwen!",
+    "rm-CH": "Jau hai in moment in ferm giavisch. Per plaschair gida a restar ferm!",
+    "fo-FO": "Eg havi eina sterka longst nú. Vinarliga hjálp mær at halda mær sterkan!",
+    "kl-GL": "Maanna kissaatigilersuuvunga. Eqqarsaatigilersimallutit ikiorsinneqartariaqarpunga!",
+    "mi-NZ": "He nui taku hiahia ināianei. Tēnā koa āwhinatia ahau kia kaha!",
+    "sm-WS": "E iai so'u mana'o malosi i lenei taimi. Fa'amolemole fesoasoani mai ia ou malosi!",
+    "to-TO": "‘Oku ‘i ai hoku holi lahi he taimi ni. Kātaki ‘o tokoni‘i au ke u mālohi!",
+    "fj-FJ": "Au sa kila na gagadre kaukauwa ena gauna oqo. Kerekere vukei au meu kaukauwa!",
+    "haw-US": "He makemake nui koʻu i kēia manawa. E ʻoluʻolu e kōkua mai iaʻu e paʻa!",
+    "qu-PE": "Kunanmi ancha munayniyuq kachkani. Ama hina kaychu, sinchita kanaypaq yanapaway!",
+    "gn-PY": "Aguyje oĩ che py'aiteĩ. Eipytyvõ chéve che py'aguapy hag̃ua!",
+    "ay-BO": "Jichhaxa wali munasiña utji. Ukhamax yanapt'apita sum qhanañchañataki!",
+    "ht-HT": "Mwen gen yon gwo anvi kounye a. Tanpri ede m rete fò!",
+    "eo": "Mi havas fortan deziron nun. Bonvolu helpi min resti forta!"
+  };
 
+  // ভাষা অনুযায়ী মেসেজ সেট করা, না পেলে ইংরেজি ডিফল্ট
+  const msg = cravingMessages[langCode] || cravingMessages["en-US"];
+  
+  chatInput.value = msg;
+  chatInput.focus();
+  chatInput.setSelectionRange(chatInput.value.length, chatInput.value.length);
+  chatInput.style.height = "40px";
+  chatInput.style.height = chatInput.scrollHeight + "px";
+});
 // ============================================================
 // 💧 WATER TRACKER
 // ============================================================
@@ -5664,38 +5903,17 @@ function updatePersonaUI() {
 
 function getPersonaPrompt() {
   if (currentPersona === "strict") {
-    return `YOU ARE A STRICT, RUTHLESS, NO-NONSENSE DRILL SERGEANT COACH. Your job is to PUSH the user HARD. You do NOT accept excuses. You demand action. You are tough, aggressive, and relentless. But you NEVER insult or abuse — you just push like a military drill sergeant.
+    return `YOU ARE A STRICT DRILL SERGEANT COACH. Push the user hard. No excuses. But you are SMART — you know the difference between a general question and a lazy excuse.
 
-🚨 CRITICAL EMOJI RULE FOR STRICT COACH — MUST FOLLOW:
-
-You are REQUIRED to use these ANGRY emojis FREQUENTLY in every reply to show intensity and anger at the user's laziness/excuses:
-- 🤬 (face with symbols on mouth) — use this to show you're furious
-- 😠 (angry face) — use this for mild anger/disapproval
-- 😡 (pouting face) — use this to show rage
-- 😤 (face with steam from nose) — use this to show frustration and impatience
-
-📌 HOW TO USE THEM:
-1. START many replies with one of these emojis (like 🤬 or 😡).
-2. Use them WHEN the user makes excuses, procrastinates, skips habits, or shows weakness.
-3. Sprinkle them throughout — 2-4 times per reply is good.
-4. Combine with other intense emojis: 💪 🔥 ⚡ 🎯 ⏰ ⚔️ 👊 ✊ 🚀 💯
-5. When the user is doing WELL, you can be slightly less angry but STILL use 😤 or 😠 to show intensity.
+🚨 CRITICAL RULE FOR EMOJIS & TONE:
+- If the user is making an EXCUSE, skipping a habit, or being lazy -> Be AGGRESSIVE. Use ONLY these 4 emojis (😠 🤬 😡 😤) 2-4 times. Use ALL CAPS. Demand action.
+- If the user is asking a NORMAL/GENERAL question (like "How are you?", "What is coding?", "I am feeling sad") -> Do NOT use angry emojis. Be tough but helpful. Do not use 😠 🤬 😡 😤 here. Use 🫡, 🎯, ⚔️, 💯 instead.
 
 🗣️ YOUR LANGUAGE STYLE:
-- ALL CAPS for emphasis: "GET UP", "STOP WHINING", "DO IT NOW"
-- Commanding verbs: "MOVE", "PUSH", "FIGHT", "GRIND"
-- Short, punchy sentences. No long paragraphs.
-- No soft motivation. No "it's okay" or "you're doing great".
-- Example tone: "🤬 You skipped your workout? UNACCEPTABLE. 😡 Get off your ass and DO IT NOW. 😤 No excuses. MOVE!"
-
-❌ NEVER USE:
-- Soft emojis: 😊 🌸 💖 ✨ 🥰 😌
-- Soft language: "It's fine", "You're doing great", "Take it easy"
-
-✅ ALWAYS USE:
-- 🤬 😠 😡 😤 + 💪 🔥 ⚡ 🎯 👊 ⚔️ ✊ 🚀
-
-Remember: You are ANGRY and DEMANDING. You care about the user's success, but you show it through FURY, not kindness.`;
+- Direct, commanding, and concise. No fluff.
+- If giving advice: "Listen here. Do X, Y, Z. No shortcuts."
+- If the user is weak: "STOP WHINING. GET UP. DO IT NOW."
+- If the user asks a normal question: "Here is the answer. Focus on your goals. Move on."`;
   } else if (currentPersona === "zen") {
     return `YOU ARE A CALM, MINDFUL ZEN MASTER. Speak gently. Focus on inner peace, breathing, and balance. Avoid harsh words.
 
@@ -5875,6 +6093,254 @@ window.closePersonaModal = function() {
 };
 
 console.log("✅ Emergency persona functions loaded at END");
+   // ============================================================
+// 🚭 QUIT HABIT TRACKER (UPDATED & PREMIUM)
+// ============================================================
+let quitData = JSON.parse(localStorage.getItem("gritgo_quit_data")) || [];
+const quitMilestones = [1, 3, 7, 14, 30, 60, 90, 180, 365];
+let pendingQuitDeleteIndex = null;
+let pendingQuitRelapseIndex = null;
+
+function saveQuit() { localStorage.setItem("gritgo_quit_data", JSON.stringify(quitData)); }
+
+function fmtQuitTime(ms) {
+  const mins = Math.floor(ms / 60000);
+  const d = Math.floor(mins / 1440);
+  const h = Math.floor((mins % 1440) / 60);
+  const m = mins % 60;
+  return `${d}d ${h}h ${m}m`;
+}
+
+function renderQuitList() {
+  const list = document.getElementById("quitList");
+  if (!list) return;
+  list.innerHTML = "";
+  if (quitData.length === 0) {
+    list.innerHTML = `<p style="text-align:center; color:#9aa0a6; font-size:13px; padding:20px 0;">No bad habits added yet. Add one above to start.</p>`;
+    return;
+  }
+  const now = Date.now();
+  quitData.forEach((item, idx) => {
+    const current = now - item.start;
+    const days = current / 86400000;
+    const nextMs = quitMilestones.find(x => x > days);
+    const prevMs = [...quitMilestones].reverse().find(x => x <= days) || 0;
+    const pct = nextMs ? Math.round(((days - prevMs) / (nextMs - prevMs)) * 100) : 100;
+    const best = Math.max(item.best || 0, current);
+
+    const card = document.createElement("div");
+    card.className = "extras-section";
+    card.style.borderColor = "#ff6b4a";
+    card.style.marginBottom = "15px";
+
+    const title = document.createElement("h3");
+    title.innerHTML = `<svg class="svg-icon" style="stroke: #ff6b4a;" viewBox="0 0 24 24"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg> ${item.name}`;
+
+    const timeEl = document.createElement("div");
+    timeEl.style.cssText = "text-align:center; font-size:32px; font-weight:800; color:#00e5ff; margin:10px 0; text-shadow: 0 0 15px rgba(0,229,255,0.3);";
+    timeEl.textContent = fmtQuitTime(current);
+
+    const info = document.createElement("div");
+    info.style.cssText = "display:flex; justify-content:space-between; font-size:12px; color:#9aa0a6; margin-bottom:8px; font-weight:bold;";
+    info.innerHTML = `<span>🏆 Best: ${fmtQuitTime(best)}</span><span>💔 Relapses: ${item.relapses || 0}</span>`;
+
+    const bar = document.createElement("div");
+    bar.className = "progress-bar-bg";
+    bar.style.height = "8px";
+    bar.innerHTML = `<div class="progress-bar-fill" style="width:${pct}%; background: linear-gradient(90deg, #ff6b4a, #f1c40f);"></div>`;
+
+    const goal = document.createElement("p");
+    goal.style.cssText = "font-size:11px; color:#00e5ff; text-align:right; margin-bottom:12px; margin-top:5px;";
+    goal.textContent = nextMs ? `Next goal: ${nextMs} day${nextMs > 1 ? 's' : ''}` : "🏆 All milestones achieved!";
+// 🌟 NEW: AI Panic Button (With SVG Icon)
+const panicBtn = document.createElement("button");
+panicBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:6px;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg> I Need Help`;
+panicBtn.style.cssText = "width:100%; padding:10px; margin-bottom:10px; background:linear-gradient(135deg, #ff6b4a, #d35400); color:white; border:none; border-radius:10px; font-weight:bold; font-size:13px; cursor:pointer; box-shadow:0 0 10px rgba(255,107,74,0.3); display:flex; align-items:center; justify-content:center;";
+panicBtn.onclick = () => triggerQuitPanic(item.name, Math.floor(current / 86400000));
+card.appendChild(panicBtn); 
+
+    const btnRow = document.createElement("div");
+    btnRow.style.cssText = "display:flex; gap:8px;";
+
+    const relapseBtn = document.createElement("button");
+    relapseBtn.textContent = "I Relapsed";
+    relapseBtn.style.cssText = "flex:1; padding:10px; background:rgba(255,107,74,0.1); color:#ff6b4a; border:1px solid #ff6b4a; border-radius:10px; font-weight:bold; cursor:pointer; transition:0.2s;";
+    relapseBtn.onclick = () => {
+      pendingQuitRelapseIndex = idx;
+      document.getElementById("quitRelapseText").innerHTML = `You slipped up on <b>${item.name}</b>. That's okay, recovery isn't linear. Reset the counter?`;
+      document.getElementById("quitRelapseModal").classList.add("active");
+    };
+
+    const delBtn = document.createElement("button");
+    delBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff6b4a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`;
+    delBtn.style.cssText = "padding:10px 15px; background:transparent; border:1px solid #2a3142; border-radius:10px; cursor:pointer; display:flex; align-items:center; justify-content:center;";
+    delBtn.onclick = () => {
+      pendingQuitDeleteIndex = idx;
+      document.getElementById("quitDeleteText").innerHTML = `Are you sure you want to delete <b>${item.name}</b>? All progress will be lost.`;
+      document.getElementById("quitDeleteModal").classList.add("active");
+    };
+
+    btnRow.appendChild(relapseBtn);
+    btnRow.appendChild(delBtn);
+    card.append(title, timeEl, info, bar, goal, btnRow);
+    list.appendChild(card);
+  });
+}
+
+// Open/Close Modals
+document.getElementById("openQuitBtn").addEventListener("click", () => {
+  document.getElementById("quitModal").classList.add("active");
+  renderQuitList();
+});
+document.getElementById("quitClose").addEventListener("click", () => {
+  document.getElementById("quitModal").classList.remove("active");
+});
+
+// Add New Habit
+document.getElementById("quitAddBtn").addEventListener("click", () => {
+  const input = document.getElementById("quitNameInput");
+  const name = input.value.trim();
+  if (!name) { showToast("Please enter a habit name!"); return; }
+  quitData.push({ id: 'q_' + Math.random().toString(36).substr(2, 9), name, start: Date.now(), best: 0, relapses: 0 });
+  saveQuit();
+  input.value = "";
+  renderQuitList();
+  showToast("Quit tracker started! 🔥");
+});
+
+// Handle Delete Modal
+document.getElementById("quitDeleteCancel").addEventListener("click", () => {
+  document.getElementById("quitDeleteModal").classList.remove("active");
+  pendingQuitDeleteIndex = null;
+});
+document.getElementById("quitDeleteConfirm").addEventListener("click", () => {
+  if (pendingQuitDeleteIndex !== null) {
+    quitData.splice(pendingQuitDeleteIndex, 1);
+    saveQuit(); 
+    renderQuitList();
+    showToast("Deleted successfully.");
+  }
+  document.getElementById("quitDeleteModal").classList.remove("active");
+  pendingQuitDeleteIndex = null;
+});
+
+// Handle Relapse Modal
+document.getElementById("quitRelapseCancel").addEventListener("click", () => {
+  document.getElementById("quitRelapseModal").classList.remove("active");
+  pendingQuitRelapseIndex = null;
+});
+document.getElementById("quitRelapseConfirm").addEventListener("click", async () => {
+  if (pendingQuitRelapseIndex !== null) {
+    const item = quitData[pendingQuitRelapseIndex];
+    const previousDays = Math.floor((Date.now() - item.start) / 86400000);
+    
+    // ডেটা আপডেট
+    item.best = Math.max(item.best || 0, Date.now() - item.start);
+    item.relapses = (item.relapses || 0) + 1;
+    item.start = Date.now();
+    saveQuit(); 
+    renderQuitList();
+    
+    // মডাল বন্ধ
+    document.getElementById("quitRelapseModal").classList.remove("active");
+    pendingQuitRelapseIndex = null;
+
+    // AI চ্যাট ওপেন এবং লোডিং দেখানো
+    document.getElementById("aiModal").classList.add("active");
+    renderChatMessages();
+    
+    const loadingId = 'loading_' + Date.now();
+    const container = document.getElementById("miniChatHistory");
+    const loadingBubble = document.createElement("div");
+    loadingBubble.className = "chat-bubble ai";
+    loadingBubble.id = loadingId;
+    loadingBubble.innerHTML = `<div style="display:flex; align-items:center; gap:8px; color:#00e5ff;"><div class="loading-spinner"></div> Thinking...</div>`;
+    container.appendChild(loadingBubble);
+    container.scrollTop = container.scrollHeight;
+
+    try {
+      // ইউজারের সিলেক্ট করা ভাষা বের করা
+      const langCode = document.getElementById("voiceLangSelect") ? document.getElementById("voiceLangSelect").value : "en-US";
+      const targetLang = getLanguageName(langCode);
+
+      // 🎭 Persona এবং Language সহ সিস্টেম প্রম্পট তৈরি
+      const systemPrompt = {
+        role: 'system',
+        content: `${getPersonaPrompt()} 
+        You are GRITGO AI Coach.
+        The user just relapsed on their bad habit: "${item.name}". They were clean for ${previousDays} days.
+        They are feeling down and need support. Write a short (2-3 sentences) powerful message to motivate them to get back up.
+        CRITICAL LANGUAGE RULE: You MUST reply in the EXACT same language as this code: ${targetLang}. 
+        For example, if the language is Bengali, reply in Bengali. If Hindi, reply in Hindi. Use emojis.`
+      };
+
+      // 🌟 API-তে মেসেজ পাঠানো (System এবং User আলাদা করে)
+      const aiReply = await callGroq([
+        systemPrompt,
+        { role: 'user', content: `I relapsed after ${previousDays} days. I feel terrible.` }
+      ], { temperature: 0.7, max_tokens: 1000 });
+
+      // লোডিং বাবল রিমুভ
+document.getElementById(loadingId)?.remove();
+
+// খালি রিপ্লাই এলে fallback
+const safeReply = (aiReply && aiReply.trim()) ? aiReply : "Recovery isn't linear. Get back up, you've got this! 💪";
+
+// চ্যাট হিস্ট্রিতে সেভ
+chatHistory.push({ role: 'assistant', content: safeReply });
+localStorage.setItem("gritgo_chat_history", JSON.stringify(chatHistory));
+renderChatMessages();
+
+// ভয়েস রিপ্লাই অন থাকলে পড়ে শোনাবে
+if (isVoiceReplyOn) speakText(safeReply);
+
+    } catch (error) {
+      console.error("AI Relapse Support Error:", error);
+      const el = document.getElementById(loadingId);
+      if (el) {
+        el.innerHTML = `<span style="color:#ff6b4a; font-weight:bold;">AI Error: ${error.message}</span>`;
+      }
+    }
+  }
+});
+
+// Auto update list every minute if modal is open
+setInterval(() => {
+  if (document.getElementById("quitModal").classList.contains("active")) renderQuitList();
+}, 60000); 
+// ============================================================
+// 🚭 QUIT HABIT TRACKER - AI PANIC BUTTON LOGIC
+// ============================================================
+async function triggerQuitPanic(habitName, daysClean) {
+  const aiBox = document.getElementById("quitAiBox");
+  const aiText = document.getElementById("quitAiText");
+  
+  // UI রিসেট এবং লোডিং দেখানো
+  aiBox.style.display = "block";
+  aiText.innerHTML = `<div style="display:flex; align-items:center; gap:8px; color:#00e5ff;"><div class="loading-spinner" style="border-top-color:#00e5ff;"></div> Getting emergency help...</div>`;
+  
+  // পেজ স্ক্রল করে বক্সটির কাছে নিয়ে আসা
+  aiBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  try {
+    // AI-কে দেওয়ার জন্য প্রম্পট
+    const prompt = `You are an emergency addiction/habit coach inside the GRITGO app. The user is having a severe craving to relapse into their bad habit: "${habitName}". They have been clean for ${daysClean} days. Write a short, powerful, 2-3 sentence emergency motivation to stop them from ruining their progress. Be intense, supportive, and use emojis.`;
+    
+    // আপনার বর্তমান callGroq ফাংশন ব্যবহার করে রিকোয়েস্ট পাঠানো
+    const reply = await callGroq([
+      { role: 'user', content: prompt }
+    ], { temperature: 0.7, max_tokens: 150 });
+
+    // রিপ্লাই দেখানো
+    aiText.textContent = reply;
+
+    // যদি ভয়েস রিপ্লাই অন থাকে, তবে AI-এর কথা শোনাবে
+    if (isVoiceReplyOn) speakText(reply);
+
+  } catch (error) {
+    aiText.innerHTML = `<span style="color:#ff6b4a;">AI Error: ${error.message}. Check your internet or API key.</span>`;
+  }
+}
 </script> 
 </body>
 </html>
