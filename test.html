@@ -142,8 +142,16 @@ body { background-color: var(--app-bg) !important; color: var(--app-text) !impor
     .sidebar-header { padding: 20px; border-bottom: 1px solid #1f2937; display: flex; justify-content: space-between; align-items: center; }
     .sidebar-header h2 { font-size: 20px; color: #fff; }
     .close-btn { background: none; border: none; color: #9aa0a6; font-size: 24px; cursor: pointer; }
-    .sidebar-menu { padding: 15px; display: flex; flex-direction: column; gap: 10px; }
-    .menu-item { display: flex; align-items: center; gap: 15px; padding: 15px; baclangd: #1a1f2e; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+    .sidebar-menu { 
+  padding: 15px; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 10px; 
+  overflow-y: auto; /* 🌟 সাইডবার স্ক্রল হবে */
+  flex: 1; 
+  -webkit-overflow-scrolling: touch;
+}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+    .menu-item { display: flex; align-items: center; gap: 15px; padding: 15px; background: #1a1f2e; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.2s; }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
     .menu-item:hover { background: #2a3142; border-color: #4a9eff; }
     .menu-item svg { width: 20px; height: 20px; stroke: #4a9eff; fill: none; stroke-width: 2; }
     #setupScreen { max-width: 500px; margin: 0 auto; padding: 40px 20px; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; }
@@ -1526,28 +1534,26 @@ body.light-theme #addHabitCancel {
   color: #ffffff; font-size: 18px; font-weight: bold; margin-top: 10px;
   text-shadow: 0 0 10px #00e5ff; letter-spacing: 3px;
 }
-/* 🏎️ Racing Car Styles */
-#racingCarContainer {
-  position: fixed;
-  top: 40%; /* স্ক্রিনের একটু ওপরের দিক দিয়ে যাবে */
-  left: -100px;
-  font-size: 80px;
-  z-index: 999999;
-  pointer-events: none; /* যাতে ক্লিক আটকাতে না পারে */
-  display: none;
-  transform: scaleX(-1); /* গাড়িটা যাতে ডান দিকে মুখ করে থাকে */
+  /* 📚 Digital Library Styles */
+.library-book-card {
+  background: var(--book-bg, #1a1f2e);
+  border-radius: 12px; padding: 15px; display: flex; flex-direction: column; align-items: center; text-align: center; cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); min-height: 160px; transition: 0.3s;
 }
+.library-book-card:active { transform: scale(0.95); }
+.library-book-icon { font-size: 40px; margin-bottom: 10px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5)); }
+.library-book-title { color: #fff; font-size: 13px; font-weight: 800; line-height: 1.3; text-transform: uppercase; }
+.library-book-author { color: rgba(255,255,255,0.6); font-size: 11px; margin-top: 5px; }
 
-@keyframes driveCar {
-  0% { left: -100px; transform: scaleX(-1) translateY(0); }
-  50% { transform: scaleX(-1) translateY(-20px); } /* হালকা লাফ দিয়ে যাবে */
-  100% { left: 110vw; transform: scaleX(-1) translateY(0); }
+.chapter-box {
+  background: rgba(255,255,255,0.03); border-radius: 10px; border-left: 4px solid #00e5ff; padding: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
-
-.car-animating {
-  display: block !important;
-  animation: driveCar 1.5s cubic-bezier(0.4, 0, 0.6, 1) forwards;
-}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+.chapter-name {
+  color: #00e5ff; font-size: 15px; font-weight: 900; margin-bottom: 10px; border-bottom: 1px dashed rgba(0,229,255,0.3); padding-bottom: 5px;
+}
+.chapter-rule-list { list-style: none; display: flex; flex-direction: column; gap: 10px; padding: 0; margin: 0; }
+.chapter-rule-list li { color: #e8eaed; font-size: 14px; line-height: 1.6; display: flex; align-items: flex-start; gap: 10px; }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
   </style>
 </head>
 <body>
@@ -1589,7 +1595,6 @@ body.light-theme #addHabitCancel {
   Daily Note & Sleep History
 </div>
   </div>
-
   <!-- নিচের নতুন অংশ (মোটিভেশনাল কোট, ব্যাকআপ ও ভার্সন) -->
   <div style="margin-top: auto; padding-top: 20px; border-top: 1px solid #2a3142;">
     
@@ -1598,29 +1603,47 @@ body.light-theme #addHabitCancel {
         "Success is the sum of small efforts, repeated day in and day out."
       </p>
     </div>
-    <button id="sidebarTaskBtn" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background: #1a1f2e; color: #f1c40f; border: 1px solid #f1c40f; padding: 10px; border-radius: 10px; font-size: 13px; font-weight: bold; cursor: pointer; margin-bottom: 10px;">
-  <svg style="width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2;" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+    <button id="sidebarTaskBtn" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background: #1a1f2e; color: #f1c40f; border: 1px solid #f1c40f; padding: 8px; border-radius: 10px; font-size: 12px; font-weight: bold; cursor: pointer; margin-bottom: 8px;">
+  <svg style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2;" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
   Daily Tasks
 </button>
-<!-- 🌟 গোল ও গ্যালারি বাটন (Blue Color) -->
-<button id="sidebarSmartGalleryBtn" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background: #1a1f2e; color: #4a9eff; border: 1px solid #4a9eff; padding: 10px; border-radius: 10px; font-size: 13px; font-weight: bold; cursor: pointer; margin-bottom: 10px; transition: 0.2s;">
-  <svg style="width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2;" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+
+<button id="sidebarLibraryBtn" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background: #1a1f2e; color: #d6a1f0; border: 1px solid #d6a1f0; padding: 8px; border-radius: 10px; font-size: 12px; font-weight: bold; cursor: pointer; margin-bottom: 8px; transition: 0.2s;">
+  <svg style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2;" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+  GRITGO Digital Library
+</button>
+
+<button id="sidebarBookRulesBtn" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background: #1a1f2e; color: #f39c12; border: 1px solid #f39c12; padding: 8px; border-radius: 10px; font-size: 12px; font-weight: bold; cursor: pointer; margin-bottom: 8px; transition: 0.2s;">
+  <svg style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2;" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+  Book Rules Tracker
+</button>
+
+<button id="sidebarFoodScannerBtn" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background: #1a1f2e; color: #ff4d8d; border: 1px solid #ff4d8d; padding: 8px; border-radius: 10px; font-size: 12px; font-weight: bold; cursor: pointer; margin-bottom: 8px; transition: 0.2s;">
+  <svg style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;" viewBox="0 0 24 24"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path><path d="M7 2v20"></path><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"></path></svg>
+  AI Food Scanner
+</button>
+
+<button id="sidebarSmartGalleryBtn" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background: #1a1f2e; color: #4a9eff; border: 1px solid #4a9eff; padding: 8px; border-radius: 10px; font-size: 12px; font-weight: bold; cursor: pointer; margin-bottom: 8px; transition: 0.2s;">
+  <svg style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2;" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
   Goals & Photo Gallery
 </button>
-    <button id="sidebarBackupBtn" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background: #1a1f2e; color: #4aaa4a; border: 1px solid #4aaa4a; padding: 10px; border-radius: 10px; font-size: 13px; font-weight: bold; cursor: pointer; margin-bottom: 15px; transition: 0.2s;">
-      <svg style="width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2;" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-      Quick Backup
-    </button>
-<button id="sidebarDeleteAllBtn" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background: #1a1f2e; color: #ff6b4a; border: 1px solid #ff6b4a; padding: 10px; border-radius: 10px; font-size: 13px; font-weight: bold; cursor: pointer; margin-bottom: 15px; transition: 0.2s;">
-  <svg style="width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2;" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+
+<button id="sidebarBackupBtn" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background: #1a1f2e; color: #4aaa4a; border: 1px solid #4aaa4a; padding: 8px; border-radius: 10px; font-size: 12px; font-weight: bold; cursor: pointer; margin-bottom: 8px; transition: 0.2s;">
+  <svg style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2;" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+  Quick Backup
+</button>
+
+<button id="sidebarDeleteAllBtn" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background: #1a1f2e; color: #ff6b4a; border: 1px solid #ff6b4a; padding: 8px; border-radius: 10px; font-size: 12px; font-weight: bold; cursor: pointer; margin-bottom: 8px; transition: 0.2s;">
+  <svg style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2;" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
   Delete All Habits
 </button>
+    
     <p style="text-align: center; color: #555; font-size: 11px; margin: 0;">GRITGO v1.0.0</p>
   </div>
 </div>
 </div> <!-- 🌟 ক্লোজিং ডিভ -->
 
-<div id="setupScreen">
+<div id="setupScreen" style="display: none;">
   <h1>Welcome to GRITGO</h1>
   <p>Let's set up your challenge</p>
   <label>Challenge Name:</label>
@@ -3528,40 +3551,70 @@ document.querySelectorAll(".date-wrapper input").forEach(i => {
 document.getElementById("setupStartDate").setAttribute("min", getLiteralDateKey());
 
 // ============================================================
-// 🔙 HISTORY API (FIXING BACK BUTTON)
+// 🔙 HISTORY API (PROPER BACK BUTTON FIX)
 // ============================================================
 history.pushState({ page: "main" }, "");
 
-// 🌟 Modal Stack: কোনটা আগে খুলেছে, কোনটা পরে, সেটা মনে রাখে
-let modalStack = [];
-function syncModalStack() {
-  const active = Array.from(document.querySelectorAll('.modal-overlay.active'));
-  modalStack = modalStack.filter(m => active.includes(m));
-  active.forEach(m => { if (!modalStack.includes(m)) modalStack.push(m); });
-}
-new MutationObserver(syncModalStack).observe(document.body, {
-  subtree: true, childList: true, attributes: true, attributeFilter: ['class']
-});
+// ১. মডাল ওপেন হওয়ার সময় অটোমেটিক হিস্ট্রিতে পুশ করা
+const originalClassListAdd = DOMTokenList.prototype.add;
+DOMTokenList.prototype.add = function(...tokens) {
+  const isModalOverlay = this.value && this.value.includes('modal-overlay');
+  const wasActive = this.contains('active');
+  originalClassListAdd.apply(this, tokens);
+  const isActive = this.contains('active');
+  
+  // যদি মডাল ওপেন হয়, তবে হিস্ট্রি পুশ করবো
+  if (isModalOverlay && !wasActive && isActive) {
+    history.pushState({ page: "modal" }, "");
+  }
+};
 
-window.addEventListener("popstate", function () {
-  syncModalStack();
+// ২. ম্যানুয়ালি (বাটনে ক্লিক করে) মডাল বন্ধ করলে হিস্ট্রি থেকে স্টেট রিমুভ করা
+const originalClassListRemove = DOMTokenList.prototype.remove;
+DOMTokenList.prototype.remove = function(...tokens) {
+  const isModalOverlay = this.value && this.value.includes('modal-overlay');
+  const wasActive = this.contains('active');
+  originalClassListRemove.apply(this, tokens);
+  const isActive = this.contains('active');
+  
+  if (isModalOverlay && wasActive && !isActive) {
+    if (!window.__ignoreNextPopState) {
+      window.__ignoreNextPopState = true;
+      history.back(); // ম্যানুয়ালি বন্ধ করলে হিস্ট্রি ব্যাক করবো
+    }
+  }
+};
 
-  // সাইডবার খোলা থাকলে আগে সেটা বন্ধ
+// ৩. ফোনের ব্যাক বাটন প্রেস করলে
+window.addEventListener("popstate", function (e) {
+  // যদি ম্যানুয়ালি মডাল বন্ধ করার কারণে ব্যাক হয়, তবে কিছু করবো না
+  if (window.__ignoreNextPopState) {
+    window.__ignoreNextPopState = false;
+    return;
+  }
+
+  // সাইডবার খোলা থাকলে সেটা বন্ধ হবে
   const sb = document.getElementById("sidebar");
   if (sb && sb.classList.contains("open")) {
     sb.classList.remove("open");
     document.getElementById("sidebarOverlay").classList.remove("active");
-    history.pushState({ page: "main" }, "");
     return;
   }
 
-  // শুধু সবার উপরের পপআপ বন্ধ হবে
-  const top = modalStack.pop();
-  if (top) {
-    if (!top.id || top.id === "reportCardModal") top.remove();
-    else top.classList.remove("active");
+  // সবচেয়ে উপরের পপআপ (Modal) বন্ধ হবে
+  const activeModals = Array.from(document.querySelectorAll('.modal-overlay.active'));
+  
+  if (activeModals.length > 0) {
+    const top = activeModals[activeModals.length - 1];
+    
+    // ডাইনামিক পপআপগুলো DOM থেকে রিমুভ করতে হয়
+    if (!top.id || top.id === "reportCardModal" || top.id === "customConfirmModal" || top.id === "editCancelToast") {
+        top.remove();
+    } else {
+        // originalClassListRemove ব্যবহার করে পপআপ বন্ধ করা (যাতে আবার history.back() না কল হয়)
+        originalClassListRemove.apply(top.classList, ['active']);
+    }
   }
-  history.pushState({ page: "main" }, "");
 });
 
 // ============================================================
@@ -4014,7 +4067,7 @@ let hideCompleted = localStorage.getItem("gritgo_hide_completed") === "true";
   playCheckSound(true);
   showConfetti();
   triggerProactiveAI('congrats');
-  triggerCarSpeed(); // 👈 শুধু এই লাইনটা যোগ করবেন
+  triggerFireAnimation(); // 👈 এই লাইনটা যোগ করুন ভাই
 } else if (isChecked) {
           playCheckSound(false);
         } else if (!isChecked) {
@@ -4231,9 +4284,9 @@ document.getElementById("checkAllBtn").addEventListener("click", () => {
   renderTodayHabits(); renderHeatmap(); updateStats();
   if (document.getElementById("extrasModal").classList.contains("active")) renderExtras();
   
-  playCheckSound(true); // 🔊 Sound for Check All
+  playCheckSound(true); 
   showConfetti(); showToast("All checked!");
-  triggerCarSpeed(); // 👈 এই লাইনটা একদম শেষে যোগ করবেন
+  triggerFireAnimation(); // 👈 এই লাইনটা এখানে যোগ করুন ভাই
 });
 document.getElementById("resetAllBtn").addEventListener("click", () => {
   const todayKey = getDateKey();
@@ -5091,14 +5144,21 @@ if (progressArc && needle && percentText) {
   const offset = maxDash - (progressPercent / 100) * maxDash;
   const rotation = -90 + (progressPercent / 100) * 180;
 
-  // এনিমেশনসহ আপডেট
-  progressArc.style.transition = "stroke-dashoffset 1.5s cubic-bezier(0.34, 1.56, 0.64, 1)";
+  // 🌟 ১. আর্ক (নীল লাইন) আপডেট - অ্যানিমেশন টাইম কমানো হলো
+  progressArc.style.transition = "stroke-dashoffset 0.8s ease-out";
   progressArc.style.strokeDashoffset = offset;
   
-  window.currentSpeedRotation = rotation; // 👈 এই লাইনটি নতুন যোগ করুন
-needle.setAttribute('transform', `rotate(${rotation}, 150, 140)`); // 👈 আগের লাইনের বদলে এটি দিন
+  // 🌟 ২. নিডেল (কাটা) আপডেট - অ্যানিমেশন টাইম কমানো হলো
+  needle.style.transition = "transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)";
+  needle.style.transform = `rotate(${rotation}deg)`;
+  
+  // 🌟 ৩. Hold to Rev এর জন্য পজিশন সেভ করা
+  window.currentSpeedRotation = rotation; 
+  
+  // ৪. টেক্সট আপডেট
   percentText.textContent = progressPercent + "%";
 }
+
  // ============================================================
 // 🏎️ ULTIMATE HOLD-TO-REV ENGINE (Needle + V8 Sound)
 // ============================================================
@@ -8140,6 +8200,8 @@ if (saved) {
     startMainApp();
   } catch(e) { console.error("Init error:", e); }
 } else {
+  // 👇 যদি নতুন ইউজার হয় (ডেটা না থাকে), তবেই সেটআপ স্ক্রিনটা দেখাবে
+  document.getElementById("setupScreen").style.display = "flex"; 
   renderIconSelector();
 }
 
@@ -12143,48 +12205,223 @@ document.addEventListener("DOMContentLoaded", function initDailyTasks() {
     if ($("taskModal") && $("taskModal").classList.contains("active")) checkNewDay(); 
   }, 30000);
 });
-// 🏎️ CAR ZOOM SOUND & ANIMATION
-function triggerCarSpeed() {
-  const car = document.getElementById('racingCarContainer');
-  if (!car) return;
+// ============================================================
+// 🍔 AI FOOD SCANNER LOGIC  (FULL FIXED VERSION)
+// ============================================================
+setTimeout(function initFoodScanner() {
+  const modal = document.getElementById("foodScannerModal");
+  const sidebarBtn = document.getElementById("sidebarFoodScannerBtn");
+  
+  // 🛡️ Safety check
+  if (!modal || !sidebarBtn) {
+    setTimeout(initFoodScanner, 500);
+    return;
+  }
+  
+  const imageInput = document.getElementById("foodImageInput");
+  const previewContainer = document.getElementById("foodImagePreviewContainer");
+  const previewImg = document.getElementById("foodImagePreview");
+  const analyzeBtn = document.getElementById("analyzeFoodBtn");
+  const resultBox = document.getElementById("foodResultBox");
+  
+  let foodImageBase64 = null;
 
-  // ১. গাড়ি এনিমেশন চালু করা
-  car.classList.remove('car-animating');
-  void car.offsetWidth; // রিসেট
-  car.classList.add('car-animating');
+  // ১. সাইডবার বাটন দিয়ে মডাল ওপেন করা
+  sidebarBtn.addEventListener("click", () => {
+    if (typeof closeSidebar === 'function') closeSidebar();
+    modal.classList.add("active");
+    // রিসেট
+    imageInput.value = "";
+    previewContainer.style.display = "none";
+    analyzeBtn.style.display = "none";
+    resultBox.style.display = "none";
+    foodImageBase64 = null;
+  });
 
-  // ২. কার পাসিং (Doppler) সাউন্ড
-  if (typeof isSoundEnabled !== 'undefined' && isSoundEnabled) {
+  // ২. ক্লোজ বাটন
+  document.getElementById("closeFoodScannerBtn").onclick = () => modal.classList.remove("active");
+  
+  // ৩. ছবি আপলোড বাটন
+  document.getElementById("uploadFoodBtn").onclick = () => imageInput.click();
+
+  // ৪. ছবি রিমুভ বাটন
+  document.getElementById("removeFoodImageBtn").onclick = (e) => {
+    e.preventDefault();
+    imageInput.value = "";
+    previewContainer.style.display = "none";
+    analyzeBtn.style.display = "none";
+    resultBox.style.display = "none";
+    foodImageBase64 = null;
+  };
+
+  // ৫. ছবি সিলেক্ট করার ইভেন্ট
+  imageInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const MAX = 800;
+        let w = img.width, h = img.height;
+        if (w > h) { if (w > MAX) { h *= MAX / w; w = MAX; } } 
+        else { if (h > MAX) { w *= MAX / h; h = MAX; } }
+        canvas.width = w; canvas.height = h;
+        canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+        
+        const base64 = canvas.toDataURL("image/jpeg", 0.8);
+        foodImageBase64 = base64;
+        previewImg.src = base64;
+        previewContainer.style.display = "block";
+        analyzeBtn.style.display = "flex";
+        resultBox.style.display = "none";
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // ৬. অ্যানালাইজ বাটনের কাজ
+  analyzeBtn.addEventListener("click", async () => {
+    if (!foodImageBase64) return;
+    
+    analyzeBtn.innerHTML = `<span class="loading-spinner" style="border-top-color:white;"></span> Scanning Food...`;
+    analyzeBtn.disabled = true;
+    resultBox.style.display = "none";
+
+    const messages = [
+      {
+        role: "system",
+        content: `You are a professional nutritionist AI. Analyze the uploaded food image.
+        Provide an ESTIMATE of the total calories, protein (g), carbs (g), and fats (g) for the portion shown in the image. 
+
+        CRITICAL RULES:
+        1. CHECK IF IT IS FOOD: If the image does NOT contain food (e.g., a person, car, animal, object, or random scene, or computer code), you MUST return ONLY this exact JSON:
+           {"error": "not_food"}
+        2. If it IS a food image, provide the estimate and mention it's an AI estimate in the summary.
+        3. Respond ONLY with a valid JSON object.
+
+        If it is food, format it exactly like this:
+        {
+          "name": "Name of the food",
+          "calories": 350,
+          "protein": 25,
+          "carbs": 40,
+          "fats": 10,
+          "summary": "AI estimate: A nutrient-dense meal. Actual values may vary."
+        }
+        Do not include any other text or markdown.`
+      },
+      {
+        role: "user",
+        content: [
+          { type: "text", text: "Analyze this food." },
+          { type: "image_url", image_url: { url: foodImageBase64 } }
+        ]
+      }
+    ];
+
     try {
-      const ctx = getSharedAudioContext();
-      if (ctx.state === 'suspended') ctx.resume();
-
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
+      const reply = await callGroq(messages, { temperature: 0.3, hasImage: true, max_tokens: 500 });
       
-      osc.type = 'sawtooth';
-      // সাউন্ড: কাছে আসার সময় ফ্রিকোয়েন্সি বাড়বে, দূরে গেলে কমবে
-      osc.frequency.setValueAtTime(80, ctx.currentTime);
-      osc.frequency.linearRampToValueAtTime(300, ctx.currentTime + 0.4); 
-      osc.frequency.linearRampToValueAtTime(50, ctx.currentTime + 1.2); 
+      const jsonStart = reply.indexOf('{');
+      const jsonEnd = reply.lastIndexOf('}');
+      
+      if (jsonStart === -1 || jsonEnd === -1) throw new Error("Failed to parse AI response.");
+      
+      const parsed = JSON.parse(reply.substring(jsonStart, jsonEnd + 1));
+// 🕒 স্ক্যান করা ডেটা হিস্ট্রিতে সেভ করা
+let foodHistory = JSON.parse(localStorage.getItem("gritgo_food_history")) || [];
+if (!parsed.error) {
+  foodHistory.unshift({
+    id: "f_" + Date.now(),
+    date: new Date().toLocaleDateString("en-GB", { day: 'numeric', month: 'short' }) + " • " + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+    name: parsed.name || "Unknown Food",
+    calories: parsed.calories || 0
+  });
+  if (foodHistory.length > 20) foodHistory.pop(); // সর্বোচ্চ ২০টি রাখবে
+  localStorage.setItem("gritgo_food_history", JSON.stringify(foodHistory));
+}
+      // 🌟 AI যদি খাবার না পায় তবে এরর দেখাবে
+      if (parsed.error === "not_food") {
+        document.getElementById("foodName").textContent = "❌ Not a Food Image";
+        document.getElementById("foodName").style.color = "#ff6b4a"; 
+        
+        // ক্যালরি, প্রোটিন, কার্বস, ফ্যাট বক্সগুলো লুকিয়ে ফেলা
+        document.querySelector("#foodResultBox > div:nth-child(2)").style.display = "none"; 
+        
+        document.getElementById("foodSummary").textContent = "Please upload a clear photo of food to get nutritional estimates. This AI only analyzes food.";
+        resultBox.style.display = "block";
+        if (navigator.vibrate) navigator.vibrate([100, 50, 100]); 
+        return; // এখানেই থেমে যাবে
+      }
 
-      // ভলিউম: কাছে আসলে জোরে, দূরে গেলে আস্তে
-      gain.gain.setValueAtTime(0, ctx.currentTime);
-      gain.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 0.3);
-      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 1.2);
+      // 🌟 যদি সত্যিই খাবার হয়
+      document.getElementById("foodName").style.color = "#2ecc71"; 
+      document.querySelector("#foodResultBox > div:nth-child(2)").style.display = "grid"; 
+      
+      document.getElementById("foodName").textContent = parsed.name || "Unknown Food";
+      document.getElementById("foodCalories").textContent = `${parsed.calories || 0} kcal`;
+      document.getElementById("foodProtein").textContent = `${parsed.protein || 0} g`;
+      document.getElementById("foodCarbs").textContent = `${parsed.carbs || 0} g`;
+      document.getElementById("foodFats").textContent = `${parsed.fats || 0} g`;
+      document.getElementById("foodSummary").textContent = parsed.summary || "";
+      
+      resultBox.style.display = "block";
+      if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
+      
+    } catch (error) {
+      console.error("Food Scan Error:", error);
+      resultBox.style.display = "block";
+      document.getElementById("foodName").textContent = "❌ Error Analyzing";
+      document.getElementById("foodName").style.color = "#ff6b4a";
+      document.querySelector("#foodResultBox > div:nth-child(2)").style.display = "none";
+      document.getElementById("foodSummary").textContent = "Could not analyze the image. Please try again.";
+    } finally {
+      analyzeBtn.innerHTML = `Analyze Nutrition`;
+      analyzeBtn.disabled = false;
+    }
+  });
+      
 
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start();
-      osc.stop(ctx.currentTime + 1.2);
-    } catch (e) { console.log("Audio error", e); }
+  // 🕒 হিস্ট্রি রেন্ডার করার লজিক
+  const toggleHistoryBtn = document.getElementById("toggleFoodHistoryBtn");
+  const historyContainer = document.getElementById("foodHistoryContainer");
+  const historyArrow = document.getElementById("historyArrow");
+
+  function renderFoodHistory() {
+    let historyData = JSON.parse(localStorage.getItem("gritgo_food_history")) || [];
+    if (historyData.length === 0) {
+      historyContainer.innerHTML = `<p style="text-align: center; color: #9aa0a6; font-size: 12px; margin: 15px 0;">No recent scans yet.</p>`;
+      return;
+    }
+    historyContainer.innerHTML = historyData.map(item => `
+      <div style="background: #1a1f2e; padding: 10px 12px; border-radius: 8px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border-left: 3px solid #2ecc71;">
+        <div>
+          <div style="font-size: 13px; font-weight: bold; color: #e8eaed;">${item.name}</div>
+          <div style="font-size: 10px; color: #9aa0a6;">${item.date}</div>
+        </div>
+        <div style="font-size: 15px; font-weight: bold; color: #ff6b4a;">${item.calories} <span style="font-size: 10px; color: #9aa0a6;">kcal</span></div>
+      </div>
+    `).join('');
   }
 
-  // ৩. ২ সেকেন্ড পর গাড়িটা আবার লুকিয়ে যাবে
-  setTimeout(() => {
-    car.classList.remove('car-animating');
-  }, 1600);
-}
+  if (toggleHistoryBtn && historyContainer) {
+    toggleHistoryBtn.addEventListener("click", () => {
+      const isHidden = historyContainer.style.display === "none";
+      if (isHidden) {
+        historyContainer.style.display = "block";
+        historyArrow.style.transform = "rotate(180deg)";
+        renderFoodHistory();
+      } else {
+        historyContainer.style.display = "none";
+        historyArrow.style.transform = "rotate(0deg)";
+      }
+    });
+  }
+}, 800);
 </script> 
   <!-- 🌟 SMART Goal & Photo Gallery Popup -->
 <div id="smartGalleryModal" class="modal-overlay">
@@ -12783,13 +13020,2682 @@ Instructions:
 
   console.log("✨🤖🎙️ Three AI Features loaded: Affirmations + Adjuster + Voice Journal");
 })();
+// ============================================================
+// 📚 GRITGO DIGITAL LIBRARY — Complete Data (Books 1-20)
+// ============================================================
+const ch = (name, ...rules) => ({ name, rules });
+
+const libraryPart1 = [
+
+// ------------------------------------------------------------
+// 1. ATOMIC HABITS
+// ------------------------------------------------------------
+{
+  title: "Atomic Habits", author: "James Clear", icon: "⚛️", color: "#00e5ff",
+  bg: "linear-gradient(135deg, #003366, #001a33)",
+  chapters: [
+    ch("Ch 1: The Surprising Power of Tiny Habits",
+      "Small 1% improvements compound like interest over time.",
+      "Habits are the compound interest of self-improvement.",
+      "Focus on your system and direction, not just the goal.",
+      "Progress often feels invisible until you cross a tipping point."),
+    ch("Ch 2: How Habits Shape Your Identity",
+      "There are three layers of change: outcomes, process and identity.",
+      "Change your identity first, then the results follow.",
+      "Every action is a vote for the person you want to become.",
+      "Ask 'Who is the type of person who does this?' before 'What do I want?'"),
+    ch("Ch 3: How to Build Better Habits in 4 Simple Steps",
+      "Every habit runs on Cue, Craving, Response, Reward.",
+      "To build a habit: make it obvious, attractive, easy and satisfying.",
+      "To break a habit: make it invisible, unattractive, difficult and unsatisfying.",
+      "Problem phase is cue and craving, solution phase is response and reward."),
+    ch("Ch 4: The Man Who Didn't Look Right",
+      "Many habits run on autopilot, so you don't notice them.",
+      "Awareness comes before change.",
+      "Use a Habits Scorecard to list your daily habits honestly.",
+      "Label each habit as good, bad or neutral based on long-term effect."),
+    ch("Ch 5: The Best Way to Start a New Habit",
+      "Implementation intention: I will [behavior] at [time] in [location].",
+      "Decide exactly when and where you will do the habit.",
+      "Habit stacking: After [current habit], I will [new habit].",
+      "Pick a cue that fits naturally into your existing routine."),
+    ch("Ch 6: Motivation Is Overrated; Environment Often Matters More",
+      "Environment is the invisible hand that shapes behavior.",
+      "Make cues for good habits visible in your space.",
+      "Give each space one clear purpose (work desk, sleep bed).",
+      "A small change in layout can change what you do daily."),
+    ch("Ch 7: The Secret to Self-Control",
+      "Disciplined people actually avoid temptation instead of fighting it.",
+      "Remove the cues of bad habits from your environment.",
+      "Self-control is a short-term tactic, not a long-term strategy.",
+      "Reduce exposure to the source of the temptation."),
+    ch("Ch 8: How to Make a Habit Irresistible",
+      "Habits are driven by dopamine and anticipation of reward.",
+      "Temptation bundling: pair what you need to do with what you want to do.",
+      "The more attractive an opportunity, the more likely it becomes a habit.",
+      "Use anticipation to make hard tasks feel exciting."),
+    ch("Ch 9: The Role of Family and Friends in Shaping Your Habits",
+      "We imitate the habits of those close to us, those who are many, and those with power.",
+      "Join a culture where your desired behavior is normal.",
+      "Surround yourself with people who share your goals.",
+      "Fitting in with the group is a strong driver of behavior."),
+    ch("Ch 10: How to Find and Fix the Causes of Your Bad Habits",
+      "Every bad habit serves a hidden need.",
+      "Find the deeper motive behind the craving.",
+      "Reframe your mindset: see the benefits of resisting it.",
+      "Create a ritual that gives you a good habit's reward instead."),
+    ch("Ch 11: Walk Slowly, but Never Backward",
+      "Real change comes from repetition, not from perfection.",
+      "Focus on frequency, not on time spent planning.",
+      "Practice, don't just think about it.",
+      "Automaticity comes from number of repetitions, not days."),
+    ch("Ch 12: The Law of Least Effort",
+      "We naturally choose the option that requires the least work.",
+      "Reduce friction for the good habits you want.",
+      "Prepare your environment so that doing the right thing is easy.",
+      "Increase friction for habits you want to avoid."),
+    ch("Ch 13: How to Stop Procrastinating by Using the Two-Minute Rule",
+      "When you start a habit, it should take less than two minutes.",
+      "Scale it down: 'Read before bed' becomes 'Read one page'.",
+      "A habit must be established before it can be improved.",
+      "Master the art of showing up first."),
+    ch("Ch 14: How to Make Good Habits Inevitable and Bad Habits Impossible",
+      "Commitment devices lock you into good behavior.",
+      "Make one-time decisions that pay off for a long time.",
+      "Use technology and automation to take work off your will.",
+      "Decide now so you don't rely on willpower later."),
+    ch("Ch 15: The Cardinal Rule of Behavior Change",
+      "What is rewarded is repeated, what is punished is avoided.",
+      "Give habits an immediate reward, even a small one.",
+      "Delayed rewards feel weak, so add instant satisfaction.",
+      "Reinforcement should match your identity and goals."),
+    ch("Ch 16: How to Stick with Good Habits Every Day",
+      "A habit tracker makes progress visible and satisfying.",
+      "Never miss twice. Missing once is an accident.",
+      "Don't break the chain of daily wins.",
+      "Track your habit immediately after you do it."),
+    ch("Ch 17: How an Accountability Partner Can Change Everything",
+      "A habit contract adds a social cost to failing.",
+      "Being watched or tracked improves your follow-through.",
+      "Find someone to hold you accountable.",
+      "Make the cost of bad habits public and immediate."),
+    ch("Ch 18: The Truth About Talent (When Genes Matter and When They Don't)",
+      "Pick habits that match your personality and strengths.",
+      "Play where you have a natural advantage.",
+      "Genes don't eliminate effort, they clarify where to put it.",
+      "Work hard on tasks that come easily to you."),
+    ch("Ch 19: The Goldilocks Rule: How to Stay Motivated in Life and Work",
+      "Motivation peaks when a task is just manageably difficult.",
+      "Stay at the edge of your abilities.",
+      "Boredom is the enemy of long-term habits, so add novelty.",
+      "Fall in love with boredom and keep showing up."),
+    ch("Ch 20: The Downside of Creating Good Habits",
+      "Habits can make you complacent.",
+      "Review your habits regularly to see what to improve.",
+      "Don't let an identity become too rigid.",
+      "Reflection and review keep you growing.")
+  ]
+},
+
+// ------------------------------------------------------------
+// 2. 48 LAWS OF POWER
+// ------------------------------------------------------------
+{
+  title: "48 Laws of Power", author: "Robert Greene", icon: "👑", color: "#f1c40f",
+  bg: "linear-gradient(135deg, #4d0000, #1a0000)",
+  chapters: [
+    ch("Law 1: Never Outshine the Master",
+      "Make superiors feel more brilliant than you.",
+      "Showing off your talent can trigger insecurity and envy.",
+      "Let others shine while you quietly build your position."),
+    ch("Law 2: Never Put Too Much Trust in Friends; Learn How to Use Enemies",
+      "Friends can envy and betray more easily than you expect.",
+      "Former enemies can be more loyal if handled well.",
+      "Mix trust with careful observation."),
+    ch("Law 3: Conceal Your Intentions",
+      "Keep people guessing about your real goals.",
+      "Reveal too much and others can block you.",
+      "Use decoys and false trails when needed."),
+    ch("Law 4: Always Say Less Than Necessary",
+      "The more you talk, the more likely you say something foolish.",
+      "Short, calm speech sounds powerful.",
+      "Silence makes others reveal more."),
+    ch("Law 5: So Much Depends on Reputation; Guard It with Your Life",
+      "Reputation is the cornerstone of power.",
+      "Build it carefully and defend it.",
+      "Attack the reputation of your rivals when needed."),
+    ch("Law 6: Court Attention at All Cost",
+      "Being unseen is as bad as being powerless.",
+      "Create a memorable image and presence.",
+      "Stand out, even controversially."),
+    ch("Law 7: Get Others to Do the Work for You, but Always Take the Credit",
+      "Use others' skill, time and energy.",
+      "Present the result as your own achievement.",
+      "Make sure the credit is attached to your name."),
+    ch("Law 8: Make Other People Come to You; Use Bait if Necessary",
+      "When you force the action, you control the situation.",
+      "Make others come to you on your terms.",
+      "Use temptation to draw rivals out."),
+    ch("Law 9: Win Through Your Actions, Never Through Argument",
+      "Arguing rarely changes anyone's mind.",
+      "Demonstrate your point with action.",
+      "Let results speak louder than words."),
+    ch("Law 10: Infection: Avoid the Unhappy and Unlucky",
+      "Moods and misfortune spread like disease.",
+      "Choose your company carefully.",
+      "Stay away from chronic complainers."),
+    ch("Law 11: Learn to Keep People Dependent on You",
+      "Make yourself indispensable.",
+      "Control a skill or resource others need.",
+      "Independence is power, so don't be easily replaced."),
+    ch("Law 12: Use Selective Honesty and Generosity to Disarm Your Victim",
+      "A well-timed honest gesture lowers others' suspicion.",
+      "Small kindnesses build trust.",
+      "Use this goodwill carefully and strategically."),
+    ch("Law 13: When Asking for Help, Appeal to People's Self-Interest",
+      "People respond to what benefits them, not to your needs.",
+      "Frame requests around their gain.",
+      "Don't rely on mercy or gratitude."),
+    ch("Law 14: Pose as a Friend, Work as a Spy",
+      "Gather information quietly before you act.",
+      "Ask indirect questions to learn more.",
+      "Knowledge about others is power."),
+    ch("Law 15: Crush Your Enemy Totally",
+      "A half-defeated rival can return stronger.",
+      "Don't leave a hurt enemy with a reason for revenge.",
+      "Finish the job fully, or avoid starting."),
+    ch("Law 16: Use Absence to Increase Respect and Honor",
+      "Too much presence makes you ordinary.",
+      "Withdraw at the right time to raise your value.",
+      "Scarcity creates desire."),
+    ch("Law 17: Keep Others in Suspended Terror: Cultivate an Air of Unpredictability",
+      "Predictable behavior is easy to control.",
+      "Occasional surprises keep people off balance.",
+      "Break your own patterns on purpose."),
+    ch("Law 18: Do Not Build Fortresses to Protect Yourself; Isolation Is Dangerous",
+      "Isolation cuts off information and allies.",
+      "Stay circulating among people.",
+      "Strength comes from being connected."),
+    ch("Law 19: Know Who You're Dealing With; Do Not Offend the Wrong Person",
+      "People differ widely in how they respond to insult.",
+      "Study them before acting.",
+      "Don't attack someone who can destroy you."),
+    ch("Law 20: Do Not Commit to Anyone",
+      "Stay independent and let others compete for you.",
+      "Don't get locked into someone else's agenda.",
+      "Keep your options open."),
+    ch("Law 21: Play a Sucker to Catch a Sucker; Seem Dumber Than Your Mark",
+      "People hate feeling less smart than others.",
+      "Appearing less clever lowers their guard.",
+      "Use this to learn and advance quietly."),
+    ch("Law 22: Use the Surrender Tactic",
+      "Retreat can be a strategic move.",
+      "Give way when weak, regroup, then rise.",
+      "Turn weakness into a source of strength."),
+    ch("Law 23: Concentrate Your Forces",
+      "Focus on one source of power rather than spreading thin.",
+      "Deep commitment beats shallow breadth.",
+      "Find a rich source and dig deep."),
+    ch("Law 24: Play the Perfect Courtier",
+      "Learn the rules of the social environment you are in.",
+      "Master flattery, subtlety and timing.",
+      "Appear loyal while advancing your goals."),
+    ch("Law 25: Re-Create Yourself",
+      "Do not accept the identity others give you.",
+      "Shape your own image with confidence.",
+      "Reinvent yourself to stay unpredictable."),
+    ch("Law 26: Keep Your Hands Clean",
+      "Let others take the blame for messy tasks.",
+      "Always appear spotless in public.",
+      "Use scapegoats when something goes wrong."),
+    ch("Law 27: Play on People's Need to Believe to Create a Cultlike Following",
+      "People want something to believe in.",
+      "Offer a cause, vision or purpose.",
+      "Build a community around a shared belief."),
+    ch("Law 28: Enter Action with Boldness",
+      "Hesitation shows doubt and invites trouble.",
+      "If you are unsure, still act with confidence.",
+      "Boldness is more admired than timid caution."),
+    ch("Law 29: Plan All the Way to the End",
+      "Think through the consequences before you act.",
+      "Know the end goal clearly.",
+      "Don't be led by emotion or excitement."),
+    ch("Law 30: Make Your Accomplishments Seem Effortless",
+      "Hide the sweat and practice behind your skill.",
+      "Making it look easy impresses people.",
+      "Avoid showing how hard you worked."),
+    ch("Law 31: Control the Options: Get Others to Play with the Cards You Deal",
+      "Offer choices that all lead where you want.",
+      "Give people the illusion of freedom.",
+      "Frame the decision so you set the terms."),
+    ch("Law 32: Play to People's Fantasies",
+      "People prefer hope and dreams to harsh reality.",
+      "Offer something that fulfils a fantasy.",
+      "Appeal to the imagination, not just logic."),
+    ch("Law 33: Discover Each Man's Thumbscrew",
+      "Everyone has a need, weakness or insecurity.",
+      "Find it by observing carefully.",
+      "Use this understanding wisely."),
+    ch("Law 34: Be Royal in Your Own Fashion",
+      "Carry yourself with confidence and dignity.",
+      "How you treat yourself influences how others treat you.",
+      "Act like a person of value."),
+    ch("Law 35: Master the Art of Timing",
+      "Know when to move and when to wait.",
+      "Don't rush and don't linger too long.",
+      "Learn to read the moment."),
+    ch("Law 36: Disdain Things You Cannot Have; Ignoring Them Is the Best Revenge",
+      "Paying attention gives problems power.",
+      "Showing no interest can disarm irritations.",
+      "Don't chase what you can't get."),
+    ch("Law 37: Create Compelling Spectacles",
+      "Strong images and symbols leave lasting impressions.",
+      "Use drama and visuals to inspire people.",
+      "Give people something memorable to see."),
+    ch("Law 38: Think as You Like but Behave Like Others",
+      "Showing differences openly can attract hostility.",
+      "Blend in outwardly while thinking independently.",
+      "Save radical ideas for the right audience."),
+    ch("Law 39: Stir Up Waters to Catch Fish",
+      "Anger makes opponents act irrationally.",
+      "Stay calm while others lose control.",
+      "Use emotion to unsettle rivals."),
+    ch("Law 40: Despise the Free Lunch",
+      "What is free often carries hidden costs.",
+      "Pay fairly to keep your independence.",
+      "Value is worth paying for."),
+    ch("Law 41: Avoid Stepping into a Great Man's Shoes",
+      "Following a legend makes you easy to compare.",
+      "Create your own path.",
+      "Break from the past to stand out."),
+    ch("Law 42: Strike the Shepherd and the Sheep Will Scatter",
+      "Trouble often comes from one key person.",
+      "Deal with the source, not every follower.",
+      "Separate troublemakers from their support."),
+    ch("Law 43: Work on the Hearts and Minds of Others",
+      "Real power comes from emotional loyalty.",
+      "Understand people's feelings and desires.",
+      "Win them over instead of forcing them."),
+    ch("Law 44: Disarm and Infuriate with the Mirror Effect",
+      "Reflecting someone's behavior back can confuse them.",
+      "Mirror their actions to show how they look.",
+      "Use it to frustrate or mislead."),
+    ch("Law 45: Preach the Need for Change, but Never Reform Too Much at Once",
+      "People like the idea of change but fear the reality.",
+      "Introduce change gradually.",
+      "Honor tradition while moving forward."),
+    ch("Law 46: Never Appear Too Perfect",
+      "Perfection invites envy.",
+      "Show small, harmless flaws on purpose.",
+      "Stay relatable to avoid resentment."),
+    ch("Law 47: Do Not Go Past the Mark You Aimed For; In Victory, Learn When to Stop",
+      "Success can make you overreach.",
+      "Stop once you reach your goal.",
+      "Stay humble and consolidate your gains."),
+    ch("Law 48: Assume Formlessness",
+      "Rigid plans are easy to attack.",
+      "Stay fluid and adaptable.",
+      "Change shape with circumstances.")
+  ]
+},
+
+// ------------------------------------------------------------
+// 3. RICH DAD POOR DAD
+// ------------------------------------------------------------
+{
+  title: "Rich Dad Poor Dad", author: "Robert Kiyosaki", icon: "💰", color: "#e74c3c",
+  bg: "linear-gradient(135deg, #330000, #1a0000)",
+  chapters: [
+    ch("Ch 1: The Rich Don't Work for Money",
+      "Most people work for money, the wealthy make money work for them.",
+      "Fear and greed keep people trapped in the rat race.",
+      "Learn to control emotions around money instead of reacting.",
+      "Don't just say 'I can't afford it', ask 'How can I afford it?'",
+      "Your most valuable asset is your mind."),
+    ch("Ch 2: Why Teach Financial Literacy?",
+      "Assets put money in your pocket, liabilities take it out.",
+      "It's not what you earn, it's what you keep.",
+      "Learn to read financial statements.",
+      "Buy assets first, then pay for luxuries from their income.",
+      "Financial intelligence is a skill you can train."),
+    ch("Ch 3: Mind Your Own Business",
+      "Your job is not your real business.",
+      "Build your asset column while you keep your day job.",
+      "Don't spend your whole life building someone else's dreams.",
+      "Invest in assets like real estate, businesses and stocks."),
+    ch("Ch 4: The History of Taxes and the Power of Corporations",
+      "Understanding tax rules can help you keep more money.",
+      "The wealthy use legal structures to protect their assets.",
+      "Employees are taxed first, owners spend first, then are taxed.",
+      "Financial education helps you use the rules legally."),
+    ch("Ch 5: The Rich Invent Money",
+      "Financial intelligence means spotting opportunities others miss.",
+      "Don't just follow the crowd, think creatively.",
+      "Fear of losing money stops most people from investing.",
+      "Study, practice and start small."),
+    ch("Ch 6: Work to Learn, Don't Work for Money",
+      "Pick jobs for what they teach, not only for pay.",
+      "Learn key skills: sales, communication, management and investing.",
+      "Specialized skills limit you, so build a broad base.",
+      "Being able to sell is critical to success."),
+    ch("Ch 7: Overcoming Obstacles",
+      "Common blocks are fear, cynicism, laziness, bad habits and arrogance.",
+      "Procrastination comes from fear, so take action anyway.",
+      "Learn from losses instead of hiding from them.",
+      "Choose your friends and mentors wisely.")
+  ]
+},
+
+// ------------------------------------------------------------
+// 4. THE 7 HABITS
+// ------------------------------------------------------------
+{
+  title: "The 7 Habits", author: "Stephen Covey", icon: "7️⃣", color: "#2ecc71",
+  bg: "linear-gradient(135deg, #003311, #001a08)",
+  chapters: [
+    ch("Paradigm: Inside-Out Thinking",
+      "Real change starts from within, not from outside.",
+      "Character matters more than quick-fix techniques.",
+      "Principles are the foundation of lasting effectiveness.",
+      "The 7 habits move you from dependence to independence to interdependence."),
+    ch("Habit 1: Be Proactive",
+      "You are responsible for how you respond, not just what happens.",
+      "Use proactive language: 'I choose' instead of 'I have to'.",
+      "Focus on your Circle of Influence, not your Circle of Concern.",
+      "Between stimulus and response, you have the freedom to choose."),
+    ch("Habit 2: Begin with the End in Mind",
+      "Visualize how you want your life to be remembered.",
+      "Write a personal mission statement.",
+      "All things are created twice: first in the mind, then in reality.",
+      "Define your values and use them to guide decisions."),
+    ch("Habit 3: Put First Things First",
+      "Prioritize what is important but not urgent (Quadrant II).",
+      "Plan weekly, not just daily.",
+      "Learn to say no to things that don't match your priorities.",
+      "Delegate tasks that others can do."),
+    ch("Habit 4: Think Win-Win",
+      "Seek solutions that benefit everyone involved.",
+      "Adopt an abundance mentality: there is enough for all.",
+      "Balance courage with consideration.",
+      "Build trust through Emotional Bank Account deposits."),
+    ch("Habit 5: Seek First to Understand, Then to Be Understood",
+      "Practice empathic listening, not just waiting to speak.",
+      "Diagnose before you prescribe.",
+      "Understand the other person's frame of reference first.",
+      "People open up when they feel truly heard."),
+    ch("Habit 6: Synergize",
+      "The whole is greater than the sum of its parts.",
+      "Value differences, they are a source of creativity.",
+      "Seek third alternatives better than either side's idea.",
+      "Open communication builds team trust."),
+    ch("Habit 7: Sharpen the Saw",
+      "Renew yourself in four areas: physical, mental, social-emotional, spiritual.",
+      "Exercise, learn, connect and reflect regularly.",
+      "Neglecting self-care makes you less effective.",
+      "Continuous renewal powers all the other habits.")
+  ]
+},
+
+// ------------------------------------------------------------
+// 5. THE PSYCHOLOGY OF MONEY
+// ------------------------------------------------------------
+{
+  title: "The Psychology of Money", author: "Morgan Housel", icon: "🏦", color: "#27ae60",
+  bg: "linear-gradient(135deg, #00331a, #001a0d)",
+  chapters: [
+    ch("Ch 1: No One's Crazy",
+      "Your own experience shapes how you see money.",
+      "People make decisions that make sense to them at the time.",
+      "Different generations learned different money lessons.",
+      "Don't judge others' money choices without knowing their story."),
+    ch("Ch 2: Luck & Risk",
+      "Luck and risk are siblings, outcomes are never only skill.",
+      "Be less quick to praise success or blame failure.",
+      "Focus on broad patterns, not extreme examples.",
+      "Stay humble when you win and kind when you fail."),
+    ch("Ch 3: Never Enough",
+      "Moving goalposts and greed lead many to ruin.",
+      "The hardest skill is making the goalpost stop moving.",
+      "Never risk what you have and need for what you don't have and don't need.",
+      "Comparison is a trap that never ends."),
+    ch("Ch 4: Confounding Compounding",
+      "Time is the biggest factor in compound growth.",
+      "Good investing is about being good for a long time.",
+      "Start early and stay in the game.",
+      "Don't underestimate how large the gains can become."),
+    ch("Ch 5: Getting Wealthy vs. Staying Wealthy",
+      "Getting wealthy needs risk, staying wealthy needs humility.",
+      "Survival is the most important thing.",
+      "Be frugal and a bit paranoid.",
+      "Staying in the game beats winning big once."),
+    ch("Ch 6: Tails, You Win",
+      "A few big wins drive most success.",
+      "Most investments fail, a few make up for the rest.",
+      "Expect to be wrong often and still come out ahead.",
+      "Don't judge each decision in isolation."),
+    ch("Ch 7: Freedom",
+      "The highest dividend of money is control over your time.",
+      "Doing what you want, when you want, with people you like.",
+      "Independence matters more than luxury.",
+      "Even small control over time improves happiness."),
+    ch("Ch 8: Man in the Car Paradox",
+      "People admire the wealth, not the person who owns it.",
+      "Seek respect through kindness and humility.",
+      "Spending to impress rarely works.",
+      "Real admiration comes from character."),
+    ch("Ch 9: Wealth Is What You Don't See",
+      "Wealth is the money you didn't spend.",
+      "Spending shows you are rich, but not that you are wealthy.",
+      "Save for flexibility, not just for a purchase.",
+      "Wealth gives you options."),
+    ch("Ch 10: Save Money",
+      "You can build wealth through savings, not only through high income.",
+      "Saving doesn't need a specific reason.",
+      "Lower your expenses by lowering your ego.",
+      "Savings buy you flexibility and peace of mind."),
+    ch("Ch 11: Reasonable > Rational",
+      "Aim to be reasonable instead of coldly rational.",
+      "A plan you can stick with beats a perfect one you quit.",
+      "Emotions matter in financial decisions.",
+      "Avoid regret by choosing strategies you can live with."),
+    ch("Ch 12: Surprise!",
+      "History is a poor guide to the future.",
+      "The most important events are the ones nobody saw coming.",
+      "Build a plan that survives surprises.",
+      "Stay flexible and don't assume the future will repeat."),
+    ch("Ch 13: Room for Error",
+      "A margin of safety protects you from bad luck.",
+      "Plan for more than one possible outcome.",
+      "Avoid single points of failure.",
+      "Being conservative lets you stay in the game."),
+    ch("Ch 14: You'll Change",
+      "Your goals and tastes will shift over time.",
+      "Don't make extreme long-term plans you may regret.",
+      "Avoid ignoring your future self.",
+      "Accept that the person you become may want different things."),
+    ch("Ch 15: Nothing's Free",
+      "Every good return has a price, often volatility.",
+      "See market swings as a fee, not a fine.",
+      "Don't expect results without pain or uncertainty.",
+      "Accept the price to earn the gains."),
+    ch("Ch 16: You & Me",
+      "Different investors play different games.",
+      "Don't copy others without knowing their goals.",
+      "Bubbles come when short-term players influence everyone.",
+      "Know your own time horizon."),
+    ch("Ch 17: The Seduction of Pessimism",
+      "Pessimism sounds smarter than optimism.",
+      "Progress is slow, setbacks are fast and loud.",
+      "Stay optimistic over the long term but realistic in the short term.",
+      "Expect problems, but trust in long-term growth."),
+    ch("Ch 18: When You'll Believe Anything",
+      "We believe stories that we want to be true.",
+      "Everyone has an incomplete view of how the world works.",
+      "Be careful when the stakes or desire are high.",
+      "Ask whether your belief is based on evidence."),
+    ch("Ch 19: All Together Now",
+      "Combine these ideas into one calm, simple plan.",
+      "Be humble, flexible and patient.",
+      "Don't aim for perfection, aim for resilience.",
+      "Think long-term and avoid overreacting."),
+    ch("Ch 20: Confessions",
+      "The author keeps a simple, conservative money approach.",
+      "Independence is the goal, not showing off.",
+      "Your plan should fit your life, not a textbook.",
+      "Use money to buy control over your time.")
+  ]
+},
+
+// ------------------------------------------------------------
+// 6. DEEP WORK
+// ------------------------------------------------------------
+{
+  title: "Deep Work", author: "Cal Newport", icon: "🧠", color: "#9b59b6",
+  bg: "linear-gradient(135deg, #1a0033, #0d001a)",
+  chapters: [
+    ch("Intro: The Case for Deep Work",
+      "Deep work is professional activity done in distraction-free focus.",
+      "Shallow work is logistical, easy, and easy to replicate.",
+      "The ability to focus is becoming rare and valuable.",
+      "The book is divided into the idea, then the rules."),
+    ch("Ch 1: Deep Work Is Valuable",
+      "The new economy rewards those who can learn hard things quickly.",
+      "It also rewards those who can produce at an elite level.",
+      "Deep work helps you master complex skills.",
+      "High-quality work = time spent x intensity of focus."),
+    ch("Ch 2: Deep Work Is Rare",
+      "Email, meetings and open offices crowd out deep thinking.",
+      "Busyness is often mistaken for productivity.",
+      "Many organizations reward constant availability.",
+      "That makes deep work a rare advantage."),
+    ch("Ch 3: Deep Work Is Meaningful",
+      "Focused work brings satisfaction and flow.",
+      "Craftsmanship gives ordinary work a sense of purpose.",
+      "What you focus on shapes how you see your life.",
+      "Deep work can make any job feel more meaningful."),
+    ch("Rule 1: Work Deeply",
+      "Build rituals: fixed time, place and rules for focus.",
+      "Choose a style: monastic, bimodal, rhythmic or journalistic.",
+      "Make grand gestures to signal that this work matters.",
+      "Use a lead measure like hours of deep work per week."),
+    ch("Rule 2: Embrace Boredom",
+      "Train your focus like a muscle.",
+      "Don't reach for your phone every time you're bored.",
+      "Schedule time to use the internet instead of constant checking.",
+      "Practice productive meditation during walks."),
+    ch("Rule 3: Quit Social Media",
+      "Use a tool only if its benefits clearly outweigh its costs.",
+      "Apply the craftsman approach to tool selection.",
+      "Spend your free time on high-quality leisure.",
+      "Fill your evenings with structured, meaningful activities."),
+    ch("Rule 4: Drain the Shallows",
+      "Schedule every minute of your day.",
+      "Ask your boss for a shallow work budget.",
+      "Finish your work by a fixed time each day.",
+      "Become hard to reach and say no to low-value requests.")
+  ]
+},
+
+// ------------------------------------------------------------
+// 7. THINK AND GROW RICH
+// ------------------------------------------------------------
+{
+  title: "Think and Grow Rich", author: "Napoleon Hill", icon: "💎", color: "#3498db",
+  bg: "linear-gradient(135deg, #002244, #00111f)",
+  chapters: [
+    ch("Step 1: Desire",
+      "Start with a burning, specific desire.",
+      "Decide exactly what you want, not just 'more money'.",
+      "Set a date and decide what you will give in return.",
+      "Write your goal and read it aloud morning and night."),
+    ch("Step 2: Faith",
+      "Believe in your goal even before you see results.",
+      "Faith is built by repeating positive instructions to your mind.",
+      "Doubt and fear weaken your actions.",
+      "Faith turns thought into persistent effort."),
+    ch("Step 3: Autosuggestion",
+      "Feed your subconscious with positive, repeated statements.",
+      "Emotion makes the message stronger.",
+      "Visualize yourself already holding your goal.",
+      "Do this daily until it becomes part of you."),
+    ch("Step 4: Specialized Knowledge",
+      "General knowledge alone is not enough.",
+      "Gather the specific knowledge your goal needs.",
+      "If you lack it, learn it or bring in people who have it.",
+      "Knowledge only has power when it is organized and used."),
+    ch("Step 5: Imagination",
+      "Imagination is the workshop where all plans are made.",
+      "New ideas come from combining old ideas in new ways.",
+      "Use your creative imagination to design solutions.",
+      "Train it by using it often."),
+    ch("Step 6: Organized Planning",
+      "Turn desire into a practical, step-by-step plan.",
+      "Begin right now, even if you are not fully ready.",
+      "If a plan fails, replace it, but never give up the goal.",
+      "Work with a team when your plan needs it."),
+    ch("Step 7: Decision",
+      "Successful people decide quickly and change slowly.",
+      "Indecision is a habit that blocks progress.",
+      "Don't wait for others' opinions to make up your mind.",
+      "Hold on to your decisions once you've made them."),
+    ch("Step 8: Persistence",
+      "Persistence is a state of mind you can train.",
+      "Many people quit just before the breakthrough.",
+      "Clear purpose, strong desire and a plan fuel persistence.",
+      "Stay with your goal through setbacks."),
+    ch("Step 9: Power of the Master Mind",
+      "Combine the knowledge and energy of a harmonious group.",
+      "Choose allies who share your goals.",
+      "A shared mind creates ideas one person cannot.",
+      "Keep the team in harmony and aligned."),
+    ch("Step 10: The Mystery of Sex Transmutation",
+      "Strong emotional energy can be redirected into creative work.",
+      "High drive can be turned into achievement.",
+      "Channel emotion into purpose instead of impulse.",
+      "Self-mastery of energy supports success."),
+    ch("Step 11: The Subconscious Mind",
+      "Your subconscious acts on thoughts charged with emotion.",
+      "Feed it positive thoughts, not fears.",
+      "Repeated thoughts turn into beliefs and actions.",
+      "Be careful what you let into your mind."),
+    ch("Step 12: The Brain",
+      "Your mind can send and receive ideas.",
+      "Keep your mind calm and focused to get better ideas.",
+      "Surround yourself with inspiring thinking.",
+      "Mental discipline improves creativity."),
+    ch("Step 13: The Sixth Sense",
+      "Intuition can guide you when you're well prepared.",
+      "Master the earlier steps first.",
+      "Trust your insights, but test them.",
+      "Stay open to creative inspiration.")
+  ]
+} 
+];
+
+// ============================================================
+// 📚 GRITGO DIGITAL LIBRARY — PART 2 (Books 8-14, detailed)
+// ============================================================
+
+const libraryPart2 = [
+
+// ------------------------------------------------------------
+// 8. HOW TO WIN FRIENDS AND INFLUENCE PEOPLE
+// ------------------------------------------------------------
+{
+  title: "How to Win Friends & Influence People", author: "Dale Carnegie", icon: "🤝", color: "#e67e22",
+  bg: "linear-gradient(135deg, #4d2600, #1a0d00)",
+  chapters: [
+    ch("Part 1 - Rule 1: Don't Criticize, Condemn or Complain",
+      "Criticism makes people defensive and rarely changes them.",
+      "People blame others instead of themselves, so condemnation backfires.",
+      "Understand first, forgive, and you will lead better."),
+    ch("Part 1 - Rule 2: Give Honest, Sincere Appreciation",
+      "Everyone craves feeling valuable and appreciated.",
+      "Praise should be specific and genuine, not flattery.",
+      "Appreciation motivates far more than fault-finding."),
+    ch("Part 1 - Rule 3: Arouse in the Other Person an Eager Want",
+      "Talk about what the other person wants, not what you want.",
+      "People act when they see a benefit to themselves.",
+      "Before asking, ask yourself: 'How can I make them want to do it?'"),
+    ch("Part 2 - Rule 1: Become Genuinely Interested in Other People",
+      "You make more friends by being interested than by being interesting.",
+      "Show real curiosity about others' lives.",
+      "Fake interest is easy to spot, so make it honest."),
+    ch("Part 2 - Rule 2: Smile",
+      "A smile signals warmth and welcome.",
+      "Your expression shapes how people feel around you.",
+      "Smile with sincerity, not as a technique."),
+    ch("Part 2 - Rule 3: Remember a Person's Name",
+      "A person's name is the sweetest sound to them.",
+      "Repeat it during conversation to remember it.",
+      "Forgetting or misspelling it signals indifference."),
+    ch("Part 2 - Rule 4: Be a Good Listener; Encourage Others to Talk About Themselves",
+      "Listen fully instead of waiting for your turn to speak.",
+      "Ask questions that people enjoy answering.",
+      "Good listeners are seen as great conversationalists."),
+    ch("Part 2 - Rule 5: Talk in Terms of the Other Person's Interests",
+      "Find out what the person cares about before you meet.",
+      "Conversations flow when they involve their passions.",
+      "People respond warmly when you value their interests."),
+    ch("Part 2 - Rule 6: Make the Other Person Feel Important, and Do It Sincerely",
+      "Treat people as if they matter, because they do.",
+      "Look for something genuinely admirable in everyone.",
+      "Sincere recognition builds lasting goodwill."),
+    ch("Part 3 - Rule 1: Avoid Arguments",
+      "You rarely win an argument, even when you are right.",
+      "Arguments make people defend their position harder.",
+      "Welcome disagreement and stay calm."),
+    ch("Part 3 - Rule 2: Show Respect for the Other Person's Opinion; Never Say 'You're Wrong'",
+      "Telling someone they're wrong hurts their pride.",
+      "Say 'I may be wrong, let's look at the facts' instead.",
+      "Respect makes people more open to change."),
+    ch("Part 3 - Rule 3: If You Are Wrong, Admit It Quickly and Emphatically",
+      "Owning your mistake earns respect.",
+      "Say it before others criticize you.",
+      "It's easier to be honest than to defend a mistake."),
+    ch("Part 3 - Rule 4: Begin in a Friendly Way",
+      "Gentle and kind words open minds better than force.",
+      "A calm tone reduces resistance.",
+      "Start with warmth, not accusation."),
+    ch("Part 3 - Rule 5: Get the Other Person Saying 'Yes, Yes' Immediately",
+      "Begin with points you both agree on.",
+      "Early agreements build momentum for later ones.",
+      "Avoid starting with what you disagree on."),
+    ch("Part 3 - Rule 6: Let the Other Person Do a Great Deal of the Talking",
+      "People like to talk about their own ideas.",
+      "Don't interrupt, even if you disagree.",
+      "Listening builds trust and gives you information."),
+    ch("Part 3 - Rule 7: Let the Other Person Feel the Idea Is His or Hers",
+      "People support what they help create.",
+      "Plant a suggestion and let them develop it.",
+      "Guiding without pushing leads to real buy-in."),
+    ch("Part 3 - Rule 8: Try Honestly to See Things from the Other Person's Point of View",
+      "Ask yourself why they feel the way they do.",
+      "Understanding reduces conflict.",
+      "Empathy turns opposition into cooperation."),
+    ch("Part 3 - Rule 9: Be Sympathetic with the Other Person's Ideas and Desires",
+      "Say 'I don't blame you for feeling that way'.",
+      "Acknowledging feelings calms tension.",
+      "People soften when they feel understood."),
+    ch("Part 3 - Rule 10: Appeal to the Nobler Motives",
+      "Most people want to see themselves as fair and decent.",
+      "Appeal to their honor, integrity and goodness.",
+      "Trusting people to act well often brings out their best."),
+    ch("Part 3 - Rule 11: Dramatize Your Ideas",
+      "Facts alone are often not enough, show them vividly.",
+      "Use stories, visuals and demonstrations.",
+      "Make your point memorable and engaging."),
+    ch("Part 3 - Rule 12: Throw Down a Challenge",
+      "Many people are motivated by a chance to prove themselves.",
+      "Competition and challenge inspire effort.",
+      "Frame tasks as opportunities to excel."),
+    ch("Part 4 - Rule 1: Begin with Praise and Honest Appreciation",
+      "Start with something positive before giving criticism.",
+      "Praise makes unpleasant feedback easier to hear.",
+      "Be genuine, not manipulative."),
+    ch("Part 4 - Rule 2: Call Attention to People's Mistakes Indirectly",
+      "Use 'and' instead of 'but' after a compliment.",
+      "Gentle hints are better than blunt accusations.",
+      "Indirect feedback protects dignity."),
+    ch("Part 4 - Rule 3: Talk About Your Own Mistakes First",
+      "Admitting your own faults makes others less defensive.",
+      "It shows you are human and fair.",
+      "Then it is easier to discuss their errors."),
+    ch("Part 4 - Rule 4: Ask Questions Instead of Giving Direct Orders",
+      "Questions invite cooperation, orders create resentment.",
+      "Ask 'What do you think about doing this?'",
+      "People feel respected and responsible."),
+    ch("Part 4 - Rule 5: Let the Other Person Save Face",
+      "Never humiliate someone in public.",
+      "Protecting dignity keeps relationships strong.",
+      "Correct privately and kindly."),
+    ch("Part 4 - Rule 6: Praise the Slightest Improvement and Praise Every Improvement",
+      "Be hearty in your approval and lavish in praise.",
+      "Recognition encourages continued progress.",
+      "Small wins deserve attention."),
+    ch("Part 4 - Rule 7: Give the Other Person a Fine Reputation to Live Up To",
+      "People rise to the image you give them.",
+      "Treat them as capable and they often become so.",
+      "Express confidence in their abilities."),
+    ch("Part 4 - Rule 8: Use Encouragement; Make the Fault Seem Easy to Correct",
+      "Show that improvement is within reach.",
+      "Offer help and simple steps.",
+      "Hope motivates change better than blame."),
+    ch("Part 4 - Rule 9: Make the Other Person Happy About Doing What You Suggest",
+      "Show how the action benefits them.",
+      "Make requests feel positive, not forced.",
+      "Willing cooperation lasts longer than reluctant obedience.")
+  ]
+},
+
+// ------------------------------------------------------------
+// 9. MINDSET
+// ------------------------------------------------------------
+{
+  title: "Mindset", author: "Carol Dweck", icon: "🌱", color: "#1abc9c",
+  bg: "linear-gradient(135deg, #00332b, #001a15)",
+  chapters: [
+    ch("Ch 1: The Mindsets",
+      "A fixed mindset believes ability is set in stone.",
+      "A growth mindset believes ability can be developed.",
+      "Your mindset changes how you handle effort and failure.",
+      "Mindsets are beliefs, and beliefs can change."),
+    ch("Ch 2: Inside the Mindsets",
+      "Fixed mindset people fear failure because it defines them.",
+      "Growth mindset people see failure as feedback.",
+      "Challenges are avoided in one and embraced in the other.",
+      "Effort is seen as pointless or as the path to mastery."),
+    ch("Ch 3: The Truth About Ability and Accomplishment",
+      "Praise for talent can make people fear challenges.",
+      "Greatness often comes from hard work and learning.",
+      "Passion and persistence matter more than natural gifts.",
+      "Believing you can improve boosts your results."),
+    ch("Ch 4: Sports: The Mindset of a Champion",
+      "Champions see setbacks as chances to learn.",
+      "Natural talent alone doesn't make a winner.",
+      "Great athletes reflect, adapt and keep working.",
+      "Character shapes long-term success in sports."),
+    ch("Ch 5: Business: Mindset and Leadership",
+      "Fixed-mindset leaders protect their ego and image.",
+      "Growth-mindset leaders build teams and welcome feedback.",
+      "Cultures that reward learning outperform cultures of 'genius'.",
+      "Good leaders support growth in others."),
+    ch("Ch 6: Relationships: Mindsets in Love (or Not)",
+      "Fixed mindset partners blame and expect perfection.",
+      "Growth mindset partners work through problems together.",
+      "Rejection feels less personal with a growth view.",
+      "Healthy relationships need effort and learning."),
+    ch("Ch 7: Parents, Teachers and Coaches: Where Do Mindsets Come From?",
+      "Praise effort and strategy, not just talent.",
+      "Set high standards while supporting growth.",
+      "Messages from adults shape children's mindset.",
+      "Feedback should help people improve, not judge them."),
+    ch("Ch 8: Changing Mindsets",
+      "You can learn a growth mindset at any age.",
+      "Notice your fixed-mindset voice and talk back to it.",
+      "Replace 'I'm bad at this' with 'I'm not good at this yet'.",
+      "Make a plan for when, where and how you will act.")
+  ]
+},
+
+// ------------------------------------------------------------
+// 10. THE POWER OF NOW
+// ------------------------------------------------------------
+{
+  title: "The Power of Now", author: "Eckhart Tolle", icon: "🧘", color: "#f39c12",
+  bg: "linear-gradient(135deg, #4d3300, #1a1100)",
+  chapters: [
+    ch("Ch 1: You Are Not Your Mind",
+      "Your thoughts are not who you are.",
+      "Observing your thoughts creates freedom from them.",
+      "The constant mental noise is a source of suffering.",
+      "Awareness is the first step toward peace."),
+    ch("Ch 2: Consciousness: The Way Out of Pain",
+      "Pain feeds on resistance to what is.",
+      "Awareness dissolves old emotional patterns.",
+      "Don't identify with your pain, observe it.",
+      "Accepting the present reduces inner conflict."),
+    ch("Ch 3: Moving Deeply into the Now",
+      "Past and future exist only in your mind.",
+      "Life only ever happens in the present moment.",
+      "Psychological time creates worry and regret.",
+      "Focus on the now to find clarity and calm."),
+    ch("Ch 4: Mind Strategies for Avoiding the Now",
+      "The mind avoids the present by dwelling on past or future.",
+      "Notice when you are lost in thought.",
+      "Don't wait for a future moment to be happy.",
+      "Ask: 'What is my problem right now?'"),
+    ch("Ch 5: The State of Presence",
+      "Being present means paying full attention.",
+      "Stillness and silence connect you with deeper peace.",
+      "Practice presence in daily activities.",
+      "Enjoy simple moments without judgment."),
+    ch("Ch 6: The Inner Body",
+      "Feeling your body's energy anchors you in the present.",
+      "Stay connected to your body during stress.",
+      "Breathing consciously calms the mind.",
+      "The body is a doorway to presence."),
+    ch("Ch 7: Portals into the Unmanifested",
+      "Silence and space are doorways to inner peace.",
+      "Use the gap between thoughts to rest.",
+      "Notice stillness in nature and in everyday life.",
+      "Deep inner calm is always available."),
+    ch("Ch 8: Enlightened Relationships",
+      "Relationships can trigger old pain patterns.",
+      "Presence helps you respond instead of react.",
+      "Accept others as they are.",
+      "Let go of the need to be right."),
+    ch("Ch 9: Beyond Happiness and Unhappiness There Is Peace",
+      "Lasting peace is deeper than ups and downs.",
+      "Accept life's cycles without clinging or resisting.",
+      "Don't tie your worth to circumstances.",
+      "Find stability within, not outside."),
+    ch("Ch 10: The Meaning of Surrender",
+      "Surrender means accepting the present without inner struggle.",
+      "Act on what you can change, accept what you cannot.",
+      "Resistance creates suffering, acceptance creates freedom.",
+      "Surrender is not giving up, it is working with life.")
+  ]
+},
+
+// ------------------------------------------------------------
+// 11. THE SUBTLE ART OF NOT GIVING A F*CK
+// ------------------------------------------------------------
+{
+  title: "The Subtle Art of Not Giving a F*ck", author: "Mark Manson", icon: "🔥", color: "#e84393",
+  bg: "linear-gradient(135deg, #4d0026, #1a000d)",
+  chapters: [
+    ch("Ch 1: Don't Try",
+      "Constantly chasing positivity can make you feel worse.",
+      "Accept that negative emotions are part of life.",
+      "Caring about everything leaves no energy for what matters.",
+      "Choose what to care about wisely."),
+    ch("Ch 2: Happiness Is a Problem",
+      "Happiness comes from solving problems, not avoiding them.",
+      "Life always has problems, so choose better ones.",
+      "Emotions are signals, not commands.",
+      "Meaningful struggles bring growth."),
+    ch("Ch 3: You Are Not Special",
+      "Believing you are special blocks growth.",
+      "Being ordinary frees you to work hard and improve.",
+      "Entitlement leads to disappointment.",
+      "Stay humble and keep learning."),
+    ch("Ch 4: The Value of Suffering",
+      "Pain can point you toward what matters.",
+      "Choose what is worth suffering for.",
+      "Meaning often comes from hard work and sacrifice.",
+      "Avoiding pain avoids growth."),
+    ch("Ch 5: You Are Always Choosing",
+      "You are responsible for how you respond, even if not for events.",
+      "Playing the victim gives away your power.",
+      "Take ownership of your life and actions.",
+      "Responsibility and fault are different things."),
+    ch("Ch 6: You're Wrong About Everything (But So Am I)",
+      "Be open to being wrong and update your beliefs.",
+      "Certainty blocks learning.",
+      "Question your assumptions regularly.",
+      "Your values should be tested, not assumed."),
+    ch("Ch 7: Failure Is the Way Forward",
+      "Failure shows you what works and what doesn't.",
+      "Action creates motivation, not the other way around.",
+      "Do something, even a small step, to start.",
+      "Improvement comes through trial and error."),
+    ch("Ch 8: The Importance of Saying No",
+      "Commitment means rejecting what doesn't fit your values.",
+      "Boundaries make relationships healthier.",
+      "Saying no clarifies what you truly want.",
+      "Freedom comes from choosing what to commit to."),
+    ch("Ch 9: ...And Then You Die",
+      "Awareness of death clarifies what is truly important.",
+      "Live for something bigger than yourself.",
+      "Don't waste time on trivial concerns.",
+      "Make your limited time count.")
+  ]
+},
+
+// ------------------------------------------------------------
+// 12. EAT THAT FROG
+// ------------------------------------------------------------
+{
+  title: "Eat That Frog!", author: "Brian Tracy", icon: "🐸", color: "#27ae60",
+  bg: "linear-gradient(135deg, #0d3300, #051a00)",
+  chapters: [
+    ch("Ch 1: Set the Table",
+      "Write your goals clearly on paper.",
+      "Clarity is the first step of productivity.",
+      "Review your goals regularly.",
+      "Decide exactly what you want before you act."),
+    ch("Ch 2: Plan Every Day in Advance",
+      "Make a list before you start the day.",
+      "Each minute of planning saves ten minutes of effort.",
+      "Add new tasks to your list as they come up.",
+      "Plan monthly, weekly and daily."),
+    ch("Ch 3: Apply the 80/20 Rule to Everything",
+      "20% of your tasks produce 80% of your results.",
+      "Spend your time on the high-value tasks.",
+      "Do the most important tasks first.",
+      "Resist the urge to clear small things first."),
+    ch("Ch 4: Consider the Consequences",
+      "Prioritize tasks with the biggest potential impact.",
+      "Long-term thinking leads to better choices.",
+      "Ask: 'What are the consequences of doing or not doing this?'",
+      "Work on tasks with high future benefit."),
+    ch("Ch 5: Practice the ABCDE Method Continually",
+      "Rank tasks A to E by importance.",
+      "A tasks are must-do, B tasks should do, C tasks nice to do.",
+      "D means delegate, E means eliminate.",
+      "Never do a B task while an A task is waiting."),
+    ch("Ch 6: Focus on Key Result Areas",
+      "Know what results you are responsible for.",
+      "Rate yourself honestly in each key area.",
+      "Your weakest area can hold you back.",
+      "Improve your most critical skills."),
+    ch("Ch 7: Obey the Law of Forced Efficiency",
+      "You can never do everything, so be selective.",
+      "Time is limited, so concentrate on what matters.",
+      "Do the high-value tasks first.",
+      "Ask what must be done right now."),
+    ch("Ch 8: Prepare Thoroughly Before You Begin",
+      "Gather everything you need before you start.",
+      "A clear workspace reduces friction.",
+      "Remove distractions beforehand.",
+      "Start smoothly and keep going."),
+    ch("Ch 9: Do Your Homework",
+      "Keep learning to improve your skills.",
+      "Better skills lead to faster, better work.",
+      "Read, listen and take courses regularly.",
+      "Knowledge is a major source of confidence."),
+    ch("Ch 10: Leverage Your Special Talents",
+      "Know what you do better than others.",
+      "Build your career around your strengths.",
+      "Ask what makes you unique.",
+      "Do what you love and you will excel."),
+    ch("Ch 11: Identify Your Key Constraints",
+      "Find the bottleneck that limits your results.",
+      "Remove the main constraint first.",
+      "Ask: 'What is holding me back?'",
+      "Every goal has a limiting factor."),
+    ch("Ch 12: Take It One Oil Barrel at a Time",
+      "Big tasks become easy when broken into steps.",
+      "Take the first step, and momentum will follow.",
+      "You don't need to see the whole path to start.",
+      "Progress is built by small actions."),
+    ch("Ch 13: Put the Pressure on Yourself",
+      "Imagine someone is watching your work.",
+      "Act as if a deadline is near.",
+      "Be your own boss and set the pace.",
+      "Self-discipline is the key to success."),
+    ch("Ch 14: Maximize Your Personal Powers",
+      "Protect your energy with rest and good nutrition.",
+      "Work at your peak hours on your hardest tasks.",
+      "Take breaks to recharge.",
+      "Your health fuels your productivity."),
+    ch("Ch 15: Motivate Yourself into Action",
+      "Be your own optimist and talk to yourself positively.",
+      "Look for the good in every situation.",
+      "Stay focused on solutions, not problems.",
+      "Positive thinking fuels action."),
+    ch("Ch 16: Technology Is a Terrible Master",
+      "Don't let alerts and messages run your day.",
+      "Set specific times to check email and social media.",
+      "Turn off notifications during deep work.",
+      "Use technology as a tool, not a distraction."),
+    ch("Ch 17: Focus Your Attention",
+      "Interruptions kill productivity.",
+      "Practice working on one thing without distraction.",
+      "Train your concentration like a muscle.",
+      "Deep focus leads to better results."),
+    ch("Ch 18: Slice and Dice the Task",
+      "Do a small piece of a big task to get started.",
+      "Use the 'Swiss cheese' method: poke holes in it.",
+      "Break overwhelming tasks into manageable parts.",
+      "Start small, and keep going."),
+    ch("Ch 19: Create Large Chunks of Time",
+      "Block out uninterrupted time for key work.",
+      "Work early or late, when it's quiet.",
+      "Protect your focus time from meetings and calls.",
+      "Plan your day around your big tasks."),
+    ch("Ch 20: Develop a Sense of Urgency",
+      "Build a habit of moving quickly on key tasks.",
+      "Speed and focus create momentum.",
+      "Get into the flow state through action.",
+      "Do it now, don't delay."),
+    ch("Ch 21: Single Handle Every Task",
+      "Once you start, work until it is finished.",
+      "Switching tasks wastes time and energy.",
+      "Finish what you begin before starting something new.",
+      "Make completing tasks a habit.")
+  ]
+},
+
+// ------------------------------------------------------------
+// 13. THE POWER OF HABIT
+// ------------------------------------------------------------
+{
+  title: "The Power of Habit", author: "Charles Duhigg", icon: "🔄", color: "#16a085",
+  bg: "linear-gradient(135deg, #003d33, #001a15)",
+  chapters: [
+    ch("Ch 1: The Habit Loop",
+      "Every habit follows a cue, routine and reward.",
+      "Identify the loop to understand and change a habit.",
+      "Habits live in the brain's basal ganglia, freeing your mind.",
+      "You can't erase a habit, but you can change the routine."),
+    ch("Ch 2: The Craving Brain",
+      "Cravings are what make habits automatic.",
+      "A clear cue and reward create lasting habits.",
+      "Anticipation of the reward drives the behavior.",
+      "Link a new habit to a craving to make it stick."),
+    ch("Ch 3: The Golden Rule of Habit Change",
+      "Keep the old cue and reward, change only the routine.",
+      "Find out what you are really craving.",
+      "Belief that change is possible makes it stick.",
+      "Support from a group strengthens belief."),
+    ch("Ch 4: Keystone Habits",
+      "Some habits trigger positive changes in other areas.",
+      "Small wins build momentum for bigger change.",
+      "Exercise, family meals and making your bed can be keystone habits.",
+      "Focus on habits that spread improvement."),
+    ch("Ch 5: Starbucks and the Habit of Success",
+      "Willpower is a muscle that can be trained.",
+      "It gets tired, so protect it.",
+      "Plan ahead for the hardest moments.",
+      "Build routines that reduce the need for decisions."),
+    ch("Ch 6: The Power of a Crisis",
+      "Crises make organizations open to new habits.",
+      "Leaders can use urgency to build better routines.",
+      "Don't waste a good crisis.",
+      "Change is easier when people feel it is needed."),
+    ch("Ch 7: How Target Knows What You Want Before You Do",
+      "Companies use data on shopping habits to predict you.",
+      "Life events disrupt habits and make change easier.",
+      "Marketers target moments when habits are weak.",
+      "Be aware of how habits can be influenced."),
+    ch("Ch 8: Saddleback Church and the Montgomery Bus Boycott",
+      "Strong friendships and community drive social change.",
+      "Shared habits grow into movements.",
+      "Weak ties spread ideas, strong ties create commitment.",
+      "Social habits can reshape societies."),
+    ch("Ch 9: The Neurology of Free Will",
+      "You are responsible for your habits.",
+      "Once you understand a habit, you can change it.",
+      "Awareness gives you the power to choose.",
+      "Making change takes deliberate effort.")
+  ]
+},
+
+// ------------------------------------------------------------
+// 14. GRIT
+// ------------------------------------------------------------
+{
+  title: "Grit", author: "Angela Duckworth", icon: "💪", color: "#c0392b",
+  bg: "linear-gradient(135deg, #3d0000, #1a0000)",
+  chapters: [
+    ch("Ch 1: Showing Up",
+      "Grit means passion and perseverance for long-term goals.",
+      "Success comes from sustained effort, not just talent.",
+      "Stamina in your direction matters most.",
+      "Grit predicts success in many fields."),
+    ch("Ch 2: Distracted by Talent",
+      "We over-value talent and under-value effort.",
+      "Skill equals talent times effort.",
+      "Achievement equals skill times effort.",
+      "Effort counts twice."),
+    ch("Ch 3: Efforting",
+      "Effort turns talent into skill and skill into achievement.",
+      "Don't underestimate the cost of consistent work.",
+      "Naturals don't always reach the top.",
+      "Persist beyond early success."),
+    ch("Ch 4: How Gritty Are You?",
+      "Gritty people have clear passion and keep going.",
+      "Grit can be measured and reflected on.",
+      "Consistency of interest and perseverance both count.",
+      "Know where you stand to grow."),
+    ch("Ch 5: Grit Grows",
+      "Grit increases with age and experience.",
+      "Both nature and nurture shape your grit.",
+      "You can grow grit from the inside and from the outside.",
+      "Maturity builds persistence."),
+    ch("Ch 6: Interest",
+      "Passion starts with discovering what interests you.",
+      "Develop interests through exploration and engagement.",
+      "Deepen interest by learning more about it.",
+      "Passion grows with experience."),
+    ch("Ch 7: Practice",
+      "Deliberate practice means stretching beyond your comfort zone.",
+      "Set a specific goal, focus fully and seek feedback.",
+      "Repeat and refine until you improve.",
+      "Experts practice more and practice better."),
+    ch("Ch 8: Purpose",
+      "Connecting your work to helping others deepens motivation.",
+      "Purpose keeps you going through hard times.",
+      "Look for how your work contributes to others.",
+      "Meaning strengthens grit."),
+    ch("Ch 9: Hope",
+      "Believing effort can change things fuels perseverance.",
+      "A growth mindset helps you get back up after failure.",
+      "Optimism helps you keep trying.",
+      "Hope is the belief your future can be better."),
+    ch("Ch 10: Parenting for Grit",
+      "Supportive but demanding parenting builds grit.",
+      "Combine warmth with high standards.",
+      "Model perseverance in your own life.",
+      "Encourage long-term commitment."),
+    ch("Ch 11: The Playing Fields of Grit",
+      "Structured activities teach long-term commitment.",
+      "Stick with at least one demanding activity.",
+      "Hard things taught consistently build grit.",
+      "Finish what you start for at least a season."),
+    ch("Ch 12: A Culture of Grit",
+      "Groups with high standards shape individual grit.",
+      "Join a culture that values perseverance.",
+      "Identity within a group boosts commitment.",
+      "Surround yourself with gritty people."),
+    ch("Ch 13: Conclusion",
+      "Anyone can grow in grit with deliberate effort.",
+      "Grit is not everything, but it matters a lot.",
+      "Pursue passion with persistence.",
+      "Keep going, one step at a time.")
+  ]
+} 
+];
+
+// ============================================================
+// 📚 GRITGO DIGITAL LIBRARY — PART 3 (Books 15-20, detailed)
+// ============================================================
+
+const libraryPart3 = [
+
+// ------------------------------------------------------------
+// 15. EGO IS THE ENEMY
+// ------------------------------------------------------------
+{
+  title: "Ego Is the Enemy", author: "Ryan Holiday", icon: "🛡️", color: "#7f8c8d",
+  bg: "linear-gradient(135deg, #1f2b2e, #0d1315)",
+  chapters: [
+    ch("Aspire: Talk, Talk, Talk",
+      "Talking about your plans can feel like progress but isn't.",
+      "Silence and action build real results.",
+      "Save your energy for the work, not for announcements."),
+    ch("Aspire: To Be or To Do?",
+      "Decide whether you want to be someone or do something.",
+      "Chasing status distracts from meaningful work.",
+      "Purpose and substance last longer than image."),
+    ch("Aspire: Become a Student",
+      "Approach every situation as a learner.",
+      "A beginner's mind stays open and curious.",
+      "Find teachers and keep absorbing knowledge."),
+    ch("Aspire: Don't Be Passionate",
+      "Raw passion can cloud judgment and waste effort.",
+      "Channel emotion into purpose and disciplined action.",
+      "Stay calm and focused on the task in front of you."),
+    ch("Aspire: Follow the Canvas Strategy",
+      "Help others and be useful, and opportunities will follow.",
+      "Don't wait for credit, just make yourself valuable.",
+      "Support the work of those you learn from."),
+    ch("Aspire: Restrain Yourself",
+      "Aim high but be patient and humble.",
+      "Don't rush into things only to look impressive.",
+      "Wait until you've built enough skill."),
+    ch("Aspire: Get Out of Your Own Head",
+      "Overthinking feeds ego and anxiety.",
+      "Keep your thoughts simple and grounded.",
+      "Focus on clear, specific actions."),
+    ch("Success: Always Stay a Student",
+      "Never believe you have learned everything.",
+      "Success makes people stop growing, so keep learning.",
+      "Stay curious and humble at every stage."),
+    ch("Success: Don't Tell Yourself a Story",
+      "We love to make our lives into grand narratives.",
+      "Stay focused on facts and the next task.",
+      "Don't get carried away by your own hype."),
+    ch("Success: What's Important to You?",
+      "Know what truly matters and don't chase everything.",
+      "Saying no is a form of self-control.",
+      "Success needs clarity about your priorities."),
+    ch("Success: Entitlement, Control, Paranoia",
+      "Success can breed entitlement and a need for control.",
+      "Watch for signs of arrogance in yourself.",
+      "Stay grounded, and keep doing the work."),
+    ch("Success: Beware the Disease of Me",
+      "Self-importance blinds you to others and to reality.",
+      "Stay connected to the people who help you.",
+      "Remember that you are part of something bigger."),
+    ch("Success: Meditate on the Immensity",
+      "Perspective helps shrink ego.",
+      "Remember how small your problems are in the big picture.",
+      "Humility keeps you steady."),
+    ch("Success: Maintain Your Sobriety",
+      "Stay clear-headed and avoid indulgence.",
+      "Keep good habits even when you've achieved a lot.",
+      "Discipline matters more at the top."),
+    ch("Failure: Alive Time or Dead Time",
+      "Hard times can be used for learning or wasted.",
+      "Use setbacks to build skills and character.",
+      "Choose to stay active and productive."),
+    ch("Failure: The Effort Is Enough",
+      "Do the work for its own sake, not for applause.",
+      "You control your effort, not the results.",
+      "Take pride in doing your best."),
+    ch("Failure: Maintain Your Own Scoreboard",
+      "Measure yourself by your own standards.",
+      "Don't compare yourself to others.",
+      "Define success on your own terms."),
+    ch("Failure: Always Love",
+      "Don't let failure turn into bitterness or hatred.",
+      "Stay kind and keep your relationships healthy.",
+      "Resilience includes compassion."),
+    ch("Failure: Persevere",
+      "Keep going with humility and purpose.",
+      "Setbacks are part of any worthwhile path.",
+      "Stay committed to the work, not to your ego.")
+  ]
+},
+
+// ------------------------------------------------------------
+// 16. THE FOUR AGREEMENTS
+// ------------------------------------------------------------
+{
+  title: "The Four Agreements", author: "Don Miguel Ruiz", icon: "🦅", color: "#8e44ad",
+  bg: "linear-gradient(135deg, #2b0d3d, #14061a)",
+  chapters: [
+    ch("Ch 1: The Domestication and the Dream of the Planet",
+      "From childhood we absorb beliefs and rules from others.",
+      "These become agreements that shape how we see ourselves.",
+      "Many of these beliefs limit us without our knowing.",
+      "Awareness lets you question and rewrite them."),
+    ch("Ch 2: The First Agreement: Be Impeccable with Your Word",
+      "Speak with integrity and say only what you mean.",
+      "Your words can create or destroy, so use them carefully.",
+      "Avoid gossip and harsh self-talk.",
+      "Use your word to share truth and love."),
+    ch("Ch 3: The Second Agreement: Don't Take Anything Personally",
+      "What others say and do is about them, not you.",
+      "Not taking things personally frees you from suffering.",
+      "You become immune to opinions and criticism.",
+      "Their reality is their own dream."),
+    ch("Ch 4: The Third Agreement: Don't Make Assumptions",
+      "We often assume what others think or mean.",
+      "Ask questions and express what you want clearly.",
+      "Assumptions cause most misunderstandings and drama.",
+      "Honest communication ends many conflicts."),
+    ch("Ch 5: The Fourth Agreement: Always Do Your Best",
+      "Your best changes from day to day, and that's fine.",
+      "Doing your best avoids self-judgment and regret.",
+      "Take action, because action is what counts.",
+      "Practice makes the other agreements stronger."),
+    ch("Ch 6: The Toltec Path to Freedom: Breaking Old Agreements",
+      "Break old agreements through awareness and action.",
+      "Practice the new agreements until they become habit.",
+      "Be patient with yourself when you slip.",
+      "Forgive yourself and continue.")
+  ]
+},
+
+// ------------------------------------------------------------
+// 17. THE RICHEST MAN IN BABYLON
+// ------------------------------------------------------------
+{
+  title: "The Richest Man in Babylon", author: "George S. Clason", icon: "🏺", color: "#d4a017",
+  bg: "linear-gradient(135deg, #4d3b00, #1a1400)",
+  chapters: [
+    ch("Intro: The Man Who Desired Gold",
+      "Wanting more wealth is natural, learning how is the key.",
+      "Wealth comes from knowledge and discipline, not luck alone.",
+      "Seek wise teachers and learn their methods."),
+    ch("Cure 1: Start Thy Purse to Fattening",
+      "Save at least one tenth of everything you earn.",
+      "Pay yourself first before any other expense.",
+      "Make saving a firm daily habit."),
+    ch("Cure 2: Control Thy Expenditures",
+      "Don't confuse necessary expenses with desires.",
+      "Budget so your spending doesn't swallow your income.",
+      "Keep your lifestyle below your income."),
+    ch("Cure 3: Make Thy Gold Multiply",
+      "Put your savings to work by investing.",
+      "Money that earns money builds wealth over time.",
+      "Start early and let it grow."),
+    ch("Cure 4: Guard Thy Treasures from Loss",
+      "Invest only where your principal is safe.",
+      "Seek advice from experienced people.",
+      "Avoid get-rich-quick schemes."),
+    ch("Cure 5: Make of Thy Dwelling a Profitable Investment",
+      "Owning your home builds lasting security.",
+      "Avoid wasting money on endless rent.",
+      "Invest in property you can afford."),
+    ch("Cure 6: Ensure a Future Income",
+      "Prepare for old age and your family's needs.",
+      "Set aside money now for the future.",
+      "Plan ahead so you're never caught without support."),
+    ch("Cure 7: Increase Thy Ability to Earn",
+      "Grow your skills and your earning power.",
+      "Desire plus learning leads to greater income.",
+      "Be proud of your work and keep improving."),
+    ch("The Five Laws of Gold",
+      "Gold comes to those who save a tenth of their earnings.",
+      "Gold works for the wise owner who finds profitable use for it.",
+      "Gold stays with the cautious investor who takes advice.",
+      "Gold slips from those who invest in what they don't understand.",
+      "Gold flees those who chase impossible returns."),
+    ch("The Gold Lender of Babylon",
+      "Be careful about lending and borrowing.",
+      "Security and reliable repayment matter.",
+      "Protect your capital before chasing profit."),
+    ch("The Walls of Babylon",
+      "Prepare for the future and protect what you have.",
+      "Insurance and savings act as walls against trouble.",
+      "Prevention is better than recovery."),
+    ch("The Camel Trader of Babylon",
+      "Debt and spending habits can trap you.",
+      "Take responsibility and repay what you owe.",
+      "Discipline can pull you out of hard times."),
+    ch("The Clay Tablets of Babylon",
+      "Pay your debts honestly and don't avoid them.",
+      "Honesty and persistence rebuild trust.",
+      "Plan and follow through to become free."),
+    ch("The Luckiest Man in Babylon",
+      "Opportunity favors those who act on it.",
+      "Prepared people turn chances into success.",
+      "Be bold, be ready and use your opportunities.")
+  ]
+},
+
+// ------------------------------------------------------------
+// 18. THE ART OF WAR
+// ------------------------------------------------------------
+{
+  title: "The Art of War", author: "Sun Tzu", icon: "⚔️", color: "#b03a2e",
+  bg: "linear-gradient(135deg, #3d0d08, #1a0603)",
+  chapters: [
+    ch("Ch 1: Laying Plans",
+      "Planning and preparation decide a battle before it starts.",
+      "Know yourself, the terrain, and the conditions.",
+      "Compare strengths and weaknesses honestly.",
+      "All warfare is based on deception."),
+    ch("Ch 2: Waging War",
+      "Long, costly campaigns drain resources.",
+      "Win quickly and avoid prolonged conflict.",
+      "Use the enemy's resources to your advantage.",
+      "Speed and efficiency matter more than perfection."),
+    ch("Ch 3: Attack by Stratagem",
+      "The best victory is winning without fighting.",
+      "Break the enemy's plans and alliances first.",
+      "Know yourself and your enemy to avoid defeat.",
+      "Win by wisdom, not by force."),
+    ch("Ch 4: Tactical Dispositions",
+      "Make yourself unbeatable first, then wait for an opening.",
+      "Secure your position before seeking victory.",
+      "Victory belongs to those who are prepared.",
+      "Defense is for when you lack strength, attack when you have it."),
+    ch("Ch 5: Energy",
+      "Use momentum and timing to multiply your force.",
+      "Combine direct and indirect methods.",
+      "Good organization lets you manage large groups like small ones.",
+      "Create situations where victory comes naturally."),
+    ch("Ch 6: Weak Points and Strong",
+      "Strike where the enemy is weak and avoid their strength.",
+      "Stay flexible like water.",
+      "Control the initiative and the pace.",
+      "Hide your plans so the enemy cannot respond."),
+    ch("Ch 7: Maneuvering",
+      "Speed and discipline matter, but rushing is risky.",
+      "Take control of the route and timing.",
+      "Don't fight when conditions are against you.",
+      "Keep your army united and well supplied."),
+    ch("Ch 8: Variation in Tactics",
+      "Adapt your approach to changing circumstances.",
+      "Don't follow fixed rules in every situation.",
+      "A wise leader weighs both gains and risks.",
+      "Be ready for the unexpected."),
+    ch("Ch 9: The Army on the March",
+      "Read signs and details in the environment.",
+      "Observe carefully before making decisions.",
+      "Choose good ground and stay alert.",
+      "Be fair and firm with your troops."),
+    ch("Ch 10: Terrain",
+      "Different terrain demands different strategies.",
+      "Know the ground before you fight.",
+      "Care for your people and they will follow you.",
+      "Know yourself, know the enemy, know the ground."),
+    ch("Ch 11: The Nine Situations",
+      "Leadership must change as the situation changes.",
+      "People fight hardest when they have no retreat.",
+      "Be swift and unpredictable.",
+      "Keep morale high and the group united."),
+    ch("Ch 12: The Attack by Fire",
+      "Act only when there is a clear benefit.",
+      "Never fight out of anger or impulse.",
+      "A leader must stay calm and rational.",
+      "Don't waste resources on pointless conflict."),
+    ch("Ch 13: The Use of Spies",
+      "Good information is a decisive advantage.",
+      "Invest in knowledge before spending on conflict.",
+      "Use different kinds of informants wisely.",
+      "Reward those who bring you reliable intelligence.")
+  ]
+},
+
+// ------------------------------------------------------------
+// 19. MEDITATIONS
+// ------------------------------------------------------------
+{
+  title: "Meditations", author: "Marcus Aurelius", icon: "🏛️", color: "#95a5a6",
+  bg: "linear-gradient(135deg, #2b3133, #121516)",
+  chapters: [
+    ch("Book 1: Debts and Lessons",
+      "Be grateful for the people who shaped your character.",
+      "Learn good qualities from everyone around you.",
+      "Remember your teachers, family and friends.",
+      "Credit goes to others for your growth."),
+    ch("Book 2: On the River Danube",
+      "Start each day expecting to meet difficult people.",
+      "Remember life is short, so act with purpose.",
+      "Don't be disturbed by what you can't control.",
+      "Do what is right now."),
+    ch("Book 3: In Carnuntum",
+      "Do what is in front of you with full attention.",
+      "Live each moment as if it were your last.",
+      "Don't waste time on what others think or do.",
+      "Keep your mind clear and your actions honest."),
+    ch("Book 4: Inner Peace",
+      "You can find a refuge within your own mind.",
+      "Your opinions, not events, disturb you.",
+      "Everything passes, so don't cling too tightly.",
+      "Let go of unnecessary thoughts."),
+    ch("Book 5: Duty",
+      "Rise and do your work as a human being.",
+      "Accept what happens as part of the whole.",
+      "Be useful and cooperate with others.",
+      "Don't use comfort as an excuse."),
+    ch("Book 6: Nature and Action",
+      "Focus on your own actions, not others' judgments.",
+      "The best revenge is not being like the wrongdoer.",
+      "Treat others justly and with kindness.",
+      "Stay true to your values."),
+    ch("Book 7: Perspective",
+      "Obstacles can become the path forward.",
+      "Judge less and see things as they really are.",
+      "Be patient with others' faults.",
+      "Stay calm and take the right action."),
+    ch("Book 8: Self-Mastery",
+      "Remember you are part of a bigger whole.",
+      "Dwell on the present and let go of regrets.",
+      "Take responsibility for your own responses.",
+      "Be steady and self-controlled."),
+    ch("Book 9: Acceptance",
+      "Face death and loss with calm acceptance.",
+      "Treat others fairly, even when they are unkind.",
+      "Forgive wrongdoing, it often comes from ignorance.",
+      "Don't expect perfection from people."),
+    ch("Book 10: The Present Moment",
+      "Only the present is truly yours to use.",
+      "Take responsibility for your own thoughts.",
+      "Be content with what you have.",
+      "Act with purpose and without fear."),
+    ch("Book 11: Character",
+      "Live honestly and let your character speak.",
+      "Don't be disturbed by others' wrongdoing.",
+      "Be kind, patient and sincere.",
+      "Stay consistent with your principles."),
+    ch("Book 12: Final Reflections",
+      "Stay calm and free from fear of the future.",
+      "Live in harmony with nature and your reason.",
+      "Appreciate life and accept its end.",
+      "Make your remaining time count.")
+  ]
+},
+
+// ------------------------------------------------------------
+// 20. MAN'S SEARCH FOR MEANING
+// ------------------------------------------------------------
+{
+  title: "Man's Search for Meaning", author: "Viktor Frankl", icon: "🕯️", color: "#e67e22",
+  bg: "linear-gradient(135deg, #4d2200, #1a0b00)",
+  chapters: [
+    ch("Part 1: Experiences in a Concentration Camp (Overview)",
+      "Frankl recounts his survival through extreme suffering.",
+      "He observes how people respond to the worst conditions.",
+      "Inner choices remain even when outer freedom is gone."),
+    ch("Part 1, Phase 1: Shock",
+      "Sudden loss and suffering overwhelm the mind at first.",
+      "Humor and curiosity can protect your spirit.",
+      "People begin to adapt even to terrible conditions."),
+    ch("Part 1, Phase 2: Apathy",
+      "The mind protects itself by growing numb to pain.",
+      "Inner life, memories and imagination give strength.",
+      "Holding on to love gives meaning to survival."),
+    ch("Part 1, Phase 3: After Liberation",
+      "Freedom brings its own emotional struggles.",
+      "Recovery and readjustment take time.",
+      "Meaning helps people rebuild their lives."),
+    ch("Part 2: Logotherapy in a Nutshell - The Will to Meaning",
+      "The main drive in humans is to find meaning.",
+      "Meaning is more powerful than pleasure or power.",
+      "Lack of meaning leads to emptiness."),
+    ch("Part 2: The Existential Vacuum",
+      "Many people feel an inner emptiness and boredom.",
+      "It shows up as apathy, addiction or aimlessness.",
+      "A meaningful goal helps fill that void."),
+    ch("Part 2: The Meaning of Life",
+      "Life's meaning differs for each person and moment.",
+      "Ask not what you expect from life, but what life expects from you.",
+      "Answer life through responsible action."),
+    ch("Part 2: Three Ways to Find Meaning",
+      "Through creating a work or doing a deed.",
+      "Through experiencing something or loving someone.",
+      "Through the attitude we take toward unavoidable suffering."),
+    ch("Part 2: The Meaning of Suffering",
+      "Suffering is painful but can have meaning.",
+      "Unavoidable pain can be turned into achievement.",
+      "Don't seek suffering, but find purpose in it when it comes."),
+    ch("Part 2: Logotherapy Techniques",
+      "Paradoxical intention uses humor to break fear patterns.",
+      "Dereflection shifts attention away from yourself.",
+      "Redirect focus toward purpose and others."),
+    ch("Part 3: The Case for Tragic Optimism",
+      "Turn suffering into achievement, guilt into growth, loss into action.",
+      "Between stimulus and response lies your freedom to choose.",
+      "Stay hopeful even in the face of pain, guilt and death.")
+  ]
+}
+
+];
+
+// ============================================================
+// 🔗 ফাইনাল libraryData
+// ============================================================
+const libraryData = [...libraryPart1, ...libraryPart2, ...libraryPart3];
+// ============================================================
+// 📚 DIGITAL LIBRARY LOGIC
+// ============================================================
+setTimeout(function initDigitalLibrary() {
+  
+  const openBtn = document.getElementById("sidebarLibraryBtn");
+  const closeBtn = document.getElementById("closeLibraryBtn");
+  const backBtn = document.getElementById("backToLibraryGridBtn");
+  const modal = document.getElementById("digitalLibraryModal");
+  const grid = document.getElementById("libraryBookGrid");
+  const details = document.getElementById("libraryBookDetails");
+  const headerTitle = document.getElementById("libraryHeaderTitle");
+  const detailTitle = document.getElementById("detailBookTitle");
+  const detailAuthor = document.getElementById("detailBookAuthor");
+  const detailChapters = document.getElementById("detailBookChapters");
+
+  if (!openBtn || !modal) return;
+
+  openBtn.addEventListener("click", () => {
+    const sb = document.getElementById("sidebar");
+    const so = document.getElementById("sidebarOverlay");
+    if (sb) sb.classList.remove("open");
+    if (so) so.classList.remove("active");
+
+    modal.classList.add("active");
+    showGrid();
+    renderLibraryGrid();
+  });
+
+  closeBtn.addEventListener("click", () => {
+    modal.classList.remove("active");
+  });
+
+  backBtn.addEventListener("click", () => {
+    showGrid();
+  });
+
+  function renderLibraryGrid() {
+    if (typeof libraryData === "undefined") {
+      grid.innerHTML = `<p style="color:#ff6b4a; text-align:center; grid-column: span 2; padding:20px;">Library data not loaded!</p>`;
+      return;
+    }
+
+    grid.innerHTML = "";
+    libraryData.forEach((book, index) => {
+      const card = document.createElement("div");
+      card.className = "library-book-card";
+      card.style.background = book.bg || "#1a1f2e";
+      card.style.borderColor = book.color || "#00e5ff";
+
+      card.innerHTML = `
+        <div class="library-book-icon">${book.icon}</div>
+        <div class="library-book-title">${book.title}</div>
+        <div class="library-book-author">by ${book.author}</div>
+        <div style="margin-top:auto; padding-top:10px; font-size:10px; color:${book.color}; font-weight:bold;">
+          ${book.chapters.length} Chapters →
+        </div>
+      `;
+
+      card.addEventListener("click", () => showBookDetails(index));
+      grid.appendChild(card);
+    });
+  }
+
+  function showBookDetails(index) {
+    const book = libraryData[index];
+    if (!book) return;
+
+    grid.style.display = "none";
+    details.style.display = "block";
+
+    detailTitle.textContent = book.title;
+    detailTitle.style.color = book.color || "#f1c40f";
+    detailAuthor.textContent = `by ${book.author}`;
+
+// অথরের নামের অদ্ভুত বর্ডার বা বক্স থাকলে তা রিমুভ করা হলো
+detailAuthor.style.border = "none"; 
+detailAuthor.style.background = "transparent";
+
+// AI বাটন যোগ করা হচ্ছে (SVG Icon সহ)
+const existingAiBtn = document.getElementById("openBookAiBtn");
+if (existingAiBtn) existingAiBtn.remove();
+
+const aiBtn = document.createElement("button");
+aiBtn.id = "openBookAiBtn";
+aiBtn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"></rect><circle cx="12" cy="5" r="2"></circle><path d="M12 7v4"></path><line x1="8" y1="16" x2="8" y2="16"></line><line x1="16" y1="16" x2="16" y2="16"></line></svg> Ask AI to explain or add rules`;
+
+// মার্জিন ঠিক করে দেওয়া হলো যাতে সুন্দরভাবে বসে
+aiBtn.style.cssText = "width: 100%; margin-top: 15px; margin-bottom: 25px; padding: 12px; background: rgba(0, 229, 255, 0.1); color: #00e5ff; border: 1px solid #00e5ff; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px;";
+aiBtn.onclick = () => openBookAiChat(book);
+
+// বাটনটা অথরের নামের ঠিক নিচে বসানো হলো
+detailAuthor.parentNode.insertBefore(aiBtn, detailAuthor.nextSibling);
+
+headerTitle.innerHTML = `
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+      </svg>
+      ${book.title}
+    `;
+
+    detailChapters.innerHTML = "";
+    book.chapters.forEach(chapter => {
+      const box = document.createElement("div");
+      box.className = "chapter-box";
+      box.style.borderLeftColor = book.color || "#00e5ff";
+
+      const chName = document.createElement("div");
+      chName.className = "chapter-name";
+      chName.textContent = chapter.name;
+      chName.style.color = book.color || "#00e5ff";
+      chName.style.borderBottomColor = (book.color || "#00e5ff") + "40";
+
+      const rulesList = document.createElement("ul");
+      rulesList.className = "chapter-rule-list";
+
+      (chapter.rules || []).forEach(rule => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${book.color || '#00e5ff'}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; margin-top:3px;">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          <span>${rule}</span>
+        `;
+        rulesList.appendChild(li);
+      });
+
+      box.appendChild(chName);
+      box.appendChild(rulesList);
+      detailChapters.appendChild(box);
+    });
+
+    details.scrollTop = 0;
+  }
+
+  function showGrid() {
+    grid.style.display = "grid";
+    details.style.display = "none";
+    headerTitle.innerHTML = `
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+      </svg>
+      Digital Library
+    `;
+  }
+
+  console.log("✅ Digital Library loaded with", libraryData.length, "books");
+}, 300);   // ← ⭐ এই `, 300);` টা সবচেয়ে গুরুত্বপূর্ণ! 
+// ============================================================
+// 📖 BOOK AI & BOOK RULES TRACKER LOGIC (FIXED)
+// ============================================================
+setTimeout(() => {
+  let bookRulesData = JSON.parse(localStorage.getItem("gritgo_book_rules")) || [];
+  let currentBookAiContext = null;
+  let bookAiHistory = [];
+
+  // ১. Book Rules Tracker-এর স্ট্যাটস হিসাব করা
+  window.calculateBookRulesStats = function() {
+    const todayKey = getDateKey();
+    const totalRules = bookRulesData.length;
+    if (totalRules === 0) return { streak: 0, perfect: 0, overall: 0, todayDone: 0, totalRules: 0 };
+
+    const allDates = new Set();
+    bookRulesData.forEach(r => Object.keys(r.logs || {}).forEach(d => allDates.add(d)));
+    
+    let startDate = challengeData.startDate || todayKey;
+    const sortedDates = Array.from(allDates).sort();
+    if (sortedDates.length > 0 && sortedDates[0] < startDate) startDate = sortedDates[0];
+
+    let daysPassed = 0;
+    let curr = new Date(startDate + "T00:00:00");
+    const todayD = new Date(todayKey + "T00:00:00");
+    while (curr <= todayD && daysPassed < 1000) {
+      daysPassed++;
+      curr.setDate(curr.getDate() + 1);
+    }
+
+    let perfectDays = 0;
+    let totalChecks = 0;
+
+    let d = new Date(startDate + "T00:00:00");
+    for (let i = 0; i < daysPassed; i++) {
+      const dKey = getDateKey(d);
+      let dayDone = 0;
+      bookRulesData.forEach(r => {
+        if (r.logs && r.logs[dKey] === true) { dayDone++; totalChecks++; }
+      });
+      if (dayDone === totalRules && totalRules > 0) perfectDays++;
+      d.setDate(d.getDate() + 1);
+    }
+
+    const overall = daysPassed > 0 && totalRules > 0 ? Math.round((totalChecks / (daysPassed * totalRules)) * 100) : 0;
+
+    let streak = 0;
+    let checkD = new Date(todayKey + "T00:00:00");
+    let todayDone = bookRulesData.filter(r => r.logs && r.logs[todayKey]).length;
+    if (todayDone !== totalRules) checkD.setDate(checkD.getDate() - 1);
+
+    for (let i = 0; i < 1000; i++) {
+      const dKey = getDateKey(checkD);
+      let dayDone = 0;
+      bookRulesData.forEach(r => { if (r.logs && r.logs[dKey]) dayDone++; });
+      if (dayDone === totalRules && totalRules > 0) {
+        streak++;
+        checkD.setDate(checkD.getDate() - 1);
+      } else break;
+    }
+
+    return { streak, perfect: perfectDays, overall, todayDone, totalRules };
+  };
+
+  // ২. Book Rules Tracker রেন্ডার করা
+  window.renderBookRulesTracker = function() {
+    const list = document.getElementById("brRulesList");
+    if (!list) return;
+    list.innerHTML = "";
+    
+    const stats = calculateBookRulesStats();
+    document.getElementById("brStreak").textContent = stats.streak;
+    document.getElementById("brPerfect").textContent = stats.perfect;
+    document.getElementById("brOverall").textContent = stats.overall + "%";
+    document.getElementById("brTodayProgress").textContent = `${stats.todayDone} / ${stats.totalRules} done today`;
+    document.getElementById("brProgressBar").style.width = stats.totalRules > 0 ? (stats.todayDone / stats.totalRules * 100) + "%" : "0%";
+
+    if (bookRulesData.length === 0) {
+      list.innerHTML = `<p style="text-align:center; color:#9aa0a6; padding: 20px; font-size: 14px;">No rules added yet.<br><br>Go to <b>Digital Library</b> -> Open a book -> Click <b>Ask AI</b> -> Say <i>"Add these rules to my tracker"</i></p>`;
+      return;
+    }
+
+    const todayKey = getDateKey();
+    bookRulesData.forEach((rule, index) => {
+      const isDone = rule.logs && rule.logs[todayKey] === true;
+      const div = document.createElement("div");
+      div.className = "task-item " + (isDone ? "done" : "");
+      div.style.marginBottom = "8px";
+      
+      div.innerHTML = `
+        <div class="custom-checkbox ${isDone ? "checked" : ""}" data-id="${rule.id}"><span class="checkbox-number">${index + 1}</span></div>
+        <div style="flex: 1;">
+          <div class="task-text" style="font-weight: bold; margin-bottom: 4px; white-space: normal;">${rule.text}</div>
+          <div style="font-size: 10px; color: #9aa0a6;">From: ${rule.bookTitle}</div>
+        </div>
+        <button class="delete-btn" data-del="${rule.id}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>
+      `;
+      
+      div.querySelector(".custom-checkbox").onclick = () => {
+        if (!rule.logs) rule.logs = {};
+        rule.logs[todayKey] = !rule.logs[todayKey];
+        localStorage.setItem("gritgo_book_rules", JSON.stringify(bookRulesData));
+        renderBookRulesTracker();
+        if (rule.logs[todayKey]) playCheckSound(); else playUncheckSound();
+      };
+      
+      div.querySelector(".delete-btn").onclick = async () => {
+        if (await showCustomConfirm("Delete this rule from your tracker?")) {
+          bookRulesData = bookRulesData.filter(r => r.id !== rule.id);
+          localStorage.setItem("gritgo_book_rules", JSON.stringify(bookRulesData));
+          renderBookRulesTracker();
+        }
+      };
+      list.appendChild(div);
+    });
+  };
+
+  // ৩. AI চ্যাট ওপেন ও রেসপন্স হ্যান্ডলিং
+window.openBookAiChat = function(book) {
+  currentBookAiContext = book;
+  bookAiHistory = []; 
+  
+  // টাইটেলে ইমোজির বদলে SVG রোবট আইকন বসানো হলো
+  document.getElementById("bookAiTitle").innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 6px;"><rect x="3" y="11" width="18" height="10" rx="2"></rect><circle cx="12" cy="5" r="2"></circle><path d="M12 7v4"></path><line x1="8" y1="16" x2="8" y2="16"></line><line x1="16" y1="16" x2="16" y2="16"></line></svg> AI: ${book.title}`;
+  
+  // চ্যাটের ভেতরের প্রথম মেসেজেও SVG আইকন বসানো হলো
+  document.getElementById("bookAiChatHistory").innerHTML = `<div class="chat-bubble ai" style="display:flex; gap:8px; align-items:flex-start;">
+    <svg style="flex-shrink:0; margin-top:2px;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"></rect><circle cx="12" cy="5" r="2"></circle><path d="M12 7v4"></path></svg>
+    <div>Hi! I'm your AI partner for <b>${book.title}</b>.<br><br>Ask me to explain any rule, or tell me to <i>"Add rule [rule name] to my tracker"</i>.</div>
+  </div>`;
+  
+  document.getElementById("bookAiInput").value = "";
+  document.getElementById("bookAiModal").classList.add("active");
+};
+
+  document.getElementById("bookAiSendBtn").onclick = async () => {
+    const input = document.getElementById("bookAiInput");
+    const text = input.value.trim();
+    if (!text || !currentBookAiContext) return;
+    
+    const historyDiv = document.getElementById("bookAiChatHistory");
+    historyDiv.innerHTML += `<div class="chat-bubble user">${text}</div>`;
+    input.value = "";
+    historyDiv.scrollTop = historyDiv.scrollHeight;
+    
+    const loadingId = "loading_" + Date.now();
+    historyDiv.innerHTML += `<div class="chat-bubble ai" id="${loadingId}"><span class="loading-spinner"></span> Thinking...</div>`;
+    historyDiv.scrollTop = historyDiv.scrollHeight;
+    
+    const book = currentBookAiContext;
+    const chaptersContext = book.chapters.map(c => `- ${c.name}: ${c.rules.join(" | ")}`).join("\n");
+    
+    const systemPrompt = {
+      role: "system",
+      content: `You are an expert AI study partner for the book "${book.title}" by ${book.author}.
+Here are the book's chapters and rules:
+${chaptersContext}
+
+Your goal:
+1. Explain the rules clearly and deeply when asked. Use real-life examples. Use the language the user speaks.
+2. If the user asks you to add rules to their tracker, you MUST reply ONLY with a JSON array like this:
+[
+  {"action": "add_rule", "text": "Rule 1 text..."},
+  {"action": "add_rule", "text": "Rule 2 text..."}
+]
+Do not write anything else in that specific message if you are adding rules.
+3. Otherwise, chat normally and motivate them based on this book.`
+    };
+    
+    bookAiHistory.push({ role: "user", content: text });
+    const messages = [systemPrompt, ...bookAiHistory.slice(-6)];
+    
+    try {
+      const reply = await callGroq(messages, { temperature: 0.7, max_tokens: 2000 });
+      document.getElementById(loadingId)?.remove();
+      
+      let finalDisplay = reply;
+      let addedCount = 0;
+      
+      try {
+        const jsonMatch = reply.match(/\[[\s\S]*\]/);
+        if (jsonMatch) {
+          const parsed = JSON.parse(jsonMatch[0]);
+          if (Array.isArray(parsed) && parsed.length > 0 && parsed[0].action === "add_rule") {
+            parsed.forEach(item => {
+              if (item.action === "add_rule" && item.text) {
+                bookRulesData.push({ id: "r_" + Math.random().toString(36).substr(2, 9), bookTitle: book.title, text: item.text, logs: {} });
+                addedCount++;
+              }
+            });
+            if (addedCount > 0) {
+              localStorage.setItem("gritgo_book_rules", JSON.stringify(bookRulesData));
+              finalDisplay = `✅ Done! Added ${addedCount} rule(s) to your Book Rules Tracker. Check it from the sidebar!`;
+            }
+          }
+        }
+      } catch(e) {}
+      
+      bookAiHistory.push({ role: "assistant", content: finalDisplay });
+      historyDiv.innerHTML += `<div class="chat-bubble ai">${finalDisplay}</div>`;
+      historyDiv.scrollTop = historyDiv.scrollHeight;
+      if (addedCount > 0) { showToast(`${addedCount} rules added!`); playCheckSound(true); }
+      
+    } catch(e) {
+      document.getElementById(loadingId)?.remove();
+      historyDiv.innerHTML += `<div class="chat-bubble ai" style="color:#ff6b4a;">Error: ${e.message}</div>`;
+    }
+  };
+
+  document.getElementById("bookAiInput").addEventListener("keypress", (e) => {
+    if (e.key === "Enter") document.getElementById("bookAiSendBtn").click();
+  });
+  document.getElementById("bookAiCloseBtn").onclick = () => document.getElementById("bookAiModal").classList.remove("active");
+
+  // ৪. Book Rules Tracker ওপেন করার বাটন ইভেন্ট
+  document.getElementById("sidebarBookRulesBtn").addEventListener("click", () => {
+    if (typeof closeSidebar === 'function') closeSidebar();
+    document.getElementById("bookRulesTrackerModal").classList.add("active");
+    renderBookRulesTracker();
+  });
+  document.getElementById("brCloseBtn").onclick = () => document.getElementById("bookRulesTrackerModal").classList.remove("active");
+
+}, 500); 
+// ============================================================
+// 🧠 COMPREHENSIVE APP SNAPSHOT — AI KNOWS EVERYTHING (No Extra Button)
+// ============================================================
+(function () {
+  'use strict';
+
+  function getWeekKeyInternal() {
+    const d = new Date();
+    d.setDate(d.getDate() - ((d.getDay() + 6) % 7));
+    return getDateKey(d);
+  }
+
+  window.getFullAppSnapshot = function () {
+    const todayKey = getDateKey();
+    const startDate = normalizeDate(challengeData.startDate);
+    const currentDay = getCurrentDayNumber();
+    const totalHabits = challengeData.habits.length;
+
+    // Build all dates since challenge start
+    const allDates = [];
+    let d = new Date(startDate + "T00:00:00");
+    const todayD = new Date(todayKey + "T00:00:00");
+    let safety = 0;
+    while (d <= todayD && safety < 1000) {
+      allDates.push(getDateKey(d));
+      d.setDate(d.getDate() + 1);
+      safety++;
+    }
+
+    // Per-habit deep analysis
+    const habits = challengeData.habits.map(h => {
+      let completions = 0, curStreak = 0, bestStreak = 0, run = 0;
+      allDates.forEach(k => {
+        const done = (challengeData.habitLogs[k] || {})[h.id] === true;
+        if (done) { completions++; run++; bestStreak = Math.max(bestStreak, run); }
+        else run = 0;
+      });
+      let i = allDates.length - 1;
+      if (i >= 0 && (challengeData.habitLogs[allDates[i]] || {})[h.id] !== true) i--;
+      while (i >= 0 && (challengeData.habitLogs[allDates[i]] || {})[h.id] === true) { curStreak++; i--; }
+      const rate = allDates.length > 0 ? Math.round(completions / allDates.length * 100) : 0;
+      return {
+        name: h.name, category: h.category || 'General',
+        completions, missed: allDates.length - completions, totalDays: allDates.length,
+        successRate: rate, currentStreak: curStreak, bestStreak,
+        status: rate >= 80 ? 'excellent' : rate >= 50 ? 'good' : rate >= 25 ? 'needs improvement' : 'struggling'
+      };
+    });
+
+    const todayLog = challengeData.habitLogs[todayKey] || {};
+    const completedToday = challengeData.habits.filter(h => todayLog[h.id] === true).map(h => h.name);
+    const missedToday = challengeData.habits.filter(h => todayLog[h.id] !== true).map(h => h.name);
+
+    // Overall stats
+    let perfectDays = 0, totalPossible = 0, totalCompleted = 0;
+    allDates.forEach(k => {
+      const log = challengeData.habitLogs[k] || {};
+      let dd = 0;
+      challengeData.habits.forEach(h => {
+        totalPossible++;
+        if (log[h.id] === true) { dd++; totalCompleted++; }
+      });
+      if (dd === totalHabits && totalHabits > 0) perfectDays++;
+    });
+    let curStreak = 0;
+    let ci = allDates.length - 1;
+    if (ci >= 0 && completedToday.length !== totalHabits) ci--;
+    for (; ci >= 0; ci--) {
+      const log = challengeData.habitLogs[allDates[ci]] || {};
+      let dd = 0;
+      challengeData.habits.forEach(h => { if (log[h.id] === true) dd++; });
+      if (dd === totalHabits && totalHabits > 0) curStreak++;
+      else break;
+    }
+    const overallPercent = totalPossible > 0 ? Math.round(totalCompleted / totalPossible * 100) : 0;
+
+    // Water
+    const wKey = getWaterDateKey();
+    const todayWater = (waterData.logs && waterData.logs[wKey]) || 0;
+    const wGoal = waterData.dailyGoal || 2.5;
+    let wStreak = 0, wd = new Date();
+    while (wStreak < 365) {
+      const k = getWaterDateKey(wd);
+      const intake = (waterData.logs && waterData.logs[k]) || 0;
+      if (intake >= wGoal) { wStreak++; wd.setDate(wd.getDate() - 1); }
+      else {
+        if (wStreak === 0 && k === wKey) { wd.setDate(wd.getDate() - 1); continue; }
+        break;
+      }
+    }
+    let wWeek = 0;
+    for (let i = 0; i < 7; i++) {
+      const dd = new Date(); dd.setDate(dd.getDate() - i);
+      wWeek += (waterData.logs && waterData.logs[getWaterDateKey(dd)]) || 0;
+    }
+
+    // Sleep
+    let todaySleep = null;
+    if (sleepState && sleepState.days) {
+      const ss = new Date(sleepState.weekStartDate + "T00:00:00");
+      const sn = new Date(todayKey + "T00:00:00");
+      const diff = Math.floor(Math.max(0, sn - ss) / 86400000);
+      const idx = Math.min(diff, 6);
+      if (sleepState.days[idx] !== null) todaySleep = sleepState.days[idx];
+    }
+    const sleepW = (sleepState.days || []).filter(h => h !== null);
+    const avgSleep = sleepW.length ? (sleepW.reduce((a, b) => a + b, 0) / sleepW.length).toFixed(1) : null;
+
+    // Quit habits
+    const quits = (typeof quitData !== 'undefined' && Array.isArray(quitData) ? quitData : []).map(q => {
+      const cDays = Math.floor((Date.now() - q.start) / 86400000);
+      const bestDays = Math.floor(Math.max(q.best || 0, Date.now() - q.start) / 86400000);
+      return {
+        name: q.name, cleanDays: cDays, bestDays, relapses: q.relapses || 0,
+        status: cDays >= 30 ? 'great' : cDays >= 7 ? 'good' : cDays >= 1 ? 'starting' : 'just-started'
+      };
+    });
+
+    // Workout
+    const woRaw = JSON.parse(localStorage.getItem("gritgo_workout_data")) || { workouts: {} };
+    const woKeys = Object.keys(woRaw.workouts || {}).filter(k => (woRaw.workouts[k].exercises || []).length > 0);
+    let weekWO = 0, totalVol = 0, weekVol = 0;
+    const nowD = new Date();
+    for (let i = 0; i < 7; i++) {
+      const dd = new Date(); dd.setDate(dd.getDate() - i);
+      const k = getDateKey(dd);
+      if ((woRaw.workouts[k]?.exercises || []).length > 0) weekWO++;
+    }
+    woKeys.forEach(k => {
+      (woRaw.workouts[k].exercises || []).forEach(ex => {
+        (ex.sets || []).forEach(s => {
+          if (s.done) {
+            const vol = (parseFloat(s.weight) || 0) * (parseFloat(s.reps) || 0);
+            totalVol += vol;
+            const dd = new Date(k + "T00:00:00");
+            if (Math.floor((nowD - dd) / 86400000) < 7) weekVol += vol;
+          }
+        });
+      });
+    });
+
+    // Tasks
+    const tkd = JSON.parse(localStorage.getItem("gritgo_daily_tasks")) || { date: "", ai: [], mine: [] };
+    const todayTasks = tkd.date === getLiteralDateKey() ? tkd : { ai: [], mine: [] };
+    const allTasks = [...(todayTasks.ai || []), ...(todayTasks.mine || [])];
+    const doneTasks = allTasks.filter(t => t.done).length;
+
+    // Book rules
+    const bRules = JSON.parse(localStorage.getItem("gritgo_book_rules")) || [];
+    const brDone = bRules.filter(r => r.logs && r.logs[todayKey] === true).length;
+
+    // Food
+    const food = JSON.parse(localStorage.getItem("gritgo_food_history")) || [];
+    const todayDateStr = new Date().toLocaleDateString("en-GB", { day: 'numeric', month: 'short' });
+    const todayFood = food.filter(f => f.date && f.date.startsWith(todayDateStr));
+    const todayCals = todayFood.reduce((s, f) => s + (f.calories || 0), 0);
+
+    // Photos
+    const pTL = JSON.parse(localStorage.getItem("gritgo_photo_timeline")) || [];
+    const pPG = JSON.parse(localStorage.getItem("gritgo_progress_photos")) || [];
+
+    // Moods
+    const moods = challengeData.moods || {};
+    const recentMoods = allDates.slice(-7).map(dk => ({ date: dk, mood: moods[dk] || null }));
+    const mCounts = { happy: 0, okay: 0, tired: 0, stressed: 0 };
+    Object.values(moods).forEach(m => { if (mCounts[m] !== undefined) mCounts[m]++; });
+
+    // Journal
+    const notes = challengeData.notes || {};
+    const jCount = Object.keys(notes).length;
+    const recentJ = allDates.slice(-5).filter(dk => notes[dk]).map(dk => ({
+      date: dk,
+      note: notes[dk].substring(0, 100) + (notes[dk].length > 100 ? '...' : '')
+    }));
+
+    // Best time
+    const hTimes = JSON.parse(localStorage.getItem("gritgo_habit_times")) || {};
+    const tB = { morning: 0, afternoon: 0, evening: 0, night: 0 };
+    Object.values(hTimes).forEach(day => {
+      Object.values(day).forEach(h => {
+        if (h >= 5 && h < 12) tB.morning++;
+        else if (h >= 12 && h < 17) tB.afternoon++;
+        else if (h >= 17 && h < 21) tB.evening++;
+        else tB.night++;
+      });
+    });
+    const totalTB = Object.values(tB).reduce((a, b) => a + b, 0);
+    const bestTime = totalTB >= 5 ? Object.keys(tB).reduce((a, b) => tB[a] >= tB[b] ? a : b) : null;
+
+    // Weekly challenge
+    const wc = JSON.parse(localStorage.getItem("gritgo_weekly_challenge")) || {};
+    const curWeekChallenge = wc.week === getWeekKeyInternal() ? wc : null;
+
+    return {
+      challenge: {
+        name: challengeData.title, duration: challengeData.duration,
+        currentDay, daysLeft: Math.max(0, challengeData.duration - currentDay),
+        startDate, endDate, motivation: challengeData.motivation,
+        dayStart: challengeData.dayStart, dayEnd: challengeData.dayEnd,
+        daysTrackedSoFar: allDates.length
+      },
+      today: { completed: completedToday.length, total: totalHabits, completedNames: completedToday, missedNames: missedToday },
+      overall: { currentStreak: curStreak, perfectDays, overallPercent, totalCompletions: totalCompleted, totalPossible },
+      habits,
+      water: { todayLiters: todayWater, goalLiters: wGoal, percent: wGoal > 0 ? Math.round((todayWater / wGoal) * 100) : 0, currentStreak: wStreak, weekTotalLiters: Math.round(wWeek * 10) / 10 },
+      sleep: { todayHours: todaySleep, avgThisWeek: avgSleep, weekData: sleepW },
+      quitHabits: quits,
+      workout: { thisWeekDays: weekWO, totalDays: woKeys.length, totalVolumeKg: Math.round(totalVol), weekVolumeKg: Math.round(weekVol) },
+      dailyTasks: { total: allTasks.length, done: doneTasks, aiCount: (todayTasks.ai || []).length, mineCount: (todayTasks.mine || []).length },
+      bookRules: { total: bRules.length, doneToday: brDone },
+      food: { scansToday: todayFood.length, caloriesToday: todayCals, totalScans: food.length },
+      photos: { timelineCount: pTL.length, progressCount: pPG.length },
+      moods: { recent7Days: recentMoods, allTimeCounts: mCounts },
+      journal: { totalEntries: jCount, recentEntries: recentJ },
+      smartInsights: { bestTimeOfDay: bestTime, timeDistribution: totalTB >= 5 ? tB : null, weeklyChallenge: curWeekChallenge },
+      profile: { name: (typeof userProfile !== 'undefined' && userProfile.name) || "User", age: (typeof userProfile !== 'undefined' && userProfile.age) || null, bio: (typeof userProfile !== 'undefined' && userProfile.bio) || null },
+      persona: (typeof currentPersona !== 'undefined') ? currentPersona : 'normal'
+    };
+  };
+
+  // ============================================================
+  // 📝 FORMATTED STRING FOR AI
+  // ============================================================
+  window.getFullAppContextString = function () {
+    const s = window.getFullAppSnapshot();
+    const L = [];
+    L.push("═══════════ COMPLETE APP DATA (EVERY FEATURE) ═══════════");
+
+    L.push("\n📋 CHALLENGE:");
+    L.push(`- Name: "${s.challenge.name}"`);
+    L.push(`- Day ${s.challenge.currentDay} of ${s.challenge.duration} (${s.challenge.daysLeft} days left)`);
+    L.push(`- Days tracked: ${s.challenge.daysTrackedSoFar}`);
+    L.push(`- Motivation: "${s.challenge.motivation}"`);
+    L.push(`- Daily window: ${s.challenge.dayStart} → ${s.challenge.dayEnd}`);
+
+    L.push("\n✅ TODAY:");
+    L.push(`- Habits: ${s.today.completed}/${s.today.total}`);
+    L.push(`- Done: ${s.today.completedNames.join(", ") || "None"}`);
+    L.push(`- Missed: ${s.today.missedNames.join(", ") || "All done!"}`);
+
+    L.push("\n📊 OVERALL STATS:");
+    L.push(`- Streak: ${s.overall.currentStreak} days`);
+    L.push(`- Perfect days: ${s.overall.perfectDays}`);
+    L.push(`- Overall completion: ${s.overall.overallPercent}% (${s.overall.totalCompletions}/${s.overall.totalPossible})`);
+
+    L.push("\n🎯 HABIT-BY-HABIT:");
+    s.habits.forEach(h => L.push(`- "${h.name}" [${h.category}]: ${h.successRate}% | Cur streak: ${h.currentStreak}d | Best: ${h.bestStreak}d | Status: ${h.status}`));
+
+    L.push("\n💧 WATER:");
+    L.push(`- Today: ${s.water.todayLiters}L / ${s.water.goalLiters}L (${s.water.percent}%)`);
+    L.push(`- Water streak: ${s.water.currentStreak} days`);
+    L.push(`- Week total: ${s.water.weekTotalLiters}L`);
+
+    L.push("\n😴 SLEEP:");
+    L.push(`- Today: ${s.sleep.todayHours !== null ? s.sleep.todayHours + 'h' : 'Not logged'}`);
+    L.push(`- Week avg: ${s.sleep.avgThisWeek !== null ? s.sleep.avgThisWeek + 'h' : 'No data'}`);
+
+    L.push("\n🚭 QUIT HABITS:");
+    if (s.quitHabits.length > 0) {
+      s.quitHabits.forEach(q => L.push(`- "${q.name}": ${q.cleanDays}d clean | Best: ${q.bestDays}d | Relapses: ${q.relapses}`));
+    } else L.push("- None added");
+
+    L.push("\n🏋️ WORKOUT:");
+    L.push(`- This week: ${s.workout.thisWeekDays} days (${s.workout.weekVolumeKg}kg vol)`);
+    L.push(`- Total: ${s.workout.totalDays} days (${s.workout.totalVolumeKg}kg vol)`);
+
+    L.push("\n📝 DAILY TASKS:");
+    L.push(`- Today: ${s.dailyTasks.done}/${s.dailyTasks.total} done (AI: ${s.dailyTasks.aiCount}, Mine: ${s.dailyTasks.mineCount})`);
+
+    L.push("\n📚 BOOK RULES:");
+    L.push(`- Total: ${s.bookRules.total} | Done today: ${s.bookRules.doneToday}`);
+
+    L.push("\n🍔 FOOD SCANNER:");
+    L.push(`- Today: ${s.food.scansToday} scans, ${s.food.caloriesToday} kcal | Total: ${s.food.totalScans}`);
+
+    L.push("\n📸 PHOTOS:");
+    L.push(`- Timeline: ${s.photos.timelineCount} | Progress: ${s.photos.progressCount}`);
+
+    L.push("\n😊 MOODS:");
+    L.push(`- All-time: Happy ${s.moods.allTimeCounts.happy}, Okay ${s.moods.allTimeCounts.okay}, Tired ${s.moods.allTimeCounts.tired}, Stressed ${s.moods.allTimeCounts.stressed}`);
+    const rmStr = s.moods.recent7Days.filter(m => m.mood).map(m => `${m.date}: ${m.mood}`).join(", ");
+    if (rmStr) L.push(`- Recent: ${rmStr}`);
+
+    L.push("\n📓 JOURNAL:");
+    L.push(`- Total: ${s.journal.totalEntries}`);
+    s.journal.recentEntries.forEach(j => L.push(`- ${j.date}: "${j.note}"`));
+
+    L.push("\n🧠 SMART INSIGHTS:");
+    if (s.smartInsights.bestTimeOfDay) {
+      L.push(`- Best time: ${s.smartInsights.bestTimeOfDay}`);
+      const td = s.smartInsights.timeDistribution;
+      L.push(`- Time: Morning ${td.morning}, Afternoon ${td.afternoon}, Evening ${td.evening}, Night ${td.night}`);
+    } else L.push("- Best time: Still collecting");
+    if (s.smartInsights.weeklyChallenge) {
+      L.push(`- Weekly Challenge: "${s.smartInsights.weeklyChallenge.text}" (${s.smartInsights.weeklyChallenge.done ? 'DONE ✓' : 'pending'})`);
+    }
+
+    L.push("\n👤 USER:");
+    L.push(`- Name: ${s.profile.name}`);
+    if (s.profile.age) L.push(`- Age: ${s.profile.age}`);
+    if (s.profile.bio) L.push(`- Bio: ${s.profile.bio}`);
+    L.push(`- Persona: ${s.persona}`);
+
+    L.push("\n═══════════════════════════════════════════════");
+    return L.join("\n");
+  };
+
+  // ============================================================
+  // 📊 ENHANCED AI PERFORMANCE REVIEW (Auto-Aware of All Data)
+  // ============================================================
+  window.generateAIReview = async function (type) {
+    const btnW = document.getElementById("weeklyReviewBtn");
+    const btnM = document.getElementById("monthlyReviewBtn");
+    const responseBox = document.getElementById("reviewResponseBox");
+    const responseText = document.getElementById("reviewResponseText");
+    const currentDay = getCurrentDayNumber();
+
+    if (type === 'weekly' && currentDay < 7) {
+      responseBox.style.display = "block";
+      responseText.textContent = `Week not over yet. Day ${currentDay}. Wait until Day 7.`;
+      return;
+    }
+    if (type === 'monthly' && currentDay < 30) {
+      responseBox.style.display = "block";
+      responseText.textContent = `Month not over yet. Day ${currentDay}. Wait until Day 30.`;
+      return;
+    }
+
+    btnW.disabled = true; btnM.disabled = true;
+    responseBox.style.display = "block";
+    responseText.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;gap:10px;padding:20px;color:#00e5ff;font-weight:bold;"><div class="loading-spinner"></div> Analyzing EVERY feature & every data point...</div>`;
+
+    try {
+      const contextStr = window.getFullAppContextString();
+      const sysPrompt = {
+        role: 'system',
+        content: `${getPersonaPrompt()}
+
+You are GRITGO AI Coach — a world-class habit, health, and productivity analyst.
+
+You have EVERY piece of data from the user's app. Now produce a DEEP, HONEST analysis.
+
+🚨 NON-NEGOTIABLE RULES:
+1. Use REAL NUMBERS. Never be vague. Say "Your water streak is 2 days" not "You should drink more".
+2. Cover EVERY area listed below. Nothing skipped.
+3. Be BRUTALLY HONEST — praise great stats with numbers, harshly call out failures WITH data.
+4. Name SPECIFIC habits that fail (exact names).
+5. Cross-compare areas: "You crush habits (85%) but fail sleep (avg 5.2h) — this is sabotaging your recovery."
+6. Give 3 SPECIFIC actions for next period.
+7. Format with clear emoji sections. Language = user's voice language.
+
+REQUIRED SECTIONS (cover ALL):
+📊 OVERALL SCORE
+🎯 HABITS (name best + worst)
+💧 WATER
+😴 SLEEP
+🏋️ WORKOUT
+🚭 QUIT HABITS
+📚 BOOK RULES
+📝 DAILY TASKS
+🍔 FOOD SCANNER
+📸 PHOTOS
+😊 MOODS
+📓 JOURNAL
+🧠 SMART INSIGHTS
+🏆 WHAT'S WORKING
+⚠️ WHAT'S FAILING
+🎯 3-STEP ACTION PLAN`
+      };
+
+      const userPrompt = `My COMPLETE app data:\n\n${contextStr}\n\nGive me the FULL ${type.toUpperCase()} review. Cover every feature. Be honest. Name failing habits. Give exact numbers and 3 concrete actions.`;
+
+      const reply = await callGroq(
+        [sysPrompt, { role: 'user', content: userPrompt }],
+        { temperature: 0.55, max_tokens: 4000 }
+      );
+      responseText.textContent = reply;
+      if (isVoiceReplyOn && typeof speakText === 'function') speakText(reply);
+    } catch (e) {
+      responseText.textContent = "Error: " + e.message;
+    } finally {
+      btnW.disabled = false; btnM.disabled = false;
+    }
+  };
+
+  document.getElementById("weeklyReviewBtn").onclick = () => window.generateAIReview('weekly');
+  document.getElementById("monthlyReviewBtn").onclick = () => window.generateAIReview('monthly');
+
+  // ============================================================
+  // 🤖 ENHANCED AI CHAT (Knows EVERYTHING Automatically)
+  // ============================================================
+  const askBtn = document.getElementById("askAiBtn");
+  if (!askBtn) return;
+  const newAskBtn = askBtn.cloneNode(true);
+  askBtn.parentNode.replaceChild(newAskBtn, askBtn);
+
+  newAskBtn.addEventListener("click", async function () {
+    const chatInput = document.getElementById("aiQuestionInput");
+    const text = chatInput.value.trim();
+    const hasImage = !!window.pendingImageBase64;
+    editBackupData = null;
+    const oldToast = document.getElementById("editCancelToast");
+    if (oldToast) oldToast.remove();
+
+    if (!text && !hasImage) { showToast("Type something first!"); return; }
+
+    const cleanedText = text.replace(/Add Habit:?/gi, "").trim();
+    chatInput.value = "";
+    chatInput.style.height = "40px";
+
+    let userContent, displayText;
+    if (hasImage) {
+      userContent = [
+        { type: "text", text: text || "Analyze this image." },
+        { type: "image_url", image_url: { url: `data:${window.pendingImageMime};base64,${window.pendingImageBase64}` } }
+      ];
+      displayText = text ? `📷 ${text}` : "[Image]";
+    } else { userContent = cleanedText; displayText = text; }
+
+    const historyMessage = { role: 'user', content: displayText };
+    if (hasImage) historyMessage.image = `data:${window.pendingImageMime};base64,${window.pendingImageBase64}`;
+    chatHistory.push(historyMessage);
+    renderChatMessages();
+
+    const loadingId = 'loading_' + Date.now();
+    const container = document.getElementById("miniChatHistory");
+    const loadingBubble = document.createElement("div");
+    loadingBubble.className = "chat-bubble ai";
+    loadingBubble.id = loadingId;
+    loadingBubble.innerHTML = `<span style="color:#00e5ff;display:flex;align-items:center;gap:8px;"><span class="loading-spinner"></span> ${hasImage ? "Analyzing..." : "Thinking..."}</span>`;
+    container.appendChild(loadingBubble);
+    container.scrollTop = container.scrollHeight;
+
+    try {
+      const fullContext = window.getFullAppContextString();
+
+      const systemPrompt = {
+        role: 'system',
+        content: `${getPersonaPrompt()}
+
+You are GRITGO AI Coach — an elite general-purpose AI (like ChatGPT) embedded inside a habit tracker.
+
+${fullContext}
+
+🌟 LIVE APP FEATURES YOU MUST KNOW:
+- Habit Tracker, Water Tracker, Sleep Tracker, Workout Tracker
+- AI Habit Coach, AI Habit Generator, AI Performance Review, AI Master Time Planner
+- Extras & Insights, Quit Habit Tracker, Daily Tasks, Book Rules Tracker
+- Digital Library, AI Food Scanner, SMART Goal & Photo Gallery
+- Photo Timeline, Weekly Challenge, Best Time Insights, Report Cards
+- Settings: themes, backup, restore, CSV export
+
+🚨 CRITICAL BEHAVIOR:
+1. You are GENERAL-PURPOSE — answer coding, general knowledge, advice, anything. But ALWAYS link back to their goals.
+2. You ALREADY KNOW every number above. Reference ACTUAL data. Example: "Your water streak is 2 days but habit streak is 12 — that's the gap to fix."
+3. When user asks "how am I doing?" → analyze EVERYTHING with real numbers.
+4. Guide them using exact button names from the list above.
+5. LANGUAGE: Reply in the SAME language user speaks.
+6. Adding habits: reply ONLY with JSON like [{"action":"add_habit","name":"X","category":"Y"}]
+7. Quit craving: emergency addiction coach using their quit data.
+8. Be HONEST — call out failures with data. Praise wins with numbers.
+9. ALWAYS reference real data — never generic advice.`
+      };
+
+      const pastMessages = chatHistory.slice(-11, -1).map(m => ({
+        role: m.role === 'assistant' ? 'assistant' : 'user',
+        content: m.content
+      }));
+
+      const aiReply = await callGroq(
+        [systemPrompt, ...pastMessages, { role: 'user', content: userContent }],
+        { temperature: 0.7, max_tokens: 4000, hasImage }
+      );
+
+      const le = document.getElementById(loadingId);
+      if (le) le.remove();
+      if (!aiReply || !aiReply.trim()) throw new Error("Empty response");
+
+      let addedHabitsCount = 0;
+      let finalReply = aiReply;
+      try {
+        const jm = aiReply.match(/\[[\s\S]*\]/);
+        if (jm) {
+          const parsed = JSON.parse(jm[0]);
+          if (Array.isArray(parsed) && parsed.length && parsed[0].action === "add_habit") {
+            parsed.forEach(item => {
+              if (item.action === "add_habit" && item.name) {
+                challengeData.habits.push({
+                  id: 'h_' + Math.random().toString(36).substr(2, 9),
+                  name: item.name, category: item.category || 'General',
+                  target: 1, days: [0,1,2,3,4,5,6]
+                });
+                addedHabitsCount++;
+              }
+            });
+            if (addedHabitsCount > 0) {
+              localStorage.setItem("challengeData", JSON.stringify(challengeData));
+              if (typeof renderHabits === 'function') renderHabits();
+              if (typeof renderTodayHabits === 'function') renderTodayHabits();
+              if (typeof renderHeatmap === 'function') renderHeatmap();
+              if (typeof updateStats === 'function') updateStats();
+              finalReply = `✅ Done! Added ${addedHabitsCount} habit(s).`;
+            }
+          }
+        }
+      } catch (e) {}
+
+      chatHistory.push({ role: 'assistant', content: finalReply });
+      localStorage.setItem("gritgo_chat_history", JSON.stringify(chatHistory));
+      renderChatMessages();
+      if (isVoiceReplyOn && typeof speakText === 'function') speakText(finalReply);
+      if (addedHabitsCount > 0) showToast(`${addedHabitsCount} habits added!`);
+
+      window.pendingImageBase64 = null;
+      window.pendingImageMime = null;
+      const ci = document.getElementById("chatImageInput");
+      if (ci) ci.value = "";
+      const ipc = document.getElementById("imagePreviewContainer");
+      if (ipc) ipc.style.display = "none";
+    } catch (error) {
+      const le = document.getElementById(loadingId);
+      if (le) le.innerHTML = `<span style="color:#ff6b4a;font-weight:bold;">❌ Error: ${error.message}</span>`;
+      else {
+        chatHistory.push({ role: 'assistant', content: "❌ AI Error: " + error.message });
+        renderChatMessages();
+      }
+    }
+  });
+
+  // Enter to send
+  const aiInput = document.getElementById("aiQuestionInput");
+  if (aiInput && !aiInput.dataset.enhancedBound) {
+    aiInput.dataset.enhancedBound = "true";
+    aiInput.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        newAskBtn.click();
+      }
+    });
+  }
+
+  console.log("✅ ENHANCED AI: Full snapshot + chat + review (No extra button) loaded");
+})();
 </script>
-<!-- 🌟 NITRO BOOST OVERLAY -->
-<div id="nitroOverlay">
-  <div class="nitro-title">🔥 NITRO BOOST 🔥</div>
-  <div class="nitro-subtitle">100% COMPLETED</div>
+  <!-- 📚 Digital Library Modal -->
+<div id="digitalLibraryModal" class="modal-overlay" style="z-index: 8500; padding: 0; backdrop-filter: blur(5px); background: rgba(0,0,0,0.9);">
+  <div class="modal-box" style="height: 100dvh; max-height: 100dvh; width: 100%; max-width: 100%; border-radius: 0; padding: 20px; margin: 0; background: var(--app-bg, #0f1419); display: flex; flex-direction: column;">
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+      <h2 style="margin: 0; color: #f1c40f; font-size: 22px; display: flex; align-items: center; gap: 8px;" id="libraryHeaderTitle">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+        Digital Library
+      </h2>
+      <button id="closeLibraryBtn" style="background: transparent; border: none; color: #ff6b4a; cursor: pointer; padding: 5px;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+
+    <div id="libraryBookGrid" style="flex: 1; overflow-y: auto; display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding-bottom: 20px;"></div>
+
+    <div id="libraryBookDetails" style="display: none; flex: 1; overflow-y: auto; padding-bottom: 30px;">
+      <button id="backToLibraryGridBtn" style="background: rgba(255,255,255,0.05); border: 1px solid #2a3142; color: #00e5ff; padding: 8px 15px; border-radius: 8px; font-size: 13px; font-weight: bold; cursor: pointer; margin-bottom: 20px; display: flex; align-items: center; gap: 6px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg> Back to Library
+      </button>
+      
+      <div style="text-align: center; margin-bottom: 25px;">
+        <h2 id="detailBookTitle" style="color: #f1c40f; font-size: 24px; margin-bottom: 5px;">Book Title</h2>
+        <p id="detailBookAuthor" style="color: #9aa0a6; font-size: 14px; font-style: italic;">by Author</p>
+      </div>
+
+      <div id="detailBookChapters" style="display: flex; flex-direction: column; gap: 20px;"></div>
+    </div>
+
+  </div>
 </div>
- <!-- 🏎️ Racing Car Animation -->
-<div id="racingCarContainer">🏎️</div>
+  <!-- 📖 Book AI Chat Modal -->
+<div id="bookAiModal" class="modal-overlay" style="z-index: 9000;">
+  <div class="modal-box" style="display: flex; flex-direction: column; height: 80vh; max-width: 450px;">
+    <h2 id="bookAiTitle" style="margin-bottom: 10px; color: #00e5ff; font-size: 18px; text-align: left;">AI Book Partner</h2>
+    <div id="bookAiChatHistory" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding: 10px; background: #0f1419; border-radius: 10px; margin-bottom: 15px; border: 1px solid #2a3142;"></div>
+    <div style="display: flex; gap: 6px;">
+      <input type="text" id="bookAiInput" placeholder="Ask about the rules..." style="flex: 1; padding: 12px; border-radius: 10px; border: 1px solid #2a3142; background: #1a1f2e; color: white; outline: none;">
+      <button id="bookAiSendBtn" style="background: #00e5ff; color: #05080f; border: none; padding: 0 15px; border-radius: 10px; font-weight: bold; cursor: pointer;">Send</button>
+    </div>
+    <button id="bookAiCloseBtn" style="margin-top: 15px; padding: 14px; background: #2a3142; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer;">Close</button>
+  </div>
+</div>
+
+<!-- 📖 Book Rules Tracker Modal -->
+<div id="bookRulesTrackerModal" class="modal-overlay" style="z-index: 8500; padding: 0;">
+  <div class="modal-box" style="height: 100dvh; max-height: 100dvh; width: 100%; max-width: 100%; border-radius: 0; padding: 20px; margin: 0; display: flex; flex-direction: column;">
+    <h2 style="margin-bottom: 15px; color: #f39c12; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px;">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+  Book Rules Tracker
+</h2>
+    
+    <!-- Stats Grid -->
+    <div class="stats" style="margin-bottom: 20px;">
+      <div class="stat-card"><span id="brStreak">0</span><span>day streak</span></div>
+      <div class="stat-card"><span id="brPerfect">0</span><span>perfect days</span></div>
+      <div class="stat-card"><span id="brOverall">0%</span><span>overall</span></div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="extras-section" style="border-color: #f39c12; margin-bottom: 15px;">
+      <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px;">
+        <span id="brTodayProgress" style="color: #f39c12; font-weight: bold;">0 / 0 done today</span>
+      </div>
+      <div class="progress-bar-bg"><div class="progress-bar-fill" id="brProgressBar" style="width: 0%;"></div></div>
+    </div>
+
+    <!-- Rules List -->
+    <div id="brRulesList" style="flex: 1; overflow-y: auto; margin-bottom: 15px;"></div>
+
+    <div class="settings-buttons" style="margin-top: 0; flex-shrink: 0;">
+      <button id="brCloseBtn" style="background: #2a3142; color: white; width: 100%;">Close</button>
+    </div>
+  </div>
+</div>
+    
+    <!-- 🍔 AI Food Scanner Modal (FULL SCREEN & FIXED) -->
+<div id="foodScannerModal" class="modal-overlay" style="z-index: 8500; padding: 0;">
+  <div class="modal-box" style="padding: 20px; text-align: center; height: 100dvh; max-height: 100dvh; width: 100%; max-width: 100%; border-radius: 0; border: none; margin: 0; overflow-y: auto; background: var(--app-bg, #0f1419);">
+    
+    <h2 style="color: #2ecc71; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l19-9-9 19-2-8-8-2z"></path></svg>
+      AI Food Scanner
+    </h2>
+    
+    <p style="color: #9aa0a6; font-size: 13px; margin-bottom: 15px;">Upload or take a photo of your food, and AI will detect Calories, Protein, Carbs & Fat!</p>
+    
+    <input type="file" id="foodImageInput" accept="image/*" style="display: none;">
+    
+    <div id="foodImagePreviewContainer" style="display: none; margin-bottom: 15px; position: relative;">
+      <img id="foodImagePreview" style="width: 100%; max-height: 250px; object-fit: cover; border-radius: 10px; border: 1px solid #2a3142;">
+      <button id="removeFoodImageBtn" style="position: absolute; top: -10px; right: -10px; background: #ff6b4a; color: white; border: none; border-radius: 50%; width: 26px; height: 26px; font-weight: bold; cursor: pointer; font-size: 16px;">×</button>
+    </div>
+
+    <button id="uploadFoodBtn" style="width: 100%; padding: 12px; background: rgba(46, 204, 113, 0.1); color: #2ecc71; border: 1px dashed #2ecc71; border-radius: 10px; font-weight: bold; cursor: pointer; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+      Select Food Photo
+    </button>
+
+    <button id="analyzeFoodBtn" style="width: 100%; padding: 14px; background: linear-gradient(135deg, #2ecc71, #27ae60); color: white; border: none; border-radius: 10px; font-weight: bold; font-size: 15px; cursor: pointer; display: none; margin-bottom: 15px;">
+      Analyze Nutrition
+    </button>
+
+    <!-- Result Box -->
+    <div id="foodResultBox" style="display: none; text-align: left; background: #0f1419; border: 1px solid #2a3142; border-radius: 10px; padding: 15px; margin-bottom: 15px;">
+      <h3 id="foodName" style="color: #2ecc71; font-size: 16px; margin-bottom: 10px;">Food Name</h3>
+      
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+        <div style="background: #1a1f2e; padding: 10px; border-radius: 8px; text-align: center; border-left: 3px solid #ff6b4a;">
+          <div style="font-size: 11px; color: #9aa0a6;">Calories</div>
+          <div id="foodCalories" style="font-size: 18px; font-weight: bold; color: #ff6b4a;">0 kcal</div>
+        </div>
+        <div style="background: #1a1f2e; padding: 10px; border-radius: 8px; text-align: center; border-left: 3px solid #4a9eff;">
+          <div style="font-size: 11px; color: #9aa0a6;">Protein</div>
+          <div id="foodProtein" style="font-size: 18px; font-weight: bold; color: #4a9eff;">0 g</div>
+        </div>
+        <div style="background: #1a1f2e; padding: 10px; border-radius: 8px; text-align: center; border-left: 3px solid #f1c40f;">
+          <div style="font-size: 11px; color: #9aa0a6;">Carbs</div>
+          <div id="foodCarbs" style="font-size: 18px; font-weight: bold; color: #f1c40f;">0 g</div>
+        </div>
+        <div style="background: #1a1f2e; padding: 10px; border-radius: 8px; text-align: center; border-left: 3px solid #9b59b6;">
+          <div style="font-size: 11px; color: #9aa0a6;">Fats</div>
+          <div id="foodFats" style="font-size: 18px; font-weight: bold; color: #9b59b6;">0 g</div>
+        </div>
+      </div>
+      
+      <p id="foodSummary" style="font-size: 13px; color: #e8eaed; line-height: 1.5; font-style: italic; margin-bottom: 12px;"></p>
+      
+      <!-- Disclaimer -->
+      <p style="font-size: 10px; color: #9aa0a6; text-align: center; font-style: italic; border-top: 1px solid #2a3142; padding-top: 10px; margin: 0;">
+        *Disclaimer: AI estimates are approximate. Actual nutrition may vary based on portion size and cooking method.
+      </p>
+    </div>
+<!-- 🕒 নতুন: Food Scan History Section -->
+<div style="margin-top: 15px; border-top: 1px solid #2a3142; padding-top: 15px;">
+  <button id="toggleFoodHistoryBtn" style="width: 100%; padding: 10px; background: #1a1f2e; color: #00e5ff; border: 1px solid #00e5ff; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: space-between;">
+    <span style="display:flex; align-items:center; gap:8px;">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="10"></circle>
+    <polyline points="12 6 12 12 16 14"></polyline>
+  </svg>
+  Recent Scans
+</span>
+    <svg id="historyArrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="transition: transform 0.3s;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+  </button>
+  
+  <div id="foodHistoryContainer" style="display: none; margin-top: 10px; max-height: 200px; overflow-y: auto; padding-right: 5px;"></div>
+</div>
+<!-- 🕒 হিস্ট্রি সেকশন শেষ -->
+
+<div class="settings-buttons" style="margin-top: 15px;">
+  <button id="closeFoodScannerBtn" style="background: #2a3142; color: #e8eaed;">Close</button>
+</div>
+   
+    
+  </div>
+</div>
   </body>
 </html>
