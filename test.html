@@ -15009,11 +15009,11 @@ Do not write anything else in that specific message if you are adding rules.
   }
 
   window.getFullAppSnapshot = function () {
-    const todayKey = getDateKey();
-    const startDate = normalizeDate(challengeData.startDate);
-    const currentDay = getCurrentDayNumber();
-    const totalHabits = challengeData.habits.length;
-
+  const todayKey = getDateKey();
+  const startDate = normalizeDate(challengeData.startDate);
+  const endDate = getEndDateKey(startDate, challengeData.duration); // 👈 এই লাইনটি নতুন যোগ করুন
+  const currentDay = getCurrentDayNumber();
+  const totalHabits = challengeData.habits.length;
     // Build all dates since challenge start
     const allDates = [];
     let d = new Date(startDate + "T00:00:00");
