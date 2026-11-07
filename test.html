@@ -1623,10 +1623,7 @@ body.light-theme #addHabitCancel {
   AI Food Scanner
 </button>
 
-<button id="sidebarSmartGalleryBtn" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background: #1a1f2e; color: #4a9eff; border: 1px solid #4a9eff; padding: 8px; border-radius: 10px; font-size: 12px; font-weight: bold; cursor: pointer; margin-bottom: 8px; transition: 0.2s;">
-  <svg style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2;" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
-  Goals & Photo Gallery
-</button>
+
 
 <button id="sidebarBackupBtn" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background: #1a1f2e; color: #4aaa4a; border: 1px solid #4aaa4a; padding: 8px; border-radius: 10px; font-size: 12px; font-weight: bold; cursor: pointer; margin-bottom: 8px; transition: 0.2s;">
   <svg style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2;" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
@@ -2000,6 +1997,7 @@ body.light-theme #addHabitCancel {
     <span id="selectionCountText">0 selected</span>
   </div>
   <div style="display: flex; gap: 6px;">
+   <button id="chatSelectReadBtn" type="button" style="display: none;">Read Loud</button> 
     <button id="chatSelectCopyBtn" type="button">Copy</button>
     <!-- 🌟 নতুন Edit বাটন যোগ করা হলো -->
     <button id="chatSelectEditBtn" type="button" style="display: none;">Edit</button>
@@ -3377,7 +3375,7 @@ function showEditCancelToast() {
   const toast = document.createElement("div");
   toast.id = "editCancelToast";
   toast.style.cssText = `
-    position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(100px);
+    position: fixed; top: 80px; left: 50%; transform: translateX(-50%) translateY(-150px);
     background: #1a1f2e; border: 1px solid #ff6b4a; border-radius: 12px;
     padding: 12px 16px; display: flex; align-items: center; gap: 15px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.6); z-index: 99999;
@@ -3385,8 +3383,11 @@ function showEditCancelToast() {
     min-width: 250px; max-width: 90vw;
   `;
   toast.innerHTML = `
-    <span style="color: #e8eaed; font-size: 13px; flex: 1;">✏️ Editing Message...</span>
-    <button id="cancelEditActionBtn" style="background: transparent; border: 1px solid #ff6b4a; color: #ff6b4a; padding: 6px 12px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer;">Cancel</button>
+    <span style="color: #e8eaed; font-size: 13px; flex: 1; display: flex; align-items: center; gap: 8px;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4a9eff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+      Editing Message...
+    </span>
+    <button id="cancelEditActionBtn" style="background: transparent; border: 1px solid #ff6b4a; color: #ff6b4a; padding: 6px 12px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer;">Discard</button>
   `;
   
   toast.querySelector("#cancelEditActionBtn").onclick = () => {
@@ -3403,18 +3404,13 @@ function showEditCancelToast() {
     }
     toast.style.transform = "translateX(-50%) translateY(100px)";
     setTimeout(() => toast.remove(), 300);
-    showToast("❌ Edit Cancelled");
+    showToast("Edit Discarded");
   };
   
   document.body.appendChild(toast);
   setTimeout(() => toast.style.transform = "translateX(-50%) translateY(0)", 50);
   
-  setTimeout(() => {
-    if (document.getElementById("editCancelToast")) {
-      toast.style.transform = "translateX(-50%) translateY(100px)";
-      setTimeout(() => toast.remove(), 300);
-    }
-  }, 10000);
+
 }    
 function showConfetti() {
   const colors = ['#00e5ff', '#4a9eff', '#ff6b4a', '#d6a1f0', '#4aaa4a', '#f1c40f'];
@@ -3831,27 +3827,64 @@ if (s < getLiteralDateKey() && s !== originalStartDate) {
 document.getElementById("resetAllData").onclick = () => { document.getElementById("settingsModal").classList.remove("active"); document.getElementById("resetModal").classList.add("active"); };
 document.getElementById("resetCancel").onclick = () => { document.getElementById("resetModal").classList.remove("active"); document.getElementById("settingsModal").classList.add("active"); };
 document.getElementById("resetConfirm").onclick = () => {
-  // 🌟 সব GRITGO ডেটা মুছে ফেলার জন্য
-  localStorage.removeItem("challengeData");           // ✅ হ্যাবিট, লগ, চ্যালেঞ্জ
-  localStorage.removeItem("aquaData");                // ✅💧 পানি ডেটা (এটাই মিসিং ছিল!)
-  localStorage.removeItem("gritgo_sleep_state");      // ✅ ঘুম ডেটা
-  localStorage.removeItem("gritgo_intro_seen");       // ✅ intro দেখা flag
-  localStorage.removeItem("gritgo_chat_history");     // ✅ AI চ্যাট হিস্ট্রি
-  localStorage.removeItem("gritgo_user_profile");     // ✅ ইউজার প্রোফাইল
-  localStorage.removeItem("gritgo_saved_quote");      // ✅ সেভ করা কোট
-  localStorage.removeItem("gritgo_hide_completed");   // ✅ হাইড কমপ্লিটেড সেটিং
-  localStorage.removeItem("gritgo_custom_theme");     // ✅ অ্যাপ থিম
-  localStorage.removeItem("gritgo_chat_theme");       // ✅ চ্যাট থিম
-  localStorage.removeItem("gritgo_ai_persona");       // ✅ AI Persona
-  localStorage.removeItem("gritgo_auto_theme");       // ✅ অটো থিম
-  localStorage.removeItem("gritgo_wake_word");        // ✅ Wake Word
-  localStorage.removeItem("gritgo_voice_reply");      // ✅ ভয়েস রিপ্লাই
-  localStorage.removeItem("gritgo_lang");             // ✅ ভাষা সেটিং
-  localStorage.removeItem("gritgo_last_ai_checkin");  // ✅ শেষ AI চেক-ইন
-  localStorage.removeItem("gritgo_last_backup");      // ✅ শেষ ব্যাকআপ
+  // 🌟 কাস্টম প্রিমিয়াম পপ-আপ তৈরি করা
+  const confirmModal = document.createElement("div");
+  confirmModal.className = "modal-overlay active";
+  confirmModal.style.zIndex = "99999";
   
-  // সব রিসেট হয়ে পেজ রিলোড হবে
-  location.reload();
+  confirmModal.innerHTML = `
+    <div class="modal-box" style="max-width: 320px; text-align: center; padding: 25px 20px; border: 1px solid #ff6b4a; box-shadow: 0 10px 30px rgba(255, 107, 74, 0.2); border-radius: 20px; background: linear-gradient(145deg, #1a1f2e, #14151f);">
+      <div style="background: rgba(255, 107, 74, 0.1); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; border: 2px solid #ff6b4a;">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#ff6b4a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+          <line x1="12" y1="9" x2="12" y2="13"></line>
+          <line x1="12" y1="17" x2="12.01" y2="17"></line>
+        </svg>
+      </div>
+      <h3 style="color: #ffffff; font-size: 18px; margin-bottom: 10px;">Delete Everything?</h3>
+      <p style="color: #9aa0a6; font-size: 13px; line-height: 1.5; margin-bottom: 25px;">Are you absolutely sure? This will delete <b>EVERYTHING</b> (habits, photos, chats, AI memory, settings) permanently!</p>
+      <div class="settings-buttons" style="margin-top: 0;">
+        <button id="customResetCancelBtn" style="background: #2a3142; color: #e8eaed; flex: 1;">Cancel</button>
+        <button id="customResetConfirmBtn" style="background: linear-gradient(135deg, #ff6b4a, #d35400); color: white; flex: 1;">Delete All</button>
+      </div>
+    </div>
+  `;
+  
+  document.body.appendChild(confirmModal);
+
+  // Cancel বাটনে ক্লিক করলে
+  document.getElementById("customResetCancelBtn").onclick = () => {
+    confirmModal.remove();
+    // মূল রিসেট মডালটা আবার আগের অবস্থায় ফিরিয়ে আনা
+    document.getElementById("resetModal").classList.add("active");
+  };
+
+  // Confirm বাটনে ক্লিক করলে
+  document.getElementById("customResetConfirmBtn").onclick = () => {
+    confirmModal.remove();
+    
+    // লোডিং স্ক্রিন দেখানো
+    const loader = document.getElementById("globalLoader");
+    if (loader) {
+      loader.classList.add("active");
+      const textEl = loader.querySelector(".loader-text");
+      if (textEl) textEl.textContent = "Erasing everything...";
+    }
+
+    // ম্যাজিক লজিক: localStorage এর সবকিছু মুছে ফেলা
+    try {
+      localStorage.clear(); 
+      sessionStorage.clear();
+      
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+
+    } catch (e) {
+      console.error("Error clearing data:", e);
+      location.reload();
+    }
+  };
 };
 document.getElementById("feedbackCancel").onclick = () => document.getElementById("feedbackModal").classList.remove("active");
 document.getElementById("feedbackSubmit").onclick = () => {
@@ -4103,7 +4136,7 @@ if (shownCount === 0) {
   } else if (hideCompleted) {
   emptyMessage.innerHTML = `<span style="display:flex; align-items:center; gap:8px; color:grey;">
     <svg class="svg-icon" style="stroke:gold; width:20px; height:20px;" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>
-    All habits completed! (Tap the eye icon to show them)
+    All habits completed!
   </span>`;
 } else {
     emptyMessage.textContent = "No habits match your search";
@@ -6623,8 +6656,11 @@ function speakText(text) {
     showToast("Voice not supported on this browser");
     return;
   }
+  
+  // আগের কথা বলা বন্ধ করা
   window.speechSynthesis.cancel();
 
+  // মার্কডাউন বা অপ্রয়োজনীয় চিহ্ন পরিষ্কার করা
   const cleanText = String(text || "").replace(/[*#_`]/g, "").replace(/\[.*?\]/g, "");
   if (!cleanText.trim()) return;
 
@@ -6633,18 +6669,52 @@ function speakText(text) {
   utterance.lang = selectedLang;
 
   const voices = window.speechSynthesis.getVoices();
-  let preferredVoice = voices.find(v => v.lang === selectedLang);
+  
+  // 🌟 ১. সেরা ভয়েস খোঁজা (মোবাইলের ন্যাচারাল ভয়েস)
+  let preferredVoice = voices.find(v => v.lang === selectedLang && (v.name.includes("Google") || v.name.includes("Samsung") || v.name.includes("Natural") || v.name.includes("Neural")));
+  
+  // যদি সেরা ভয়েস না পাওয়া যায়, তবে ওই ভাষার যেকোনো ভয়েস
+  if (!preferredVoice) {
+    preferredVoice = voices.find(v => v.lang === selectedLang);
+  }
   if (!preferredVoice) {
     preferredVoice = voices.find(v => v.lang.startsWith(selectedLang.split("-")[0]));
   }
   if (preferredVoice) utterance.voice = preferredVoice;
+
+  // 🌟 ২. ভলিউম, পিচ এবং স্পিড (Loud & Clear)
+  utterance.volume = 1;    // ফুল ভলিউম (১.০)
+  utterance.rate = 0.95;   // কথা বলার গতি (0.95 মানে একটু ধীরে ও স্পষ্ট)
+  utterance.pitch = 1.1;   // পিচ (1.1 মানে একটু প্রাণবন্ত শোনাবে)
+
+  // 🌟 ৩. আইফোন/মোবাইল ব্রাউজার ফিক্স (iOS Safari Bug Fix)
+  // কিছু ব্রাউজারে সরাসরি স্পিক করলে ভয়েস আটকে যায়, তাই ছোট একটা ট্রিক
+  if (typeof speechSynthesis !== 'undefined' && speechSynthesis.paused) {
+    speechSynthesis.resume();
+  }
 
   playAIVoiceAnimation();
 
   utterance.onend = () => stopAIVoiceAnimation();
   utterance.onerror = () => stopAIVoiceAnimation();
 
+  // কথা বলা শুরু
   window.speechSynthesis.speak(utterance);
+  
+  // 🔊 অ্যাপের নিজস্ব সাউন্ড ইফেক্ট (ঐচ্ছিক, যদি একটু ভাইব দিতে চান)
+  try {
+    const audioCtx = getSharedAudioContext();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.1);
+  } catch(e) {}
 }
 
 // Voice Popup & Recognition Logic
@@ -6818,7 +6888,10 @@ function closeVoicePopup() {
   }
 }
 
-closeVoicePopupBtn.addEventListener("click", closeVoicePopup);
+closeVoicePopupBtn.addEventListener("click", () => {
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+  closeVoicePopup();
+});
 
 function playAIVoiceAnimation() {
   voicePopupModal.classList.add("active");
@@ -7050,6 +7123,12 @@ function updateSelectionBar() {
     bar.classList.remove("active");
     if (editBtn) editBtn.style.display = "none";
   }
+   // 🔊 Read বাটন: শুধু ১টা AI মেসেজ সিলেক্ট থাকলে দেখাবে
+  const readBtn = document.getElementById("chatSelectReadBtn");
+  if (readBtn) {
+    const m = selectedMessages.size === 1 ? chatHistory[Array.from(selectedMessages)[0]] : null;
+    readBtn.style.display = (m && m.role === 'assistant' && m.content) ? "flex" : "none";
+  } 
 }
 
 function startReply(idx, msg) {
@@ -7120,6 +7199,7 @@ document.getElementById("chatSelectEditBtn").addEventListener("click", (e) => {
     inputEl.style.height = inputEl.scrollHeight + "px";
     
     // ২. এই মেসেজ এবং এর পরের সব মেসেজ চ্যাট থেকে মুছে ফেলা (যাতে নতুন করে এডিট করে পাঠানো যায়)
+        editBackupData = { history: JSON.parse(JSON.stringify(chatHistory)) };
     chatHistory = chatHistory.slice(0, idx);
     localStorage.setItem("gritgo_chat_history", JSON.stringify(chatHistory));
     
@@ -7132,12 +7212,23 @@ document.getElementById("chatSelectEditBtn").addEventListener("click", (e) => {
     // ৫. ইনপুটে ফোকাস করা
     inputEl.focus();
     inputEl.setSelectionRange(inputEl.value.length, inputEl.value.length);
-    
+        showEditCancelToast();
     // ৬. হ্যাপটিক ফিডব্যাক
     if (navigator.vibrate) navigator.vibrate(20);
     
   }
 });
+ document.getElementById("chatSelectReadBtn").addEventListener("click", (e) => {
+  e.preventDefault(); e.stopPropagation();
+  if (selectedMessages.size !== 1) return;
+
+  const msg = chatHistory[Array.from(selectedMessages)[0]];
+  exitSelectionMode();
+
+  if (msg && msg.role === 'assistant' && msg.content) {
+    speakText(msg.content);
+  }
+});   
 document.getElementById("cancelReplyBtn").addEventListener("click", (e) => {
   e.preventDefault(); e.stopPropagation();
   cancelReply();
@@ -8971,186 +9062,6 @@ async function triggerQuitPanic(habitName, daysClean) {
     aiText.innerHTML = `<span style="color:#ff6b4a;">AI Error: ${error.message}. Check your internet or API key.</span>`;
   }
 }
-
-// ============================================================
-// 🌟 NEW FEATURES: SMART Goal & Photo Gallery (Fixed Version)
-// ============================================================
-
-setTimeout(() => {
-  // ১. পপ-আপ ওপেন করার বাটনগুলো
-  const openBtn1 = document.getElementById("openSmartGalleryBtn");
-  const openBtn2 = document.getElementById("sidebarSmartGalleryBtn");
-  const closeBtn = document.getElementById("closeSmartGalleryBtn");
-  const modal = document.getElementById("smartGalleryModal");
-
-  if (openBtn1) openBtn1.addEventListener("click", () => modal.classList.add("active"));
-  if (openBtn2) openBtn2.addEventListener("click", () => {
-    if (typeof closeSidebar === 'function') closeSidebar();
-    modal.classList.add("active");
-  });
-  if (closeBtn) closeBtn.addEventListener("click", () => modal.classList.remove("active"));
-
-  // ২. ট্যাব পরিবর্তনের লজিক
-  const tabSmartGoal = document.getElementById("tabSmartGoal");
-  const tabPhotoGallery = document.getElementById("tabPhotoGallery");
-  const smartGoalSection = document.getElementById("smartGoalSection");
-  const photoGallerySection = document.getElementById("photoGallerySection");
-
-  if (tabSmartGoal && tabPhotoGallery) {
-    tabSmartGoal.addEventListener("click", () => {
-      tabSmartGoal.style.background = "rgba(0, 229, 255, 0.1)";
-      tabSmartGoal.style.color = "#00e5ff";
-      tabSmartGoal.style.borderColor = "#00e5ff";
-      tabPhotoGallery.style.background = "#1a1f2e";
-      tabPhotoGallery.style.color = "#9aa0a6";
-      tabPhotoGallery.style.borderColor = "#2a3142";
-      smartGoalSection.style.display = "block";
-      photoGallerySection.style.display = "none";
-    });
-
-    tabPhotoGallery.addEventListener("click", () => {
-      tabPhotoGallery.style.background = "rgba(155, 89, 182, 0.1)";
-      tabPhotoGallery.style.color = "#d6a1f0";
-      tabPhotoGallery.style.borderColor = "#d6a1f0";
-      tabSmartGoal.style.background = "#1a1f2e";
-      tabSmartGoal.style.color = "#9aa0a6";
-      tabSmartGoal.style.borderColor = "#2a3142";
-      smartGoalSection.style.display = "none";
-      photoGallerySection.style.display = "block";
-      if (typeof window.renderProgressGallery === 'function') window.renderProgressGallery();
-    });
-  }
-
-  // ৩. গ্যালারি থেকে ছবি আপলোড করা
-  const uploadBtn = document.getElementById("uploadPhotoBtn");
-  const photoInput = document.getElementById("progressPhotoInput");
-
-  if (uploadBtn && photoInput) {
-    uploadBtn.addEventListener("click", () => photoInput.click());
-    
-    photoInput.addEventListener("change", (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        const img = new Image();
-        img.onload = () => {
-          const canvas = document.createElement("canvas");
-          const MAX_SIZE = 600;
-          let w = img.width, h = img.height;
-          if (w > h) { if (w > MAX_SIZE) { h *= MAX_SIZE / w; w = MAX_SIZE; } } 
-          else { if (h > MAX_SIZE) { w *= MAX_SIZE / h; h = MAX_SIZE; } }
-          canvas.width = w; canvas.height = h;
-          canvas.getContext("2d").drawImage(img, 0, 0, w, h);
-          
-          const base64Img = canvas.toDataURL("image/jpeg", 0.6);
-          const dayNum = getCurrentDayNumber();
-          
-          if (typeof window.progressPhotos === 'undefined') window.progressPhotos = JSON.parse(localStorage.getItem("gritgo_progress_photos")) || [];
-          
-          window.progressPhotos.push({ id: Date.now(), image: base64Img, day: dayNum, date: getDateKey() });
-          localStorage.setItem("gritgo_progress_photos", JSON.stringify(window.progressPhotos));
-          
-          if (typeof window.renderProgressGallery === 'function') window.renderProgressGallery();
-          if (typeof showToast === 'function') showToast("Photo uploaded for Day " + dayNum + "! 🎉");
-        };
-        img.src = ev.target.result;
-      };
-      reader.readAsDataURL(file);
-      e.target.value = ""; 
-    });
-  }
-}, 1000); // DOM লোড হওয়ার জন্য ১ সেকেন্ড অপেক্ষা করবে
-
-// ৪. গ্যালারি রেন্ডার করার ফাংশন (এটি আপনার আগের কোডের সাথে কনফ্লিক্ট করবে না)
-window.renderProgressGallery = function() {
-  const grid = document.getElementById("galleryGrid");
-  if (!grid) return;
-  grid.innerHTML = "";
-  
-  const photos = window.progressPhotos || JSON.parse(localStorage.getItem("gritgo_progress_photos")) || [];
-  
-  if (photos.length === 0) {
-    grid.innerHTML = `<p style="color:#9aa0a6; font-size:12px; text-align:center; grid-column: span 2; padding: 20px;">No photos yet. Upload your Day 1 photo!</p>`;
-    return;
-  }
-  
-  photos.sort((a, b) => b.id - a.id).forEach(photo => {
-    const div = document.createElement("div");
-    div.style.cssText = "position: relative; border-radius: 10px; overflow: hidden; border: 1px solid #2a3142;";
-    
-    const img = document.createElement("img");
-    img.src = photo.image;
-    img.style.cssText = "width: 100%; height: 120px; object-fit: cover; display: block;";
-    
-    const badge = document.createElement("div");
-    badge.textContent = `Day ${photo.day}`;
-    badge.style.cssText = "position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.7); color: #00e5ff; font-size: 10px; font-weight: bold; padding: 4px; text-align: center;";
-    
-    const delBtn = document.createElement("button");
-    delBtn.innerHTML = "×";
-    delBtn.style.cssText = "position: absolute; top: 5px; right: 5px; background: #ff6b4a; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center;";
-    delBtn.onclick = () => {
-      window.progressPhotos = photos.filter(p => p.id !== photo.id);
-      localStorage.setItem("gritgo_progress_photos", JSON.stringify(window.progressPhotos));
-      window.renderProgressGallery();
-    };
-    
-    div.appendChild(img);
-    div.appendChild(badge);
-    div.appendChild(delBtn);
-    grid.appendChild(div);
-  });
-};
-
-// SMART Goal থেকে হ্যাবিট জেনারেট করার ফাংশন
-setTimeout(() => {
-  const genBtn = document.getElementById("generateSmartHabitsBtn");
-  if (genBtn) {
-    genBtn.addEventListener("click", async () => {
-      const goal = document.getElementById("smartGoalInput").value.trim();
-      const resultBox = document.getElementById("smartHabitsResult");
-      
-      if (!goal) { if (typeof showToast === 'function') showToast("Please write a goal first!"); return; }
-      
-      genBtn.textContent = "Generating...";
-      genBtn.disabled = true;
-      resultBox.style.display = "none";
-      resultBox.innerHTML = "";
-
-      try {
-        const prompt = `The user has this big goal: "${goal}". Break this down into 3-5 daily actionable habits. Respond ONLY with a JSON array like: [{"name": "Habit name", "category": "Health"}]. Do not write any other text.`;
-        const aiReply = await callGroq([{ role: 'user', content: prompt }], { temperature: 0.5, max_tokens: 500 });
-        const s = aiReply.indexOf('[');
-const e = aiReply.lastIndexOf(']');
-const habitsArray = JSON.parse(aiReply.substring(s, e + 1));
-        
-        resultBox.style.display = "flex";
-        resultBox.innerHTML = `<p style="color:#00e5ff; font-size:12px; margin-bottom:5px; font-weight:bold;">Tap to Add:</p>`;
-        
-        habitsArray.forEach(h => {
-          const b = document.createElement("button");
-          b.textContent = "+ " + h.name;
-          b.style.cssText = "padding:10px; background:#1a1f2e; color:#00e5ff; border:1px solid #00e5ff; border-radius:8px; cursor:pointer; text-align:left; font-weight:bold; margin-bottom:5px; width:100%; font-size: 13px;";
-          b.onclick = () => {
-            challengeData.habits.push({ id: 'h_' + Math.random().toString(36).substr(2, 9), name: h.name, category: h.category || 'General', target: 1, days: [0,1,2,3,4,5,6] });
-            localStorage.setItem("challengeData", JSON.stringify(challengeData));
-            renderHabits(); renderTodayHabits(); renderHeatmap(); updateStats();
-            if (typeof showToast === 'function') showToast("Added: " + h.name);
-            b.style.display = "none";
-          };
-          resultBox.appendChild(b);
-        });
-      } catch (e) {
-        if (typeof showToast === 'function') showToast("AI Error: " + e.message);
-      } finally {
-        genBtn.textContent = "Generate Daily Habits";
-        genBtn.disabled = false;
-      }
-    });
-  }
-}, 1000);
 
 // ============================================================
 // 📅 DAILY HISTORY LOGIC
@@ -10990,32 +10901,6 @@ document.addEventListener("DOMContentLoaded", () => {
 // ============================================================
 (function initHeatmapAndPhotos() {
   
-  // Extras মেনুতে বাটন তৈরি করা (Fixed Layout)
-setTimeout(() => {
-  const closeBtn = document.getElementById("extrasClose");
-  
-  if (closeBtn && !document.getElementById("openHeatmapBtn")) {
-    // নতুন সেকশন তৈরি
-    const sec = document.createElement("div");
-    sec.className = "extras-section";
-    sec.style.borderColor = "purple";
-    sec.innerHTML = `
-  <h3>
-    <svg class="svg-icon" style="stroke: #d6a1f0;" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-    Yearly Heatmap & Photos
-  </h3>
-  <p style="color: #9aa0a6; font-size: 12px; margin-bottom: 10px;">Track your whole year's consistency & daily photos!</p>
-  <button id="openHeatmapBtn" style="width: 100%; padding: 12px; background: rgba(214, 161, 240, 0.1); color: #d6a1f0; border: 1px solid #d6a1f0; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
-    Open Yearly View
-  </button>
-`;
-    
-    // 🌟 ফিক্স: Close বাটনের প্যারেন্ট (settings-buttons) এর আগে সেকশনটি বসানো হলো
-    const btnContainer = closeBtn.parentNode;
-    btnContainer.parentNode.insertBefore(sec, btnContainer);
-  }
-}, 1000);
-
   document.addEventListener("click", (e) => {
     if (e.target.closest("#openHeatmapBtn")) {
       document.getElementById("photoHeatmapModal").classList.add("active");
@@ -11046,8 +10931,6 @@ setTimeout(() => {
   const grid = document.getElementById("fullHeatmapGrid");
   if (!grid) return;
   grid.innerHTML = "";
-  
-  // গ্রিডটাকে ব্লক ডিসপ্লেতে সেট করা হলো
   grid.style.display = "block"; 
 
   const today = new Date();
@@ -11055,15 +10938,14 @@ setTimeout(() => {
   const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   const hmColors = (typeof currentTheme !== 'undefined' && currentTheme.heatmap) ? currentTheme.heatmap : ["#1a1f2e", "#1a5b6e", "#008fa3", "#00e5ff"];
 
-  // ১২ মাসের লুপ
   for (let m = 0; m < 12; m++) {
-    // মাসের নাম লেখা
+    // মাসের নাম
     const label = document.createElement("div");
     label.className = "hm-month-label";
     label.textContent = monthNames[m] + " " + year;
     grid.appendChild(label);
 
-    // এই মাসের জন্য আলাদা ৭ কলামের গ্রিড
+    // ৭ কলামের গ্রিড
     const monthGrid = document.createElement("div");
     monthGrid.style.display = "grid";
     monthGrid.style.gridTemplateColumns = "repeat(7, 1fr)"; 
@@ -11071,15 +10953,22 @@ setTimeout(() => {
     monthGrid.style.marginBottom = "20px";
     monthGrid.style.padding = "0 5px"; 
 
-    // এই মাসে কতদিন আছে তা বের করা (Jan=31, Feb=28/29)
     const daysInMonth = new Date(year, m + 1, 0).getDate();
 
-    // প্রতিদিনের বক্স তৈরি
     for (let d = 1; d <= daysInMonth; d++) {
       const cell = document.createElement("div");
       cell.className = "hm-cell";
       cell.style.aspectRatio = "1"; 
       cell.style.width = "100%";
+      
+      // 🌟 নতুন: বক্সের ভেতরে তারিখ দেখানোর স্টাইল
+      cell.style.display = "flex";
+      cell.style.alignItems = "center";
+      cell.style.justifyContent = "center";
+      cell.style.fontSize = "9px"; // ফন্ট সাইজ ছোট করা হলো যাতে ফিট হয়
+      cell.style.fontWeight = "bold";
+      cell.style.color = "rgba(255, 255, 255, 0.6)"; // লেখার রঙ
+      cell.textContent = d; // 🌟 এখানে তারিখ বসানো হলো
       
       const dateKey = `${year}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
       const log = challengeData.habitLogs[dateKey] || {};
@@ -11088,11 +10977,22 @@ setTimeout(() => {
       
       if (challengeData.habits.length > 0 && completed > 0) {
         const pct = completed / challengeData.habits.length;
-        if (pct >= 1) { cell.style.background = hmColors[3]; cell.style.boxShadow = `0 0 8px ${hmColors[3]}`; }
-        else if (pct >= 0.6) { cell.style.background = hmColors[2]; }
-        else if (pct >= 0.3) { cell.style.background = hmColors[1]; }
+        if (pct >= 1) { 
+          cell.style.background = hmColors[3]; 
+          cell.style.boxShadow = `0 0 8px ${hmColors[3]}`; 
+          cell.style.color = "#000"; // পুরো সেল ভরলে কালো টেক্সট
+        }
+        else if (pct >= 0.6) { 
+          cell.style.background = hmColors[2]; 
+          cell.style.color = "#fff";
+        }
+        else if (pct >= 0.3) { 
+          cell.style.background = hmColors[1]; 
+          cell.style.color = "#fff";
+        }
       } else if (dateKey < challengeData.startDate) {
         cell.style.background = "rgba(255, 255, 255, 0.02)"; 
+        cell.style.color = "rgba(255, 255, 255, 0.1)"; // চ্যালেঞ্জ শুরুর আগের দিনগুলো ডার্ক থাকবে
       } else {
         cell.style.background = hmColors[0]; 
       }
@@ -11178,7 +11078,7 @@ setTimeout(() => {
         canvas.width = w; canvas.height = h;
         canvas.getContext("2d").drawImage(img, 0, 0, w, h);
         
-        const base64 = canvas.toDataURL("image/jpeg", 0.6);
+        const base64 = canvas.toDataURL("image/jpeg", 0.9);
         const todayKey = getDateKey();
         
         if (photos.some(p => p.date === todayKey)) {
@@ -12423,59 +12323,6 @@ if (!parsed.error) {
   }
 }, 800);
 </script> 
-  <!-- 🌟 SMART Goal & Photo Gallery Popup -->
-<div id="smartGalleryModal" class="modal-overlay">
-  <div class="modal-box" style="padding: 20px;">
-    <h2 style="margin-bottom: 15px;">Goals & Progress</h2>
-
-<!-- 🌟 ট্যাব বাটন কন্টেইনার (flex) যোগ করা হলো -->
-<div style="display: flex; gap: 10px; margin-bottom: 20px;">
-  <button id="tabSmartGoal" style="flex: 1; padding: 10px; border-radius: 10px; border: 1px solid #00e5ff; background: rgba(0, 229, 255, 0.1); color: #00e5ff; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.2s;">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="12" cy="12" r="10"></circle>
-      <circle cx="12" cy="12" r="6"></circle>
-      <circle cx="12" cy="12" r="2"></circle>
-    </svg>
-    SMART Goal
-  </button>
-
-  <button id="tabPhotoGallery" style="flex: 1; padding: 10px; border-radius: 10px; border: 1px solid #2a3142; background: #1a1f2e; color: #9aa0a6; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.2s;">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
-      <circle cx="12" cy="13" r="4"></circle>
-    </svg>
-    Photo Gallery
-  </button>
-</div>
-    
-    
-
-    <!-- SMART Goal সেকশন -->
-    <div id="smartGoalSection">
-      <p style="color: #9aa0a6; font-size: 13px; margin-bottom: 10px;">Write your goal</p>
-      <textarea id="smartGoalInput" rows="3" placeholder="Enter your big goal here..." style="width: 100%; padding: 12px; background: #0f1419; border: 1px solid #2a3142; border-radius: 10px; color: #e8eaed; font-size: 14px; margin-bottom: 15px; outline: none;"></textarea>
-      <button id="generateSmartHabitsBtn" style="width: 100%; padding: 12px; background: linear-gradient(135deg, #00e5ff, #0088cc); color: #05080f; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; margin-bottom: 15px;">Generate Daily Habits</button>
-      <div id="smartHabitsResult" style="display: none; flex-direction: column; gap: 8px; max-height: 200px; overflow-y: auto;"></div>
-    </div>
-
-    <!-- Photo Gallery সেকশন -->
-    <div id="photoGallerySection" style="display: none;">
-      <input type="file" id="progressPhotoInput" accept="image/*" style="display: none;">
-      <button id="uploadPhotoBtn" style="width: 100%; padding: 12px; background: linear-gradient(135deg, #9b59b6, #8e44ad); color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 8px;">
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
-    <circle cx="12" cy="13" r="4"></circle>
-  </svg>
-  Upload Photo from Gallery
-</button>
-      <div id="galleryGrid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; max-height: 250px; overflow-y: auto;"></div>
-    </div>
-
-    <div class="settings-buttons" style="margin-top: 20px;">
-      <button id="closeSmartGalleryBtn" style="background: #2a3142; color: #e8eaed; width: 100%;">Close</button>
-    </div>
-  </div>
-</div>
    <!-- 🌟 History Modal (Fixed) -->
 <div id="historyModal" class="modal-overlay" style="z-index: 9500;">
   <div class="modal-box" style="height: 100dvh; max-height: 100dvh; width: 100%; max-width: 100%; border-radius: 0; padding: 15px 20px; margin: 0; display: flex; flex-direction: column; background: var(--app-bg, #0f1419);">
@@ -15539,6 +15386,1202 @@ ${fullContext}
 
   console.log("✅ ENHANCED AI: Full snapshot + chat + review (No extra button) loaded");
 })();
+// ============================================================
+// 🎙️ FIX: Journal Voice Button — Save করলে Hide, Edit করলে Show
+// ============================================================
+(function journalVoiceVisibilityFix() {
+  'use strict';
+  if (window.__journalVoiceFixLoaded) return;
+  window.__journalVoiceFixLoaded = true;
+
+  function ensureMicBtn() {
+    const journalInput = document.getElementById("dailyJournalInput");
+    if (!journalInput) return null;
+
+    let voiceBtn = document.getElementById("journalVoiceBtn");
+    if (voiceBtn) return voiceBtn;
+
+    // wrapper না থাকলে তৈরি করা
+    if (!journalInput.parentNode.classList.contains("journal-textarea-wrapper")) {
+      const wrapper = document.createElement("div");
+      wrapper.className = "journal-textarea-wrapper";
+      wrapper.style.cssText = "position: relative; width: 100%; margin-bottom: 10px;";
+      journalInput.parentNode.insertBefore(wrapper, journalInput);
+      wrapper.appendChild(journalInput);
+      journalInput.style.marginBottom = "0";
+    }
+
+    const btn = document.createElement("button");
+    btn.id = "journalVoiceBtn";
+    btn.type = "button";
+    btn.title = "Speak to write";
+    btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg>`;
+    btn.style.cssText = "position: absolute; right: 10px; bottom: 10px; width: 36px; height: 36px; background: rgba(155,89,182,0.2); border: 1px solid #9b59b6; color: #9b59b6; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 5; transition: all 0.25s ease; backdrop-filter: blur(4px);";
+    journalInput.parentNode.appendChild(btn);
+
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SR) {
+      let recognition = null;
+      let isRecording = false;
+
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (isRecording) { try { recognition?.stop(); } catch (err) {} return; }
+        if (journalInput.disabled) {
+          if (typeof showToast === "function") showToast("Click Edit first to unlock");
+          return;
+        }
+
+        recognition = new SR();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.lang = document.getElementById("voiceLangSelect")?.value || "en-US";
+
+        const originalText = journalInput.value.trim();
+
+        recognition.onstart = () => {
+          isRecording = true;
+          btn.style.background = "#ff6b4a";
+          btn.style.borderColor = "#ff6b4a";
+          btn.style.color = "#fff";
+          btn.style.animation = "pulseMic 1s infinite alternate";
+          if (typeof showToast === "function") showToast("🎙️ Listening... tap mic to stop");
+          if (navigator.vibrate) navigator.vibrate(30);
+        };
+
+        recognition.onresult = (ev) => {
+          let finalText = "", interimText = "";
+          for (let i = ev.resultIndex; i < ev.results.length; i++) {
+            if (ev.results[i].isFinal) finalText += ev.results[i][0].transcript;
+            else interimText += ev.results[i][0].transcript;
+          }
+          journalInput.value = (originalText ? originalText + " " : "") + finalText + interimText;
+          journalInput.style.height = "auto";
+          journalInput.style.height = journalInput.scrollHeight + "px";
+        };
+
+        recognition.onend = () => {
+          isRecording = false;
+          btn.style.background = "rgba(155,89,182,0.2)";
+          btn.style.borderColor = "#9b59b6";
+          btn.style.color = "#9b59b6";
+          btn.style.animation = "";
+        };
+
+        recognition.onerror = (err) => {
+          if (err.error !== "no-speech" && err.error !== "aborted") {
+            if (typeof showToast === "function") showToast("Voice: " + err.error);
+          }
+        };
+
+        try { recognition.start(); } catch (err) {
+          if (typeof showToast === "function") showToast("Voice start failed");
+        }
+      });
+    }
+
+    return btn;
+  }
+
+  function updateVisibility() {
+    const journalInput = document.getElementById("dailyJournalInput");
+    if (!journalInput) return;
+
+    if (journalInput.disabled) {
+      // 🔒 Locked (Save করা আছে) → Mic লুকাই
+      const btn = document.getElementById("journalVoiceBtn");
+      if (btn) btn.style.display = "none";
+    } else {
+      // ✏️ Editable (Edit mode) → Mic দেখাই / তৈরি করি
+      const btn = ensureMicBtn();
+      if (btn) btn.style.display = "flex";
+    }
+  }
+
+  // Save / Edit বাটনে ক্লিক করলে তুরন্ত আপডেট
+  document.addEventListener("click", (e) => {
+    const t = e.target;
+    if (t.closest("#saveJournalBtn") || t.closest("#editJournalBtn")) {
+      setTimeout(updateVisibility, 200);
+    }
+  });
+
+  // Periodic sync (যেকোনো state change ধরার জন্য)
+  setInterval(updateVisibility, 800);
+
+  // Extras খোলার সময় তুরন্ত চেক
+  const extrasBtn = document.getElementById("openExtrasBtn");
+  if (extrasBtn) extrasBtn.addEventListener("click", () => setTimeout(updateVisibility, 500));
+
+  // Initial
+  setTimeout(updateVisibility, 1500);
+
+  console.log("✅ Journal Voice Visibility Fix loaded");
+})();
+// ============================================================
+// 📷 AI PROGRESS PHOTO COMPARISON (Button + Popup Version)
+// ============================================================
+(function initAiPhotoComparison() {
+  'use strict';
+  if (window.__aiCompareReady) return;
+  window.__aiCompareReady = true;
+
+  let beforeBase64 = null;
+  let afterBase64 = null;
+  let uiBuilt = false;
+
+  // ------------------------------------------------------------
+  // 1) UI অটো-ইনজেক্ট (বাটন এবং পপ-আপ তৈরি)
+  // ------------------------------------------------------------
+  function buildUI() {
+    if (uiBuilt) return;
+    const timelineContent = document.getElementById("photoTimelineContent");
+    if (!timelineContent) return;
+    if (document.getElementById("aiCompareBtn")) { uiBuilt = true; return; }
+
+    // ১.১: "Add Today's Photo" বাটনের পাশে AI Compare বাটন
+    const btnContainer = document.createElement("div");
+    btnContainer.style.cssText = "display: flex; gap: 10px; margin-bottom: 15px;";
+    
+    const addBtn = document.getElementById("addTimelinePhotoBtn");
+    if (addBtn) {
+      // আগের বাটনটাকে রিমুভ করে নতুন কন্টেইনারে বসানো
+      addBtn.style.marginBottom = "0";
+      addBtn.style.flex = "1";
+      addBtn.parentNode.insertBefore(btnContainer, addBtn);
+      btnContainer.appendChild(addBtn);
+    }
+
+    const aiBtn = document.createElement("button");
+    aiBtn.id = "aiCompareBtn";
+    aiBtn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10"></path><path d="M12 2v10l6.5 6.5"></path></svg> AI Compare`;
+    aiBtn.style.cssText = "flex: 1; padding: 12px; background: rgba(214, 161, 240, 0.1); color: #d6a1f0; border: 1px solid #d6a1f0; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px; transition: 0.2s;";
+    aiBtn.onclick = () => {
+      document.getElementById("aiCompareModal").classList.add("active");
+    };
+    btnContainer.appendChild(aiBtn);
+
+    // ১.২: AI Compare পপ-আপ (Modal) তৈরি
+    const modal = document.createElement("div");
+    modal.id = "aiCompareModal";
+    modal.className = "modal-overlay";
+    modal.style.zIndex = "9000";
+    
+    modal.innerHTML = `
+      <div class="modal-box" style="max-width: 400px; padding: 20px;">
+        <h2 style="color: #d6a1f0; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10"></path><path d="M12 2v10l6.5 6.5"></path></svg>
+          AI Progress Comparison
+        </h2>
+        <p style="color: #9aa0a6; font-size: 12px; margin-bottom: 15px; text-align: center;">Select two photos. AI will analyze body, skin, posture & energy.</p>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+          <div>
+            <label style="font-size: 10px; color: #ff6b4a; font-weight: bold; text-transform: uppercase; display: block; margin-bottom: 5px;">📅 Before</label>
+            <div id="compareBeforeSlot" style="aspect-ratio: 1; background: #0f1419; border: 2px dashed #ff6b4a; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; position: relative;">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ff6b4a" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+            </div>
+            <input type="file" id="compareBeforeInput" accept="image/*" style="display: none;">
+          </div>
+          <div>
+            <label style="font-size: 10px; color: #00e5ff; font-weight: bold; text-transform: uppercase; display: block; margin-bottom: 5px;">📅 After</label>
+            <div id="compareAfterSlot" style="aspect-ratio: 1; background: #0f1419; border: 2px dashed #00e5ff; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; position: relative;">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+            </div>
+            <input type="file" id="compareAfterInput" accept="image/*" style="display: none;">
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 15px;">
+          <input type="checkbox" id="compareConsent" style="margin-top: 3px; accent-color: #00e5ff; width: 16px; height: 16px; cursor: pointer;">
+          <label for="compareConsent" style="font-size: 11px; color: #9aa0a6; line-height: 1.4; cursor: pointer;">
+            I agree my photos will be sent to AI for analysis.
+          </label>
+        </div>
+
+        <button id="runAiCompareBtn" style="width: 100%; padding: 14px; background: linear-gradient(135deg, #9b59b6, #00e5ff); color: white; border: none; border-radius: 10px; font-weight: bold; font-size: 14px; cursor: pointer; display: none; align-items: center; justify-content: center; gap: 8px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          Compare Now
+        </button>
+
+        <div id="aiCompareResultBox" style="display: none; margin-top: 15px; background: #0f1419; border-left: 4px solid #00e5ff; border-radius: 8px; padding: 12px;">
+          <div style="font-size: 10px; color: #00e5ff; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">🤖 AI Analysis</div>
+          <div id="aiCompareResultText" style="color: #e8eaed; font-size: 13px; line-height: 1.6; white-space: pre-wrap;"></div>
+          <button id="saveComparisonBtn" style="width: 100%; margin-top: 10px; padding: 8px; background: rgba(74,170,74,0.1); color: #4aaa4a; border: 1px solid #4aaa4a; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer;">💾 Save to History</button>
+        </div>
+
+        <div class="settings-buttons" style="margin-top: 20px;">
+          <button id="closeAiCompareModal" style="background: #2a3142; color: #e8eaed; width: 100%;">Close</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+
+    uiBuilt = true;
+    bindEvents();
+  }
+
+  function bindEvents() {
+    const beforeSlot = document.getElementById("compareBeforeSlot");
+    const afterSlot  = document.getElementById("compareAfterSlot");
+    const beforeIn   = document.getElementById("compareBeforeInput");
+    const afterIn    = document.getElementById("compareAfterInput");
+    const runBtn     = document.getElementById("runAiCompareBtn");
+    const consent    = document.getElementById("compareConsent");
+    const saveBtn    = document.getElementById("saveComparisonBtn");
+    const closeBtn   = document.getElementById("closeAiCompareModal");
+    if (!beforeSlot || beforeSlot.dataset.b) return;
+    beforeSlot.dataset.b = "1";
+
+    beforeSlot.onclick = () => beforeIn.click();
+    afterSlot.onclick  = () => afterIn.click();
+    beforeIn.onchange = (e) => handleImage(e, "before");
+    afterIn.onchange  = (e) => handleImage(e, "after");
+    consent.onchange = updateRunBtn;
+    runBtn.onclick = runComparison;
+    saveBtn.onclick = saveComparison;
+    closeBtn.onclick = () => {
+      document.getElementById("aiCompareModal").classList.remove("active");
+      // পপ-আপ বন্ধ করলে রিসেট হবে না, যাতে ইউজার আবার খুললে আগের ছবি পায়
+    };
+  }
+
+  function handleImage(e, type) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const MAX = 768;
+        let w = img.width, h = img.height;
+        if (w > h) { if (w > MAX) { h *= MAX / w; w = MAX; } }
+        else { if (h > MAX) { w *= MAX / h; h = MAX; } }
+        canvas.width = w; canvas.height = h;
+        canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+        const b64 = canvas.toDataURL("image/jpeg", 0.75);
+
+        if (type === "before") beforeBase64 = b64;
+        else afterBase64 = b64;
+
+        const slot = document.getElementById(type === "before" ? "compareBeforeSlot" : "compareAfterSlot");
+        slot.innerHTML = `
+          <img src="${b64}" style="width:100%; height:100%; object-fit:cover;">
+          <button style="position:absolute; top:4px; right:4px; background:rgba(255,107,74,0.9); color:white; border:none; border-radius:50%; width:22px; height:22px; cursor:pointer; font-size:14px; font-weight:bold; display:flex; align-items:center; justify-content:center;">×</button>
+        `;
+        slot.querySelector("button").onclick = (ev) => {
+          ev.stopPropagation();
+          if (type === "before") { beforeBase64 = null; resetSlot(slot, "#ff6b4a"); }
+          else { afterBase64 = null; resetSlot(slot, "#00e5ff"); }
+          updateRunBtn();
+        };
+        updateRunBtn();
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+    e.target.value = "";
+  }
+
+  function resetSlot(slot, color) {
+    slot.innerHTML = `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>`;
+  }
+
+  function updateRunBtn() {
+    const btn = document.getElementById("runAiCompareBtn");
+    const consent = document.getElementById("compareConsent");
+    if (!btn) return;
+    const ok = beforeBase64 && afterBase64 && consent && consent.checked;
+    btn.style.display = ok ? "flex" : "none";
+  }
+
+  async function runComparison() {
+    if (!beforeBase64 || !afterBase64) return;
+
+    const btn = document.getElementById("runAiCompareBtn");
+    const box = document.getElementById("aiCompareResultBox");
+    const textEl = document.getElementById("aiCompareResultText");
+    const saveBtn = document.getElementById("saveComparisonBtn");
+
+    btn.disabled = true;
+    btn.innerHTML = `<span class="loading-spinner" style="border-top-color:white;"></span> Analyzing...`;
+    box.style.display = "block";
+    textEl.innerHTML = `<span style="color:#9aa0a6; display:flex; align-items:center; gap:8px;"><span class="loading-spinner"></span> AI is looking at both photos...</span>`;
+    saveBtn.style.display = "none";
+
+    try {
+      const langCode = document.getElementById("voiceLangSelect")?.value || "en-US";
+      const targetLang = (typeof getLanguageName === "function") ? getLanguageName(langCode) : "English";
+      const persona = (typeof getPersonaPrompt === "function") ? getPersonaPrompt() : "";
+
+      const messages = [
+        {
+          role: "system",
+          content: `${persona}
+You are a trained fitness and wellness photo analyst inside GRITGO.
+The user shared TWO photos: Photo 1 = BEFORE, Photo 2 = AFTER.
+Analyze visible differences HONESTLY and constructively.
+Focus ONLY on visible things: Body composition, Skin & face, Posture, Clothing fit, Overall energy.
+CRITICAL RULES:
+- Be POSITIVE but HONEST. Never invent changes.
+- If changes are subtle, say so kindly.
+- DO NOT estimate weight, BMI, or kg.
+- DO NOT compare against beauty standards.
+- End with ONE short motivational line.
+Format:
+- 4 bullet lines: 🏋️ Body, ✨ Skin/Energy, 🧍 Posture, 👕 Fit
+- Last line: "💬 Coach says: ..." (1-2 sentences)
+- Reply ENTIRELY in ${targetLang}.`
+        },
+        {
+          role: "user",
+          content: [
+            { type: "text", text: "Compare these two photos. First=before, second=after." },
+            { type: "image_url", image_url: { url: beforeBase64 } },
+            { type: "image_url", image_url: { url: afterBase64 } }
+          ]
+        }
+      ];
+
+      const result = await callGroq(messages, {
+        temperature: 0.55,
+        max_tokens: 800, 
+        hasImage: true
+      });
+
+      textEl.textContent = result || "No analysis returned.";
+      saveBtn.style.display = "block";
+
+      if (typeof isVoiceReplyOn !== "undefined" && isVoiceReplyOn && typeof speakText === "function") {
+        speakText(result);
+      }
+      if (navigator.vibrate) navigator.vibrate(40);
+
+    } catch (err) {
+      textEl.innerHTML = `<span style="color:#ff6b4a;">❌ AI Error: ${err.message}</span>`;
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg> Compare Now`;
+    }
+  }
+
+  function saveComparison() {
+    const text = document.getElementById("aiCompareResultText").textContent;
+    if (!text || !beforeBase64 || !afterBase64) return;
+
+    const history = JSON.parse(localStorage.getItem("gritgo_photo_comparisons")) || [];
+    history.unshift({
+      id: "cmp_" + Date.now(),
+      date: (typeof getDateKey === "function") ? getDateKey() : new Date().toISOString().slice(0,10),
+      before: beforeBase64,
+      after: afterBase64,
+      analysis: text
+    });
+    if (history.length > 10) history.length = 10;
+
+    try {
+      localStorage.setItem("gritgo_photo_comparisons", JSON.stringify(history));
+      if (typeof showToast === "function") showToast("✅ Comparison saved!");
+      document.getElementById("saveComparisonBtn").style.display = "none";
+      
+      // সেভ করার পর পপ-আপ বন্ধ করে দেব
+      document.getElementById("aiCompareModal").classList.remove("active");
+      if (navigator.vibrate) navigator.vibrate([30, 50, 30]);
+    } catch (e) {
+      if (typeof showToast === "function") showToast("Storage full! Clear older photos.");
+    }
+  }
+
+  function ensureBuilt() {
+    const sec = document.getElementById("photoTimelineContent");
+    if (sec && sec.style.display !== "none") buildUI();
+  }
+
+  const tab = document.getElementById("tabPhotoTimeline");
+  if (tab) tab.addEventListener("click", () => setTimeout(ensureBuilt, 100));
+
+  const openBtn = document.getElementById("openHeatmapBtn");
+  if (openBtn) openBtn.addEventListener("click", () => setTimeout(ensureBuilt, 300));
+
+  setTimeout(ensureBuilt, 2000);
+  setTimeout(ensureBuilt, 5000);
+  
+  console.log("✅ AI Photo Comparison (Button + Popup) loaded");
+})(); 
+ // ============================================================
+// 📅 RESTORE: Yearly Heatmap & Photos Button in Extras
+// ============================================================
+(function restoreHeatmapButton() {
+  setTimeout(() => {
+    const closeBtn = document.getElementById("extrasClose");
+    const quitSection = document.querySelector("#extrasModal .extras-section[style*='#ff6b4a']"); 
+    
+    if (closeBtn && !document.getElementById("openHeatmapBtn")) {
+      const sec = document.createElement("div");
+      sec.className = "extras-section";
+      sec.style.borderColor = "purple";
+      sec.innerHTML = `
+        <h3>
+          <svg class="svg-icon" style="stroke: #d6a1f0;" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          Yearly Heatmap & Photos
+        </h3>
+        <p style="color: #9aa0a6; font-size: 12px; margin-bottom: 10px;">Track your whole year's consistency & daily photos!</p>
+        <button id="openHeatmapBtn" style="width: 100%; padding: 12px; background: rgba(214, 161, 240, 0.1); color: #d6a1f0; border: 1px solid #d6a1f0; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
+          Open Yearly View
+        </button>
+      `;
+      
+      if (quitSection) {
+        quitSection.parentNode.insertBefore(sec, quitSection.nextSibling);
+      } else {
+        const btnContainer = closeBtn.parentNode;
+        btnContainer.parentNode.insertBefore(sec, btnContainer);
+      }
+    }
+  }, 1000);
+
+  document.addEventListener("click", (e) => {
+    if (e.target.closest("#openHeatmapBtn")) {
+      const modal = document.getElementById("photoHeatmapModal");
+      if (modal) {
+        modal.classList.add("active");
+        if (typeof renderFullHeatmap === "function") renderFullHeatmap();
+        if (typeof renderPhotoTimeline === "function") renderPhotoTimeline();
+      }
+    }
+  });
+
+  document.addEventListener("click", (e) => {
+    if (e.target.closest("#tabFullHeatmap")) {
+      document.getElementById("tabFullHeatmap").style.background = "rgba(0, 229, 255, 0.1)";
+      document.getElementById("tabFullHeatmap").style.color = "#00e5ff";
+      document.getElementById("tabPhotoTimeline").style.background = "#1a1f2e";
+      document.getElementById("tabPhotoTimeline").style.color = "#9aa0a6";
+      document.getElementById("heatmapContent").style.display = "block";
+      document.getElementById("photoTimelineContent").style.display = "none";
+    }
+    
+    if (e.target.closest("#tabPhotoTimeline")) {
+      document.getElementById("tabPhotoTimeline").style.background = "rgba(0, 229, 255, 0.1)";
+      document.getElementById("tabPhotoTimeline").style.color = "#00e5ff";
+      document.getElementById("tabFullHeatmap").style.background = "#1a1f2e";
+      document.getElementById("tabFullHeatmap").style.color = "#9aa0a6";
+      document.getElementById("photoTimelineContent").style.display = "block";
+      document.getElementById("heatmapContent").style.display = "none";
+    }
+  });
+})();
+
+// ============================================================
+// 📅 FULL HEATMAP & PHOTO TIMELINE LOGIC
+// ============================================================
+(function initHeatmapAndPhotos() {
+  window.renderFullHeatmap = function() {
+    const grid = document.getElementById("fullHeatmapGrid");
+    if (!grid) return;
+    grid.innerHTML = "";
+    grid.style.display = "block"; 
+
+    const today = new Date();
+    const year = today.getFullYear(); 
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const hmColors = (typeof currentTheme !== 'undefined' && currentTheme.heatmap) ? currentTheme.heatmap : ["#1a1f2e", "#1a5b6e", "#008fa3", "#00e5ff"];
+
+    for (let m = 0; m < 12; m++) {
+      const label = document.createElement("div");
+      label.className = "hm-month-label";
+      label.textContent = monthNames[m] + " " + year;
+      grid.appendChild(label);
+
+      const monthGrid = document.createElement("div");
+      monthGrid.style.display = "grid";
+      monthGrid.style.gridTemplateColumns = "repeat(7, 1fr)"; 
+      monthGrid.style.gap = "4px"; 
+      monthGrid.style.marginBottom = "20px";
+      monthGrid.style.padding = "0 5px"; 
+
+      const daysInMonth = new Date(year, m + 1, 0).getDate();
+
+      for (let d = 1; d <= daysInMonth; d++) {
+        const cell = document.createElement("div");
+        cell.className = "hm-cell";
+        cell.style.aspectRatio = "1"; 
+        cell.style.width = "100%";
+        
+        cell.style.display = "flex";
+        cell.style.alignItems = "center";
+        cell.style.justifyContent = "center";
+        cell.style.fontSize = "9px";
+        cell.style.fontWeight = "bold";
+        cell.style.color = "rgba(255, 255, 255, 0.6)"; 
+        cell.textContent = d; 
+        
+        const dateKey = `${year}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+        const log = challengeData.habitLogs[dateKey] || {};
+        let completed = 0;
+        challengeData.habits.forEach(h => { if (log[h.id] === true) completed++; });
+        
+        if (challengeData.habits.length > 0 && completed > 0) {
+          const pct = completed / challengeData.habits.length;
+          if (pct >= 1) { 
+            cell.style.background = hmColors[3]; 
+            cell.style.boxShadow = `0 0 8px ${hmColors[3]}`; 
+            cell.style.color = "#000"; 
+          }
+          else if (pct >= 0.6) { cell.style.background = hmColors[2]; cell.style.color = "#fff"; }
+          else if (pct >= 0.3) { cell.style.background = hmColors[1]; cell.style.color = "#fff"; }
+        } else if (dateKey < challengeData.startDate) {
+          cell.style.background = "rgba(255, 255, 255, 0.02)"; 
+          cell.style.color = "rgba(255, 255, 255, 0.1)"; 
+        } else {
+          cell.style.background = hmColors[0]; 
+        }
+        
+        cell.title = dateKey + " - " + completed + "/" + challengeData.habits.length + " habits";
+        cell.classList.add("active");
+        monthGrid.appendChild(cell);
+      }
+      grid.appendChild(monthGrid);
+    }
+  };
+
+  const PHOTO_KEY = "gritgo_photo_timeline";
+  let photos = JSON.parse(localStorage.getItem(PHOTO_KEY)) || [];
+
+  function savePhotos() {
+    try { localStorage.setItem(PHOTO_KEY, JSON.stringify(photos)); } 
+    catch(e) { showToast("Storage full!"); }
+  }
+
+  window.renderPhotoTimeline = function() {
+    const list = document.getElementById("timelineList");
+    if (!list) return;
+    list.innerHTML = "";
+    
+    if (photos.length === 0) {
+      list.innerHTML = `<p style="text-align:center; color:#9aa0a6; padding:20px;">No photos yet. Add your Day 1 photo!</p>`;
+      return;
+    }
+
+    const sorted = [...photos].sort((a, b) => b.id - a.id);
+
+    sorted.forEach(p => {
+      const div = document.createElement("div");
+      div.className = "photo-timeline-item";
+      
+      const dateObj = new Date(p.date + "T00:00:00");
+      const displayDate = dateObj.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+
+      div.innerHTML = `
+        <img src="${p.image}" onclick="window.open('${p.image}', '_blank')">
+        <div class="photo-info">
+          <div class="photo-date">${displayDate}</div>
+          <div class="photo-day-badge">Day ${p.dayNum}</div>
+        </div>
+        <button class="del-tl-photo" data-id="${p.id}" style="position: absolute; right: 10px; bottom: 10px; background: rgba(255, 107, 74, 0.2); border: 1px solid #ff6b4a; color: #ff6b4a; padding: 5px 8px; border-radius: 8px; cursor: pointer;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+        </button>
+      `;
+      list.appendChild(div);
+    });
+
+    list.querySelectorAll(".del-tl-photo").forEach(btn => {
+      btn.onclick = async () => {
+        const id = parseInt(btn.getAttribute("data-id"));
+        if (await showCustomConfirm("Delete this photo from your timeline?", "Delete Photo?")) {
+          photos = photos.filter(p => p.id !== id);
+          savePhotos();
+          renderPhotoTimeline();
+          showToast("Photo deleted.");
+        }
+      };
+    });
+  };
+
+  document.getElementById("addTimelinePhotoBtn")?.addEventListener("click", () => {
+    document.getElementById("timelinePhotoInput").click();
+  });
+
+  document.getElementById("timelinePhotoInput")?.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const MAX = 600;
+        let w = img.width, h = img.height;
+        if (w > h) { if (w > MAX) { h *= MAX / w; w = MAX; } } else { if (h > MAX) { w *= MAX / h; h = MAX; } }
+        canvas.width = w; canvas.height = h;
+        canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+        
+        const base64 = canvas.toDataURL("image/jpeg", 0.9); // 🌟 কোয়ালিটি বাড়ানো হলো
+        const todayKey = getDateKey();
+        
+        if (photos.some(p => p.date === todayKey)) {
+           showToast("You already added a photo today!");
+           return;
+        }
+
+        photos.push({ 
+          id: Date.now(), 
+          date: todayKey, 
+          dayNum: getCurrentDayNumber(), 
+          image: base64 
+        });
+        savePhotos();
+        renderPhotoTimeline();
+        showToast("Photo added successfully! 📸");
+        if (navigator.vibrate) navigator.vibrate(30);
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+    e.target.value = "";
+  });
+})();
+
+// ============================================================
+// 🎡 DAILY HARD CHALLENGE SPINNER (V6 - Moved to Extras)
+// ============================================================
+(function initDailyChallengeSpinner() {
+  if (window.__challengeSpinnerLoaded) return;
+  window.__challengeSpinnerLoaded = true;
+
+  const allChallenges = [
+    "No Sugar", "Drink 4L Water", "Read 30 Pages", "No Social Media", 
+    "2x Workout", "Sleep by 10 PM", "Meditate 15m", "Wake up at 5 AM",
+    "No Fast Food", "Walk 10k Steps", "Learn 15m New Skill", "No Phone 1hr Before Bed",
+    "Cold Shower", "Eat 3 Servings Veggies", "Write 1 Page Journal", "No Caffeine After 2 PM",
+    "Stretch for 15m", "Practice Deep Breathing", "No Snooze", "Do 50 Pushups",
+    "Do 100 Squats", "Read 10 Pages of Non-Fiction", "Call a Family Member", "Plan Tomorrow's Schedule",
+    "Digital Detox 2hrs", "Clean Your Workspace", "Listen to a Podcast", "Practice Gratitude (Write 3 things)",
+    "No Complaining Today", "Compliment 3 People", "Cook a Healthy Meal", "Drink Green Tea",
+    "Avoid Elevators (Take Stairs)", "Do 10 Min HIIT", "Morning Sunlight 10m", "Fast for 14 Hours",
+    "Write Down 3 Goals", "Review Your Budget", "Learn 5 New Words", "Do 20 Min Yoga",
+    "Eat Mindfully (No TV)", "Limit Caffeine to 1 Cup", "Sleep with Phone in Another Room", "Brush Twice & Floss",
+    "Do 1 Act of Kindness", "Stand for 1 Hour", "Visualize Your Success 5m", "No Procrastination (Do it now)",
+    "Drink 2 Glasses Water Upon Waking", "Dress Up Like You Mean Business", "Read 1 Chapter of a Book",
+    "No Sugar in Tea/Coffee", "Eat Fruit Instead of Chips", "Pushups until Failure", "Run 2km",
+    "Take a 20m Walk After Dinner", "Do 3 Sets of Planks", "Write a Thank You Note", "No TV Today",
+    "Read 5 Pages Aloud", "Do 15m of Silence", "No Alcohol", "Drink 1L Water Before Noon",
+    "Eat Protein in Every Meal", "Walk 5000 Steps", "Do 10 Pullups (or try)", "Sleep 8 Hours Strict",
+    "Say No to One Bad Habit", "Organize 1 Drawer", "Do 30m of Study", "No Screen 1hr Before Sleep",
+    "Track Every Calorie Today", "Eat 2 Fruits", "Do 20 Lunges", "Walk 15 Min in Nature",
+    "No Gossip", "Learn 1 Life Hack", "Wake Up 30m Earlier", "Do 1 Random Act of Kindness",
+    "Write 1 Thing You Love About Yourself", "Drink Herbal Tea Before Bed", "Do 5 Sun Salutations",
+    "Call an Old Friend", "Cook Dinner at Home", "Do 25 Crunches", "Walk Without Music",
+    "Read a Poem", "Avoid Processed Sugar", "Drink 3.5L Water", "Do 1 Hour of Deep Work"
+  ];
+
+  const colors = ["#ff6b4a", "#00e5ff", "#4a9eff", "#9b59b6", "#f1c40f", "#2ecc71", "#e84393", "#e67e22"];
+
+  const todayKey = () => {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  };
+
+  let currentChallenges = []; 
+
+  function generateDailyChallenges() {
+    const todayStr = todayKey();
+    let seed = 0;
+    for (let i = 0; i < todayStr.length; i++) seed += todayStr.charCodeAt(i);
+
+    let shuffled = [...allChallenges].sort((a, b) => (seed * a.length) % 10 - (seed * b.length) % 10);
+    const selected = shuffled.slice(0, 8);
+    
+    currentChallenges = selected.map((text, index) => {
+      return { text: text, color: colors[index % colors.length] };
+    });
+  }
+
+  function buildSpinnerUI() {
+    if (document.getElementById("dailySpinnerCard")) return;
+
+    const extrasModalBox = document.querySelector("#extrasModal .modal-box");
+    if (!extrasModalBox) return;
+
+    generateDailyChallenges();
+
+    const card = document.createElement("div");
+    card.id = "dailySpinnerCard";
+    card.className = "extras-section";
+    card.style.cssText = `
+      border-color: #f1c40f; background: linear-gradient(135deg, rgba(241,196,15,0.1), rgba(255,107,74,0.1));
+      position: relative; overflow: hidden; transition: opacity 0.5s ease;
+    `;
+
+    card.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px;">
+        <h3 style="color: #f1c40f; font-size: 16px; margin: 0; display: flex; align-items: center; gap: 8px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+          Daily Challenge Spinner
+        </h3>
+        <span id="spinnerStatusText" style="font-size: 10px; color: #9aa0a6; font-weight: bold; text-transform: uppercase;">Spin to begin</span>
+      </div>
+
+      <div style="position: relative; width: 180px; height: 180px; margin: 0 auto 15px auto;">
+        <div style="position: absolute; top: -8px; left: 50%; transform: translateX(-50%); z-index: 10; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="#ff6b4a"><polygon points="12 22 2 2 22 2"></polygon></svg>
+        </div>
+        <canvas id="challengeWheelCanvas" width="360" height="360" style="width: 100%; height: 100%; border-radius: 50%; box-shadow: 0 0 15px rgba(241,196,15,0.3); transition: transform 4s cubic-bezier(0.17, 0.67, 0.1, 1);"></canvas>
+        <button id="spinWheelBtn" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 50px; height: 50px; border-radius: 50%; background: #1a1f2e; border: 2px solid #f1c40f; color: #f1c40f; font-weight: bold; font-size: 12px; cursor: pointer; z-index: 9999; box-shadow: 0 4px 10px rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; pointer-events: auto; transition: 0.2s;">SPIN</button>
+      </div>
+
+      <div id="challengeResultBox" style="display: none; background: #0f1419; border-left: 3px solid #00e5ff; border-radius: 8px; padding: 12px; margin-top: 10px;">
+        <div style="font-size: 14px; font-weight: bold; color: #00e5ff; margin-bottom: 8px;" id="challengeResultText">Challenge Loaded</div>
+        <div style="font-size: 12px; color: #e8eaed; line-height: 1.5; margin-bottom: 12px;" id="challengeAiAdvice">AI is preparing your advice...</div>
+        
+        <div id="challengeActionsRow" style="display: flex; gap: 8px;">
+          <button id="addChallengeToHabitsBtn" style="flex: 1; padding: 10px; background: rgba(0, 229, 255, 0.1); color: #00e5ff; border: 1px solid #00e5ff; border-radius: 8px; font-weight: bold; font-size: 12px; cursor: pointer; transition: 0.2s; display: none;">+ Add as Habit</button>
+          <button id="markChallengeDoneBtn" style="flex: 1; padding: 10px; background: linear-gradient(135deg, #2ecc71, #27ae60); color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 12px; cursor: pointer; transition: 0.2s; display: none; box-shadow: 0 0 10px rgba(46, 204, 113, 0.3);">Mark as Done ✓</button>
+        </div>
+      </div>
+    `;
+
+    const firstSection = extrasModalBox.querySelector(".extras-section");
+    if (firstSection) {
+      extrasModalBox.insertBefore(card, firstSection);
+    } else {
+      extrasModalBox.insertBefore(card, extrasModalBox.children[1]);
+    }
+
+    drawWheel();
+    bindEvents();
+    setTimeout(loadTodayChallenge, 500);
+  }
+
+   
+
+  async function showChallengeResult(winner, isFromHistory = false) {
+    const box = document.getElementById("challengeResultBox");
+    const textEl = document.getElementById("challengeResultText");
+    const adviceEl = document.getElementById("challengeAiAdvice");
+    const spinBtn = document.getElementById("spinWheelBtn");
+    const addBtn = document.getElementById("addChallengeToHabitsBtn");
+    const doneBtn = document.getElementById("markChallengeDoneBtn");
+
+    box.style.display = "block";
+    textEl.innerHTML = `🎯 <span style="color:${winner.color}">${winner.text}</span>`;
+    spinBtn.style.display = "none";
+    addBtn.style.display = "block";
+    doneBtn.style.display = "block";
+
+    if (winner.isDone) {
+      adviceEl.innerHTML = `<div style="color:#2ecc71; font-weight:bold; margin-bottom:4px;">✅ Challenge Completed!</div><div>${winner.aiCongrats || "Great job!"}</div>`;
+      addBtn.style.display = "none"; doneBtn.style.display = "none";
+      return;
+    }
+
+    if (isFromHistory && winner.aiAdvice) {
+      adviceEl.textContent = winner.aiAdvice;
+      return;
+    }
+
+    adviceEl.innerHTML = `<span style="display:flex; align-items:center; gap:6px; color:#9aa0a6;"><div class="loading-spinner" style="width:12px;height:12px;"></div> AI is thinking...</span>`;
+
+    try {
+      const langCode = document.getElementById("voiceLangSelect")?.value || "en-US";
+      const targetLang = (typeof getLanguageName === "function") ? getLanguageName(langCode) : "English";
+      const persona = (typeof getPersonaPrompt === "function") ? getPersonaPrompt() : "";
+      const prompt = `${persona}\nThe user just got this challenge: "${winner.text}". Give a short (2-3 sentences) tip on how to achieve this today. Use emojis. LANGUAGE: ${targetLang}.`;
+
+      const aiReply = await callGroq([{ role: "user", content: prompt }], { temperature: 0.8, max_tokens: 250 });
+      adviceEl.textContent = aiReply;
+      
+      const saved = JSON.parse(localStorage.getItem("gritgo_daily_spin_" + todayKey()));
+      if (saved) { saved.aiAdvice = aiReply; localStorage.setItem("gritgo_daily_spin_" + todayKey(), JSON.stringify(saved)); }
+      if (typeof isVoiceReplyOn !== "undefined" && isVoiceReplyOn && typeof speakText === "function") speakText(aiReply);
+    } catch (e) { adviceEl.textContent = "AI Error: " + e.message; }
+  }
+
+  async function markAsDone() {
+    const doneBtn = document.getElementById("markChallengeDoneBtn");
+    const adviceEl = document.getElementById("challengeAiAdvice");
+    
+    doneBtn.disabled = true;
+    doneBtn.innerHTML = `<span class="loading-spinner" style="border-top-color:white; width:12px; height:12px;"></span> Saving...`;
+    
+    if (typeof showConfetti === 'function') showConfetti();
+    if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
+
+    try {
+      const saved = JSON.parse(localStorage.getItem("gritgo_daily_spin_" + todayKey()));
+      if (saved) {
+        saved.isDone = true;
+        saved.doneTime = Date.now();
+        localStorage.setItem("gritgo_daily_spin_" + todayKey(), JSON.stringify(saved));
+      scheduleFade();
+      }
+
+      const langCode = document.getElementById("voiceLangSelect")?.value || "en-US";
+      const targetLang = (typeof getLanguageName === "function") ? getLanguageName(langCode) : "English";
+      const persona = (typeof getPersonaPrompt === "function") ? getPersonaPrompt() : "";
+      const prompt = `${persona}\nThe user completed: "${saved.text}". Congratulate them in 1-2 sentences. Use emojis. LANGUAGE: ${targetLang}.`;
+
+      const aiReply = await callGroq([{ role: "user", content: prompt }], { temperature: 0.8, max_tokens: 250 });
+      
+      doneBtn.style.display = "none";
+      document.getElementById("addChallengeToHabitsBtn").style.display = "none";
+      adviceEl.innerHTML = `<div style="color:#2ecc71; font-weight:bold; margin-bottom:4px;">✅ Challenge Completed!</div><div>${aiReply}</div>`;
+      
+      const savedAgain = JSON.parse(localStorage.getItem("gritgo_daily_spin_" + todayKey()));
+      if (savedAgain) { savedAgain.aiCongrats = aiReply; localStorage.setItem("gritgo_daily_spin_" + todayKey(), JSON.stringify(savedAgain)); }
+      if (typeof isVoiceReplyOn !== "undefined" && isVoiceReplyOn && typeof speakText === "function") speakText(aiReply);
+
+    } catch(e) {
+      adviceEl.textContent = "Error saving: " + e.message;
+      doneBtn.disabled = false;
+      doneBtn.textContent = "Mark as Done ✓";
+    }
+  }
+  function addToHabits() {
+    const saved = JSON.parse(localStorage.getItem("gritgo_daily_spin_" + todayKey()));
+    if (!saved) return;
+    const addBtn = document.getElementById("addChallengeToHabitsBtn");
+
+    let habit = challengeData.habits.find(h => h.name.toLowerCase() === saved.text.toLowerCase());
+
+    if (habit) {
+      showToast("Already in your habits!");
+      addBtn.textContent = "✓ Already Added";
+    } else {
+      habit = { id: 'h_' + Math.random().toString(36).substr(2, 9), name: saved.text, category: 'Challenge', target: 1, days: [0,1,2,3,4,5,6] };
+      challengeData.habits.push(habit);
+      localStorage.setItem("challengeData", JSON.stringify(challengeData));
+      renderHabits(); renderTodayHabits(); renderHeatmap(); updateStats();
+      showToast("Added to habits!");
+      playCheckSound(true);
+      addBtn.textContent = "✓ Added";
+    }
+
+    // 🔗 হ্যাবিটের সাথে লিঙ্ক করে রাখা
+    saved.habitId = habit.id;
+    localStorage.setItem("gritgo_daily_spin_" + todayKey(), JSON.stringify(saved));
+
+    addBtn.disabled = true;
+    addBtn.style.opacity = "0.5";
+    syncFromHabit();
+  }
+
+  // ✅ হ্যাবিটে টিক দিলে Spinner চ্যালেঞ্জও Done হবে
+  function syncFromHabit() {
+    const saved = JSON.parse(localStorage.getItem("gritgo_daily_spin_" + todayKey()) || "null");
+    if (!saved || !saved.habitId || saved.isDone) return;
+    const log = challengeData.habitLogs[getDateKey()] || {};
+    if (log[saved.habitId] === true) markAsDone();
+  }
+  setInterval(syncFromHabit, 1500);
+
+  // 🌫️ Done হওয়ার ৫ মিনিট পর বক্স ফেইড আউট
+  let fadeTimer = null;
+  function scheduleFade() {
+    const saved = JSON.parse(localStorage.getItem("gritgo_daily_spin_" + todayKey()) || "null");
+    const card = document.getElementById("dailySpinnerCard");
+    if (!saved || !saved.isDone || !card) return;
+
+    clearTimeout(fadeTimer);
+    const left = 5 * 60 * 1000 - (Date.now() - (saved.doneTime || Date.now()));
+
+    if (left <= 0) { card.style.display = "none"; return; }
+
+    fadeTimer = setTimeout(() => {
+      card.style.opacity = "0";
+      setTimeout(() => { card.style.display = "none"; }, 500);
+    }, left);
+  }
+  
+function drawWheel() {
+  const canvas = document.getElementById("challengeWheelCanvas");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  const numSegments = currentChallenges.length;
+  const anglePerSegment = (Math.PI * 2) / numSegments;
+  const centerX = canvas.width / 2;
+  const centerY = canvas.height / 2;
+  const radius = centerX - 5;
+
+  for (let i = 0; i < numSegments; i++) {
+    // ✅ সেগমেন্ট আঁকা শুরু হচ্ছে 12 টা (-90 deg) থেকে
+    const startAngle = (i * anglePerSegment) - (Math.PI / 2);
+    const endAngle = startAngle + anglePerSegment;
+
+    ctx.beginPath();
+    ctx.moveTo(centerX, centerY);
+    ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+    ctx.fillStyle = currentChallenges[i].color;
+    ctx.fill();
+    ctx.strokeStyle = "#0f1419";
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    ctx.save();
+    ctx.translate(centerX, centerY);
+    ctx.rotate(startAngle + (anglePerSegment / 2)); // টেক্সট মাঝখানে বসানোর জন্য
+    ctx.textAlign = "right";
+    ctx.textBaseline = "middle";
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "bold 12px sans-serif";
+
+    let text = currentChallenges[i].text;
+    let lines = [];
+    if (text.length > 11) {
+      let words = text.split(" ");
+      let line1 = "", line2 = "";
+      words.forEach(word => {
+        if ((line1 + " " + word).trim().length <= 9) line1 += (line1 ? " " : "") + word;
+        else line2 += (line2 ? " " : "") + word;
+      });
+      if(line1) lines.push(line1.trim());
+      if(line2) lines.push(line2.trim());
+    } else {
+      lines.push(text);
+    }
+
+    if (lines.length === 1) {
+      ctx.fillText(lines[0], radius - 25, 0);
+    } else {
+      ctx.fillText(lines[0], radius - 25, -8);
+      ctx.fillText(lines[1], radius - 25, 8);
+    }
+    ctx.restore();
+  }
+}
+
+let currentRotation = 0;
+let isSpinning = false;
+
+function bindEvents() {
+  document.getElementById("spinWheelBtn").addEventListener("click", spinWheel);
+  document.getElementById("addChallengeToHabitsBtn").addEventListener("click", addToHabits);
+  document.getElementById("markChallengeDoneBtn").addEventListener("click", markAsDone);
+}
+
+async function spinWheel() {
+  if (isSpinning) return;
+  if (localStorage.getItem("gritgo_daily_spin_" + todayKey())) {
+    if (typeof showToast === "function") showToast("You already spun today!");
+    return;
+  }
+
+  isSpinning = true;
+  const spinBtn = document.getElementById("spinWheelBtn");
+  spinBtn.disabled = true;
+  spinBtn.textContent = "...";
+  document.getElementById("spinnerStatusText").textContent = "Spinning...";
+  
+  if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
+
+  const winnerIndex = Math.floor(Math.random() * currentChallenges.length);
+  const winner = currentChallenges[winnerIndex];
+  const segmentAngle = 360 / currentChallenges.length;
+
+  // ✅ ১০০% নিখুঁত অ্যাঙ্গেল ক্যালকুলেশন
+  const targetAngle = 360 - (winnerIndex * segmentAngle) - (segmentAngle / 2);
+  const currentMod = ((currentRotation % 360) + 360) % 360;
+  let deltaAngle = targetAngle - currentMod;
+  if (deltaAngle < 0) deltaAngle += 360;
+  const totalRotation = currentRotation + (360 * 8) + deltaAngle;
+
+  // 🔊 TICK SOUND SETUP
+  let tickCount = 0;
+  const totalTicks = 14; 
+  const tickInterval = setInterval(() => {
+    if (tickCount >= totalTicks || !isSpinning) { 
+      clearInterval(tickInterval); 
+      return; 
+    }
+    if (typeof isSoundEnabled !== 'undefined' && isSoundEnabled) {
+      try {
+        const ctx = getSharedAudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'square'; 
+        osc.frequency.value = 1200;
+        gain.gain.setValueAtTime(0.04, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
+        osc.connect(gain); 
+        gain.connect(ctx.destination);
+        osc.start(); 
+        osc.stop(ctx.currentTime + 0.05);
+      } catch(e) {}
+    }
+    if (navigator.vibrate && tickCount % 3 === 0) navigator.vibrate(10);
+    tickCount++;
+  }, 250); 
+
+  // চাকা ঘোরানো শুরু
+  const canvas = document.getElementById("challengeWheelCanvas");
+  canvas.style.transform = `rotate(${totalRotation}deg)`;
+  currentRotation = totalRotation;
+
+  setTimeout(async () => {
+    isSpinning = false;
+    clearInterval(tickInterval);
+    localStorage.setItem("gritgo_daily_spin_" + todayKey(), JSON.stringify(winner));
+    document.getElementById("spinnerStatusText").textContent = "Today's Challenge";
+    showChallengeResult(winner);
+    if (typeof playCheckSound === 'function') playCheckSound(true);
+    if (navigator.vibrate) navigator.vibrate([100, 50, 100]); 
+  }, 4000);
+}
+  function loadTodayChallenge() {
+  const savedStr = localStorage.getItem("gritgo_daily_spin_" + todayKey());
+  if (!savedStr) return; 
+
+  try {
+    const winner = JSON.parse(savedStr);
+    const winnerIndex = currentChallenges.findIndex(c => c.text === winner.text);
+    if (winnerIndex !== -1) {
+  const segmentAngle = 360 / currentChallenges.length;
+  // 🌟 রিলোড দিলে চাকা ঠিক জায়গায় বসানোর ফর্মুলা
+  const targetAngle = 360 - (winnerIndex * segmentAngle) - (segmentAngle / 2);
+  const canvas = document.getElementById("challengeWheelCanvas");
+  
+  canvas.style.transition = "none"; 
+  canvas.style.transform = `rotate(${targetAngle}deg)`;
+  
+  currentRotation = targetAngle;
+  document.getElementById("spinWheelBtn").style.display = "none";
+}
+    
+        showChallengeResult(winner, true);
+    scheduleFade();
+    document.getElementById("spinnerStatusText").textContent = "Today's Challenge";
+
+  } catch (e) { console.error("Spinner load err:", e); }
+}
+
+  function scheduleMidnightReset() {
+    const now = new Date();
+    const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0);
+    setTimeout(() => { location.reload(); }, midnight - now);
+  }
+
+  const checkExist = setInterval(() => {
+    if (document.getElementById("extrasModal")) {
+      buildSpinnerUI();
+      scheduleMidnightReset();
+      clearInterval(checkExist);
+    }
+  }, 1000);
+
+})();
+// ============================================================
+// 🖼️ FULL SCREEN IMAGE VIEWER (Updated - Edge to Edge & Better Quality)
+// ============================================================
+(function initFullScreenImageViewer() {
+  // ১. মডাল তৈরি করা (যদি আগে থেকে না থাকে)
+  if (!document.getElementById("imageViewerModal")) {
+    const viewer = document.createElement("div");
+    viewer.id = "imageViewerModal";
+    
+    // স্টাইল: পুরো স্ক্রিন জুড়ে (Edge to Edge)
+    viewer.style.cssText = `
+      position: fixed; inset: 0; z-index: 999999;
+      background: #000000;
+      display: none; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity 0.3s ease;
+      touch-action: none; /* যাতে স্ক্রল বা জুম কনফ্লিক্ট না করে */
+    `;
+    
+    viewer.innerHTML = `
+      <!-- ক্লোজ বাটন -->
+      <button id="closeImageViewerBtn" style="position: absolute; top: 20px; right: 20px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); color: white; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; backdrop-filter: blur(4px);">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+      
+      <!-- ছবির কন্টেইনার (জুম করার জন্য) -->
+      <div id="imgZoomContainer" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; transition: transform 0.2s ease;">
+        <img id="fullScreenImage" style="width: 100%; height: 100%; object-fit: contain; transform: scale(1); transition: transform 0.1s;" alt="Full Screen">
+      </div>
+    `;
+    document.body.appendChild(viewer);
+
+    const closeBtn = document.getElementById("closeImageViewerBtn");
+    const modal = document.getElementById("imageViewerModal");
+    const img = document.getElementById("fullScreenImage");
+
+    const closeViewer = () => {
+      modal.style.opacity = "0";
+      setTimeout(() => {
+        modal.style.display = "none";
+        img.src = "";
+        img.style.transform = "scale(1)"; // জুম রিসেট
+      }, 300);
+    };
+
+    closeBtn.onclick = closeViewer;
+    
+    // মোবাইলের ব্যাক বাটনে বন্ধ হবে
+    document.addEventListener("popstate", closeViewer);
+
+    // ২. ডাবল ট্যাপে জুম (Zoom In/Out) লজিক
+    let lastTap = 0;
+    img.addEventListener("touchend", (e) => {
+      const currentTime = new Date().getTime();
+      const tapLength = currentTime - lastTap;
+      if (tapLength < 300 && tapLength > 0) {
+        // ডাবল ট্যাপ ডিটেক্টেড
+        e.preventDefault();
+        if (img.style.transform === "scale(1)") {
+          img.style.transform = "scale(2.5)"; // ২.৫ গুণ জুম
+        } else {
+          img.style.transform = "scale(1)"; // রিসেট
+        }
+      }
+      lastTap = currentTime;
+    });
+  }
+
+  // ৩. গ্লোবাল ফাংশন যা টাইমলাইন থেকে কল হবে
+  window.openFullScreenImage = function(imageSrc) {
+    const modal = document.getElementById("imageViewerModal");
+    const img = document.getElementById("fullScreenImage");
+    if (!modal || !img) return;
+
+    img.src = imageSrc;
+    img.style.transform = "scale(1)"; // নতুন ছবি ওপেন হলে জুম রিসেট
+    modal.style.display = "flex";
+    
+    setTimeout(() => { modal.style.opacity = "1"; }, 10);
+    
+    if (navigator.vibrate) navigator.vibrate(15);
+    history.pushState({ viewer: "open" }, ""); 
+  };
+
+  // ৪. Photo Timeline-এর ছবিগুলোতে ইভেন্ট বাঁধা
+  const originalRenderPhotoTimeline = window.renderPhotoTimeline;
+  if (originalRenderPhotoTimeline) {
+    window.renderPhotoTimeline = function() {
+      originalRenderPhotoTimeline.apply(this, arguments);
+      
+      setTimeout(() => {
+        document.querySelectorAll(".photo-timeline-item img").forEach(img => {
+          img.removeAttribute("onclick");
+          
+          img.onclick = function() {
+            window.openFullScreenImage(this.src);
+          };
+        });
+      }, 100);
+    };
+  }
+
+  setTimeout(() => {
+    if (window.renderPhotoTimeline) window.renderPhotoTimeline();
+  }, 2000);
+
+  console.log("✅ Full Screen Image Viewer (Updated) loaded");
+})();
+
 </script>
   <!-- 📚 Digital Library Modal -->
 <div id="digitalLibraryModal" class="modal-overlay" style="z-index: 8500; padding: 0; backdrop-filter: blur(5px); background: rgba(0,0,0,0.9);">
@@ -15693,8 +16736,6 @@ ${fullContext}
 <div class="settings-buttons" style="margin-top: 15px;">
   <button id="closeFoodScannerBtn" style="background: #2a3142; color: #e8eaed;">Close</button>
 </div>
-   
-    
   </div>
 </div>
   </body>
