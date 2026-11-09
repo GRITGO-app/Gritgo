@@ -367,11 +367,11 @@ body { background-color: var(--app-bg) !important; color: var(--app-text) !impor
     #dayModalSearchInput:focus { border-color: #4a9eff; }
     .category-badge { font-size: 9px; padding: 2px 6px; border-radius: 10px; background: #2a3142; color: #9aa0a6; margin-left: 6px; font-weight: bold; text-transform: uppercase; }
     .mini-chat-container { display: flex; flex-direction: column; gap: 10px; }
-    #miniChatHistory { 
+         #miniChatHistory { 
   max-height: 200px; min-height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; 
   background: var(--chat-bg, #0f1419); padding: 10px; border-radius: 10px; border: 1px solid #2a3142; 
   background-size: cover; background-position: center; transition: background 0.3s ease;
-}
+}   
 .chat-bubble { max-width: 85%; padding: 8px 12px; border-radius: 12px; font-size: 13px; line-height: 1.4; word-wrap: break-word; white-space: pre-wrap; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
 .chat-bubble.user { 
   align-self: flex-end; 
@@ -911,7 +911,7 @@ body.light-theme #addHabitCancel {
 }
 
 .quick-dot-btn.add { color: #d6a1f0; background: rgba(155,89,182,0.1); }
-.quick-dot-btn.craving { color: #ff6b4a; background: rgba(255,107,74,0.1); }
+.quick-dot-btn.craving { color: #2ecc71; background: rgba(46,204,113,0.1); }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
 .quick-dot-btn.howto { color: #00e5ff; background: rgba(0,229,255,0.1); }
 .quick-dot-btn.morning { color: #f1c40f; background: rgba(241,196,15,0.1); }
 .quick-dot-btn.night { color: #4a9eff; background: rgba(74,158,255,0.1); }
@@ -1553,7 +1553,17 @@ body.light-theme #addHabitCancel {
   color: #00e5ff; font-size: 15px; font-weight: 900; margin-bottom: 10px; border-bottom: 1px dashed rgba(0,229,255,0.3); padding-bottom: 5px;
 }
 .chapter-rule-list { list-style: none; display: flex; flex-direction: column; gap: 10px; padding: 0; margin: 0; }
-.chapter-rule-list li { color: #e8eaed; font-size: 14px; line-height: 1.6; display: flex; align-items: flex-start; gap: 10px; }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+.chapter-rule-list li { color: #e8eaed; font-size: 14px; line-height: 1.6; display: flex; align-items: flex-start; gap: 10px; }
+#waterTrackerModal .modal-box {
+  height: 100dvh !important;
+  max-height: 100dvh !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  border-radius: 0 !important;
+  padding: 20px !important;
+  margin: 0 !important;
+}
+#waterTrackerModal { padding: 0 !important; }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
   </style>
 </head>
 <body>
@@ -2035,8 +2045,12 @@ body.light-theme #addHabitCancel {
   <div id="quickDotMenu" class="quick-dot-menu">
     <button id="quickAiHabitBtn" class="quick-dot-btn add">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-      Add Habit : Add habits using AI  
+      Add Habit : Add Habits Using AI  
     </button>
+      <button id="quickAiDeleteHabitBtn" class="quick-dot-btn quit" style="color: #ff6b4a; background: rgba(255,107,74,0.1);">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+  Delete Habit : Delete Habits Using AI
+</button> 
     <button id="quickAiCravingBtn" class="quick-dot-btn craving">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg>
       Craving Help
@@ -2774,7 +2788,7 @@ body.light-theme #addHabitCancel {
     </div>
     <button id="wHistoryBtn" style="width: 100%; padding: 15px; background: #1a1f2e; color: #00e5ff; border: 1px solid #2a3142; border-radius: 16px; font-size: 15px; font-weight: bold; cursor: pointer; margin-bottom: 15px;">View History & Stats</button>
     <div class="settings-buttons">
-      <button id="closeWaterBtn">Close</button>
+      <button id="closeWaterBtn" style="background: #2a3242; color: white; border: none; padding: 15px; border-radius: 10px; width: 100%; font-weight: bold;">Close</button>
     </div>
   </div>
 </div>
@@ -6703,58 +6717,73 @@ if (window.speechSynthesis) {
   };
 }
 
+let __ttsToken = 0;
 function speakText(text) {
-  if (!window.speechSynthesis) { showToast("এই ব্রাউজারে Voice সাপোর্ট নেই"); return; }
+  const synth = window.speechSynthesis;
+  if (!synth) { showToast("এই ব্রাউজারে Voice সাপোর্ট নেই"); return; }
 
-  // ইমোজি ও মার্কডাউন পরিষ্কার
   const clean = String(text || "")
     .replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}]/gu, "")
     .replace(/[*#_`~>]/g, "").replace(/\[.*?\]/g, "").trim();
   if (!clean) return;
 
   const lang = (document.getElementById("voiceLangSelect")?.value) || "en-US";
-  const synth = window.speechSynthesis;
+  const myToken = ++__ttsToken;
   synth.cancel();
 
-  // ছোট ছোট অংশে ভাগ (Chrome-এর ১৫ সেকেন্ড বাগের সমাধান)
   const chunks = clean.match(/[^.!?।\n]+[.!?।\n]?/g) || [clean];
-  const parts = [];
-  let buf = "";
+  const parts = []; let buf = "";
   chunks.forEach(c => {
     if ((buf + c).length > 160) { if (buf) parts.push(buf); buf = c; }
     else buf += c;
   });
   if (buf.trim()) parts.push(buf);
 
-  const voices = synth.getVoices();
-  const norm = v => (v.lang || "").replace("_", "-").toLowerCase();
-  const l = lang.toLowerCase(), base = l.split("-")[0];
-  const voice =
-    voices.find(v => norm(v) === l && /google|samsung|natural|neural/i.test(v.name)) ||
-    voices.find(v => norm(v) === l) ||
-    voices.find(v => norm(v).startsWith(base)) || null;
-
-  if (!voice) showToast("এই ভাষার ভয়েস ফোনে নেই, ডিফল্ট ভয়েস চলছে");
-
-  playAIVoiceAnimation();
-  let idx = 0;
-  const keepAlive = setInterval(() => { if (synth.speaking) { synth.pause(); synth.resume(); } }, 10000);
-  const finish = () => { clearInterval(keepAlive); stopAIVoiceAnimation(); };
-
-  const speakNext = () => {
-    if (idx >= parts.length) { finish(); return; }
-    const u = new SpeechSynthesisUtterance(parts[idx++].trim());
-    u.lang = voice ? voice.lang : lang;
-    if (voice) u.voice = voice;
-    u.volume = 1; u.rate = 0.95; u.pitch = 1;
-    u.onend = speakNext;
-    u.onerror = finish;
-    synth.speak(u);
+  const pickVoice = () => {
+    const voices = synth.getVoices();
+    const norm = v => (v.lang || "").replace("_", "-").toLowerCase();
+    const l = lang.toLowerCase(), base = l.split("-")[0];
+    return voices.find(v => norm(v) === l && /google|samsung|natural|neural/i.test(v.name)) ||
+           voices.find(v => norm(v) === l) ||
+           voices.find(v => norm(v).startsWith(base)) || null;
   };
 
-  // cancel()-এর পর একটু অপেক্ষা
-  setTimeout(speakNext, 150);
+  const run = () => {
+    if (myToken !== __ttsToken) return;
+    const voice = pickVoice();
+    if (!voice) showToast("এই ভাষার ভয়েস ফোনে নেই, ডিফল্ট ভয়েস চলছে");
+    playAIVoiceAnimation();
+    let idx = 0;
+    const finish = () => { if (myToken === __ttsToken) stopAIVoiceAnimation(); };
+    const next = () => {
+      if (myToken !== __ttsToken) return;
+      if (idx >= parts.length) { finish(); return; }
+      const u = new SpeechSynthesisUtterance(parts[idx++].trim());
+      u.lang = voice ? voice.lang : lang;
+      if (voice) u.voice = voice;
+      u.onend = next;
+      u.onerror = (e) => { if (e.error === "interrupted" || e.error === "canceled") return; finish(); };
+      synth.speak(u);
+    };
+    next();
+  };
+
+  setTimeout(() => {
+    if (synth.getVoices().length) run();
+    else {
+      let done = false;
+      const go = () => { if (done) return; done = true; run(); };
+      synth.onvoiceschanged = go;
+      setTimeout(go, 800);
+    }
+  }, 150);
 }
+
+// প্রথম ট্যাপেই TTS unlock
+document.addEventListener("pointerdown", function unlockTTS() {
+  try { const u = new SpeechSynthesisUtterance(" "); u.volume = 0; speechSynthesis.speak(u); } catch (e) {}
+  document.removeEventListener("pointerdown", unlockTTS);
+}, { once: true });
 
 // Voice Popup & Recognition Logic
 const chatVoiceBtn = document.getElementById("chatVoiceBtn");
@@ -7677,6 +7706,7 @@ Categories: General, Study, Health, Fitness, Work, Mindfulness, Social, Finance,
 
     let addedHabitsCount = 0;
     try {
+            
       const jsonMatch = aiReply.match(/\[[\s\S]*\]/);
       if (jsonMatch) {
         const parsed = JSON.parse(jsonMatch[0]);
@@ -9505,7 +9535,18 @@ function getTimezoneFromLang(langCode) {
     "qu-PE": "America/Lima", "gn-PY": "America/Asuncion", "ay-BO": "America/La_Paz",
     "ht-HT": "America/Port-au-Prince", "eo": "UTC"
   };
-  return tzMap[langCode] || "Asia/Dhaka"; // ডিফল্ট হিসেবে ঢাকা থাকবে
+    if (tzMap[langCode]) return tzMap[langCode];
+
+  // তালিকায় না থাকলে দেশের কোড দিয়ে খোঁজা
+  const extra = {
+    "PT": "Europe/Lisbon", "EG": "Africa/Cairo", "SA": "Asia/Riyadh",
+    "BR": "America/Sao_Paulo", "MX": "America/Mexico_City", "GB": "Europe/London",
+    "US": "America/New_York", "IN": "Asia/Kolkata", "BD": "Asia/Dhaka"
+  };
+  const cc = (langToCountry[langCode] && langToCountry[langCode].code) || "";
+  if (extra[cc]) return extra[cc];
+
+  return "UTC";
 }
 
 // ============================================================
@@ -11493,6 +11534,7 @@ Categories: General, Study, Health, Fitness, Work, Mindfulness, Social, Finance,
       // Check if AI wants to add habits
       let addedHabitsCount = 0;
       let finalReply = aiReply;
+            
       try {
         const jsonMatch = aiReply.match(/\[[\s\S]*\]/);
         if (jsonMatch) {
@@ -11636,28 +11678,6 @@ Categories: General, Study, Health, Fitness, Work, Mindfulness, Social, Finance,
           window.pendingImageMime = pendingImageMime;
         }
       }, 100);
-    });
-  }
-  
-  // ══════════════════════════════════════════════════════════
-  // ✅ FIX 4: Enter key দিয়ে send (Edit mode সহ)
-  // ══════════════════════════════════════════════════════════
-  const aiInput = document.getElementById("aiQuestionInput");
-  if (aiInput) {
-    // পুরনো input handler reset
-    const newInput = aiInput.cloneNode(true);
-    aiInput.parentNode.replaceChild(newInput, aiInput);
-    
-    newInput.addEventListener("input", function() {
-      this.style.height = "40px";
-      this.style.height = this.scrollHeight + "px";
-    });
-    
-    newInput.addEventListener("keydown", function(e) {
-      if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault();
-        newAskBtn.click();
-      }
     });
   }
   
@@ -15114,7 +15134,12 @@ Do not write anything else in that specific message if you are adding rules.
     const s = window.getFullAppSnapshot();
     const L = [];
     L.push("═══════════ COMPLETE APP DATA (EVERY FEATURE) ═══════════");
-
+    const _code = document.getElementById("voiceLangSelect")?.value || "en-US";
+    const _tz = getTimezoneFromLang(_code);
+    L.push(`\n🕒 CURRENT TIME in user's selected country (${(langToCountry[_code] || {}).name || _code}, ${_tz}): ` +
+      new Date().toLocaleString("en-US", { timeZone: _tz, weekday: "long", year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit", hour12: true }));
+    L.push("\n📌 HABIT LIST (number: name):");
+    challengeData.habits.forEach((h, i) => L.push(`${i + 1}: ${h.name}`));
     L.push("\n📋 CHALLENGE:");
     L.push(`- Name: "${s.challenge.name}"`);
     L.push(`- Day ${s.challenge.currentDay} of ${s.challenge.duration} (${s.challenge.daysLeft} days left)`);
@@ -15340,7 +15365,7 @@ ${fullContext}
 - Settings: themes, backup, restore, CSV export
 
 🚨 CRITICAL BEHAVIOR:
-1. You are GENERAL-PURPOSE — answer coding, general knowledge, advice, anything. But ALWAYS link back to their goals.
+1. You are GENERAL-PURPOSE — answer coding, general knowledge, advice, anything. Answer fully and accurately; link back to their goals only when natural.
 2. You ALREADY KNOW every number above. Reference ACTUAL data. Example: "Your water streak is 2 days but habit streak is 12 — that's the gap to fix."
 3. When user asks "how am I doing?" → analyze EVERYTHING with real numbers.
 4. Guide them using exact button names from the list above.
@@ -15348,7 +15373,9 @@ ${fullContext}
 6. Adding habits: reply ONLY with JSON like [{"action":"add_habit","name":"X","category":"Y"}]
 7. Quit craving: emergency addiction coach using their quit data.
 8. Be HONEST — call out failures with data. Praise wins with numbers.
-9. ALWAYS reference real data — never generic advice.`
+9. Reference real app data when the question is about their progress. For other questions, just answer fully and accurately.
+10. TIME: If the user asks the time or date, use the CURRENT TIME above (their selected country). Never use any other timezone.
+11. DELETE HABIT: If the user asks to delete a habit (by name or by number from the HABIT LIST), reply ONLY with JSON: [{"action":"delete_habit","number":3}] or [{"action":"delete_habit","name":"Habit name"}]. Nothing else.`
       };
 
       const pastMessages = chatHistory.slice(-11, -1).map(m => ({
@@ -15367,6 +15394,52 @@ ${fullContext}
 
       let addedHabitsCount = 0;
       let finalReply = aiReply;
+      // 🗑️ DELETE HABIT
+      try {
+        const dm = aiReply.match(/\[[\s\S]*\]/);
+        if (dm) {
+          const dp = JSON.parse(dm[0]);
+          if (Array.isArray(dp) && dp.some(x => x.action === "delete_habit")) {
+            const targets = [];
+            dp.forEach(item => {
+              if (item.action !== "delete_habit") return;
+              let idx = -1;
+              if (item.number) idx = parseInt(item.number) - 1;
+              if ((idx < 0 || !challengeData.habits[idx]) && item.name) {
+                const n = String(item.name).trim().toLowerCase();
+                idx = challengeData.habits.findIndex(h => h.name.trim().toLowerCase() === n);
+                if (idx < 0) idx = challengeData.habits.findIndex(h => h.name.toLowerCase().includes(n));
+              }
+              const h = challengeData.habits[idx];
+              if (h && !targets.includes(h.id)) targets.push(h.id);
+            });
+
+            const backup = JSON.parse(JSON.stringify(challengeData.habits));
+            const removed = [];
+            challengeData.habits = challengeData.habits.filter(h => {
+              if (targets.includes(h.id)) { removed.push(h.name); return false; }
+              return true;
+            });
+
+            const refresh = () => {
+              localStorage.setItem("challengeData", JSON.stringify(challengeData));
+              renderHabits(); renderTodayHabits(); renderHeatmap(); updateStats();
+            };
+
+            if (removed.length) {
+              refresh();
+              finalReply = `🗑️ Deleted: ${removed.join(", ")}`;
+              showUndoToast("Habit deleted", () => {
+                challengeData.habits = backup;
+                refresh();
+                showToast("Restored!");
+              });
+            } else {
+              finalReply = "❌ Habit not found. Check the name or number.";
+            }
+          }
+        }
+      } catch (e) {}
       try {
         const jm = aiReply.match(/\[[\s\S]*\]/);
         if (jm) {
@@ -16767,7 +16840,7 @@ async function spinWheel() {
       setTimeout(scrollSelectedIcon, 400);
     }
   });
-
+renderTodayHabits();
   console.log("✅ One-shot patch loaded");
 })();
 // ============================================================
@@ -17201,6 +17274,88 @@ async function spinWheel() {
   </div>
 </div>
   </body>
-  <script src="//cdn.jsdelivr.net/npm/eruda"></script>
-<script>eruda.init();</script>
+ <script>
+document.getElementById("quickAiDeleteHabitBtn")?.addEventListener("click", () => {
+  const input = document.getElementById("aiQuestionInput");
+  input.value = "Delete Habit Number: ";
+  input.focus();
+  input.setSelectionRange(input.value.length, input.value.length);
+  input.style.height = "40px";
+  input.style.height = input.scrollHeight + "px";
+});
+</script> 
+  <script>
+(function initHomeMiniClock() {
+  const title = document.querySelector(".title-section");
+  if (!title || document.getElementById("homeMiniClock")) return;
+
+  const el = document.createElement("div");
+  el.id = "homeMiniClock";
+  el.style.cssText = "text-align:center; margin:8px 0 0; font-family:'Courier New',monospace; font-size:12px; font-weight:bold; color:#ffffff; letter-spacing:1px; opacity:0.85;";
+  title.appendChild(el);
+
+  function tick() {
+    const code = document.getElementById("voiceLangSelect")?.value || "en-US";
+    const tz = getTimezoneFromLang(code);
+    try {
+      el.textContent = new Date().toLocaleTimeString("en-US", {
+        timeZone: tz, hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true
+      });
+    } catch (e) {}
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+</script>
+  <script>
+(function initCountryClock() {
+  const wrapper = document.querySelector(".custom-lang-wrapper");
+  if (!wrapper || document.getElementById("countryClockBox")) return;
+
+  const cell = (id, label) => `
+    <div style="background:rgba(0,0,0,0.4); border:1px solid #00e5ff; border-radius:8px; padding:5px 8px; text-align:center; min-width:46px; box-shadow:0 0 8px rgba(0,229,255,0.15);">
+      <div id="${id}" style="font-family:'Courier New',monospace; font-size:17px; font-weight:900; color:#ffffff; text-shadow:0 0 6px rgba(0,229,255,0.7);">--</div>
+      <div style="font-size:8px; color:#9aa0a6; text-transform:uppercase; letter-spacing:1px; margin-top:2px;">${label}</div>
+    </div>`;
+
+  const box = document.createElement("div");
+  box.id = "countryClockBox";
+  box.style.cssText = "margin-bottom:8px; text-align:center;";
+  box.innerHTML = `
+    <div id="clockCountry" style="font-size:10px; color:#9aa0a6; margin-bottom:5px;"></div>
+    <div style="display:flex; justify-content:center; gap:6px;">
+      ${cell("clkH", "Hour")}
+      ${cell("clkM", "Min")}
+      ${cell("clkS", "Sec")}
+      ${cell("clkP", "AM/PM")}
+    </div>
+    <div id="clockDate" style="font-size:10px; color:#9aa0a6; margin-top:5px;"></div>
+  `;
+  wrapper.parentNode.insertBefore(box, wrapper);
+
+  function tick() {
+    const code = document.getElementById("voiceLangSelect")?.value || "en-US";
+    const tz = getTimezoneFromLang(code);
+    const now = new Date();
+    try {
+      const parts = new Intl.DateTimeFormat("en-US", {
+        timeZone: tz, hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true
+      }).formatToParts(now);
+      const get = t => (parts.find(p => p.type === t) || {}).value || "--";
+      document.getElementById("clkH").textContent = get("hour");
+      document.getElementById("clkM").textContent = get("minute");
+      document.getElementById("clkS").textContent = get("second");
+      document.getElementById("clkP").textContent = get("dayPeriod");
+      document.getElementById("clockDate").textContent =
+        now.toLocaleDateString("en-GB", { timeZone: tz, weekday: "long", day: "numeric", month: "short", year: "numeric" });
+    } catch (e) {}
+    document.getElementById("clockCountry").textContent =
+      (langToCountry[code]?.name || code) + " • " + tz;
+  }
+
+  tick();
+  setInterval(tick, 1000);
+})();
+</script>
+
 </html>
