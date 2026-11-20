@@ -1563,7 +1563,43 @@ body.light-theme #addHabitCancel {
   padding: 20px !important;
   margin: 0 !important;
 }
-#waterTrackerModal { padding: 0 !important; }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+#waterTrackerModal { padding: 0 !important; }
+  .gp-box{background:linear-gradient(145deg,var(--app-card),var(--app-bg))!important;border-color:var(--app-accent)!important}
+.gp-title,.gp-num,.gp-day{color:var(--app-text)!important}
+.gp-nav,.gp-col button{background:var(--app-bg)!important;color:var(--app-accent)!important}
+.gp-day.today{border-color:var(--app-accent)!important}
+.gp-day.sel{background:var(--app-accent)!important;color:var(--app-bg)!important;box-shadow:0 0 12px var(--app-accent)!important}
+.gp-colon{color:var(--app-accent)!important}
+.gp-num{text-shadow:0 0 10px var(--app-accent)!important}
+.gp-ampm button.on{border-color:var(--app-accent)!important;color:var(--app-accent)!important;background:var(--app-bg)!important}
+.gp-ok{background:var(--app-accent)!important;color:var(--app-bg)!important}
+.gp-cancel{background:var(--app-card)!important;color:var(--app-text)!important}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+ .gp-ov{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);z-index:99998;display:flex;align-items:center;justify-content:center;padding:20px}
+.gp-box{background:linear-gradient(145deg,#1a1f2e,#14151f);border:1px solid rgba(0,229,255,.35);border-radius:22px;padding:18px;width:100%;max-width:340px;box-shadow:0 20px 60px rgba(0,0,0,.7),0 0 40px rgba(0,229,255,.15);animation:habitPopupIn .3s cubic-bezier(.34,1.56,.64,1)}
+.gp-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.gp-title{color:#fff;font-weight:800;font-size:16px}
+.gp-nav{background:#0f1419;border:1px solid #2a3142;color:#00e5ff;width:34px;height:34px;border-radius:10px;font-size:18px;cursor:pointer}
+.gp-week,.gp-days{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
+.gp-week span{font-size:10px;color:#9aa0a6;font-weight:bold;padding:4px 0}
+.gp-day{aspect-ratio:1;border-radius:10px;border:1px solid transparent;background:transparent;color:#e8eaed;font-size:13px;font-weight:600;cursor:pointer}
+.gp-day.today{border-color:#00e5ff}
+.gp-day.sel{background:linear-gradient(135deg,#00e5ff,#0088cc);color:#05080f;font-weight:800;box-shadow:0 0 12px rgba(0,229,255,.5)}
+.gp-day.dis{opacity:.25;pointer-events:none}
+.gp-time{display:flex;align-items:center;justify-content:center;gap:8px;margin:10px 0}
+.gp-col{display:flex;flex-direction:column;align-items:center;gap:6px}
+.gp-col button{background:#0f1419;border:1px solid #2a3142;color:#00e5ff;width:60px;height:34px;border-radius:10px;font-size:16px;cursor:pointer}
+.gp-num{font-family:'Courier New',monospace;font-size:38px;font-weight:900;color:#fff;text-shadow:0 0 10px rgba(0,229,255,.6);min-width:64px;text-align:center}
+.gp-colon{font-size:34px;color:#00e5ff;font-weight:900;margin-top:-4px}
+.gp-ampm{display:flex;flex-direction:column;gap:6px;margin-left:6px}
+.gp-ampm button{background:#0f1419;border:1px solid #2a3142;color:#9aa0a6;padding:10px 12px;border-radius:10px;font-weight:bold;cursor:pointer}
+.gp-ampm button.on{background:rgba(0,229,255,.15);border-color:#00e5ff;color:#00e5ff;box-shadow:0 0 10px rgba(0,229,255,.3)}
+.gp-btns{display:flex;gap:10px;margin-top:14px}
+.gp-btns button{flex:1;padding:13px;border:none;border-radius:12px;font-weight:bold;font-size:14px;cursor:pointer}
+.gp-cancel{background:#2a3142;color:#e8eaed}
+.gp-ok{background:linear-gradient(135deg,#00e5ff,#0088cc);color:#05080f} 
+  .gp-in{background:transparent!important;border:none!important;outline:none;width:64px;padding:0;-webkit-user-select:auto;user-select:auto}
+.gp-in:focus{border-bottom:2px solid var(--app-accent,#00e5ff)!important;border-radius:0} 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
   </style>
 </head>
 <body>
@@ -1623,10 +1659,7 @@ body.light-theme #addHabitCancel {
   GRITGO Digital Library
 </button>
 
-<button id="sidebarBookRulesBtn" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background: #1a1f2e; color: #f39c12; border: 1px solid #f39c12; padding: 8px; border-radius: 10px; font-size: 12px; font-weight: bold; cursor: pointer; margin-bottom: 8px; transition: 0.2s;">
-  <svg style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2;" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-  Book Rules Tracker
-</button>
+
 
 <button id="sidebarFoodScannerBtn" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background: #1a1f2e; color: #ff4d8d; border: 1px solid #ff4d8d; padding: 8px; border-radius: 10px; font-size: 12px; font-weight: bold; cursor: pointer; margin-bottom: 8px; transition: 0.2s;">
   <svg style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;" viewBox="0 0 24 24"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path><path d="M7 2v20"></path><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"></path></svg>
@@ -2059,14 +2092,28 @@ body.light-theme #addHabitCancel {
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
       How to Use App
     </button>
-    <button id="quickAiMorningBtn" class="quick-dot-btn morning">
-      <span style="font-size:14px;">🥱🌅</span>
-      Good Morning Coach
-    </button>
-    <button id="quickAiNightBtn" class="quick-dot-btn night">
-      <span style="font-size:14px;">😴🌃</span>
-      Good Night Coach
-    </button>
+   <button id="quickAiMorningBtn" class="quick-dot-btn morning">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 2px;">
+    <path d="M17 18a5 5 0 0 0-10 0"></path>
+    <line x1="12" y1="2" x2="12" y2="9"></line>
+    <line x1="4.22" y1="10.22" x2="5.64" y2="11.64"></line>
+    <line x1="1" y1="18" x2="3" y2="18"></line>
+    <line x1="21" y1="18" x2="23" y2="18"></line>
+    <line x1="18.36" y1="11.64" x2="19.78" y2="10.22"></line>
+    <line x1="23" y1="22" x2="1" y2="22"></line>
+    <polyline points="8 6 12 2 16 6"></polyline>
+  </svg>
+  Good Morning Coach
+</button>
+
+<button id="quickAiNightBtn" class="quick-dot-btn night">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 2px;">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+    <line x1="19" y1="5" x2="19" y2="9"></line>
+    <line x1="17" y1="7" x2="21" y2="7"></line>
+  </svg>
+  Good Night Coach
+</button> 
   </div>
 </div> 
         <div class="chat-input-row">
@@ -2724,6 +2771,10 @@ body.light-theme #addHabitCancel {
     <div style="flex: 1;">
       <div id="sleepAiHeader" style="font-size: 11px; color: #00e5ff; font-weight: bold; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">AI Sleep Coach</div>
       <div id="sleepAiReplyText" style="color: #e8eaed;">...</div>
+      <div id="sleepAiChatInputRow" style="display: none; margin-top: 10px; gap: 6px; align-items: center;">
+  <input type="text" id="sleepAiUserReplyInput" placeholder="Reply to AI..." style="flex: 1; padding: 8px 12px; background: #1a1f2e; border: 1px solid #00e5ff; border-radius: 8px; color: #fff; font-size: 12px; outline: none;">
+  <button id="sleepAiSendReplyBtn" style="background: #00e5ff; color: #05080f; border: none; padding: 8px 12px; border-radius: 8px; font-weight: bold; font-size: 12px; cursor: pointer;">Send</button>
+</div>
     </div>
   </div>
 </div>
@@ -2737,7 +2788,9 @@ body.light-theme #addHabitCancel {
   <div class="settings-buttons" style="margin-top: 15px;">
     <button id="trackerClose">Close</button>
   </div>
+  
 </div>
+    
   </div> <!-- modal-box বন্ধ -->
 </div>   <!-- trackerModal বন্ধ -->
 <div id="weeklyReportModal" class="modal-overlay">
@@ -3197,7 +3250,7 @@ body.light-theme #addHabitCancel {
 // 🔑 AI CONFIG
 // ============================================================
 const AI_CONFIG = {
-  KEY:"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",
+  KEY:"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",
   MODELS: ["openai/gpt-oss-120b", "openai/gpt-oss-20b"], 
   VISION_MODELS: ["qwen/qwen3.8-27b"],
   URL: "https://api.groq.com/openai/v1/chat/completions"
@@ -4195,7 +4248,7 @@ if (shownCount === 0) {
   } else if (hideCompleted) {
   emptyMessage.innerHTML = `<span style="display:flex; align-items:center; gap:8px; color:grey;">
     <svg class="svg-icon" style="stroke:gold; width:20px; height:20px;" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>
-    All habits completed!
+    All Habits Completed!
   </span>`;
 } else {
     emptyMessage.textContent = "No habits match your search";
@@ -4457,8 +4510,9 @@ function renderDayModalList() {
       challengeData.habits.forEach(h => { if (challengeData.habitLogs[viewingDateKey][h.id] === true) newCompleted++; });
       document.getElementById("dayModalSubtitle").textContent = `${newCompleted} / ${challengeData.habits.length} habits done`;
       
-      renderDayModalList();
+            renderDayModalList();
       renderHeatmap(); updateStats();
+      renderTodayHabits();   // 🌟 Dashboard-এর হ্যাবিট লিস্ট আপডেট
       if (isChecked) playCheckSound(false); // 🔊 Sound in past edit
       if (document.getElementById("extrasModal").classList.contains("active")) renderExtras();
     };
@@ -4477,7 +4531,12 @@ function renderDayModalList() {
   }
 }
 document.getElementById("dayModalSearchInput").addEventListener("input", renderDayModalList);
-document.getElementById("dayModalClose").addEventListener("click", () => { dayModal.classList.remove("active"); viewingDateKey = null; });
+document.getElementById("dayModalClose").addEventListener("click", () => {
+  dayModal.classList.remove("active");
+  viewingDateKey = null;
+  renderTodayHabits();
+  updateTodayCount();
+});
 
 // ============================================================
 // ➕ ADD / EDIT HABIT MODAL
@@ -6194,7 +6253,7 @@ document.getElementById("hoursGrid").addEventListener("click", (e) => {
 });
 document.getElementById("saveSleepBtn").addEventListener("click", () => {
   if (selectedSleepHours === null) { showToast("Select sleep hours."); return; }
-  
+
   // ⬇️ ভ্যালু আগে ধরে রাখুন (renderSleepTracker এর আগে)
   const hoursToShow = selectedSleepHours;
   
@@ -6207,12 +6266,15 @@ document.getElementById("saveSleepBtn").addEventListener("click", () => {
 
 // 🌟 সেভ করার সময় টাইমস্ট্যাম্প সেভ করা
 if (!sleepState.lastSavedTime) sleepState.lastSavedTime = {};
-sleepState.lastSavedTime[currentIndex] = Date.now();
 
+// 🌟 নতুন লজিক: আগে থেকে টাইম সেভ থাকলে (এডিট করলে) নতুন টাইম নেবে না
+if (!sleepState.lastSavedTime[currentIndex]) {
+  sleepState.lastSavedTime[currentIndex] = Date.now();
+}
 localStorage.setItem("gritgo_sleep_state", JSON.stringify(sleepState));
   showToast("Sleep data saved!");
   if (navigator.vibrate) navigator.vibrate(40);
-  
+
   renderSleepTracker();
   
   // ⬇️ ধরে রাখা ভ্যালু পাঠান
@@ -6228,15 +6290,11 @@ document.getElementById("editSleepBtn").addEventListener("click", () => {
   
   // ডাটা রিসেট করা
   sleepState.days[currentIndex] = null;
-  if (sleepState.lastSavedTime) sleepState.lastSavedTime[currentIndex] = null;
   localStorage.setItem("gritgo_sleep_state", JSON.stringify(sleepState));
   
   showToast("Sleep data cleared. Select again!");
   
-  // AI Reply বক্স হাইড করা
-  const aiBox = document.getElementById("sleepAiReplyBox");
-  if (aiBox) aiBox.style.display = "none";
-  
+
   renderSleepTracker();
 });
 // ============================================================
@@ -6246,118 +6304,130 @@ let sleepAiTimeout = null;
 
 
   function showSleepAiReply(hours) {
-console.log("🚨 AI Reply function triggered! Hours:", hours); // 👈 এই লাইনটা নতুন যোগ করুন
-const box = document.getElementById("sleepAiReplyBox");
+  console.log("🚨 AI Reply function triggered! Hours:", hours);
+  const box = document.getElementById("sleepAiReplyBox");
   const textEl = document.getElementById("sleepAiReplyText");
+  const chatRow = document.getElementById("sleepAiChatInputRow");
+  const userInput = document.getElementById("sleepAiUserReplyInput");
   
-  if (!box || !textEl) {
-    console.error("Sleep AI Reply Box not found in DOM");
-    return;
-  }
+  if (!box || !textEl) return;
   
-  // পুরনো timeout থাকলে বাতিল
-  if (sleepAiTimeout) {
-    clearTimeout(sleepAiTimeout);
-  }
+  // পুরনো টাইমার থাকলে বাতিল
+  if (sleepAiTimeout) clearTimeout(sleepAiTimeout);
   
-  // আগে লুকিয়ে রাখি (fade out করে)
+  // বক্স রিসেট করা (নতুন করে সেভ করলে আগের লেখা মুছে যাবে)
   box.style.opacity = "0";
   box.style.transform = "translateY(-10px)";
   box.style.display = "none";
-  
-  // AI Reply তৈরি করা — hour অনুযায়ী
+  if (chatRow) chatRow.style.display = "none";
+  if (userInput) userInput.value = "";
+
+  // AI Reply তৈরি করা (আগের মতোই)
   let replyText = "";
-  let icon = "";
+  let icon = "😴";
   let borderColor = "#00e5ff";
   let bgColor = "rgba(0, 229, 255, 0.08)";
   
   if (hours >= 1 && hours <= 6) {
-    icon = "⚠️";
-    borderColor = "#ff6b4a";
-    bgColor = "rgba(255, 107, 74, 0.1)";
-    const tips = {
-      1: "Only 1 hour?! 🤬 That's not sleep, that's a nap. Your brain is SCREAMING for rest. You're going to crash today. GO TO BED EARLY TONIGHT — no excuses!",
-      2: "2 hours of sleep? 😡 That's dangerous for your health. Your focus, memory, and mood will be destroyed today. Sleep at least 7 hours tonight or you'll pay for it!",
-      3: "3 hours?! 😤 Your brain is running on fumes. You can't build good habits when you're sleep-deprived. Prioritize rest tonight — your goals depend on it!",
-      4: "4 hours is nowhere near enough. 😠 Your body needs 7-9 hours to recover. You're sabotaging your progress. Hit the pillow earlier tonight!",
-      5: "5 hours — better than nothing, but still not enough. 😠 You need 7-9 hours for peak performance. Try to sleep 1-2 hours earlier tonight!",
-      6: "6 hours is borderline sleep-deprived. 😤 Your body needs more. Aim for at least 7-8 hours tonight — your brain will thank you tomorrow."
-    };
-    replyText = tips[hours] || "You're sleep-deprived. Get more rest!";
+    icon = "⚠️"; borderColor = "#ff6b4a"; bgColor = "rgba(255, 107, 74, 0.1)";
+    replyText = `${hours} hours is not enough! Your brain needs rest. Go to bed early tonight! 😤`;
   } else if (hours === 7) {
-    icon = "👍";
-    borderColor = "#f1c40f";
-    bgColor = "rgba(241, 196, 15, 0.1)";
-    replyText = "7 hours is decent — good job! 💪 But you can do better. Try to get 1-2 more hours tonight for optimal brain function and recovery. Small improvement, big impact!";
-  } else if (hours === 8 || hours === 9) {
-    icon = "🎉";
-    borderColor = "#00e5ff";
-    bgColor = "rgba(0, 229, 255, 0.1)";
-    const perfectTips = {
-      8: "PERFECT! 🎉 8 hours is the golden standard. Your brain is fresh, your body is recovered, and you're ready to crush your goals today. KEEP THIS UP! 🔥",
-      9: "EXCELLENT! 🎉 9 hours of sleep — your body and brain are fully recharged. You're in peak condition today. This is how champions rest! 💯"
-    };
-    replyText = perfectTips[hours] || "Perfect sleep! Keep it up!";
-  } else if (hours >= 10 && hours <= 12) {
-    icon = "😴";
-    borderColor = "#9b59b6";
-    bgColor = "rgba(155, 89, 182, 0.1)";
-    const jammedTips = {
-      10: "10 hours?! 😴 Bro, you're not sleeping — you're hibernating! Too much sleep can make you groggy and lazy. Try to stick to 7-9 hours for best results!",
-      11: "11 hours?! 😴 Now you're just being lazy. Oversleeping can cause headaches and fatigue. Set an alarm and wake up at a reasonable time tomorrow!",
-      12: "12 HOURS?! 😴 You're officially JAMMED. This much sleep will make you MORE tired, not less. Get back on a healthy 7-9 hour schedule tomorrow!"
-    };
-    replyText = jammedTips[hours] || "Too much sleep can make you groggy. Aim for 7-9 hours!";
+    icon = "👍"; borderColor = "#f1c40f"; bgColor = "rgba(241, 196, 15, 0.1)";
+    replyText = "7 hours is decent. Try for 8 tonight for better focus! 💪";
+  } else if (hours >= 8 && hours <= 9) {
+    icon = "🎉"; borderColor = "#00e5ff"; bgColor = "rgba(0, 229, 255, 0.1)";
+    replyText = `PERFECT! ${hours} hours is the golden standard. You're recharged and ready! 🔥`;
   } else {
-    replyText = "Sleep logged. Aim for 7-9 hours for optimal health and performance!";
+    icon = "😴"; borderColor = "#9b59b6"; bgColor = "rgba(155, 89, 182, 0.1)";
+    replyText = `${hours} hours?! You're hibernating! Too much sleep makes you groggy. Aim for 8h. 😅`;
   }
   
-  // Box style সেট করা
   box.style.borderLeftColor = borderColor;
   box.style.background = `linear-gradient(135deg, ${bgColor}, rgba(74, 158, 255, 0.08))`;
   
-  // ✅ এখানে আপনার প্রশ্নের উত্তর (querySelector এর বদলে এগুলো বসবে)
-  const iconEl = document.getElementById("sleepAiIcon");
-  if (iconEl) iconEl.textContent = icon;
-  
-  const headerEl = document.getElementById("sleepAiHeader");
-  if (headerEl) headerEl.style.color = borderColor;
-  
-  // Text সেট করা
+  document.getElementById("sleepAiIcon").textContent = icon;
+  document.getElementById("sleepAiHeader").style.color = borderColor;
   textEl.textContent = replyText;
   
-  // Box দেখানো (fade in)
+  // বক্স দেখানো (Fade In)
   box.style.display = "block";
-  
   setTimeout(() => {
     box.style.opacity = "1";
     box.style.transform = "translateY(0)";
   }, 50);
   
-  // 🔊 সাউন্ড
+  // সাউন্ড বাজানো
   try {
     const audioCtx = getSharedAudioContext();
     const oscillator = audioCtx.createOscillator();
     const gainNode = audioCtx.createGain();
-    oscillator.type = 'sine';
-    oscillator.frequency.value = 800;
+    oscillator.type = 'sine'; oscillator.frequency.value = 800;
     gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
     gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-    oscillator.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-    oscillator.start();
-    oscillator.stop(audioCtx.currentTime + 0.3);
+    oscillator.connect(gainNode); gainNode.connect(audioCtx.destination);
+    oscillator.start(); oscillator.stop(audioCtx.currentTime + 0.3);
   } catch(e) {}
+
+  // 🌟 ২ সেকেন্ড পর ইউজারকে রিপ্লাই দেওয়ার অপশন দেখাবে
+  setTimeout(() => {
+    if (chatRow) chatRow.style.display = "flex";
+  }, 2000); 
+
+  // 🌟 ইউজারের রিপ্লাই পাঠানোর লজিক
+  const sendBtn = document.getElementById("sleepAiSendReplyBtn");
+  if (sendBtn) {
+    // পুরনো ইভেন্ট রিমুভ করে নতুন ইভেন্ট বাঁধা (যাতে বারবার ক্লিকে সমস্যা না হয়)
+    const newSendBtn = sendBtn.cloneNode(true);
+    sendBtn.parentNode.replaceChild(newSendBtn, sendBtn);
+
+    newSendBtn.addEventListener("click", async () => {
+      const replyTextUser = userInput.value.trim();
+      if (!replyTextUser) return;
+
+      // ইউজারের কথা দেখানো
+      textEl.innerHTML += `<br><br><div style="text-align:right; color: #00e5ff; font-weight: bold; font-size: 12px; padding: 6px 10px; background: rgba(0,229,255,0.1); border-radius: 8px; width: fit-content; margin-left: auto;">You: ${replyTextUser}</div>`;
+      userInput.value = "";
+      chatRow.style.display = "none"; // বক্স লুকিয়ে যাবে (আর রিপ্লাই দেওয়া যাবে না)
+
+      // AI লোডিং
+      const loadingId = "sleep_ai_load_" + Date.now();
+      textEl.innerHTML += `<div id="${loadingId}" style="color: #9aa0a6; font-size: 12px; margin-top: 8px;"><span class="loading-spinner" style="width:10px;height:10px;"></span> AI is typing...</div>`;
+
+      try {
+        const langCode = document.getElementById("voiceLangSelect") ? document.getElementById("voiceLangSelect").value : "en-US";
+        const targetLang = (typeof getLanguageName === "function") ? getLanguageName(langCode) : "English";
+        
+        const prompt = `You are the GRITGO AI Sleep Coach. The user slept ${hours} hours and replied to your advice with: "${replyTextUser}". Give a final, short (1-2 sentences) encouraging reply. LANGUAGE: ${targetLang}. Use emojis.`;
+        
+        const aiReply = await callGroq([{ role: "user", content: prompt }], { temperature: 0.7, max_tokens: 150 });
+        
+        document.getElementById(loadingId)?.remove();
+        
+        // AI-এর ফাইনাল রিপ্লাই (Aqua/Cyan কালারে)
+textEl.innerHTML += `<div style="text-align:left; color: #00e5ff; font-weight: bold; font-size: 12px; margin-top: 8px; padding: 6px 10px; background: rgba(0,229,255,0.1); border-radius: 8px; width: fit-content; border-left: 3px solid #00e5ff;">Coach: ${aiReply}</div>`;
+        if (typeof isVoiceReplyOn !== 'undefined' && isVoiceReplyOn && typeof speakText === 'function') {
+          speakText(aiReply);
+        }
+
+        // 🌟 ১০ সেকেন্ড পর পুরো বক্স Fade Out হয়ে যাবে
+        setTimeout(() => {
+          box.style.opacity = "0";
+          box.style.transform = "translateY(-10px)";
+          setTimeout(() => { box.style.display = "none"; }, 500);
+        }, 300000); 
+
+      } catch (e) {
+        document.getElementById(loadingId)?.remove();
+        textEl.innerHTML += `<div style="color: #ff6b4a; font-size: 12px; margin-top: 5px;">Error: ${e.message}</div>`;
+      }
+    });
+  }
+
+  // 🌟 ১ মিনিট পর অটো-হাইড লজিক বাতিল করা হলো (কারণ এখন ইউজার রিপ্লাই দেবে)
+  // তাই নিচের পুরনো 60,000ms ওয়ালা setTimeout এখানে নেই।
+}
   
-  // 🌟 1 মিনিট (60,000 ms) পরে fade out হয়ে যাবে
-  sleepAiTimeout = setTimeout(() => {
-    box.style.opacity = "0";
-    box.style.transform = "translateY(-10px)";
-    setTimeout(() => {
-      box.style.display = "none";
-    }, 500); 
-  }, 60000);
-}  
+  
 
 function renderWeeklyProgress() {
   const list = document.getElementById("weeklyProgressList");
@@ -7749,7 +7819,7 @@ chatInput.addEventListener("input", function() {
 
 document.getElementById("quickAiHabitBtn").addEventListener("click", () => {
   const input = document.getElementById("aiQuestionInput");
-  input.value = "+Add Habit: ";
+  input.value = "+Add Habit: (Name) ";
   input.focus();
   input.setSelectionRange(input.value.length, input.value.length);
   input.style.height = "40px";
@@ -10348,566 +10418,337 @@ if (settingsSoundBtn) {
     });
   }
 })();
-  // ============================================================
-// 🏋️ WORKOUT TRACKER MODULE
+// ============================================================
+// 🏋️ WORKOUT TRACKER — SIMPLE VERSION (one screen, 3 steps, English UI)
+// Delete the old `initWorkoutTracker` IIFE completely and paste this in its place.
+// Old data uses the same storage key, so previous workouts are kept.
 // ============================================================
 (function initWorkoutTracker() {
   'use strict';
 
-  // ---------- State ----------
-  const WO_KEY = 'gritgo_workout_data';
+  const KEY = 'gritgo_workout_data';
   let woData = { workouts: {}, customExercises: [] };
   try {
-    const saved = JSON.parse(localStorage.getItem(WO_KEY));
-    if (saved && typeof saved === 'object') woData = { workouts: {}, customExercises: [], ...saved };
-  } catch (e) { console.warn('Workout data reset'); }
+    const s = JSON.parse(localStorage.getItem(KEY));
+    if (s && typeof s === 'object') woData = { workouts: {}, customExercises: [], ...s };
+  } catch (e) {}
 
-  let woRestInterval = null;
-  let woRestSeconds = 0;
-
-  // ---------- Default Exercise Library ----------
-  const DEFAULT_EXERCISES = {
-    'Chest':     ['Bench Press', 'Incline Dumbbell Press', 'Push-ups', 'Cable Fly', 'Dips'],
-    'Back':      ['Pull-ups', 'Barbell Row', 'Lat Pulldown', 'Deadlift', 'Seated Cable Row'],
-    'Legs':      ['Squats', 'Leg Press', 'Romanian Deadlift', 'Lunges', 'Calf Raises'],
-    'Arms':      ['Barbell Curl', 'Hammer Curl', 'Tricep Dips', 'Skull Crushers', 'Cable Pushdown'],
-    'Shoulders': ['Overhead Press', 'Lateral Raise', 'Front Raise', 'Face Pull', 'Shrugs'],
-    'Core':      ['Plank', 'Crunches', 'Russian Twist', 'Leg Raises', 'Mountain Climbers'],
-    'Cardio':    ['Running', 'Cycling', 'Jump Rope', 'Rowing', 'Burpees'],
-    'Full Body': ['Burpees', 'Kettlebell Swing', 'Thrusters', 'Clean & Press', 'Bear Crawl']
+  const LIB = {
+    Chest: ['Bench Press', 'Incline Dumbbell Press', 'Push-ups', 'Cable Fly', 'Dips'],
+    Back: ['Pull-ups', 'Barbell Row', 'Lat Pulldown', 'Deadlift', 'Seated Cable Row'],
+    Legs: ['Squats', 'Leg Press', 'Romanian Deadlift', 'Lunges', 'Calf Raises'],
+    Arms: ['Barbell Curl', 'Hammer Curl', 'Tricep Dips', 'Skull Crushers', 'Cable Pushdown'],
+    Shoulders: ['Overhead Press', 'Lateral Raise', 'Front Raise', 'Face Pull', 'Shrugs'],
+    Core: ['Plank', 'Crunches', 'Russian Twist', 'Leg Raises', 'Mountain Climbers'],
+    Cardio: ['Running', 'Cycling', 'Jump Rope', 'Rowing', 'Burpees'],
+    'Full Body': ['Kettlebell Swing', 'Thrusters', 'Clean & Press', 'Bear Crawl']
   };
 
-  // ---------- Helpers ----------
-  const todayKey = () => {
-    const d = new Date();
-    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-  };
-  const fmtDate = (key) => new Date(key + 'T00:00:00').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
-  const esc = (s) => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-
-  const save = () => {
-    try { localStorage.setItem(WO_KEY, JSON.stringify(woData)); }
-    catch (e) { showToast('Storage full! Clear old workouts.'); }
-  };
-
-  const getTodayWorkout = () => {
-    const k = todayKey();
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const dKey = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(woData)); } catch (e) { showToast('Storage full!'); } };
+  const getW = () => {
+    const k = dKey();
     if (!woData.workouts[k]) woData.workouts[k] = { exercises: [], startTime: Date.now() };
     return woData.workouts[k];
   };
 
-  const getAllExercises = () => {
-    const all = { ...DEFAULT_EXERCISES };
-    woData.customExercises.forEach(ex => {
-      const mg = ex.muscle || 'Full Body';
-      if (!all[mg]) all[mg] = [];
-      if (!all[mg].includes(ex.name)) all[mg].push(ex.name);
-    });
-    return all;
-  };
-
-  // Calculate Personal Record (max weight) for an exercise
-  const getPR = (exerciseName) => {
-    let pr = 0;
-    Object.values(woData.workouts).forEach(w => {
-      (w.exercises || []).forEach(ex => {
-        if (ex.name === exerciseName) {
-          (ex.sets || []).forEach(s => {
-            const wt = parseFloat(s.weight) || 0;
-            if (wt > pr) pr = wt;
-          });
-        }
-      });
-    });
-    return pr;
-  };
-
-  // ============================================================
-  // RENDER: TODAY PANEL
-  // ============================================================
-  function renderToday() {
-    const panel = document.getElementById('woTodayPanel');
-    if (!panel) return;
-
-    const workout = getTodayWorkout();
-    const exs = workout.exercises || [];
-
-    if (exs.length === 0) {
-      panel.innerHTML = `
-        <div class="wo-empty">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M6 5v14M18 5v14M6 12h12M3 8v8M21 8v8"></path>
-          </svg>
-          <p>No exercises yet today.</p>
-          <p style="font-size: 12px; margin-top: 8px;">Tap the + button or browse the Library to add one.</p>
-        </div>
-      `;
-      return;
-    }
-
-    let html = `<div class="wo-section-title">
-      <span>Today's Workout</span>
-      <span style="color: #ff6b4a; font-size: 13px;">${exs.length} exercise${exs.length > 1 ? 's' : ''}</span>
-    </div>`;
-
-    exs.forEach((ex, exIdx) => {
-      const isDone = (ex.sets || []).length > 0 && (ex.sets || []).every(s => s.done);
-      const pr = getPR(ex.name);
-      html += `
-        <div class="wo-exercise-card ${isDone ? 'done' : ''}" style="cursor: default;">
-          <div class="wo-ex-name">
-            <span>${esc(ex.name)}</span>
-            <button class="wo-del-ex" data-idx="${exIdx}" style="background: transparent; border: none; color: #ff6b4a; cursor: pointer; padding: 4px;" title="Remove">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="3 6 5 6 21 6"></polyline>
-                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-              </svg>
-            </button>
-          </div>
-          <div class="wo-ex-meta">
-            <span style="color: #9aa0a6;">${esc(ex.muscle || 'Full Body')}</span>
-            ${pr > 0 ? `<span class="wo-ex-pr">🏆 PR: ${pr}kg</span>` : ''}
-          </div>
-          <div style="margin-top: 12px;">
-            ${(ex.sets || []).map((set, setIdx) => `
-              <div class="wo-set-row">
-                <div class="wo-set-num">${setIdx + 1}</div>
-                <input type="number" inputmode="decimal" placeholder="kg" value="${set.weight || ''}" data-ex="${exIdx}" data-set="${setIdx}" data-field="weight">
-                <input type="number" inputmode="numeric" placeholder="reps" value="${set.reps || ''}" data-ex="${exIdx}" data-set="${setIdx}" data-field="reps">
-                <button class="wo-set-check ${set.done ? 'checked' : ''}" data-ex="${exIdx}" data-set="${setIdx}">${set.done ? '✓' : '○'}</button>
-              </div>
-            `).join('')}
-            <button class="wo-add-set-btn" data-ex="${exIdx}">+ Add Set</button>
-          </div>
-        </div>
-      `;
-    });
-
-    panel.innerHTML = html;
-    bindTodayEvents();
-  }
-
-async function bindTodayEvents() {
-    const panel = document.getElementById('woTodayPanel');
-    if (!panel) return;
-
-    // Weight/Reps input changes
-    panel.querySelectorAll('input[data-field]').forEach(inp => {
-      inp.addEventListener('input', (e) => {
-        const exIdx = parseInt(e.target.dataset.ex);
-        const setIdx = parseInt(e.target.dataset.set);
-        const field = e.target.dataset.field;
-        const w = getTodayWorkout();
-        if (w.exercises[exIdx] && w.exercises[exIdx].sets[setIdx]) {
-          w.exercises[exIdx].sets[setIdx][field] = e.target.value;
-          save();
-        }
-      });
-    });
-
-    // Set check toggle
-    panel.querySelectorAll('.wo-set-check').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const exIdx = parseInt(e.currentTarget.dataset.ex);
-        const setIdx = parseInt(e.currentTarget.dataset.set);
-        const w = getTodayWorkout();
-        if (w.exercises[exIdx] && w.exercises[exIdx].sets[setIdx]) {
-          const set = w.exercises[exIdx].sets[setIdx];
-          set.done = !set.done;
-          save();
-          if (set.done) {
-            if (navigator.vibrate) navigator.vibrate(30);
-            startRestTimer(90); // 90 sec rest
-            playCheckSound(false);
-          }
-          renderToday();
-        }
-      });
-    });
-
-    // Add set
-    panel.querySelectorAll('.wo-add-set-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const exIdx = parseInt(e.currentTarget.dataset.ex);
-        const w = getTodayWorkout();
-        if (w.exercises[exIdx]) {
-          if (!w.exercises[exIdx].sets) w.exercises[exIdx].sets = [];
-          w.exercises[exIdx].sets.push({ weight: '', reps: '', done: false });
-          save();
-          renderToday();
-        }
-      });
-    });
-
-    // Delete exercise
-panel.querySelectorAll('.wo-del-ex').forEach(btn => {
-  btn.addEventListener('click', async (e) => { // 👈 এখানে async যোগ করুন
-    const exIdx = parseInt(e.currentTarget.dataset.idx);
-    if (await showCustomConfirm('Remove this exercise from today?')) { // 👈 এখানে await যোগ করুন
-      const w = getTodayWorkout();
-      w.exercises.splice(exIdx, 1);
-      save();
-      renderToday();
-    }
-  });
-});
-  }
-
-  // ============================================================
-  // RENDER: LIBRARY PANEL
-  // ============================================================
-  function renderLibrary() {
-    const panel = document.getElementById('woLibraryPanel');
-    if (!panel) return;
-
-    const all = getAllExercises();
-    let html = `<div class="wo-section-title">
-      <span>Exercise Library</span>
-      <span style="color: #9aa0a6; font-size: 12px;">Tap to add to today</span>
-    </div>`;
-
-    Object.keys(all).forEach(muscle => {
-      html += `<div class="wo-muscle-group">
-        <div class="wo-muscle-title">${esc(muscle)}</div>`;
-      all[muscle].forEach(name => {
-        const inToday = getTodayWorkout().exercises.some(e => e.name === name);
-        html += `
-          <div class="wo-exercise-card ${inToday ? 'done' : ''}" data-exname="${esc(name)}" data-exmuscle="${esc(muscle)}">
-            <div class="wo-ex-name">
-              <span>${esc(name)}</span>
-              ${inToday ? '<span style="color: #4aaa4a; font-size: 11px;">✓ Added</span>' : '<span style="color: #ff6b4a; font-size: 20px;">+</span>'}
-            </div>
-          </div>
-        `;
-      });
-      html += `</div>`;
-    });
-
-    panel.innerHTML = html;
-
-    // Bind add events
-    panel.querySelectorAll('.wo-exercise-card[data-exname]').forEach(card => {
-      card.addEventListener('click', () => {
-        const name = card.dataset.exname;
-        const muscle = card.dataset.exmuscle;
-        const w = getTodayWorkout();
-        if (w.exercises.some(e => e.name === name)) {
-          showToast('Already in today\'s workout');
-          return;
-        }
-        w.exercises.push({ name, muscle, sets: [{ weight: '', reps: '', done: false }] });
-        save();
-        showToast(`Added: ${name}`);
-        if (navigator.vibrate) navigator.vibrate(30);
-        renderLibrary();
-      });
-    });
-  }
-
-  // ============================================================
-  // RENDER: HISTORY PANEL
-  // ============================================================
-  function renderHistory() {
-    const panel = document.getElementById('woHistoryPanel');
-    if (!panel) return;
-
-    const keys = Object.keys(woData.workouts).filter(k => {
-      const w = woData.workouts[k];
-      return w && w.exercises && w.exercises.length > 0;
-    }).sort((a, b) => b.localeCompare(a));
-
-    if (keys.length === 0) {
-      panel.innerHTML = `<div class="wo-empty">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <circle cx="12" cy="12" r="10"></circle>
-          <polyline points="12 6 12 12 16 14"></polyline>
-        </svg>
-        <p>No workout history yet.</p>
-        <p style="font-size: 12px; margin-top: 8px;">Complete your first workout to see it here!</p>
-      </div>`;
-      return;
-    }
-
-    let html = `<div class="wo-section-title"><span>Workout History</span></div>`;
-    keys.slice(0, 30).forEach(k => {
-      const w = woData.workouts[k];
-      let totalSets = 0, doneSets = 0, volume = 0;
-      w.exercises.forEach(ex => {
-        (ex.sets || []).forEach(s => {
-          totalSets++;
-          if (s.done) {
-            doneSets++;
-            volume += (parseFloat(s.weight) || 0) * (parseFloat(s.reps) || 0);
-          }
-        });
-      });
-      html += `
-        <div class="wo-history-item">
-          <div class="wo-history-date">${fmtDate(k)}</div>
-          <div class="wo-history-detail">
-            <div>🏋️ ${w.exercises.length} exercises • ${doneSets}/${totalSets} sets</div>
-            <div>📊 Volume: ${volume.toFixed(0)} kg</div>
-            <div style="margin-top: 4px; font-size: 11px; color: #9aa0a6;">
-              ${w.exercises.map(e => esc(e.name)).join(', ')}
-            </div>
-          </div>
-        </div>
-      `;
-    });
-    panel.innerHTML = html;
-  }
-
-  // ============================================================
-  // RENDER: STATS PANEL
-  // ============================================================
-  function renderStats() {
-    const panel = document.getElementById('woStatsPanel');
-    if (!panel) return;
-
-    // Calculate stats
-    const today = todayKey();
-    const allKeys = Object.keys(woData.workouts).filter(k => woData.workouts[k]?.exercises?.length);
-    
-    // Weekly workouts
-    let weekCount = 0;
-    const now = new Date();
-    for (let i = 0; i < 7; i++) {
-      const d = new Date(now); d.setDate(d.getDate() - i);
-      const k = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-      if (woData.workouts[k]?.exercises?.length) weekCount++;
-    }
-
-    // Total volume this week
-    let weekVolume = 0;
-    for (let i = 0; i < 7; i++) {
-      const d = new Date(now); d.setDate(d.getDate() - i);
-      const k = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-      const w = woData.workouts[k];
-      if (w?.exercises) {
-        w.exercises.forEach(ex => (ex.sets || []).forEach(s => {
-          if (s.done) weekVolume += (parseFloat(s.weight) || 0) * (parseFloat(s.reps) || 0);
-        }));
+  // What you did last time for this exercise (weight x reps)
+  function lastTime(name) {
+    const today = dKey();
+    const keys = Object.keys(woData.workouts).filter(k => k < today).sort().reverse();
+    for (const k of keys) {
+      const ex = (woData.workouts[k].exercises || []).find(e => e.name === name);
+      if (ex && ex.sets && ex.sets.length) {
+        const done = ex.sets.filter(s => s.done && (s.weight || s.reps));
+        const arr = done.length ? done : ex.sets;
+        const s = arr[arr.length - 1];
+        if (s && (s.weight || s.reps)) return { weight: s.weight || '', reps: s.reps || '' };
       }
     }
-
-    // Today's volume
-    let todayVolume = 0, todayDone = 0, todayTotal = 0;
-    const tw = woData.workouts[today];
-    if (tw?.exercises) {
-      tw.exercises.forEach(ex => (ex.sets || []).forEach(s => {
-        todayTotal++;
-        if (s.done) {
-          todayDone++;
-          todayVolume += (parseFloat(s.weight) || 0) * (parseFloat(s.reps) || 0);
-        }
-      }));
-    }
-
-    // Total workouts all time
-    const totalWorkouts = allKeys.length;
-    const totalVolume = allKeys.reduce((sum, k) => {
-      const w = woData.workouts[k];
-      return sum + w.exercises.reduce((s2, ex) => s2 + (ex.sets || []).reduce((s3, s) => s3 + (s.done ? (parseFloat(s.weight)||0)*(parseFloat(s.reps)||0) : 0), 0), 0);
-    }, 0);
-
-    // All-time PRs
-    const prMap = {};
-    allKeys.forEach(k => {
-      woData.workouts[k].exercises.forEach(ex => {
-        (ex.sets || []).forEach(s => {
-          const wt = parseFloat(s.weight) || 0;
-          if (wt > 0 && (!prMap[ex.name] || wt > prMap[ex.name])) prMap[ex.name] = wt;
-        });
-      });
-    });
-    const prs = Object.entries(prMap).sort((a,b) => b[1] - a[1]).slice(0, 10);
-
-    panel.innerHTML = `
-      <div class="wo-section-title"><span>Your Stats</span></div>
-      
-      <div class="wo-stats-grid">
-        <div class="wo-stat-card">
-          <div class="wo-stat-num">${weekCount}</div>
-          <div class="wo-stat-label">Days This Week</div>
-        </div>
-        <div class="wo-stat-card">
-          <div class="wo-stat-num">${totalWorkouts}</div>
-          <div class="wo-stat-label">Total Workouts</div>
-        </div>
-        <div class="wo-stat-card">
-          <div class="wo-stat-num">${(weekVolume/1000).toFixed(1)}k</div>
-          <div class="wo-stat-label">Week Volume (kg)</div>
-        </div>
-        <div class="wo-stat-card">
-          <div class="wo-stat-num">${(totalVolume/1000).toFixed(0)}k</div>
-          <div class="wo-stat-label">All-Time Volume</div>
-        </div>
-      </div>
-
-      <div class="wo-section-title"><span>Today's Summary</span></div>
-      <div class="wo-stats-grid">
-        <div class="wo-stat-card">
-          <div class="wo-stat-num">${todayDone}/${todayTotal}</div>
-          <div class="wo-stat-label">Sets Done</div>
-        </div>
-        <div class="wo-stat-card">
-          <div class="wo-stat-num">${todayVolume.toFixed(0)}</div>
-          <div class="wo-stat-label">Volume (kg)</div>
-        </div>
-      </div>
-
-      ${prs.length > 0 ? `
-        <div class="wo-section-title" style="margin-top: 15px;">
-          <span>🏆 Personal Records</span>
-        </div>
-        ${prs.map(([name, wt]) => `
-          <div style="display: flex; justify-content: space-between; padding: 10px 12px; background: #1a1f2e; border-radius: 8px; margin-bottom: 6px; border-left: 3px solid #f1c40f;">
-            <span style="color: #e8eaed; font-size: 13px;">${esc(name)}</span>
-            <span style="color: #f1c40f; font-weight: bold; font-size: 13px;">${wt} kg</span>
-          </div>
-        `).join('')}
-      ` : ''}
-    `;
+    return null;
   }
 
-  // ============================================================
-  // REST TIMER
-  // ============================================================
-  function startRestTimer(seconds) {
-    woRestSeconds = seconds;
-    const timer = document.getElementById('woRestTimer');
-    const timeEl = document.getElementById('woRestTime');
-    if (!timer || !timeEl) return;
+  function allEx() {
+    const out = [], seen = new Set();
+    Object.keys(LIB).forEach(m => LIB[m].forEach(n => { if (!seen.has(n)) { seen.add(n); out.push({ name: n, muscle: m }); } }));
+    woData.customExercises.forEach(e => { if (!seen.has(e.name)) { seen.add(e.name); out.push({ name: e.name, muscle: e.muscle || 'Full Body' }); } });
+    return out;
+  }
 
-    timer.classList.add('active');
-    if (woRestInterval) clearInterval(woRestInterval);
+  // ---------- CSS ----------
+  const st = document.createElement('style');
+  st.textContent = `
+  #workoutModal .modal-box{padding:0!important;display:flex!important;flex-direction:column;overflow:hidden!important;position:relative}
+  .wk-head{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border-bottom:1px solid #2a3142;flex-shrink:0}
+  .wk-head h2{margin:0;font-size:20px;color:#00e5ff}
+  .wk-head button{background:none;border:none;color:#9aa0a6;font-size:24px;padding:4px 10px;cursor:pointer}
+  .wk-body{flex:1;overflow-y:auto;padding:14px 16px 30px}
+  .wk-sum{color:#00e5ff;font-weight:bold;font-size:14px;margin-bottom:12px;text-align:center}
+  .wk-help{background:rgba(0,229,255,.07);border:1px solid rgba(0,229,255,.3);border-radius:14px;padding:16px;margin-bottom:14px;color:#e8eaed;font-size:14px;line-height:1.9}
+  .wk-help ol{margin:8px 0 0 20px;padding:0}
+  .wk-card{background:#1a1f2e;border:1px solid #2a3142;border-radius:14px;padding:14px;margin-bottom:12px}
+  .wk-card.alldone{border-color:#4aaa4a;background:rgba(74,170,74,.07)}
+  .wk-top{display:flex;justify-content:space-between;align-items:center}
+  .wk-name{font-size:16px;font-weight:bold;color:#e8eaed}
+  .wk-del{background:none;border:none;color:#ff6b4a;cursor:pointer;padding:4px 8px;display:flex;align-items:center}
+  .wk-last{font-size:12px;color:#f1c40f;margin:4px 0 10px}
+  .wk-cols{display:grid;grid-template-columns:30px 1fr 1fr 48px;gap:8px;font-size:11px;color:#9aa0a6;text-align:center;margin-bottom:4px}
+  .wk-row{display:grid;grid-template-columns:30px 1fr 1fr 48px;gap:8px;align-items:center;margin-bottom:8px}
+  .wk-row .n{text-align:center;color:#00e5ff;font-weight:bold}
+  .wk-row input{width:100%;padding:12px 4px;background:#0f1419;border:1px solid #2a3142;border-radius:10px;color:#e8eaed;font-size:17px;text-align:center;outline:none}
+  .wk-row input:focus{border-color:#00e5ff}
+  .wk-tick{height:46px;border-radius:10px;background:rgba(0,229,255,.12);border:2px solid #00e5ff;color:#00e5ff;font-size:20px;font-weight:bold;cursor:pointer}
+  .wk-tick.on{background:#4aaa4a;border-color:#4aaa4a;color:#fff}
+  .wk-setbtns{display:flex;gap:8px;margin-top:4px}
+  .wk-setbtns button{flex:1;padding:11px;background:transparent;border:1px dashed #d6a1f0;color:#d6a1f0;border-radius:10px;font-weight:bold;font-size:14px;cursor:pointer}
+  .wk-add{width:100%;padding:16px;background:linear-gradient(135deg,#00e5ff,#0088cc);color:#05080f;border:none;border-radius:14px;font-size:17px;font-weight:800;cursor:pointer;margin:6px 0 20px}
+  .wk-h3{color:#9aa0a6;font-size:12px;font-weight:bold;text-transform:uppercase;letter-spacing:1px;margin:6px 0 10px}
+  .wk-hist{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#1a1f2e;border-left:3px solid #00e5ff;border-radius:10px;padding:10px 12px;margin-bottom:8px}
+  .wk-hist .d{color:#00e5ff;font-size:12px;font-weight:bold}
+  .wk-hist .t{color:#c3c9d1;font-size:12px;margin-top:3px}
+  .wk-hist button{flex-shrink:0;padding:8px 10px;background:rgba(0,229,255,.1);border:1px solid #00e5ff;color:#00e5ff;border-radius:8px;font-size:12px;font-weight:bold;cursor:pointer}
+  .wk-rest{display:none;position:absolute;left:16px;right:16px;bottom:16px;background:#1a1f2e;border:2px solid #00e5ff;border-radius:14px;padding:12px 16px;align-items:center;justify-content:space-between;box-shadow:0 8px 25px rgba(0,229,255,.35);z-index:5}
+  .wk-rest.on{display:flex}
+  .wk-rest span{color:#00e5ff;font-size:22px;font-weight:bold;font-family:monospace}
+  .wk-rest small{color:#9aa0a6;display:block;font-size:11px;font-family:sans-serif}
+  .wk-rest button{background:#00e5ff;color:#05080f;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer}
+  .wk-sheet{display:none;position:absolute;inset:0;background:#0f1419;z-index:10;flex-direction:column}
+  .wk-sheet.on{display:flex}
+  .wk-sheet .top{padding:14px 16px;border-bottom:1px solid #2a3142;display:flex;gap:10px;align-items:center}
+  .wk-sheet .top input{flex:1;padding:12px;background:#1a1f2e;border:1px solid #2a3142;border-radius:10px;color:#e8eaed;font-size:15px;outline:none}
+  .wk-sheet .top button{background:none;border:none;color:#ff6b4a;font-size:24px;cursor:pointer}
+  .wk-chips{display:flex;gap:8px;overflow-x:auto;padding:10px 16px;flex-shrink:0}
+  .wk-chip{flex-shrink:0;padding:8px 14px;border-radius:20px;background:#1a1f2e;border:1px solid #2a3142;color:#9aa0a6;font-size:13px;font-weight:bold;cursor:pointer}
+  .wk-chip.on{background:rgba(0,229,255,.15);border-color:#00e5ff;color:#00e5ff}
+  .wk-list{flex:1;overflow-y:auto;padding:4px 16px 20px}
+  .wk-item{display:flex;justify-content:space-between;align-items:center;padding:14px;background:#1a1f2e;border:1px solid #2a3142;border-radius:12px;margin-bottom:8px;cursor:pointer;color:#e8eaed;font-size:15px}
+  .wk-item small{color:#9aa0a6;font-size:11px}
+  .wk-item.new{border-color:#00e5ff;color:#00e5ff;font-weight:bold}
+  .wk-item.in{opacity:.45;pointer-events:none}`;
+  document.head.appendChild(st);
 
-    const update = () => {
-      if (woRestSeconds <= 0) {
-        clearInterval(woRestInterval);
-        woRestInterval = null;
-        timer.classList.remove('active');
-        // Beep sound
+  // ---------- Shell ----------
+  let pickMuscle = 'All', pickQ = '';
+  function buildShell() {
+    const box = document.querySelector('#workoutModal .modal-box');
+    if (!box) return false;
+    box.innerHTML = `
+      <div class="wk-head"><h2><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:8px"><path d="M6 5v14M18 5v14M6 12h12M3 8v8M21 8v8"></path></svg>Workout</h2><button id="wkClose"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button></div>
+      <div class="wk-body" id="wkBody"></div>
+      <div class="wk-rest" id="wkRest"><div><span id="wkRestT">01:00</span><small>Rest time...</small></div><button id="wkRestSkip">Skip</button></div>
+      <div class="wk-sheet" id="wkSheet">
+        <div class="top"><input id="wkSearch" placeholder="Search or type a new exercise..." autocomplete="off"><button id="wkSheetClose"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button></div>
+        <div class="wk-chips" id="wkChips"></div>
+        <div class="wk-list" id="wkList"></div>
+      </div>`;
+    return true;
+  }
+
+  // ---------- Main render ----------
+  function render() {
+    const body = document.getElementById('wkBody');
+    if (!body) return;
+    const ex = getW().exercises;
+    let done = 0, total = 0;
+    ex.forEach(e => (e.sets || []).forEach(s => { total++; if (s.done) done++; }));
+
+    let h = '';
+    if (!ex.length) {
+      h += `<div class="wk-help"><b>How to use (3 steps)</b><ol>
+        <li>Tap <b>+ Add Exercise</b> below</li>
+        <li>Pick an exercise from the list</li>
+        <li>Type weight and reps, then tap <b>✓</b> when the set is done</li></ol></div>`;
+    } else {
+      h += `<div class="wk-sum">Today: ${ex.length} exercise${ex.length > 1 ? 's' : ''} • ${done}/${total} sets done</div>`;
+    }
+
+    ex.forEach((e, i) => {
+      const sets = e.sets || [];
+      const all = sets.length && sets.every(s => s.done);
+      const last = lastTime(e.name);
+      h += `<div class="wk-card ${all ? 'alldone' : ''}">
+        <div class="wk-top"><div class="wk-name">${esc(e.name)}</div><button class="wk-del" data-act="delex" data-i="${i}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button></div>
+        ${last ? `<div class="wk-last">Last time: ${esc(last.weight || '-')} kg × ${esc(last.reps || '-')} reps</div>` : `<div style="height:8px"></div>`}
+        <div class="wk-cols"><span>Set</span><span>kg</span><span>Reps</span><span></span></div>
+        ${sets.map((s, j) => `
+          <div class="wk-row">
+            <div class="n">${j + 1}</div>
+            <input type="number" inputmode="decimal" placeholder="0" value="${esc(s.weight || '')}" data-i="${i}" data-j="${j}" data-f="weight">
+            <input type="number" inputmode="numeric" placeholder="0" value="${esc(s.reps || '')}" data-i="${i}" data-j="${j}" data-f="reps">
+            <button class="wk-tick ${s.done ? 'on' : ''}" data-act="tick" data-i="${i}" data-j="${j}">${s.done ? '✓' : '○'}</button>
+          </div>`).join('')}
+        <div class="wk-setbtns">
+          <button data-act="addset" data-i="${i}">+ Set</button>
+          ${sets.length > 1 ? `<button data-act="rmset" data-i="${i}" style="border-color:#ff6b4a;color:#ff6b4a">− Last Set</button>` : ''}
+        </div>
+      </div>`;
+    });
+
+    h += `<button class="wk-add" data-act="openpick">+ Add Exercise</button>`;
+
+    // Past workouts — copy to today in one tap
+    const today = dKey();
+    const past = Object.keys(woData.workouts).filter(k => k < today && (woData.workouts[k].exercises || []).length).sort().reverse().slice(0, 5);
+    if (past.length) {
+      h += `<div class="wk-h3">Past Workouts (repeat in one tap)</div>`;
+      past.forEach(k => {
+        const w = woData.workouts[k];
+        const dt = new Date(k + 'T00:00:00').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
+        h += `<div class="wk-hist"><div><div class="d">${dt}</div><div class="t">${w.exercises.map(e => esc(e.name)).join(', ')}</div></div>
+          <button data-act="copy" data-d="${k}">Repeat</button></div>`;
+      });
+    }
+    body.innerHTML = h;
+  }
+
+  // ---------- Picker ----------
+  function drawChips() {
+    const c = document.getElementById('wkChips');
+    const names = ['All', ...Object.keys(LIB)];
+    c.innerHTML = names.map(m => `<button class="wk-chip ${pickMuscle === m ? 'on' : ''}" data-m="${m}">${m}</button>`).join('');
+  }
+  function drawList() {
+    const l = document.getElementById('wkList');
+    const q = pickQ.trim().toLowerCase();
+    const inToday = new Set(getW().exercises.map(e => e.name));
+    const items = allEx().filter(e => (pickMuscle === 'All' || e.muscle === pickMuscle) && (!q || e.name.toLowerCase().includes(q)));
+    let h = '';
+    if (pickQ.trim() && !allEx().some(e => e.name.toLowerCase() === q)) {
+      h += `<div class="wk-item new" data-new="1">+ Add "${esc(pickQ.trim())}" as new exercise</div>`;
+    }
+    h += items.map(e => `<div class="wk-item ${inToday.has(e.name) ? 'in' : ''}" data-n="${esc(e.name)}" data-mu="${e.muscle}">
+      <span>${esc(e.name)}</span><small>${inToday.has(e.name) ? '✓ Added' : e.muscle}</small></div>`).join('');
+    l.innerHTML = h || `<p style="text-align:center;color:#9aa0a6;padding:20px">Nothing found. Type a name above to add a new exercise.</p>`;
+  }
+  function openPicker() {
+    pickMuscle = 'All'; pickQ = '';
+    document.getElementById('wkSearch').value = '';
+    drawChips(); drawList();
+    document.getElementById('wkSheet').classList.add('on');
+  }
+  function closePicker() { document.getElementById('wkSheet').classList.remove('on'); }
+
+  function addExercise(name, muscle) {
+    const w = getW();
+    if (w.exercises.some(e => e.name === name)) { showToast('Already added'); return; }
+    const last = lastTime(name);
+    w.exercises.push({ name, muscle, sets: [{ weight: last ? last.weight : '', reps: last ? last.reps : '', done: false }] });
+    save(); closePicker(); render();
+    if (navigator.vibrate) navigator.vibrate(25);
+    setTimeout(() => { const b = document.getElementById('wkBody'); if (b) b.scrollTop = b.scrollHeight; }, 50);
+  }
+
+  // ---------- Rest timer ----------
+  let restInt = null, restLeft = 0;
+  function startRest(sec) {
+    const box = document.getElementById('wkRest'), t = document.getElementById('wkRestT');
+    if (!box) return;
+    restLeft = sec; box.classList.add('on');
+    clearInterval(restInt);
+    const tick = () => {
+      if (restLeft <= 0) {
+        clearInterval(restInt); box.classList.remove('on');
         try {
-          const ctx = getSharedAudioContext();
-          const osc = ctx.createOscillator();
-          const g = ctx.createGain();
-          osc.frequency.value = 880;
-          osc.connect(g); g.connect(ctx.destination);
-          g.gain.setValueAtTime(0.2, ctx.currentTime);
-          g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
-          osc.start(); osc.stop(ctx.currentTime + 0.5);
-        } catch(e) {}
+          const c = getSharedAudioContext(), o = c.createOscillator(), g = c.createGain();
+          o.frequency.value = 880; o.connect(g); g.connect(c.destination);
+          g.gain.setValueAtTime(0.2, c.currentTime); g.gain.exponentialRampToValueAtTime(0.01, c.currentTime + 0.5);
+          o.start(); o.stop(c.currentTime + 0.5);
+        } catch (e) {}
         if (navigator.vibrate) navigator.vibrate([100, 100, 100]);
-        showToast('Rest complete! 💪');
+        showToast('Rest complete! Start your next set 💪');
         return;
       }
-      const m = Math.floor(woRestSeconds / 60);
-      const s = woRestSeconds % 60;
-      timeEl.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-      woRestSeconds--;
+      t.textContent = `${String(Math.floor(restLeft / 60)).padStart(2, '0')}:${String(restLeft % 60).padStart(2, '0')}`;
+      restLeft--;
     };
-
-    update();
-    woRestInterval = setInterval(update, 1000);
+    tick(); restInt = setInterval(tick, 1000);
   }
+  function stopRest() { clearInterval(restInt); const b = document.getElementById('wkRest'); if (b) b.classList.remove('on'); }
 
-  document.getElementById('woSkipRest')?.addEventListener('click', () => {
-    if (woRestInterval) clearInterval(woRestInterval);
-    woRestInterval = null;
-    const timer = document.getElementById('woRestTimer');
-    if (timer) timer.classList.remove('active');
-    showToast('Rest skipped');
-  });
+  // ---------- Events ----------
+  function bind() {
+    const body = document.getElementById('wkBody');
 
-  // ============================================================
-  // TAB SWITCHING
-  // ============================================================
-  function switchTab(tab) {
-    document.querySelectorAll('.wo-tab').forEach(t => {
-      t.classList.toggle('active', t.dataset.woTab === tab);
+    // Typing weight/reps saves without re-rendering (keeps the keyboard open)
+    body.addEventListener('input', e => {
+      const f = e.target.dataset.f; if (!f) return;
+      const s = getW().exercises[+e.target.dataset.i]?.sets[+e.target.dataset.j];
+      if (s) { s[f] = e.target.value; save(); }
     });
-    document.getElementById('woTodayPanel').style.display = tab === 'today' ? 'block' : 'none';
-    document.getElementById('woLibraryPanel').style.display = tab === 'library' ? 'block' : 'none';
-    document.getElementById('woHistoryPanel').style.display = tab === 'history' ? 'block' : 'none';
-    document.getElementById('woStatsPanel').style.display = tab === 'stats' ? 'block' : 'none';
 
-    if (tab === 'today') renderToday();
-    else if (tab === 'library') renderLibrary();
-    else if (tab === 'history') renderHistory();
-    else if (tab === 'stats') renderStats();
+    body.addEventListener('click', async e => {
+      const b = e.target.closest('[data-act]'); if (!b) return;
+      const act = b.dataset.act, i = +b.dataset.i, j = +b.dataset.j;
+      const w = getW(), ex = w.exercises[i];
+
+      if (act === 'openpick') openPicker();
+
+      else if (act === 'tick' && ex) {
+        const s = ex.sets[j]; s.done = !s.done; save();
+        if (s.done) { startRest(60); if (navigator.vibrate) navigator.vibrate(30); if (typeof playCheckSound === 'function') playCheckSound(false); }
+        render();
+      }
+      else if (act === 'addset' && ex) {
+        const p = ex.sets[ex.sets.length - 1] || {};
+        ex.sets.push({ weight: p.weight || '', reps: p.reps || '', done: false }); // copies previous set's kg/reps
+        save(); render();
+      }
+      else if (act === 'rmset' && ex && ex.sets.length > 1) { ex.sets.pop(); save(); render(); }
+
+      else if (act === 'delex' && ex) {
+        if (await showCustomConfirm(`Remove "${ex.name}" from today's workout?`)) { w.exercises.splice(i, 1); save(); render(); }
+      }
+      else if (act === 'copy') {
+        const src = woData.workouts[b.dataset.d]; if (!src) return;
+        let n = 0;
+        src.exercises.forEach(se => {
+          if (w.exercises.some(x => x.name === se.name)) return;
+          const last = se.sets.filter(s => s.done).pop() || se.sets[se.sets.length - 1] || {};
+          w.exercises.push({ name: se.name, muscle: se.muscle || 'Full Body',
+            sets: se.sets.map(() => ({ weight: last.weight || '', reps: last.reps || '', done: false })) });
+          n++;
+        });
+        save(); render(); showToast(n ? `${n} exercise${n > 1 ? 's' : ''} added` : 'All already added');
+      }
+    });
+
+    document.getElementById('wkSearch').addEventListener('input', e => { pickQ = e.target.value; drawList(); });
+    document.getElementById('wkChips').addEventListener('click', e => {
+      const c = e.target.closest('[data-m]'); if (!c) return;
+      pickMuscle = c.dataset.m; drawChips(); drawList();
+    });
+    document.getElementById('wkList').addEventListener('click', e => {
+      const it = e.target.closest('.wk-item'); if (!it) return;
+      if (it.dataset.new) {
+        const name = pickQ.trim(); if (!name) return;
+        const mu = pickMuscle === 'All' ? 'Full Body' : pickMuscle;
+        if (!woData.customExercises.some(x => x.name === name)) woData.customExercises.push({ name, muscle: mu });
+        addExercise(name, mu);
+      } else if (it.dataset.n) addExercise(it.dataset.n, it.dataset.mu);
+    });
+    document.getElementById('wkSheetClose').onclick = closePicker;
+    document.getElementById('wkRestSkip').onclick = stopRest;
+    document.getElementById('wkClose').onclick = () => {
+      stopRest(); closePicker();
+      document.getElementById('workoutModal').classList.remove('active');
+    };
   }
 
-  document.querySelectorAll('.wo-tab').forEach(tab => {
-    tab.addEventListener('click', () => switchTab(tab.dataset.woTab));
-  });
+  // ---------- Open ----------
+  const openBtn = document.getElementById('openWorkoutBtn');
+  if (openBtn) {
+    openBtn.addEventListener('click', () => {
+      if (!document.getElementById('wkBody')) { if (!buildShell()) return; bind(); }
+      render();
+      document.getElementById('workoutModal').classList.add('active');
+    });
+  }
 
-  // ============================================================
-  // ADD EXERCISE MODAL
-  // ============================================================
-  document.getElementById('woAddFab')?.addEventListener('click', () => {
-    document.getElementById('woNewExName').value = '';
-    document.getElementById('woNewExMuscle').value = 'Chest';
-    document.getElementById('woAddExerciseModal').classList.add('active');
-  });
+  window.__workoutTracker = { woData, render, save };
+  console.log('✅ Simple Workout Tracker loaded');
+})();
 
-  document.getElementById('woCancelAddEx')?.addEventListener('click', () => {
-    document.getElementById('woAddExerciseModal').classList.remove('active');
-  });
-
-  document.getElementById('woSaveAddEx')?.addEventListener('click', () => {
-    const name = document.getElementById('woNewExName').value.trim();
-    const muscle = document.getElementById('woNewExMuscle').value;
-    if (!name) { showToast('Enter exercise name'); return; }
-
-    // Check duplicate
-    const all = getAllExercises();
-    if (all[muscle] && all[muscle].includes(name)) {
-      showToast('Exercise already exists');
-      return;
-    }
-
-    // Add to today's workout
-    const w = getTodayWorkout();
-    w.exercises.push({ name, muscle, sets: [{ weight: '', reps: '', done: false }] });
-    save();
-
-    // Also save as custom exercise for future
-    if (!woData.customExercises.some(e => e.name === name)) {
-      woData.customExercises.push({ name, muscle });
-      save();
-    }
-
-    document.getElementById('woAddExerciseModal').classList.remove('active');
-    showToast(`Added: ${name}`);
-    if (navigator.vibrate) navigator.vibrate(30);
-    switchTab('today');
-  });
-
-  // ============================================================
-  // OPEN / CLOSE MODAL
-  // ============================================================
-  const woOpen = document.getElementById('openWorkoutBtn');
-if (woOpen) {
-  woOpen.addEventListener('click', () => {
-  document.getElementById('workoutModal').classList.add('active');
-  switchTab('today');
-});
-}
-  document.getElementById('closeWorkoutBtn')?.addEventListener('click', () => {
-    document.getElementById('workoutModal').classList.remove('active');
-    if (woRestInterval) {
-      clearInterval(woRestInterval);
-      woRestInterval = null;
-      document.getElementById('woRestTimer').classList.remove('active');
-    }
-  });
-
-  // Expose for debugging
-  window.__workoutTracker = { woData, renderToday, renderLibrary, renderHistory, renderStats, save };
-
-  console.log('✅ Workout Tracker loaded');
-})();  
    // 🌟 নতুন: কাস্টম প্রিমিয়াম পপ-আপ ফাংশন
 function showCustomConfirm(message) {
   return new Promise((resolve) => {
@@ -11179,7 +11020,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         savePhotos();
         renderPhotoTimeline();
-        showToast("Photo added successfully! 📸");
+        showToast("Photo added successfully!");
         if (navigator.vibrate) navigator.vibrate(30);
       };
       img.src = ev.target.result;
@@ -12699,7 +12540,7 @@ Instructions:
         </div>
       </div>
       <div style="display: flex; gap: 6px;">
-        <button id="adjusterAiTip" style="flex:1; padding: 8px; background: rgba(0,229,255,0.15); color: #00e5ff; border: 1px solid #00e5ff; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer;">🤖 Get AI Tip</button>
+        <button id="adjusterAiTip" style="flex:1; padding: 8px; background: rgba(0,229,255,0.15); color: #00e5ff; border: 1px solid #00e5ff; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer;">Get AI Tip</button>
         <button id="adjusterRemove" style="flex:1; padding: 8px; background: rgba(255,107,74,0.15); color: #ff6b4a; border: 1px solid #ff6b4a; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer;">🗑️ Remove</button>
         <button id="adjusterDismiss" style="padding: 8px 12px; background: #2a3142; color: #9aa0a6; border: 1px solid #3a4256; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer;">✕</button>
       </div>
@@ -14620,7 +14461,7 @@ if (existingAiBtn) existingAiBtn.remove();
 
 const aiBtn = document.createElement("button");
 aiBtn.id = "openBookAiBtn";
-aiBtn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"></rect><circle cx="12" cy="5" r="2"></circle><path d="M12 7v4"></path><line x1="8" y1="16" x2="8" y2="16"></line><line x1="16" y1="16" x2="16" y2="16"></line></svg> Ask AI to explain or add rules`;
+aiBtn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"></rect><circle cx="12" cy="5" r="2"></circle><path d="M12 7v4"></path><line x1="8" y1="16" x2="8" y2="16"></line><line x1="16" y1="16" x2="16" y2="16"></line></svg> Ask AI to Explain`;
 
 // মার্জিন ঠিক করে দেওয়া হলো যাতে সুন্দরভাবে বসে
 aiBtn.style.cssText = "width: 100%; margin-top: 15px; margin-bottom: 25px; padding: 12px; background: rgba(0, 229, 255, 0.1); color: #00e5ff; border: 1px solid #00e5ff; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px;";
@@ -14812,7 +14653,7 @@ window.openBookAiChat = function(book) {
   // চ্যাটের ভেতরের প্রথম মেসেজেও SVG আইকন বসানো হলো
   document.getElementById("bookAiChatHistory").innerHTML = `<div class="chat-bubble ai" style="display:flex; gap:8px; align-items:flex-start;">
     <svg style="flex-shrink:0; margin-top:2px;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"></rect><circle cx="12" cy="5" r="2"></circle><path d="M12 7v4"></path></svg>
-    <div>Hi! I'm your AI partner for <b>${book.title}</b>.<br><br>Ask me to explain any rule, or tell me to <i>"Add rule [rule name] to my tracker"</i>.</div>
+    <div>Hi! I'm your AI partner for <b>${book.title}</b>.<br><br>Ask me to explain any rule</i>.</div>
   </div>`;
   
   document.getElementById("bookAiInput").value = "";
@@ -16154,7 +15995,7 @@ Format:
         });
         savePhotos();
         renderPhotoTimeline();
-        showToast("Photo added successfully! 📸");
+        showToast("Photo added successfully!");
         if (navigator.vibrate) navigator.vibrate(30);
       };
       img.src = ev.target.result;
@@ -17117,6 +16958,485 @@ renderTodayHabits();
 
   console.log("✅ Voice to Habit Feature Loaded");
 })();
+// ============================================================
+// 🔧 FIX: Photo Timeline Refresh Issue (Final Override)
+// ============================================================
+(function finalPhotoTimelineFix() {
+  'use strict';
+
+  const PHOTO_KEY = "gritgo_photo_timeline";
+
+  // গ্লোবাল photos variable — এটাই সব জায়গায় ব্যবহার হবে
+  window.__gritgoPhotos = JSON.parse(localStorage.getItem(PHOTO_KEY)) || [];
+
+  // ১) renderPhotoTimeline — সম্পূর্ণ নতুন ও গ্লোবাল
+  window.renderPhotoTimeline = function () {
+    const list = document.getElementById("timelineList");
+    if (!list) return;
+
+    // সবসময় localStorage থেকে latest data পড়া (sync নিশ্চিত)
+    const photos = JSON.parse(localStorage.getItem(PHOTO_KEY)) || [];
+    window.__gritgoPhotos = photos;
+
+    list.innerHTML = "";
+
+    if (photos.length === 0) {
+      list.innerHTML = `<p style="text-align:center; color:#9aa0a6; padding:20px;">No photos yet. Add your Day 1 photo!</p>`;
+      return;
+    }
+
+    const sorted = [...photos].sort((a, b) => b.id - a.id);
+
+    sorted.forEach(p => {
+      const div = document.createElement("div");
+      div.className = "photo-timeline-item";
+
+      const dateObj = new Date(p.date + "T00:00:00");
+      const displayDate = dateObj.toLocaleDateString('en-GB', {
+        day: 'numeric', month: 'short', year: 'numeric'
+      });
+
+      div.innerHTML = `
+        <img src="${p.image}" onclick="window.openFullScreenImage && window.openFullScreenImage(this.src)">
+        <div class="photo-info">
+          <div class="photo-date">${displayDate}</div>
+          <div class="photo-day-badge">Day ${p.dayNum}</div>
+        </div>
+        <button class="del-tl-photo" data-id="${p.id}" style="position: absolute; right: 10px; bottom: 10px; background: rgba(255, 107, 74, 0.2); border: 1px solid #ff6b4a; color: #ff6b4a; padding: 5px 8px; border-radius: 8px; cursor: pointer;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+        </button>
+      `;
+      list.appendChild(div);
+    });
+
+    // Delete buttons
+    list.querySelectorAll(".del-tl-photo").forEach(btn => {
+      btn.onclick = async () => {
+        const id = parseInt(btn.getAttribute("data-id"));
+        if (await showCustomConfirm("Delete this photo from your timeline?", "Delete Photo?")) {
+          let currentPhotos = JSON.parse(localStorage.getItem(PHOTO_KEY)) || [];
+          currentPhotos = currentPhotos.filter(p => p.id !== id);
+          localStorage.setItem(PHOTO_KEY, JSON.stringify(currentPhotos));
+          window.__gritgoPhotos = currentPhotos;
+          window.renderPhotoTimeline();
+          showToast("Photo deleted.");
+        }
+      };
+    });
+  };
+
+  // ২) Photo Input handler — একটাই নতুন handler (পুরনোদের override করবে)
+  // পুরনো handler গুলো সরিয়ে ফেলার জন্য input কে clone করা
+  function rebindPhotoInput() {
+    const oldInput = document.getElementById("timelinePhotoInput");
+    if (!oldInput) return;
+    if (oldInput.dataset.finalBound === "true") return;
+
+    const newInput = oldInput.cloneNode(true);
+    newInput.dataset.finalBound = "true";
+    oldInput.parentNode.replaceChild(newInput, oldInput);
+
+    newInput.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const MAX = 600;
+          let w = img.width, h = img.height;
+          if (w > h) {
+            if (w > MAX) { h *= MAX / w; w = MAX; }
+          } else {
+            if (h > MAX) { w *= MAX / h; h = MAX; }
+          }
+          canvas.width = w;
+          canvas.height = h;
+          canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+
+          const base64 = canvas.toDataURL("image/jpeg", 0.9);
+          const todayKey = getDateKey();
+
+          // ✅ সবসময় fresh localStorage data পড়া
+          let currentPhotos = JSON.parse(localStorage.getItem(PHOTO_KEY)) || [];
+
+          // Duplicate check
+          if (currentPhotos.some(p => p.date === todayKey)) {
+            showToast("You already added a photo today!");
+            return;
+          }
+
+          // নতুন photo push
+          currentPhotos.push({
+            id: Date.now(),
+            date: todayKey,
+            dayNum: getCurrentDayNumber(),
+            image: base64
+          });
+
+          // ✅ localStorage-এ সেভ
+          localStorage.setItem(PHOTO_KEY, JSON.stringify(currentPhotos));
+          window.__gritgoPhotos = currentPhotos;
+
+          // ✅ সাথে সাথে render (refresh ছাড়াই)
+          window.renderPhotoTimeline();
+
+          showToast("Photo added successfully!");
+          if (navigator.vibrate) navigator.vibrate(30);
+        };
+        img.src = ev.target.result;
+      };
+      reader.readAsDataURL(file);
+      e.target.value = "";
+    });
+  }
+
+  // ৩) "Add Today's Photo" বাটন — নতুনভাবে bind
+  function rebindAddBtn() {
+    const btn = document.getElementById("addTimelinePhotoBtn");
+    if (!btn || btn.dataset.finalBound === "true") return;
+    btn.dataset.finalBound = "true";
+
+    btn.onclick = () => {
+      const input = document.getElementById("timelinePhotoInput");
+      if (input) input.click();
+    };
+  }
+
+  // ৪) Tab click হলেই rebind করা
+  function setup() {
+    rebindPhotoInput();
+    rebindAddBtn();
+    window.renderPhotoTimeline();
+  }
+
+  const timelineTab = document.getElementById("tabPhotoTimeline");
+  if (timelineTab) {
+    timelineTab.addEventListener("click", () => {
+      setTimeout(setup, 150);
+      setTimeout(setup, 500);
+    });
+  }
+
+  const openHeatmapBtn = document.getElementById("openHeatmapBtn");
+  if (openHeatmapBtn) {
+    openHeatmapBtn.addEventListener("click", () => {
+      setTimeout(setup, 250);
+    });
+  }
+
+  // Initial bind
+  setTimeout(setup, 1500);
+  setTimeout(setup, 3000);
+
+  // MutationObserver — DOM-এ input পরিবর্তন হলেই rebind
+  const obs = new MutationObserver(() => {
+    rebindPhotoInput();
+    rebindAddBtn();
+  });
+  obs.observe(document.body, { childList: true, subtree: true });
+
+  console.log("✅ Final Photo Timeline Fix loaded");
+})();
+// ============================================================
+// 🌟 SLEEP DATA EDIT LIMIT POPUP (Standalone Injector)
+// ============================================================
+(function injectSleepEditPopup() {
+  // অ্যাপ লোড হওয়ার পর সেভ বাটনের আসল ফাংশনটা ধরে রাখছি
+  let checkInterval = setInterval(() => {
+    const saveBtn = document.getElementById("saveSleepBtn");
+    
+    // যদি বাটন খুঁজে পাই এবং আগে থেকে হুক করা না থাকে
+    if (saveBtn && !saveBtn.dataset.hookedByInjector) {
+      saveBtn.dataset.hookedByInjector = "true";
+      
+      // বাটনে ক্লিক করলে আমাদের নতুন ফাংশনটা আগে চলবে, তারপর আসল কাজটা হবে
+      saveBtn.addEventListener("click", function(e) {
+        // আসল ফাংশনটা যাতে কাজ করে, সেজন্য দেরি করে আমাদের কোড চালাবো
+        setTimeout(() => {
+          // চেক করা এডিট করছে কি না
+          const today = getDateKey();
+          const start = new Date(sleepState.weekStartDate + "T00:00:00");
+          const now = new Date(today + "T00:00:00");
+          const diffDays = Math.floor(Math.max(0, now - start) / (1000 * 60 * 60 * 24));
+          const currentIndex = Math.min(diffDays, 6);
+
+          // 🌟 টাইম বের করা
+          const savedTime = sleepState.lastSavedTime && sleepState.lastSavedTime[currentIndex] ? sleepState.lastSavedTime[currentIndex] : Date.now();
+          const diff = (savedTime + (12 * 60 * 60 * 1000)) - Date.now();
+          
+          // যদি আগে থেকেই সেভ করা থাকে (এডিট), তবেই পপ-আপ দেখাবে
+          const isEditing = sleepState.lastSavedTime && sleepState.lastSavedTime[currentIndex] !== 0 && sleepState.lastSavedTime[currentIndex] !== undefined;
+          
+          let timeMsg = "";
+          if (diff > 0) {
+            const h = Math.floor(diff / (1000 * 60 * 60));
+            const m = Math.floor((diff / (1000 * 60)) % 60);
+            const s = Math.floor((diff / 1000) % 60);
+            timeMsg = isEditing 
+              ? `You can Edit this data for another <b>${h}h ${m}m ${s}s</b>.`
+              : `You have <b>12 hours</b> to edit this data.`;
+          } else {
+            timeMsg = "Edit time has expired!";
+          }
+
+          // পুরনো পপ-আপ থাকলে রিমুভ করা
+          const oldPop = document.getElementById("sleepEditPopup");
+          if (oldPop) oldPop.remove();
+
+          // 🌟 পপ-আপ তৈরি (শুধু জাভাস্ক্রিপ্ট দিয়ে)
+          const pop = document.createElement("div");
+          pop.id = "sleepEditPopup";
+          pop.style.cssText = "position:fixed; inset:0; background:rgba(0,0,0,0.75); backdrop-filter:blur(5px); display:flex; align-items:center; justify-content:center; z-index:99999; opacity:0; transition:opacity 0.3s;";
+          
+          pop.innerHTML = `
+            <div style="background:#1a1f2e; border:1px solid #00e5ff; border-radius:20px; padding:25px 20px; text-align:center; max-width:300px; box-shadow:0 10px 30px rgba(0,229,255,0.2); transform:translateY(20px); transition:transform 0.3s;">
+              <div style="font-size:35px; margin-bottom:10px;">⏱️</div>
+              <h3 style="color:#00e5ff; margin-bottom:10px; font-size:18px;">Sleep Data Saved!</h3>
+              <p id="popLiveMsg" style="color:#e8eaed; font-size:13px; margin-bottom:20px; line-height:1.5;">${timeMsg}<br><br>After this time, the Edit button will disappear.</p>
+              <button id="popCloseBtn" style="background:linear-gradient(135deg, #00e5ff, #0088cc); color:#05080f; border:none; padding:12px; width:100%; border-radius:10px; font-weight:bold; cursor:pointer;">OK, Got it</button>
+            </div>
+          `;
+          document.body.appendChild(pop);
+
+          // অ্যানিমেশন
+          setTimeout(() => {
+            pop.style.opacity = "1";
+            pop.querySelector("div").style.transform = "translateY(0)";
+          }, 50);
+
+          let timerId = null;
+          // ১ মিনিট পর নিজে থেকে বন্ধ হবে
+          let autoClose = setTimeout(() => closePopup(), 60000);
+
+          function closePopup() {
+            clearTimeout(autoClose);
+            if (timerId) clearInterval(timerId);
+            pop.style.opacity = "0";
+            pop.querySelector("div").style.transform = "translateY(20px)";
+            setTimeout(() => pop.remove(), 300);
+          }
+
+          document.getElementById("popCloseBtn").onclick = closePopup;
+
+          // 🌟 লাইভ কাউন্টডাউন
+          if (diff > 0 && isEditing) {
+            timerId = setInterval(() => {
+              const msLeft = (savedTime + (12 * 60 * 60 * 1000)) - Date.now();
+              const msgEl = document.getElementById("popLiveMsg");
+              if (msLeft > 0 && msgEl) {
+                const h = Math.floor(msLeft / (1000 * 60 * 60));
+                const m = Math.floor((msLeft / (1000 * 60)) % 60);
+                const s = Math.floor((msLeft / 1000) % 60);
+                msgEl.innerHTML = `You can Edit this data for another <b>${h}h ${m}m ${s}s</b>.<br><br>After this time, the Edit button will disappear.`;
+              } else {
+                clearInterval(timerId);
+              }
+            }, 1000);
+          }
+          
+        }, 100); // আসল সেভ হওয়ার জন্য ১০০ মিলিসেকেন্ড অপেক্ষা
+      });
+      
+      clearInterval(checkInterval);
+    }
+  }, 500);
+})();
+// ============================================================
+// 🕐 CHAT TIMESTAMP PRO — Humanized (Today / Yesterday / Date)
+// ============================================================
+(function initChatTimestampPro() {
+  'use strict';
+
+  // ---------- ১) হেল্পার: ISO timestamp সেভ করার জন্য ----------
+  function nowISO() {
+    return new Date().toISOString();
+  }
+
+  // ---------- ২) হেল্পার: humanize function ----------
+  // ts → ISO string | Date | number
+  // returns: "Today 3:45 PM" / "Yesterday 9:12 AM" / "12 Nov, 9:12 AM" / "12 Nov 2024, 9:12 AM"
+  function humanizeChatTime(ts) {
+    try {
+      const code = document.getElementById("voiceLangSelect")?.value || "en-US";
+      const tz = (typeof getTimezoneFromLang === "function")
+        ? getTimezoneFromLang(code)
+        : Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+      const d = ts ? new Date(ts) : new Date();
+      if (isNaN(d.getTime())) return "";
+
+      // ইউজারের দেশের টাইমজোনে "আজ" ও "গতকাল" বের করি
+      const now = new Date();
+
+      // helper: একটি Date → "YYYY-MM-DD" (নির্দিষ্ট TZ অনুযায়ী)
+      const ymd = (date) => {
+        const parts = new Intl.DateTimeFormat("en-CA", {
+          timeZone: tz, year: "numeric", month: "2-digit", day: "2-digit"
+        }).formatToParts(date);
+        const get = t => (parts.find(p => p.type === t) || {}).value || "";
+        return `${get("year")}-${get("month")}-${get("day")}`;
+      };
+
+      const todayKey = ymd(now);
+      const msgKey   = ymd(d);
+
+      // গতকালের key
+      const yest = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+      const yestKey = ymd(yest);
+
+      // টাইম string → "3:45 PM"
+      const timeStr = d.toLocaleTimeString("en-US", {
+        timeZone: tz, hour: "numeric", minute: "2-digit", hour12: true
+      });
+
+      if (msgKey === todayKey) return `Today ${timeStr}`;
+      if (msgKey === yestKey)  return `Yesterday ${timeStr}`;
+
+      // একই বছরে হলে: "12 Nov, 3:45 PM"
+      const curYear = Number(new Intl.DateTimeFormat("en-US", { timeZone: tz, year: "numeric" }).format(now));
+      const msgYear = Number(new Intl.DateTimeFormat("en-US", { timeZone: tz, year: "numeric" }).format(d));
+
+      const dateStr = d.toLocaleDateString("en-GB", {
+        timeZone: tz, day: "numeric", month: "short"
+      });
+
+      if (curYear === msgYear) return `${dateStr}, ${timeStr}`;
+      return `${dateStr} ${msgYear}, ${timeStr}`;
+    } catch (e) {
+      return "";
+    }
+  }
+
+  window.humanizeChatTime = humanizeChatTime;
+  window.getChatNowISO = nowISO;
+
+  // ---------- ৩) পুরনো মেসেজে time নেই → ISO সেট করে দাও ----------
+  // তবে পুরনো মেসেজের জন্য "এখনকার সময়" ISO হিসেবে সেভ হবে (একবারই)
+  try {
+    let raw = [];
+    try { raw = JSON.parse(localStorage.getItem("gritgo_chat_history")) || []; } catch(e) {}
+
+    let dirty = false;
+    raw.forEach(m => {
+      if (!m.time) { m.time = nowISO(); dirty = true; }
+    });
+    if (dirty) {
+      localStorage.setItem("gritgo_chat_history", JSON.stringify(raw));
+      if (typeof chatHistory !== "undefined") {
+        chatHistory.forEach((m, i) => {
+          if (raw[i] && !m.time) m.time = raw[i].time;
+        });
+      }
+    }
+  } catch (e) {}
+
+  // ---------- ৪) renderChatMessages কে wrap করি → প্রতিটা বাবলে humanized time ----------
+  const originalRender = (typeof renderChatMessages === "function") ? renderChatMessages : null;
+  if (originalRender) {
+    window.renderChatMessages = function () {
+      originalRender.apply(this, arguments);
+
+      const container = document.getElementById("miniChatHistory");
+      if (!container) return;
+
+      // latest history (localStorage বা global)
+      let history = [];
+      try { history = JSON.parse(localStorage.getItem("gritgo_chat_history")) || []; } catch(e) {}
+      if (typeof chatHistory !== "undefined" && chatHistory.length) history = chatHistory;
+
+      const wrappers = container.querySelectorAll(".chat-bubble-wrapper");
+      wrappers.forEach((wrap, idx) => {
+        const bubble = wrap.querySelector(".chat-bubble");
+        if (!bubble) return;
+        if (bubble.querySelector(".chat-time-js")) return; // আগে থেকে থাকলে স্কিপ
+
+        const msg = history[idx];
+        if (!msg) return;
+
+        const display = humanizeChatTime(msg.time);
+        if (!display) return;
+
+        const timeEl = document.createElement("div");
+        timeEl.className = "chat-time-js";
+        timeEl.textContent = display;
+        timeEl.style.cssText = `
+          font-size: 10px;
+          margin-top: 4px;
+          text-align: right;
+          letter-spacing: 0.3px;
+          color: ${msg.role === 'user' ? 'rgba(255,255,255,0.75)' : 'rgba(154,160,166,0.8)'};
+          font-weight: 500;
+          pointer-events: none;
+          user-select: none;
+        `;
+        bubble.appendChild(timeEl);
+      });
+    };
+  }
+
+  // ---------- ৫) AI সেন্ড বাটনে capture hook → সঠিক সময়ে ISO সেভ ----------
+  const askBtn = document.getElementById("askAiBtn");
+  if (askBtn && !askBtn.dataset.timeHookedPro) {
+    askBtn.dataset.timeHookedPro = "true";
+
+    // capture phase-এ প্রথমে ইউজার মেসেজে time দিয়ে দাও
+    askBtn.addEventListener("click", () => {
+      try {
+        if (typeof chatHistory === "undefined") return;
+        const last = chatHistory[chatHistory.length - 1];
+        if (last && last.role === "user" && !last.time) {
+          last.time = nowISO();
+          localStorage.setItem("gritgo_chat_history", JSON.stringify(chatHistory));
+        }
+      } catch(e) {}
+    }, true);
+
+    // AI reply আসার পর (ঢিলে দিয়ে চেক) AI মেসেজে time দাও
+    askBtn.addEventListener("click", () => {
+      setTimeout(() => {
+        try {
+          if (typeof chatHistory === "undefined") return;
+          let dirty = false;
+          chatHistory.forEach(m => {
+            if (!m.time) { m.time = nowISO(); dirty = true; }
+          });
+          if (dirty) {
+            localStorage.setItem("gritgo_chat_history", JSON.stringify(chatHistory));
+            if (typeof renderChatMessages === "function") {
+              try { renderChatMessages(); } catch(e) {}
+            }
+          }
+        } catch(e) {}
+      }, 4500); // AI reply সাধারণত ২-৪ সেকেন্ডে আসে
+    });
+  }
+
+  // ---------- ৬) Safe interval → কোনো মেসেজের time বাদ পড়লে পূরণ করি ----------
+  const guard = setInterval(() => {
+    try {
+      if (typeof chatHistory === "undefined" || !chatHistory.length) return;
+      let dirty = false;
+      chatHistory.forEach(m => {
+        if (!m.time) { m.time = nowISO(); dirty = true; }
+      });
+      if (dirty) localStorage.setItem("gritgo_chat_history", JSON.stringify(chatHistory));
+    } catch(e) {}
+  }, 2000);
+
+  window.addEventListener("beforeunload", () => clearInterval(guard));
+
+  // ---------- ৭) চ্যাট খোলা থাকলে initial render ----------
+  setTimeout(() => {
+    if (typeof renderChatMessages === "function") {
+      try { renderChatMessages(); } catch(e) {}
+    }
+  }, 800);
+
+  console.log("✅ Chat Timestamp PRO (humanized) loaded");
+})();
 </script>
   <!-- 📚 Digital Library Modal -->
 <div id="digitalLibraryModal" class="modal-overlay" style="z-index: 8500; padding: 0; backdrop-filter: blur(5px); background: rgba(0,0,0,0.9);">
@@ -17273,7 +17593,652 @@ renderTodayHabits();
 </div>
   </div>
 </div>
-  </body>
+ <!-- 🌟 Mood Plus Button & Extended Mood Modal (50+ Emojis) -->
+<script>
+(function initExtendedMoods() {
+  'use strict';
+
+  // ============================================================
+  // 🌟 50+ SVG Emoji Icons
+  // ============================================================
+  const extendedMoods = {
+    excited:      { label: "Excited",      color: "#ff6b4a", svg: `<circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 3 4 3 4-3 4-3"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line>` },
+    grateful:     { label: "Grateful",     color: "#f1c40f", svg: `<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>` },
+    calm:         { label: "Calm",         color: "#1abc9c", svg: `<circle cx="12" cy="12" r="10"></circle><path d="M8 15s1.5-1 4-1 4 1 4 1"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line>` },
+    proud:        { label: "Proud",        color: "#3498db", svg: `<circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line><path d="M12 6l1.5 1.5"></path>` },
+    anxious:      { label: "Anxious",      color: "#9b59b6", svg: `<circle cx="12" cy="12" r="10"></circle><path d="M8 16s1.5-1 4-1 4 1 4 1"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line><line x1="12" y1="4" x2="12" y2="6"></line>` },
+    angry:        { label: "Angry",        color: "#e74c3c", svg: `<circle cx="12" cy="12" r="10"></circle><path d="M16 16s-1.5-2-4-2-4 2-4 2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line><line x1="8" y1="5" x2="10" y2="7"></line><line x1="16" y1="5" x2="14" y2="7"></line>` },
+    sad:          { label: "Sad",          color: "#5d6d7e", svg: `<circle cx="12" cy="12" r="10"></circle><path d="M16 16s-1.5-2-4-2-4 2-4 2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line>` },
+    sick:         { label: "Sick",         color: "#27ae60", svg: `<circle cx="12" cy="12" r="10"></circle><path d="M8 16s1.5-1 4-1 4 1 4 1"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line><path d="M12 4v2"></path>` },
+    energized:    { label: "Energized",    color: "#f39c12", svg: `<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>` },
+    focused:      { label: "Focused",      color: "#00e5ff", svg: `<circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle>` },
+    lonely:       { label: "Lonely",       color: "#7f8c8d", svg: `<circle cx="12" cy="12" r="10"></circle><path d="M8 16s1.5-1 4-1 4 1 4 1"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line><path d="M12 4v2"></path>` },
+    hopeful:      { label: "Hopeful",      color: "#16a085", svg: `<circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line><path d="M12 6l2 2-2 2"></path>` },
+    inspired:     { label: "Inspired",     color: "#e84393", svg: `<path d="M9 18h6"></path><path d="M10 22h4"></path><path d="M12 2a7 7 0 0 0-7 7c0 2.4 1.2 4.5 3 5.7V17h8v-2.3c1.8-1.2 3-3.3 3-5.7a7 7 0 0 0-7-7z"></path>` },
+    confused:     { label: "Confused",     color: "#d4ac0d", svg: `<circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line>` },
+    loved:        { label: "Loved",        color: "#ff1493", svg: `<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path><path d="M8 14s1.5 2 4 2 4-2 4-2"></path>` },
+    bored:        { label: "Bored",        color: "#95a5a6", svg: `<circle cx="12" cy="12" r="10"></circle><line x1="8" y1="15" x2="16" y2="15"></line><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line>` },
+    motivated:    { label: "Motivated",    color: "#2ecc71", svg: `<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path>` },
+    peaceful:     { label: "Peaceful",     color: "#8e44ad", svg: `<circle cx="12" cy="12" r="10"></circle><line x1="12" y1="2" x2="12" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line>` },
+    nostalgic:    { label: "Nostalgic",    color: "#c39bd3", svg: `<circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>` },
+    overwhelmed:  { label: "Overwhelmed",  color: "#e67e22", svg: `<circle cx="12" cy="12" r="10"></circle><path d="M8 16s1.5-2 4-2 4 2 4 2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line><line x1="12" y1="4" x2="12" y2="6"></line>` },
+    // -------- ৩১টি নতুন --------
+    sleepy:       { label: "Sleepy",       color: "#5d78ff", svg: `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>` },
+    determined:   { label: "Determined",   color: "#c0392b", svg: `<circle cx="12" cy="12" r="10"></circle><line x1="8" y1="9" x2="10" y2="9"></line><line x1="14" y1="9" x2="16" y2="9"></line><line x1="8" y1="15" x2="16" y2="15"></line>` },
+    curious:      { label: "Curious",      color: "#f39c12", svg: `<circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line>` },
+    surprised:    { label: "Surprised",    color: "#e91e63", svg: `<circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="16" r="2"></circle><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line>` },
+    disgusted:    { label: "Disgusted",    color: "#7d6608", svg: `<circle cx="12" cy="12" r="10"></circle><path d="M8 16s1.5-1 4-1 4 1 4 1"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line><line x1="8" y1="5" x2="10" y2="7"></line>` },
+    thoughtful:   { label: "Thoughtful",   color: "#5dade2", svg: `<circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle><line x1="12" y1="2" x2="12" y2="4"></line><line x1="12" y1="20" x2="12" y2="22"></line>` },
+    cheerful:     { label: "Cheerful",     color: "#ffb300", svg: `<circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2.5 4 2.5 4-2.5 4-2.5"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line>` },
+    frustrated:   { label: "Frustrated",   color: "#d35400", svg: `<circle cx="12" cy="12" r="10"></circle><path d="M8 16s1.5-2 4-2 4 2 4 2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line><line x1="8" y1="5" x2="10" y2="6"></line><line x1="16" y1="5" x2="14" y2="6"></line>` },
+    content:      { label: "Content",      color: "#52be80", svg: `<circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 1.5 4 1.5 4-1.5 4-1.5"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line>` },
+    stressed:     { label: "Stressed",     color: "#ec7063", svg: `<circle cx="12" cy="12" r="10"></circle><path d="M8 16s1.5-2 4-2 4 2 4 2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line><path d="M3 3l4 4"></path><path d="M21 3l-4 4"></path>` },
+    emotional:    { label: "Emotional",    color: "#af7ac5", svg: `<circle cx="12" cy="12" r="10"></circle><path d="M12 8c-1.5 2-3 3-3 5a3 3 0 0 0 6 0c0-2-1.5-3-3-5z"></path>` },
+    determined2:  { label: "Confident",    color: "#1f618d", svg: `<circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line><path d="M12 6l1.5 1.5"></path>` },
+    blessed:      { label: "Blessed",      color: "#f5b041", svg: `<path d="M12 2l2 4 4 .5-3 3 1 4-4-2-4 2 1-4-3-3 4-.5 2-4z"></path>` },
+    insecure:     { label: "Insecure",     color: "#aab7b8", svg: `<circle cx="12" cy="12" r="10"></circle><path d="M8 16s1.5-1 4-1 4 1 4 1"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line><path d="M6 6l2 2"></path>` },
+    brave:        { label: "Brave",        color: "#c0392b", svg: `<path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"></path>` },
+    bitter:       { label: "Bitter",       color: "#6e2c00", svg: `<circle cx="12" cy="12" r="10"></circle><path d="M8 16s1.5-2 4-2 4 2 4 2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line><line x1="8" y1="5" x2="10" y2="6"></line>` },
+    loved2:       { label: "Affectionate", color: "#e91e63", svg: `<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>` },
+    dreaming:     { label: "Dreaming",     color: "#7d3c98", svg: `<path d="M9 18h6"></path><path d="M10 22h4"></path><path d="M12 2a7 7 0 0 0-7 7c0 2.4 1.2 4.5 3 5.7V17h8v-2.3c1.8-1.2 3-3.3 3-5.7a7 7 0 0 0-7-7z"></path><path d="M12 12v3"></path>` },
+    numb:         { label: "Numb",         color: "#85929e", svg: `<circle cx="12" cy="12" r="10"></circle><line x1="8" y1="15" x2="16" y2="15"></line><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line>` },
+    relieved:     { label: "Relieved",     color: "#52be80", svg: `<circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2.5 4 2.5 4-2.5 4-2.5"></path><path d="M8 8c1-1 2-1 3 0"></path><path d="M13 8c1-1 2-1 3 0"></path>` },
+    jealous:      { label: "Jealous",      color: "#7d6608", svg: `<circle cx="12" cy="12" r="10"></circle><path d="M8 16s1.5-1 4-1 4 1 4 1"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line><line x1="12" y1="4" x2="12" y2="6"></line><line x1="12" y1="18" x2="12" y2="20"></line>` },
+    guilty:       { label: "Guilty",       color: "#873600", svg: `<circle cx="12" cy="12" r="10"></circle><path d="M16 16s-1.5-2-4-2-4 2-4 2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line><line x1="9" y1="6" x2="11" y2="7"></line>` },
+    amazed:       { label: "Amazed",       color: "#a04000", svg: `<circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="16" r="2"></circle><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line><line x1="12" y1="3" x2="12" y2="5"></line>` },
+    free:         { label: "Free",         color: "#48c9b0", svg: `<path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" y1="8" x2="2" y2="22"></line><line x1="17.5" y1="15" x2="9" y2="15"></line>` },
+    ignored:      { label: "Ignored",      color: "#717d7e", svg: `<circle cx="12" cy="12" r="10"></circle><path d="M8 16s1.5-1 4-1 4 1 4 1"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line><line x1="4" y1="4" x2="20" y2="20"></line>` },
+    safe:         { label: "Safe",         color: "#2e86c1", svg: `<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>` },
+    irritated:    { label: "Irritated",    color: "#cb4335", svg: `<circle cx="12" cy="12" r="10"></circle><path d="M8 15h8"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line><path d="M8 5l2 1"></path><path d="M16 5l-2 1"></path>` },
+    blessed2:     { label: "Grateful Heart", color: "#b9770e", svg: `<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path><path d="M12 9v6"></path><path d="M9 12h6"></path>` },
+    silly:        { label: "Silly",        color: "#f4d03f", svg: `<circle cx="12" cy="12" r="10"></circle><path d="M8 15s1.5-2 4-2 4 2 4 2"></path><path d="M8 8l2 2"></path><path d="M14 8l2 2"></path>` }
+  };
+
+  // ============================================================
+  // 🌟 ➕ বাটন Today's Mood সেকশনে
+  // ============================================================
+  function addPlusButton() {
+    const moodButtons = document.querySelectorAll(".mood-btn");
+    if (moodButtons.length === 0) return;
+
+    const moodContainer = moodButtons[0].parentElement;
+    if (document.getElementById("moodPlusBtn")) return;
+
+    const plusBtn = document.createElement("button");
+    plusBtn.id = "moodPlusBtn";
+    plusBtn.type = "button";
+    plusBtn.style.cssText = `
+      flex:1; padding: 12px 5px; background: #1a1f2e; border: 1px dashed #00e5ff;
+      border-radius: 10px; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 5px; cursor: pointer; transition: all 0.2s;
+    `;
+    plusBtn.innerHTML = `
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+      </svg>
+      <span style="font-size: 10px; color: #00e5ff; font-weight: bold;">More</span>
+    `;
+
+    plusBtn.onclick = () => openMoodModal();
+    moodContainer.appendChild(plusBtn);
+  }
+
+  // ============================================================
+  // 🌟 Mood Popup Modal তৈরি
+  // ============================================================
+  function createMoodModal() {
+    if (document.getElementById("moodPickerModal")) return;
+
+    const modal = document.createElement("div");
+    modal.id = "moodPickerModal";
+    modal.className = "modal-overlay";
+    modal.style.cssText = "z-index: 9500; padding: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); align-items: flex-end;";
+
+    modal.innerHTML = `
+      <div style="background: #1a1f2e; width: 100%; max-width: 500px; border-radius: 24px 24px 0 0; padding: 20px; max-height: 85vh; overflow-y: auto; animation: slideUp 0.3s ease-out;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; position: sticky; top: 0; background: #1a1f2e; padding-bottom: 10px; z-index: 5;">
+          <h3 style="color: #00e5ff; font-size: 18px; display: flex; align-items: center; gap: 8px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
+            All Moods (${Object.keys(extendedMoods).length})
+          </h3>
+          <button id="closeMoodPickerBtn" style="background: transparent; border: none; color: #ff6b4a; cursor: pointer; padding: 6px;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+
+        <p style="color: #9aa0a6; font-size: 12px; margin-bottom: 15px; text-align: center;">Tap your mood for today</p>
+
+        <div id="moodGridContainer" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;"></div>
+
+        <div class="settings-buttons" style="margin-top: 20px;">
+          <button id="cancelMoodPickerBtn" style="background: #2a3142; color: #e8eaed; width: 100%;">Cancel</button>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    window.closeMoodPicker = () => {
+      modal.classList.remove("active");
+    };
+
+    modal.querySelector("#closeMoodPickerBtn").onclick = window.closeMoodPicker;
+    modal.querySelector("#cancelMoodPickerBtn").onclick = window.closeMoodPicker;
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) window.closeMoodPicker();
+    });
+
+    renderMoodGrid();
+  }
+
+  // ============================================================
+  // 🌟 Mood Grid Render
+  // ============================================================
+  function renderMoodGrid() {
+    const grid = document.getElementById("moodGridContainer");
+    if (!grid) return;
+    grid.innerHTML = "";
+
+    const todayKey = getDateKey();
+    const savedMood = challengeData.moods && challengeData.moods[todayKey];
+
+    Object.keys(extendedMoods).forEach(key => {
+      const mood = extendedMoods[key];
+      const isSelected = savedMood === key;
+
+      const item = document.createElement("button");
+      item.type = "button";
+      item.style.cssText = `
+        padding: 12px 5px; background: ${isSelected ? 'rgba(0, 229, 255, 0.15)' : '#0f1419'};
+        border: 1px solid ${isSelected ? '#00e5ff' : '#2a3142'};
+        border-radius: 10px; display: flex; flex-direction: column; align-items: center;
+        gap: 5px; cursor: pointer; transition: all 0.2s;
+        ${isSelected ? 'box-shadow: 0 0 10px rgba(0, 229, 255, 0.3);' : ''}
+      `;
+      item.innerHTML = `
+        <svg viewBox="0 0 24 24" fill="none" stroke="${mood.color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 26px; height: 26px;">
+          ${mood.svg}
+        </svg>
+        <span style="font-size: 9px; color: ${isSelected ? '#00e5ff' : '#9aa0a6'}; font-weight: ${isSelected ? 'bold' : 'normal'}; text-align: center; line-height: 1.1;">
+          ${mood.label}
+        </span>
+      `;
+
+      item.onclick = () => selectMood(key, mood.color);
+      grid.appendChild(item);
+    });
+  }
+
+  // ============================================================
+  // 🌟 Mood Select & Save
+  // ============================================================
+  function selectMood(moodKey, moodColor) {
+    const todayKey = getDateKey();
+    if (!challengeData.moods) challengeData.moods = {};
+    challengeData.moods[todayKey] = moodKey;
+    localStorage.setItem("challengeData", JSON.stringify(challengeData));
+
+    if (typeof playCheckSound === 'function') playCheckSound(false);
+    else if (navigator.vibrate) navigator.vibrate(30);
+
+    if (typeof showToast === 'function') {
+      showToast(`Mood saved: ${extendedMoods[moodKey].label}`);
+    }
+
+    updateMainMoodButtons();
+
+    if (window.closeMoodPicker) window.closeMoodPicker();
+  }
+
+  // ============================================================
+  // 🌟 মূল ৪টা বাটনের স্টেট সিঙ্ক
+  // ============================================================
+  function updateMainMoodButtons() {
+    const todayKey = getDateKey();
+    const savedMood = challengeData.moods && challengeData.moods[todayKey];
+
+    document.querySelectorAll('.mood-btn').forEach(btn => {
+      const isSelected = btn.dataset.mood === savedMood;
+      if (isSelected) {
+        btn.style.borderColor = '#00e5ff';
+        btn.style.boxShadow = '0 0 10px rgba(0, 229, 255, 0.3)';
+        btn.style.background = 'rgba(0, 229, 255, 0.1)';
+      } else {
+        btn.style.borderColor = '#2a3142';
+        btn.style.boxShadow = 'none';
+        btn.style.background = '#1a1f2e';
+      }
+    });
+
+    const plusBtn = document.getElementById("moodPlusBtn");
+    if (plusBtn) {
+      const isExtendedMood = savedMood && extendedMoods[savedMood];
+      if (isExtendedMood) {
+        plusBtn.style.borderColor = '#00e5ff';
+        plusBtn.style.borderStyle = 'solid';
+        plusBtn.style.background = 'rgba(0, 229, 255, 0.15)';
+        plusBtn.style.boxShadow = '0 0 10px rgba(0, 229, 255, 0.3)';
+      } else {
+        plusBtn.style.borderColor = '#00e5ff';
+        plusBtn.style.borderStyle = 'dashed';
+        plusBtn.style.background = '#1a1f2e';
+        plusBtn.style.boxShadow = 'none';
+      }
+    }
+  }
+
+  // ============================================================
+  // 🌟 Popup Open
+  // ============================================================
+  window.openMoodPicker = function () {
+    createMoodModal();
+    renderMoodGrid();
+    document.getElementById("moodPickerModal").classList.add("active");
+    if (navigator.vibrate) navigator.vibrate(15);
+  };
+
+  function openMoodModal() {
+    window.openMoodPicker();
+  }
+
+  // ============================================================
+  // 🌟 Init
+  // ============================================================
+  function tryAddButton() {
+    addPlusButton();
+    updateMainMoodButtons();
+  }
+
+  const extrasBtn = document.getElementById("openExtrasBtn");
+  if (extrasBtn) {
+    extrasBtn.addEventListener("click", () => {
+      setTimeout(tryAddButton, 300);
+      setTimeout(tryAddButton, 800);
+    });
+  }
+
+  setInterval(tryAddButton, 3000);
+  setTimeout(tryAddButton, 1000);
+  setTimeout(tryAddButton, 2500);
+
+  console.log(`✅ Extended Moods loaded: ${Object.keys(extendedMoods).length} moods`);
+})();
+</script>
+  <script>
+(function fixPickerArrow() {
+  const ARROW = "url(\"data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239aa0a6' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E\")";
+
+  function apply() {
+    document.querySelectorAll('input[type="date"], input[type="time"]').forEach(inp => {
+      if (inp.dataset.arrowFixed) return;
+      inp.dataset.arrowFixed = "1";
+      const s = inp.style;
+      s.setProperty("-webkit-appearance", "none", "important");
+      s.setProperty("appearance", "none", "important");
+      s.setProperty("padding-right", "45px", "important");
+      s.setProperty("background-image", ARROW, "important");
+      s.setProperty("background-repeat", "no-repeat", "important");
+      s.setProperty("background-position", "right 22px center", "important");
+      s.setProperty("background-size", "16px", "important");
+    });
+  }
+
+  apply();
+  new MutationObserver(apply).observe(document.body, { childList: true, subtree: true });
+})();
+</script>
+  <script>
+(function fixTooJammedIcon() {
+  const COLOR = "#ff9f1c";
+
+  // 🌀 ঘুরন্ত ঘূর্ণি আইকন
+  const NEW_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0"></path><path d="M12 12m-5.5 0a5.5 5.5 0 1 0 11 0a5.5 5.5 0 1 0-11 0" stroke-dasharray="4 3"></path><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0-18 0" stroke-dasharray="2 4"></path></svg>`;
+
+  // 🎨 CSS: আইকন কালার + ঘোরা + গ্লো
+  const st = document.createElement("style");
+  st.textContent = `
+    @keyframes tjSpin { to { transform: rotate(360deg); } }
+    @keyframes tjGlow {
+      0%, 100% { box-shadow: 0 0 30px rgba(255,159,28,0.4); }
+      50%      { box-shadow: 0 0 55px rgba(255,159,28,0.8); }
+    }
+    .brain-circle.brain-jammed-2 {
+      background: radial-gradient(circle, rgba(255,159,28,0.3) 0%, rgba(255,159,28,0) 70%) !important;
+      animation: tjGlow 1.5s ease-in-out infinite !important;
+    }
+    .brain-jammed-2 svg {
+      stroke: ${COLOR} !important;
+      animation: tjSpin 3s linear infinite !important;
+    }
+  `;
+  document.head.appendChild(st);
+
+  // updateBrainPreview কে মুড়ে নেওয়া
+  const original = window.updateBrainPreview || updateBrainPreview;
+  window.updateBrainPreview = function (hours) {
+    original(hours);
+    if (hours === 11) {
+      const c = document.getElementById("brainCircle");
+      if (c) c.innerHTML = NEW_ICON;
+      const t = document.getElementById("brainText");
+      if (t) t.style.color = COLOR;
+    }
+  };
+  updateBrainPreview = window.updateBrainPreview;
+})();
+</script>
+<script>
+(function sleepV3(){
+const G=8;
+const Q=h=>h==null?["#5b6475","No data"]:h<=6?["#ff6b4a","Under-rested"]:h==7?["#f1c40f","Almost there"]:h<=9?["#00e5ff","Well rested"]:h<=11?["#ff9f1c","Oversleeping"]:["#95a5a6","Too much"];
+const css=document.createElement("style");
+css.textContent=`
+.sleep-brain-container,#weekGrid,#hoursGrid,#sleepInputSection>label{display:none!important}
+.sk{position:relative;overflow:hidden;border-radius:24px;padding:22px 16px;margin-bottom:12px;text-align:center;background:linear-gradient(160deg,#0b1030,#1d2257 60%,#2b1d57);border:1px solid rgba(140,150,255,.25)}
+.sk:before{content:"";position:absolute;inset:0;background-image:radial-gradient(1.5px 1.5px at 20% 30%,#fff,transparent),radial-gradient(1px 1px at 72% 18%,#fff,transparent),radial-gradient(1.5px 1.5px at 88% 62%,#fff,transparent),radial-gradient(1px 1px at 30% 78%,#fff,transparent),radial-gradient(1px 1px at 55% 45%,#fff,transparent);animation:skTw 3s ease-in-out infinite alternate}
+@keyframes skTw{from{opacity:.25}to{opacity:1}}
+@keyframes skW{to{transform:translateX(-25%)}}
+.sk-moon{position:relative;width:160px;height:160px;margin:0 auto;border-radius:50%;overflow:hidden;background:rgba(255,255,255,.06);border:2px solid var(--c);box-shadow:0 0 45px var(--c),inset 0 0 30px rgba(0,0,0,.4)}
+.sk-wave{position:absolute;left:0;width:100%;bottom:0;height:var(--p);background:linear-gradient(180deg,var(--c),#0b1030);transition:height .7s}
+.sk-wave:before{content:"";position:absolute;top:-12px;left:0;width:200%;height:24px;background:var(--c);border-radius:50%;animation:skW 4s linear infinite alternate}
+.sk-mc{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-shadow:0 2px 12px #000}
+.sk-mc b{font-size:46px;color:#fff;line-height:1}.sk-mc span{font-size:11px;color:#dfe3ff;margin-top:4px}
+.sk-sc{position:relative;margin-top:16px;color:#fff;font-size:13px}
+.sk-sc b{font-size:26px;color:var(--c);text-shadow:0 0 14px var(--c)}.sk-sc i{display:block;font-style:normal;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--c)}
+.sk-pick{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.sk-pick div{padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid #2a3142}
+.sk-pick small{font-size:10px;color:#9aa0a6;text-transform:uppercase;letter-spacing:.6px}
+.sk-pick input{margin-top:6px;text-align:center;font-weight:800;font-size:18px!important}
+.sk2{padding:14px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid #2a3142;margin-bottom:12px}
+.sk2 .t{font-size:11px;color:#9aa0a6;text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px}
+.sk2 svg{width:100%;height:110px;overflow:visible}
+.sk-d{display:flex;justify-content:space-between;font-size:9px;color:#9aa0a6;text-transform:uppercase;margin-top:6px}
+.sk3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.sk3 div{padding:10px 4px;border-radius:14px;text-align:center;background:rgba(255,255,255,.04);border:1px solid #2a3142}
+.sk3 b{display:block;font-size:18px;color:#fff}.sk3 span{font-size:9px;color:#9aa0a6;text-transform:uppercase}`;
+document.head.appendChild(css);
+
+const idx=()=>{const s=new Date(sleepState.weekStartDate+"T00:00:00"),n=new Date(getDateKey()+"T00:00:00");return Math.min(Math.floor(Math.max(0,n-s)/864e5),6)};
+const cur=()=>{const v=sleepState.days[idx()];if(v!=null)return v;try{return selectedSleepHours}catch(e){return null}};
+const $=id=>document.getElementById(id);
+let exact="";
+
+function build(){
+ if($("sk"))return;
+ const c=$("sleepTrackerContent");if(!c)return;
+ const w=document.createElement("div");
+ w.innerHTML=`<div class="sk" id="sk"><div class="sk-moon" id="skMoon"><div class="sk-wave"></div><div class="sk-mc"><b id="skH">--</b><span id="skS">of sleep</span></div></div>
+ <div class="sk-sc">Sleep Score <b id="skScore">--</b><i id="skLbl"></i></div></div>
+ <div class="sk2"><div class="t">This week</div><svg id="skChart" viewBox="0 0 300 110"></svg><div class="sk-d" id="skDays"></div></div>
+ <div class="sk3" id="skStats"></div>`;
+ while(w.firstChild)c.insertBefore(w.firstChild,$("weekGrid"));
+ const inp=$("sleepInputSection"),btn=$("saveSleepBtn");
+ if(inp&&btn){
+  const p=document.createElement("div");p.className="sk-pick";
+  p.innerHTML=`<div><small>🌙 Bedtime</small><input type="time" id="skBed" value="23:00"></div><div><small>☀️ Wake up</small><input type="time" id="skWake" value="07:00"></div>`;
+  inp.insertBefore(p,btn);
+  ["skBed","skWake"].forEach(i=>{$(i).addEventListener("change",calc);$(i).addEventListener("input",calc)});
+ }
+}
+function calc(){
+ const f=v=>{const a=(v||"0:0").split(":").map(Number);return a[0]*60+a[1]};
+ const d=(f($("skWake").value)-f($("skBed").value)+1440)%1440;
+ exact=Math.floor(d/60)+"h "+d%60+"m";
+ const h=Math.min(12,Math.max(1,Math.round(d/60)));
+ const b=document.querySelector('.hour-btn[data-val="'+h+'"]');if(b)b.click();
+}
+function paint(){
+ if(!$("sk"))return;
+ const h=cur(),[c,l]=Q(h);
+ $("sk").style.setProperty("--c",c);
+ $("skMoon").style.setProperty("--p",(h?Math.min(h/12,1)*100:0)+"%");
+ $("skH").textContent=h==null?"--":h+"h";
+ $("skS").textContent=exact&&sleepState.days[idx()]==null?exact:"of sleep";
+ const sc=h==null?null:Math.max(0,Math.round(100-Math.abs(h-G)*18));
+ $("skScore").textContent=sc==null?"--":sc;$("skLbl").textContent=l;
+
+ const st=new Date(sleepState.weekStartDate+"T00:00:00"),t=idx(),pts=[];let lb="";
+ for(let i=0;i<7;i++){
+  const d=new Date(st);d.setDate(d.getDate()+i);
+  lb+=`<span style="${i==t?"color:#00e5ff;font-weight:800":""}">${d.toLocaleDateString("en-US",{weekday:"short"}).slice(0,3)}</span>`;
+  let v=sleepState.days[i];if(i==t&&v==null)v=h;
+  if(v!=null)pts.push([i*50,100-v/12*90,v]);
+ }
+ $("skDays").innerHTML=lb;
+ let path="",gy=100-G/12*90;
+ pts.forEach((p,i)=>{if(!i)path=`M${p[0]} ${p[1]}`;else{const q=pts[i-1],m=(q[0]+p[0])/2;path+=` C${m} ${q[1]} ${m} ${p[1]} ${p[0]} ${p[1]}`}});
+ let svg=`<defs><linearGradient id="skG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c}" stop-opacity=".45"/><stop offset="1" stop-color="${c}" stop-opacity="0"/></linearGradient></defs>
+ <line x1="0" x2="300" y1="${gy}" y2="${gy}" stroke="#00e5ff" stroke-opacity=".35" stroke-dasharray="4 4"/>`;
+ if(pts.length>1)svg+=`<path d="${path} L${pts[pts.length-1][0]} 100 L${pts[0][0]} 100Z" fill="url(#skG)"/>`;
+ if(pts.length>1)svg+=`<path d="${path}" fill="none" stroke="${c}" stroke-width="3" stroke-linecap="round" style="filter:drop-shadow(0 0 5px ${c})"/>`;
+ pts.forEach(p=>svg+=`<circle cx="${p[0]}" cy="${p[1]}" r="5" fill="#0b1030" stroke="${Q(p[2])[0]}" stroke-width="3"/>`);
+ $("skChart").innerHTML=svg;
+
+ const L=sleepState.days.filter(x=>x!=null),avg=L.length?L.reduce((a,b)=>a+b,0)/L.length:null;
+ const debt=L.reduce((a,b)=>a+Math.max(0,G-b),0),ok=L.filter(x=>x>=7&&x<=9).length;
+ $("skStats").innerHTML=`<div><b style="color:#00e5ff">${avg==null?"--":avg.toFixed(1)+"h"}</b><span>Average</span></div><div><b style="color:${debt>4?"#ff6b4a":"#2ecc71"}">${debt}h</b><span>Sleep debt</span></div><div><b style="color:#f1c40f">${ok}/7</b><span>Healthy</span></div>`;
+}
+
+const oR=renderSleepTracker;
+renderSleepTracker=function(){oR();build();const i=$("sleepInputSection");if(i&&i.style.display!=="none"&&$("skBed"))calc();paint()};
+const oB=updateBrainPreview;
+updateBrainPreview=function(h){oB(h);paint()};
+})();
+</script>
+</body>
+
+
+  <script>
+(function pureNoHistoryPicker() {
+  'use strict';
+
+  const MONTHS = ["January","February","March","April","May","June",
+                  "July","August","September","October","November","December"];
+  const pad = n => String(n).padStart(2, "0");
+  const dateKey = (y, m, d) => `${y}-${pad(m + 1)}-${pad(d)}`;
+
+  let activePicker = null;
+
+  // ✅ বন্ধ করার ফাংশন (কোনো history.back() নেই)
+  function closePicker() {
+    if (!activePicker) return;
+    activePicker.remove();
+    activePicker = null;
+  }
+
+  // ============================================================
+  // 📅 ক্যালেন্ডার
+  // ============================================================
+  function openDate(input) {
+    if (activePicker) closePicker(); // একসাথে দুটো যেন না খোলে
+
+    const minKey = input.getAttribute("min") || "";
+    const cur = input.value ? new Date(input.value + "T00:00:00") : new Date();
+    let y = cur.getFullYear(), m = cur.getMonth(), sel = input.value || "";
+
+    const ov = document.createElement("div");
+    ov.className = "gp-ov";
+    ov.style.zIndex = "99999";
+
+    function draw() {
+      const first = (new Date(y, m, 1).getDay() + 6) % 7;
+      const dim = new Date(y, m + 1, 0).getDate();
+      const n = new Date();
+      const today = dateKey(n.getFullYear(), n.getMonth(), n.getDate());
+
+      let days = "";
+      for (let i = 0; i < first; i++) days += "<span></span>";
+      for (let d = 1; d <= dim; d++) {
+        const k = dateKey(y, m, d);
+        days += `<button type="button" class="gp-day ${k === today ? "today" : ""} ${k === sel ? "sel" : ""} ${minKey && k < minKey ? "dis" : ""}" data-k="${k}">${d}</button>`;
+      }
+
+      ov.innerHTML = `
+        <div class="gp-box">
+          <div class="gp-head">
+            <button type="button" class="gp-nav" id="gpPrev">‹</button>
+            <div class="gp-title">${MONTHS[m]} ${y}</div>
+            <button type="button" class="gp-nav" id="gpNext">›</button>
+          </div>
+          <div class="gp-week"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div>
+          <div class="gp-days">${days}</div>
+          <div class="gp-btns">
+            <button type="button" class="gp-cancel" id="gpCancel">Cancel</button>
+            <button type="button" class="gp-ok" id="gpOk">OK</button>
+          </div>
+        </div>`;
+
+      ov.querySelector("#gpPrev").onclick = () => { m--; if (m < 0) { m = 11; y--; } draw(); };
+      ov.querySelector("#gpNext").onclick = () => { m++; if (m > 11) { m = 0; y++; } draw(); };
+      ov.querySelectorAll(".gp-day").forEach(b => b.onclick = () => {
+        if (b.classList.contains("dis")) return;
+        sel = b.dataset.k; draw();
+      });
+      
+      ov.querySelector("#gpCancel").onclick = (e) => {
+        e.preventDefault(); e.stopPropagation();
+        closePicker();
+      };
+      
+      ov.querySelector("#gpOk").onclick = (e) => {
+        e.preventDefault(); e.stopPropagation();
+        if (sel) {
+          input.value = sel;
+          input.dispatchEvent(new Event("input", { bubbles: true }));
+          input.dispatchEvent(new Event("change", { bubbles: true }));
+        }
+        closePicker();
+      };
+    }
+
+    draw();
+    ov.addEventListener("click", e => { if (e.target === ov) closePicker(); });
+    
+    activePicker = ov;
+    document.body.appendChild(ov);
+  }
+
+  // ============================================================
+  // 🕐 ঘড়ি
+  // ============================================================
+  function openTime(input) {
+    if (activePicker) closePicker();
+
+    let [h24, mi] = (input.value || "09:00").split(":").map(Number);
+    if (isNaN(h24)) h24 = 9;
+    if (isNaN(mi)) mi = 0;
+    let pm = h24 >= 12, h = h24 % 12 || 12;
+
+    const ov = document.createElement("div");
+    ov.className = "gp-ov";
+    ov.style.zIndex = "99999";
+
+    function draw() {
+      ov.innerHTML = `
+        <div class="gp-box">
+          <div class="gp-title" style="text-align:center;margin-bottom:6px;">Select Time</div>
+          <div class="gp-time">
+            <div class="gp-col">
+              <button type="button" id="hUp">▲</button>
+              <input type="text" inputmode="numeric" maxlength="2" id="hIn" value="${pad(h)}" class="gp-num gp-in">
+              <button type="button" id="hDn">▼</button>
+            </div>
+            <div class="gp-colon">:</div>
+            <div class="gp-col">
+              <button type="button" id="mUp">▲</button>
+              <input type="text" inputmode="numeric" maxlength="2" id="mIn" value="${pad(mi)}" class="gp-num gp-in">
+              <button type="button" id="mDn">▼</button>
+            </div>
+            <div class="gp-ampm">
+              <button type="button" id="am" class="${!pm ? "on" : ""}">AM</button>
+              <button type="button" id="pm" class="${pm ? "on" : ""}">PM</button>
+            </div>
+          </div>
+          <div style="text-align:center;font-size:10px;color:#9aa0a6;">Tap the numbers to type</div>
+          <div class="gp-btns">
+            <button type="button" class="gp-cancel" id="gpCancel">Cancel</button>
+            <button type="button" class="gp-ok" id="gpOk">Set</button>
+          </div>
+        </div>`;
+
+      const $ = s => ov.querySelector(s);
+      const hIn = $("#hIn"), mIn = $("#mIn");
+
+      [hIn, mIn].forEach(el => {
+        el.addEventListener("focus", () => { el.dataset.old = el.value; el.value = ""; });
+        el.addEventListener("blur", () => { if (el.value === "") el.value = el.dataset.old || ""; });
+        el.addEventListener("input", () => { el.value = el.value.replace(/\D/g, "").slice(0, 2); });
+        el.addEventListener("contextmenu", e => e.preventDefault());
+      });
+
+      const readInputs = () => {
+        const hv = parseInt(hIn.value, 10), mv = parseInt(mIn.value, 10);
+        if (!isNaN(hv)) h = Math.min(12, Math.max(1, hv));
+        if (!isNaN(mv)) mi = Math.min(59, Math.max(0, mv));
+      };
+
+      hIn.addEventListener("change", () => { readInputs(); draw(); });
+      mIn.addEventListener("change", () => { readInputs(); draw(); });
+
+      $("#hUp").onclick = () => { readInputs(); h = h % 12 + 1; draw(); };
+      $("#hDn").onclick = () => { readInputs(); h = h === 1 ? 12 : h - 1; draw(); };
+      $("#mUp").onclick = () => { readInputs(); mi = (mi + 1) % 60; draw(); };
+      $("#mDn").onclick = () => { readInputs(); mi = (mi + 59) % 60; draw(); };
+      $("#am").onclick = () => { readInputs(); pm = false; draw(); };
+      $("#pm").onclick = () => { readInputs(); pm = true; draw(); };
+
+      $("#gpCancel").onclick = (e) => {
+        e.preventDefault(); e.stopPropagation();
+        closePicker();
+      };
+      
+      $("#gpOk").onclick = (e) => {
+        e.preventDefault(); e.stopPropagation();
+        readInputs();
+        const hh = (h % 12) + (pm ? 12 : 0);
+        input.value = `${pad(hh)}:${pad(mi)}`;
+        input.dispatchEvent(new Event("input", { bubbles: true }));
+        input.dispatchEvent(new Event("change", { bubbles: true }));
+        closePicker();
+      };
+    }
+
+    draw();
+    ov.addEventListener("click", e => { if (e.target === ov) closePicker(); });
+    
+    activePicker = ov;
+    document.body.appendChild(ov);
+  }
+
+  // ============================================================
+  // 🔧 Hook
+  // ============================================================
+  function hook(selector, opener) {
+    document.querySelectorAll(selector).forEach(inp => {
+      if (inp.dataset.gpBound === "true") return;
+      inp.dataset.gpBound = "true";
+      inp.readOnly = true;
+      inp.addEventListener("click", e => {
+        e.preventDefault();
+        opener(inp);
+      });
+    });
+  }
+
+  hook('input[type="date"]', openDate);
+  hook('input[type="time"]', openTime);
+
+  const obs = new MutationObserver(() => {
+    hook('input[type="date"]', openDate);
+    hook('input[type="time"]', openTime);
+  });
+  obs.observe(document.body, { childList: true, subtree: true });
+
+  console.log("✅ Pure No-History Picker Loaded");
+})();
+</script>
+    
  <script>
 document.getElementById("quickAiDeleteHabitBtn")?.addEventListener("click", () => {
   const input = document.getElementById("aiQuestionInput");
@@ -17291,7 +18256,7 @@ document.getElementById("quickAiDeleteHabitBtn")?.addEventListener("click", () =
 
   const el = document.createElement("div");
   el.id = "homeMiniClock";
-  el.style.cssText = "text-align:center; margin:8px 0 0; font-family:'Courier New',monospace; font-size:12px; font-weight:bold; color:#ffffff; letter-spacing:1px; opacity:0.85;";
+  el.style.cssText = "text-align:center; margin:8px 0 0; font-family:'Courier New',monospace; font-size:12px; font-weight:bold; color:aqua; letter-spacing:1px; opacity:0.85;";
   title.appendChild(el);
 
   function tick() {
@@ -17313,27 +18278,65 @@ document.getElementById("quickAiDeleteHabitBtn")?.addEventListener("click", () =
   if (!wrapper || document.getElementById("countryClockBox")) return;
 
   const cell = (id, label) => `
-    <div style="background:rgba(0,0,0,0.4); border:1px solid #00e5ff; border-radius:8px; padding:5px 8px; text-align:center; min-width:46px; box-shadow:0 0 8px rgba(0,229,255,0.15);">
-      <div id="${id}" style="font-family:'Courier New',monospace; font-size:17px; font-weight:900; color:#ffffff; text-shadow:0 0 6px rgba(0,229,255,0.7);">--</div>
-      <div style="font-size:8px; color:#9aa0a6; text-transform:uppercase; letter-spacing:1px; margin-top:2px;">${label}</div>
+    <div id="cell_${id}" style="background:rgba(0,0,0,0.2); border:1px solid #00e5ff; border-radius:8px; padding:5px 8px; text-align:center; min-width:46px; box-shadow:0 0 8px rgba(0,229,255,0.15); transition: all 0.3s ease;">
+      <div id="${id}" style="font-family:'Courier New',monospace; font-size:17px; font-weight:900; color:#00e5ff; text-shadow:0 0 6px rgba(0,229,255,0.6); transition: all 0.3s ease;">--</div>
+      <div id="lbl_${id}" style="font-size:8px; color:#9aa0a6; text-transform:uppercase; letter-spacing:1px; margin-top:2px; transition: all 0.3s ease;">${label}</div>
     </div>`;
 
   const box = document.createElement("div");
   box.id = "countryClockBox";
   box.style.cssText = "margin-bottom:8px; text-align:center;";
   box.innerHTML = `
-    <div id="clockCountry" style="font-size:10px; color:#9aa0a6; margin-bottom:5px;"></div>
+    <div id="clockCountry" style="font-size:10px; color:#9aa0a6; margin-bottom:5px; transition: all 0.3s ease;"></div>
     <div style="display:flex; justify-content:center; gap:6px;">
       ${cell("clkH", "Hour")}
       ${cell("clkM", "Min")}
       ${cell("clkS", "Sec")}
       ${cell("clkP", "AM/PM")}
     </div>
-    <div id="clockDate" style="font-size:10px; color:#9aa0a6; margin-top:5px;"></div>
+    <div id="clockDate" style="font-size:10px; color:#9aa0a6; margin-top:5px; transition: all 0.3s ease;"></div>
   `;
   wrapper.parentNode.insertBefore(box, wrapper);
 
+  // 🌟 নতুন ফাংশন: থিমের রঙ Clock-এ অ্যাপ্লাই করার জন্য
+  function updateClockTheme() {
+    if (typeof currentTheme === 'undefined') return;
+
+    // থিম থেকে কালার নেওয়া (না পেলে ডিফল্ট Aqua)
+    const mainColor = currentTheme.main || "#00e5ff";
+    const textColor = currentTheme.text || "#ffffff";
+    
+    // চারপাশের বক্সের বর্ডার, গ্লো এবং ঘরের সংখ্যার রঙ পরিবর্তন
+    ['clkH', 'clkM', 'clkS', 'clkP'].forEach(id => {
+      const cellEl = document.getElementById(`cell_${id}`);
+      const numEl = document.getElementById(id);
+      const lblEl = document.getElementById(`lbl_${id}`);
+      
+      if (cellEl) {
+        cellEl.style.borderColor = mainColor;
+        cellEl.style.boxShadow = `0 0 8px ${mainColor}40`; // 40 মানে ২৫% অপাসিটি
+      }
+      if (numEl) {
+        numEl.style.color = mainColor;
+        numEl.style.textShadow = `0 0 8px ${mainColor}`;
+      }
+      if (lblEl) {
+        lblEl.style.color = textColor;
+        lblEl.style.opacity = "0.7";
+      }
+    });
+
+    // নিচের কান্ট্রি নাম এবং ডেটের রঙ
+    const countryEl = document.getElementById("clockCountry");
+    const dateEl = document.getElementById("clockDate");
+    if (countryEl) { countryEl.style.color = textColor; countryEl.style.opacity = "0.8"; }
+    if (dateEl) { dateEl.style.color = textColor; dateEl.style.opacity = "0.8"; }
+  }
+
   function tick() {
+    // 🌟 প্রতি সেকেন্ডে সময় আপডেটের পাশাপাশি থিমও চেক করবে
+    updateClockTheme();
+
     const code = document.getElementById("voiceLangSelect")?.value || "en-US";
     const tz = getTimezoneFromLang(code);
     const now = new Date();
@@ -17342,15 +18345,23 @@ document.getElementById("quickAiDeleteHabitBtn")?.addEventListener("click", () =
         timeZone: tz, hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true
       }).formatToParts(now);
       const get = t => (parts.find(p => p.type === t) || {}).value || "--";
-      document.getElementById("clkH").textContent = get("hour");
-      document.getElementById("clkM").textContent = get("minute");
-      document.getElementById("clkS").textContent = get("second");
-      document.getElementById("clkP").textContent = get("dayPeriod");
-      document.getElementById("clockDate").textContent =
-        now.toLocaleDateString("en-GB", { timeZone: tz, weekday: "long", day: "numeric", month: "short", year: "numeric" });
+      
+      const hEl = document.getElementById("clkH");
+      const mEl = document.getElementById("clkM");
+      const sEl = document.getElementById("clkS");
+      const pEl = document.getElementById("clkP");
+      
+      if(hEl) hEl.textContent = get("hour");
+      if(mEl) mEl.textContent = get("minute");
+      if(sEl) sEl.textContent = get("second");
+      if(pEl) pEl.textContent = get("dayPeriod");
+      
+      const dEl = document.getElementById("clockDate");
+      if(dEl) dEl.textContent = now.toLocaleDateString("en-GB", { timeZone: tz, weekday: "long", day: "numeric", month: "short", year: "numeric" });
     } catch (e) {}
-    document.getElementById("clockCountry").textContent =
-      (langToCountry[code]?.name || code) + " • " + tz;
+    
+    const cEl = document.getElementById("clockCountry");
+    if(cEl) cEl.textContent = (langToCountry[code]?.name || code) + " • " + tz;
   }
 
   tick();
