@@ -1599,7 +1599,7 @@ body.light-theme #addHabitCancel {
 .gp-ok{background:linear-gradient(135deg,#00e5ff,#0088cc);color:#05080f} 
   .gp-in{background:transparent!important;border:none!important;outline:none;width:64px;padding:0;-webkit-user-select:auto;user-select:auto}
 .gp-in:focus{border-bottom:2px solid var(--app-accent,#00e5ff)!important;border-radius:0} 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
   </style>
 </head>
 <body>
@@ -2498,7 +2498,7 @@ body.light-theme #addHabitCancel {
       </div>
       <div>
         <h3 style="color: #ffffff; font-size: 16px; margin-bottom: 8px;">3. Smart AI Coach</h3>
-        <p style="color: #c3c9d1; font-size: 13px; line-height: 1.6;">• <b>Voice Input:</b> Click the Mic icon and speak in any language.<br>• <b>📷 Send Photos:</b> Click the Image icon to send a photo to AI.<br>• <b>AI Reviews:</b> Get your Weekly & Monthly progress analyzed by the AI.</p>
+        <p style="color: #c3c9d1; font-size: 13px; line-height: 1.6;">• <b>Voice Input:</b> Click the Mic icon and speak in any language.<br>• <b>Send Photos:</b> Click the Image icon to send a photo to AI.<br>• <b>AI Reviews:</b> Get your Weekly & Monthly progress analyzed by the AI.</p>
       </div>
     </div>
     <div style="display: flex; gap: 15px; background: #0f1419; padding: 18px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #2a3142; align-items: flex-start;">
@@ -7277,7 +7277,7 @@ function updateSelectionBar() {
 function startReply(idx, msg) {
   replyingTo = {
     index: idx,
-    text: msg.content || (msg.image ? "📷 Photo" : ""),
+    text: msg.content || (msg.image ? "Photo" : ""),
     role: msg.role
   };
   const bar = document.getElementById("replyPreviewBar");
@@ -7518,7 +7518,7 @@ document.getElementById("askAiBtn").addEventListener("click", async () => {
       { type: "text", text: text || "Analyze this image." },
       { type: "image_url", image_url: { url: `data:${pendingImageMime};base64,${pendingImageBase64}` } }
     ];
-    displayText = text ? `📷 ${text}` : "[Image]";
+    displayText = text ? ` ${text}` : "[Image]";
   } else {
     userContent = cleanedText;
     displayText = text;
@@ -11205,7 +11205,7 @@ if (oldToast) oldToast.remove();
         { type: "text", text: text || "Analyze this image." },
         { type: "image_url", image_url: { url: `data:${window.pendingImageMime};base64,${window.pendingImageBase64}` } }
       ];
-      displayText = text ? `📷 ${text}` : "[Image]";
+      displayText = text ? ` ${text}` : "[Image]";
     } else {
       userContent = cleanedText;
       displayText = text;
@@ -12531,7 +12531,7 @@ Instructions:
     `;
     banner.innerHTML = `
       <div style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px;">
-        <div style="font-size: 22px; flex-shrink: 0;">💡</div>
+        <div style="flex-shrink:0;"><svg class="svg-icon" style="width:22px;height:22px;stroke:#f1c40f" viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.4 1.2 4.5 3 5.7V17h8v-2.3c1.8-1.2 3-3.3 3-5.7a7 7 0 0 0-7-7z"/></svg></div>
         <div style="flex: 1;">
           <div style="font-size: 11px; color: #f1c40f; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px;">AI Suggestion</div>
           <div style="color: #e8eaed; font-size: 13px; line-height: 1.4;">
@@ -12541,7 +12541,7 @@ Instructions:
       </div>
       <div style="display: flex; gap: 6px;">
         <button id="adjusterAiTip" style="flex:1; padding: 8px; background: rgba(0,229,255,0.15); color: #00e5ff; border: 1px solid #00e5ff; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer;">Get AI Tip</button>
-        <button id="adjusterRemove" style="flex:1; padding: 8px; background: rgba(255,107,74,0.15); color: #ff6b4a; border: 1px solid #ff6b4a; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer;">🗑️ Remove</button>
+        <button id="adjusterRemove" style="flex:1; padding: 8px; background: rgba(255,107,74,0.15); color: #ff6b4a; border: 1px solid #ff6b4a; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer;"><svg class="svg-icon" style="width:14px;height:14px;stroke:currentColor;vertical-align:-2px;margin-right:4px" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Remove</button>
         <button id="adjusterDismiss" style="padding: 8px 12px; background: #2a3142; color: #9aa0a6; border: 1px solid #3a4256; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer;">✕</button>
       </div>
     `;
@@ -12571,7 +12571,7 @@ Instructions:
 
     document.getElementById("adjusterAiTip").onclick = async () => {
       const btn = document.getElementById("adjusterAiTip");
-      btn.textContent = "🤖 Thinking...";
+      btn.textContent = "Thinking...";
       btn.disabled = true;
       
       try {
@@ -12586,11 +12586,11 @@ Instructions:
         const tip = (reply || "").trim();
         banner.innerHTML = `
           <div style="display: flex; align-items: flex-start; gap: 10px;">
-            <div style="font-size: 22px; flex-shrink: 0;">🤖</div>
+            <div style="flex-shrink:0;"><svg class="svg-icon" style="width:22px;height:22px;stroke:#00e5ff" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8.01" y2="16"/><line x1="16" y1="16" x2="16.01" y2="16"/></svg></div>
             <div style="flex: 1;">
               <div style="font-size: 11px; color: #00e5ff; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">AI Coach</div>
               <div style="color: #e8eaed; font-size: 13px; line-height: 1.55; margin-bottom: 10px;">${escapeHtmlBanner(tip)}</div>
-              <button id="adjusterCloseTip" style="width:100%; padding: 8px; background: #2a3142; color: #e8eaed; border: 1px solid #4a9eff; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer;">Got it! 💪</button>
+              <button id="adjusterCloseTip" style="width:100%; padding: 8px; background: #2a3142; color: #e8eaed; border: 1px solid #4a9eff; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer;">Got it! <svg class="svg-icon" style="width:14px;height:14px;stroke:#2ecc71;vertical-align:-2px" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></button>
             </div>
           </div>
         `;
@@ -12600,7 +12600,7 @@ Instructions:
           speakText(tip);
         }
       } catch(err) {
-        btn.textContent = "🤖 Get AI Tip";
+        btn.textContent = "Get AI Tip";
         btn.disabled = false;
         if (typeof showToast === 'function') showToast("AI Error: " + err.message);
       }
@@ -15169,7 +15169,7 @@ REQUIRED SECTIONS (cover ALL):
         { type: "text", text: text || "Analyze this image." },
         { type: "image_url", image_url: { url: `data:${window.pendingImageMime};base64,${window.pendingImageBase64}` } }
       ];
-      displayText = text ? `📷 ${text}` : "[Image]";
+      displayText = text ? ` ${text}` : "[Image]";
     } else { userContent = cleanedText; displayText = text; }
 
     const historyMessage = { role: 'user', content: displayText };
@@ -17928,104 +17928,6 @@ renderTodayHabits();
   updateBrainPreview = window.updateBrainPreview;
 })();
 </script>
-<script>
-(function sleepV3(){
-const G=8;
-const Q=h=>h==null?["#5b6475","No data"]:h<=6?["#ff6b4a","Under-rested"]:h==7?["#f1c40f","Almost there"]:h<=9?["#00e5ff","Well rested"]:h<=11?["#ff9f1c","Oversleeping"]:["#95a5a6","Too much"];
-const css=document.createElement("style");
-css.textContent=`
-.sleep-brain-container,#weekGrid,#hoursGrid,#sleepInputSection>label{display:none!important}
-.sk{position:relative;overflow:hidden;border-radius:24px;padding:22px 16px;margin-bottom:12px;text-align:center;background:linear-gradient(160deg,#0b1030,#1d2257 60%,#2b1d57);border:1px solid rgba(140,150,255,.25)}
-.sk:before{content:"";position:absolute;inset:0;background-image:radial-gradient(1.5px 1.5px at 20% 30%,#fff,transparent),radial-gradient(1px 1px at 72% 18%,#fff,transparent),radial-gradient(1.5px 1.5px at 88% 62%,#fff,transparent),radial-gradient(1px 1px at 30% 78%,#fff,transparent),radial-gradient(1px 1px at 55% 45%,#fff,transparent);animation:skTw 3s ease-in-out infinite alternate}
-@keyframes skTw{from{opacity:.25}to{opacity:1}}
-@keyframes skW{to{transform:translateX(-25%)}}
-.sk-moon{position:relative;width:160px;height:160px;margin:0 auto;border-radius:50%;overflow:hidden;background:rgba(255,255,255,.06);border:2px solid var(--c);box-shadow:0 0 45px var(--c),inset 0 0 30px rgba(0,0,0,.4)}
-.sk-wave{position:absolute;left:0;width:100%;bottom:0;height:var(--p);background:linear-gradient(180deg,var(--c),#0b1030);transition:height .7s}
-.sk-wave:before{content:"";position:absolute;top:-12px;left:0;width:200%;height:24px;background:var(--c);border-radius:50%;animation:skW 4s linear infinite alternate}
-.sk-mc{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-shadow:0 2px 12px #000}
-.sk-mc b{font-size:46px;color:#fff;line-height:1}.sk-mc span{font-size:11px;color:#dfe3ff;margin-top:4px}
-.sk-sc{position:relative;margin-top:16px;color:#fff;font-size:13px}
-.sk-sc b{font-size:26px;color:var(--c);text-shadow:0 0 14px var(--c)}.sk-sc i{display:block;font-style:normal;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--c)}
-.sk-pick{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
-.sk-pick div{padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid #2a3142}
-.sk-pick small{font-size:10px;color:#9aa0a6;text-transform:uppercase;letter-spacing:.6px}
-.sk-pick input{margin-top:6px;text-align:center;font-weight:800;font-size:18px!important}
-.sk2{padding:14px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid #2a3142;margin-bottom:12px}
-.sk2 .t{font-size:11px;color:#9aa0a6;text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px}
-.sk2 svg{width:100%;height:110px;overflow:visible}
-.sk-d{display:flex;justify-content:space-between;font-size:9px;color:#9aa0a6;text-transform:uppercase;margin-top:6px}
-.sk3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
-.sk3 div{padding:10px 4px;border-radius:14px;text-align:center;background:rgba(255,255,255,.04);border:1px solid #2a3142}
-.sk3 b{display:block;font-size:18px;color:#fff}.sk3 span{font-size:9px;color:#9aa0a6;text-transform:uppercase}`;
-document.head.appendChild(css);
-
-const idx=()=>{const s=new Date(sleepState.weekStartDate+"T00:00:00"),n=new Date(getDateKey()+"T00:00:00");return Math.min(Math.floor(Math.max(0,n-s)/864e5),6)};
-const cur=()=>{const v=sleepState.days[idx()];if(v!=null)return v;try{return selectedSleepHours}catch(e){return null}};
-const $=id=>document.getElementById(id);
-let exact="";
-
-function build(){
- if($("sk"))return;
- const c=$("sleepTrackerContent");if(!c)return;
- const w=document.createElement("div");
- w.innerHTML=`<div class="sk" id="sk"><div class="sk-moon" id="skMoon"><div class="sk-wave"></div><div class="sk-mc"><b id="skH">--</b><span id="skS">of sleep</span></div></div>
- <div class="sk-sc">Sleep Score <b id="skScore">--</b><i id="skLbl"></i></div></div>
- <div class="sk2"><div class="t">This week</div><svg id="skChart" viewBox="0 0 300 110"></svg><div class="sk-d" id="skDays"></div></div>
- <div class="sk3" id="skStats"></div>`;
- while(w.firstChild)c.insertBefore(w.firstChild,$("weekGrid"));
- const inp=$("sleepInputSection"),btn=$("saveSleepBtn");
- if(inp&&btn){
-  const p=document.createElement("div");p.className="sk-pick";
-  p.innerHTML=`<div><small>🌙 Bedtime</small><input type="time" id="skBed" value="23:00"></div><div><small>☀️ Wake up</small><input type="time" id="skWake" value="07:00"></div>`;
-  inp.insertBefore(p,btn);
-  ["skBed","skWake"].forEach(i=>{$(i).addEventListener("change",calc);$(i).addEventListener("input",calc)});
- }
-}
-function calc(){
- const f=v=>{const a=(v||"0:0").split(":").map(Number);return a[0]*60+a[1]};
- const d=(f($("skWake").value)-f($("skBed").value)+1440)%1440;
- exact=Math.floor(d/60)+"h "+d%60+"m";
- const h=Math.min(12,Math.max(1,Math.round(d/60)));
- const b=document.querySelector('.hour-btn[data-val="'+h+'"]');if(b)b.click();
-}
-function paint(){
- if(!$("sk"))return;
- const h=cur(),[c,l]=Q(h);
- $("sk").style.setProperty("--c",c);
- $("skMoon").style.setProperty("--p",(h?Math.min(h/12,1)*100:0)+"%");
- $("skH").textContent=h==null?"--":h+"h";
- $("skS").textContent=exact&&sleepState.days[idx()]==null?exact:"of sleep";
- const sc=h==null?null:Math.max(0,Math.round(100-Math.abs(h-G)*18));
- $("skScore").textContent=sc==null?"--":sc;$("skLbl").textContent=l;
-
- const st=new Date(sleepState.weekStartDate+"T00:00:00"),t=idx(),pts=[];let lb="";
- for(let i=0;i<7;i++){
-  const d=new Date(st);d.setDate(d.getDate()+i);
-  lb+=`<span style="${i==t?"color:#00e5ff;font-weight:800":""}">${d.toLocaleDateString("en-US",{weekday:"short"}).slice(0,3)}</span>`;
-  let v=sleepState.days[i];if(i==t&&v==null)v=h;
-  if(v!=null)pts.push([i*50,100-v/12*90,v]);
- }
- $("skDays").innerHTML=lb;
- let path="",gy=100-G/12*90;
- pts.forEach((p,i)=>{if(!i)path=`M${p[0]} ${p[1]}`;else{const q=pts[i-1],m=(q[0]+p[0])/2;path+=` C${m} ${q[1]} ${m} ${p[1]} ${p[0]} ${p[1]}`}});
- let svg=`<defs><linearGradient id="skG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c}" stop-opacity=".45"/><stop offset="1" stop-color="${c}" stop-opacity="0"/></linearGradient></defs>
- <line x1="0" x2="300" y1="${gy}" y2="${gy}" stroke="#00e5ff" stroke-opacity=".35" stroke-dasharray="4 4"/>`;
- if(pts.length>1)svg+=`<path d="${path} L${pts[pts.length-1][0]} 100 L${pts[0][0]} 100Z" fill="url(#skG)"/>`;
- if(pts.length>1)svg+=`<path d="${path}" fill="none" stroke="${c}" stroke-width="3" stroke-linecap="round" style="filter:drop-shadow(0 0 5px ${c})"/>`;
- pts.forEach(p=>svg+=`<circle cx="${p[0]}" cy="${p[1]}" r="5" fill="#0b1030" stroke="${Q(p[2])[0]}" stroke-width="3"/>`);
- $("skChart").innerHTML=svg;
-
- const L=sleepState.days.filter(x=>x!=null),avg=L.length?L.reduce((a,b)=>a+b,0)/L.length:null;
- const debt=L.reduce((a,b)=>a+Math.max(0,G-b),0),ok=L.filter(x=>x>=7&&x<=9).length;
- $("skStats").innerHTML=`<div><b style="color:#00e5ff">${avg==null?"--":avg.toFixed(1)+"h"}</b><span>Average</span></div><div><b style="color:${debt>4?"#ff6b4a":"#2ecc71"}">${debt}h</b><span>Sleep debt</span></div><div><b style="color:#f1c40f">${ok}/7</b><span>Healthy</span></div>`;
-}
-
-const oR=renderSleepTracker;
-renderSleepTracker=function(){oR();build();const i=$("sleepInputSection");if(i&&i.style.display!=="none"&&$("skBed"))calc();paint()};
-const oB=updateBrainPreview;
-updateBrainPreview=function(h){oB(h);paint()};
-})();
-</script>
 </body>
 
 
@@ -18368,5 +18270,751 @@ document.getElementById("quickAiDeleteHabitBtn")?.addEventListener("click", () =
   setInterval(tick, 1000);
 })();
 </script>
+<!-- ============================================================
+  🌙 SLEEP TRACKER FX UPGRADE
+  এই পুরো <script> ব্লকটা ফাইলের একদম শেষে (</html> এর ঠিক আগে) বসান।
+  আগের কোড কিছু মুছতে হবে না।
+============================================================ -->
+<script>
+(function sleepFxUpgrade() {
+  'use strict';
+  if (window.__sleepFxLoaded) return;
+  window.__sleepFxLoaded = true;
 
+  // ------------------------------------------------------------
+  // 🎨 CSS
+  // ------------------------------------------------------------
+  const css = `
+  .sleep-brain-container{
+    height:215px!important;border-radius:20px;overflow:hidden;position:relative;
+    background:radial-gradient(ellipse at 50% 42%,rgba(var(--sc-rgb,120,130,150),.25) 0%,rgba(13,17,25,0) 68%),linear-gradient(180deg,#0b0f17,#151b28);
+    border:1px solid rgba(var(--sc-rgb,120,130,150),.35);
+    box-shadow:inset 0 0 40px rgba(0,0,0,.5);
+    transition:border-color .6s;
+  }
+  .sleep-brain-container .sbg{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+  .sleep-brain-container .brain-text{position:relative;z-index:2;text-shadow:0 0 12px rgba(var(--sc-rgb),.7)}
+  .sleep-brain-container .brain-circle{
+    z-index:2;
+    background:radial-gradient(circle,rgba(var(--sc-rgb),.28) 0%,rgba(10,14,22,.92) 72%)!important;
+    box-shadow:0 0 38px rgba(var(--sc-rgb),.55),inset 0 0 22px rgba(var(--sc-rgb),.25)!important;
+    animation:sfBreathe 3.2s ease-in-out infinite!important;
+  }
+  .sleep-brain-container .brain-circle::before{
+    content:"";position:absolute;inset:-9px;border-radius:50%;
+    border:1.5px dashed rgba(var(--sc-rgb),.55);animation:sfSpin 14s linear infinite;
+  }
+  .sleep-brain-container .brain-circle svg.sc-svg{
+    width:64px;height:64px;overflow:visible;
+    animation:sfPop .55s cubic-bezier(.34,1.56,.64,1)!important;
+    filter:drop-shadow(0 0 6px rgba(var(--sc-rgb),.8));
+  }
+  .sc-svg .s{stroke:rgb(var(--sc-rgb));fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+  .sc-svg .f{fill:rgb(var(--sc-rgb));stroke:none}
+  .sc-svg .fs{fill:rgba(var(--sc-rgb),.2);stroke:rgb(var(--sc-rgb));stroke-width:3;stroke-linejoin:round;stroke-linecap:round}
+  .sc-svg .o{transform-origin:32px 32px}
+
+  /* ---- icon animations ---- */
+  .a-blink{animation:sfBlink 1.1s steps(2,jump-none) infinite}
+  .a-warn{animation:sfWarn 1.4s ease-in-out infinite;transform-origin:32px 12px}
+  .a-bar{transform-box:fill-box;transform-origin:center bottom;animation:sfBar 2.6s ease-in-out infinite;animation-delay:var(--i,0s);opacity:0}
+  .a-spark{animation:sfBlink 1.3s ease-in-out infinite alternate}
+  .a-bolt{transform-origin:32px 32px;animation:sfBolt 1.6s ease-in-out infinite}
+  .a-orb{animation:sfSpin 4s linear infinite}
+  .a-hm{animation:sfSpin 4s linear infinite}
+  .a-hh{animation:sfSpin 40s linear infinite}
+  .a-ecg{stroke-dasharray:35 65;animation:sfEcg 1.8s linear infinite}
+  .a-sp1{animation:sfSpin 6s linear infinite}
+  .a-sp2{animation:sfSpinR 4s linear infinite}
+  .a-sp3{animation:sfSpin 2.5s linear infinite}
+  .a-pulse{transform-origin:32px 32px;animation:sfPulse 1.2s ease-in-out infinite}
+  .a-rock{transform-origin:32px 32px;animation:sfRock 4s ease-in-out infinite alternate}
+  .a-z{opacity:0;animation:sfZ 3.2s ease-in-out infinite;animation-delay:var(--i,0s)}
+
+  /* ---- background particles ---- */
+  .sp{position:absolute;border-radius:50%;background:rgb(var(--sc-rgb));box-shadow:0 0 8px rgba(var(--sc-rgb),.9);opacity:0}
+  .sp.rise{bottom:-10px;animation:sfRise var(--d) linear var(--dl) infinite}
+  .sp.fall{top:-10px;animation:sfFall var(--d) linear var(--dl) infinite}
+  .sp.tw{animation:sfTw var(--d) ease-in-out var(--dl) infinite}
+  .sfring{position:absolute;left:50%;top:93px;width:100px;height:100px;margin:-50px 0 0 -50px;border-radius:50%;
+    border:2px solid rgba(var(--sc-rgb),.7);opacity:0;animation:sfRing 3.6s ease-out var(--dl) infinite}
+  .sfgrid{position:absolute;inset:0;
+    background-image:linear-gradient(rgba(var(--sc-rgb),.14) 1px,transparent 1px),linear-gradient(90deg,rgba(var(--sc-rgb),.14) 1px,transparent 1px);
+    background-size:22px 22px;animation:sfGrid 3s linear infinite;
+    -webkit-mask-image:radial-gradient(circle at 50% 43%,#000 0%,transparent 78%);mask-image:radial-gradient(circle at 50% 43%,#000 0%,transparent 78%)}
+  .sfscan{position:absolute;left:0;right:0;top:0;height:2px;background:rgba(var(--sc-rgb),.8);box-shadow:0 0 12px rgb(var(--sc-rgb));animation:sfScan 3.2s linear infinite}
+  .sfaur{position:absolute;width:150px;height:150px;border-radius:50%;filter:blur(32px);background:rgba(var(--sc-rgb),.38);animation:sfAur 6s ease-in-out infinite alternate}
+  .sfaur.b{background:rgba(120,90,255,.32);animation-duration:8s}
+  .sfcloud{position:absolute;left:-150px;height:28px;border-radius:40px;filter:blur(7px);background:rgba(var(--sc-rgb),.2);animation:sfCloud var(--d) linear var(--dl) infinite}
+  .sforb{position:absolute;left:50%;top:93px;width:0;height:0;animation:sfSpin var(--d) linear var(--dl) infinite}
+  .sforb::after{content:"";position:absolute;left:var(--r);top:0;width:5px;height:5px;margin:-2.5px;border-radius:50%;
+    background:rgb(var(--sc-rgb));box-shadow:0 0 9px rgb(var(--sc-rgb))}
+  .sfvig{position:absolute;inset:0;box-shadow:inset 0 0 60px rgba(var(--sc-rgb),.35);animation:sfBreathe 2.4s ease-in-out infinite}
+
+  /* ---- keyframes ---- */
+  @keyframes sfPop{0%{transform:scale(.3) rotate(-25deg);opacity:0}100%{transform:none;opacity:1}}
+  @keyframes sfBreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+  @keyframes sfSpin{to{transform:rotate(360deg)}}
+  @keyframes sfSpinR{to{transform:rotate(-360deg)}}
+  @keyframes sfBlink{0%,100%{opacity:1}50%{opacity:.15}}
+  @keyframes sfWarn{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.25);opacity:.4}}
+  @keyframes sfBar{0%,8%{opacity:0;transform:scaleY(.1)}30%,78%{opacity:1;transform:scaleY(1)}100%{opacity:0;transform:scaleY(1)}}
+  @keyframes sfBolt{0%,100%{transform:scale(1);opacity:1}45%{transform:scale(1.12)}50%{opacity:.5}55%{opacity:1;transform:scale(1.12)}}
+  @keyframes sfEcg{from{stroke-dashoffset:100}to{stroke-dashoffset:0}}
+  @keyframes sfPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.8)}}
+  @keyframes sfRock{from{transform:rotate(-10deg)}to{transform:rotate(10deg)}}
+  @keyframes sfZ{0%{opacity:0;transform:translate(0,6px) scale(.6)}25%{opacity:1}100%{opacity:0;transform:translate(8px,-18px) scale(1.2)}}
+  @keyframes sfRise{0%{transform:translateY(0) scale(.6);opacity:0}15%{opacity:1}100%{transform:translateY(-250px) scale(1.1);opacity:0}}
+  @keyframes sfFall{0%{transform:translateY(0);opacity:0}15%{opacity:.8}100%{transform:translateY(250px);opacity:0}}
+  @keyframes sfTw{0%,100%{opacity:.1;transform:scale(.6)}50%{opacity:1;transform:scale(1.3)}}
+  @keyframes sfRing{0%{transform:scale(.8);opacity:.8}100%{transform:scale(3.2);opacity:0}}
+  @keyframes sfGrid{to{background-position:0 22px}}
+  @keyframes sfScan{0%{top:0;opacity:0}10%{opacity:1}90%{opacity:1}100%{top:100%;opacity:0}}
+  @keyframes sfAur{from{transform:translate(-30px,20px) scale(.9)}to{transform:translate(40px,-25px) scale(1.3)}}
+  @keyframes sfCloud{from{transform:translateX(0)}to{transform:translateX(600px)}}
+  `;
+  const st = document.createElement('style');
+  st.id = 'sleepFxCss';
+  st.textContent = css;
+  document.head.appendChild(st);
+
+  // ------------------------------------------------------------
+  // 🧠 প্রতিটা অবস্থার জন্য আলাদা আইকন + রঙ
+  // ------------------------------------------------------------
+  const MOON = `d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" transform="translate(7 7) scale(2.1)"`;
+  const BAT = `<rect class="s" x="7" y="22" width="44" height="22" rx="5"/><rect class="f" x="53" y="29" width="4" height="8" rx="1.5"/>`;
+
+  const SC = {
+    empty: { rgb: '130,140,160', svg: `<g class="a-rock"><path class="s" style="opacity:.6;stroke-dasharray:3 4;stroke-width:1.4" ${MOON}/></g>` },
+    tired: { rgb: '255,107,74', svg: `${BAT}<rect class="f a-blink" x="12" y="27" width="9" height="12" rx="2"/>
+        <g class="a-warn"><path class="s" d="M32 5v9" style="stroke-width:3.5"/><circle class="f" cx="32" cy="19" r="2"/></g>` },
+    better: { rgb: '241,196,15', svg: `${BAT}
+        <rect class="f a-bar" style="--i:0s" x="12" y="27" width="9" height="12" rx="2"/>
+        <rect class="f a-bar" style="--i:.5s" x="23" y="27" width="9" height="12" rx="2"/>
+        <rect class="f a-bar" style="--i:1s" x="34" y="27" width="9" height="12" rx="2"/>
+        <path class="s a-spark" style="stroke-width:2.5" d="M33 5 L27 14 H35 L29 22"/>` },
+    fresh: { rgb: '0,229,255', svg: `<path class="fs a-bolt" d="M36 5 L15 36 H30 L26 59 L49 26 H33 Z"/>
+        <g class="o a-orb"><circle class="f" cx="32" cy="3" r="2"/><circle class="f" cx="32" cy="61" r="2"/></g>` },
+    fresher: { rgb: '70,255,200', svg: `<circle class="s" cx="32" cy="32" r="22"/>
+        <path class="s" style="stroke-width:2;opacity:.6" d="M32 12v3M32 49v3M12 32h3M49 32h3"/>
+        <g class="o a-hm"><path class="s" d="M32 32V17"/></g>
+        <g class="o a-hh"><path class="s" d="M32 32H42"/></g>
+        <circle class="f" cx="32" cy="32" r="2.5"/>
+        <g class="o a-sp1"><circle class="f" cx="32" cy="3" r="2.4"/></g>` },
+    jam1: { rgb: '175,100,215', svg: `<path class="s" style="opacity:.25" d="M4 34H18L24 16L33 50L40 28L44 34H60"/>
+        <path class="s a-ecg" pathLength="100" d="M4 34H18L24 16L33 50L40 28L44 34H60"/>` },
+    jam2: { rgb: '255,159,28', svg: `<g class="o a-sp1"><circle class="s" cx="32" cy="32" r="25" style="stroke-dasharray:4 7"/></g>
+        <g class="o a-sp2"><circle class="s" cx="32" cy="32" r="16" style="stroke-dasharray:3 5;stroke-width:2.5"/></g>
+        <g class="o a-sp3"><circle class="s" cx="32" cy="32" r="8" style="stroke-dasharray:2 4;stroke-width:2"/></g>
+        <circle class="f a-pulse" cx="32" cy="32" r="3.5"/>` },
+    over: { rgb: '160,175,176', svg: `<g class="a-rock"><path class="fs" style="stroke-width:1.4" ${MOON}/></g>
+        <text class="f a-z" style="--i:0s" x="42" y="22" font-size="11" font-weight="800">Z</text>
+        <text class="f a-z" style="--i:1s" x="48" y="16" font-size="9" font-weight="800">Z</text>
+        <text class="f a-z" style="--i:2s" x="52" y="10" font-size="7" font-weight="800">Z</text>` }
+  };
+
+  function keyFor(h) {
+    if (h === null || h === undefined) return 'empty';
+    if (h <= 6) return 'tired';
+    if (h === 7) return 'better';
+    if (h === 8) return 'fresh';
+    if (h === 9) return 'fresher';
+    if (h === 10) return 'jam1';
+    if (h === 11) return 'jam2';
+    return 'over';
+  }
+
+  // ------------------------------------------------------------
+  // ✨ ব্যাকগ্রাউন্ড গ্রাফিক্স জেনারেটর
+  // ------------------------------------------------------------
+  const R = (a, b) => a + Math.random() * (b - a);
+
+  function part(g, cls, n, sz, dur) {
+    for (let i = 0; i < n; i++) {
+      const e = document.createElement('i');
+      const s = R(sz[0], sz[1]);
+      e.className = 'sp ' + cls;
+      e.style.cssText = `left:${R(2, 98)}%;` + (cls === 'tw' ? `top:${R(4, 92)}%;` : '') +
+        `width:${s}px;height:${s}px;--d:${R(dur[0], dur[1])}s;--dl:-${R(0, dur[1])}s`;
+      g.appendChild(e);
+    }
+  }
+  function rings(g, n) {
+    for (let i = 0; i < n; i++) {
+      const e = document.createElement('i');
+      e.className = 'sfring';
+      e.style.setProperty('--dl', `-${i * 1.2}s`);
+      g.appendChild(e);
+    }
+  }
+  function orbs(g, n) {
+    for (let i = 0; i < n; i++) {
+      const e = document.createElement('i');
+      e.className = 'sforb';
+      e.style.cssText = `--r:${R(55, 100)}px;--d:${R(4, 9)}s;--dl:-${R(0, 8)}s`;
+      g.appendChild(e);
+    }
+  }
+  function clouds(g, n) {
+    for (let i = 0; i < n; i++) {
+      const e = document.createElement('i');
+      e.className = 'sfcloud';
+      e.style.cssText = `top:${R(8, 85)}%;width:${R(80, 140)}px;--d:${R(14, 24)}s;--dl:-${R(0, 20)}s`;
+      g.appendChild(e);
+    }
+  }
+  function add(g, html) { g.insertAdjacentHTML('beforeend', html); }
+
+  const FX = {
+    empty:   g => part(g, 'tw', 14, [1.5, 3], [3, 6]),
+    tired:   g => { add(g, '<i class="sfvig"></i>'); part(g, 'fall', 16, [1.5, 3.5], [6, 11]); },
+    better:  g => part(g, 'rise', 20, [2, 4], [3, 6]),
+    fresh:   g => { rings(g, 3); part(g, 'tw', 10, [1.5, 3], [2, 4]); },
+    fresher: g => { add(g, '<i class="sfaur" style="left:-20px;top:30px"></i><i class="sfaur b" style="right:-20px;top:70px"></i>'); part(g, 'tw', 18, [1.5, 3], [2, 5]); },
+    jam1:    g => { add(g, '<i class="sfgrid"></i><i class="sfscan"></i>'); part(g, 'rise', 6, [2, 3], [4, 7]); },
+    jam2:    g => { orbs(g, 9); part(g, 'tw', 6, [1.5, 3], [2, 4]); },
+    over:    g => { clouds(g, 4); part(g, 'tw', 14, [1.5, 3], [3, 6]); }
+  };
+
+  function buildBg(box, k) {
+    const old = box.querySelector('.sbg');
+    if (old) old.remove();
+    const g = document.createElement('div');
+    g.className = 'sbg';
+    FX[k](g);
+    box.insertBefore(g, box.firstChild);
+  }
+
+  // ------------------------------------------------------------
+  // 🔗 পুরনো updateBrainPreview কে মুড়ে নেওয়া
+  // ------------------------------------------------------------
+  const prev = window.updateBrainPreview || updateBrainPreview;
+  let lastKey = null;
+
+  function upgraded(hours) {
+    prev(hours);                                  // আগের লজিক (টেক্সট, ক্লাস) আগের মতোই চলবে
+    const c = document.getElementById('brainCircle');
+    const t = document.getElementById('brainText');
+    if (!c) return;
+    const box = c.parentElement;
+    const k = keyFor(hours);
+    const cfg = SC[k];
+
+    box.style.setProperty('--sc-rgb', cfg.rgb);
+    c.innerHTML = `<svg class="sc-svg" viewBox="0 0 64 64" fill="none">${cfg.svg}</svg>`;
+    if (t) t.style.color = `rgb(${cfg.rgb})`;
+
+    if (k !== lastKey || !box.querySelector('.sbg')) {
+      buildBg(box, k);
+      lastKey = k;
+    }
+  }
+
+  window.updateBrainPreview = upgraded;
+  updateBrainPreview = upgraded;
+
+  console.log('🌙 Sleep FX upgrade loaded');
+})();
+</script>
+<!-- ============================================================
+  🔁 EMOJI → SVG ICON (সারা অ্যাপে অটোমেটিক)
+  এই <script> ব্লকটা ফাইলের একদম শেষে (</html> এর ঠিক আগে) বসান।
+  নতুন ইমোজি (AI রিপ্লাই, টোস্ট, পপআপ) এলেও নিজে নিজে বদলে যাবে।
+============================================================ -->
+<script>
+(function emojiToSvg() {
+  'use strict';
+  if (window.__emojiSvgLoaded) return;
+  window.__emojiSvgLoaded = true;
+
+  // ------------------------------------------------------------
+  // 🎨 আইকনের পাথ (24x24, stroke স্টাইল — আপনার svg-icon এর মতোই)
+  // ------------------------------------------------------------
+  const P = {
+    trend:  '<polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/>',
+    bulb:   '<path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.4 1.2 4.5 3 5.7V17h8v-2.3c1.8-1.2 3-3.3 3-5.7a7 7 0 0 0-7-7z"/>',
+    trash:  '<polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/>',
+    bot:    '<rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8.01" y2="16"/><line x1="16" y1="16" x2="16.01" y2="16"/>',
+    flame:  '<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>',
+    checkC: '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>',
+    check:  '<polyline points="20 6 9 17 4 12"/>',
+    xC:     '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>',
+    warn:   '<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
+    spark:  '<path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5L12 3z"/><path d="M19 13l1 3l3 1l-3 1l-1 3l-1-3l-3-1l3-1l1-3z"/>',
+    star:   '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+    trophy: '<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>',
+    moon:   '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>',
+    sun:    '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>',
+    drop:   '<path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>',
+    dumb:   '<path d="M6 5v14M18 5v14M6 12h12M3 8v8M21 8v8"/>',
+    book:   '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
+    file:   '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>',
+    bars:   '<line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/>',
+    target: '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
+    mic:    '<path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/>',
+    volOn:  '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>',
+    volOff: '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>',
+    smile:  '<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',
+    sad:    '<circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',
+    meh:    '<circle cx="12" cy="12" r="10"/><line x1="8" y1="15" x2="16" y2="15"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',
+    help:   '<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
+    heart:  '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>',
+    send:   '<line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>',
+    leaf:   '<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>',
+    clock:  '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+    thumb:  '<path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>',
+    lock:   '<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+    food:   '<path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/>',
+    cam:    '<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>',
+    shield: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
+    pulse:  '<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>',
+    award:  '<circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>',
+    ban:    '<circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/>',
+    bell:   '<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>',
+    chat:   '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+    refresh:'<polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>',
+    globe:  '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
+    flag:   '<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/>',
+    bolt:   '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
+    coin:   '<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>',
+    home:   '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>',
+    users:  '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+    pin:    '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>',
+    coffee: '<path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/>',
+    eye:    '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>'
+  };
+
+  // [ইমোজি লিস্ট, আইকন, রঙ]
+  const DEF = [
+    [['💪'],                         'trend',  '#2ecc71'],
+    [['💡'],                         'bulb',   '#f1c40f'],
+    [['🗑'],                         'trash',  '#ff6b4a'],
+    [['🤖'],                         'bot',    '#00e5ff'],
+    [['🔥'],                         'flame',  '#ff6b4a'],
+    [['✅','✔'],                     'checkC', '#4aaa4a'],
+    [['✓'],                          'check',  'currentColor'],
+    [['❌','✖'],                     'xC',     '#ff6b4a'],
+    [['⚠','🚨'],                     'warn',   '#f1c40f'],
+    [['🎉','🥳','✨','🎊','💫'],     'spark',  '#d6a1f0'],
+    [['🌟','⭐'],                    'star',   '#f1c40f'],
+    [['🏆','🥇'],                    'trophy', '#f1c40f'],
+    [['😴','🌙','🌃','🌛','💤'],     'moon',   '#4a9eff'],
+    [['☀','🌅','🌄','🌞'],           'sun',    '#f1c40f'],
+    [['💧','🚰'],                    'drop',   '#00e5ff'],
+    [['🏋','🏃'],                    'dumb',   '#00e5ff'],
+    [['📚','📖'],                    'book',   '#d6a1f0'],
+    [['📝','📓','📄','📋'],          'file',   '#4aaa4a'],
+    [['📊','📈'],                    'bars',   '#4a9eff'],
+    [['🎯'],                         'target', '#ff6b4a'],
+    [['🎙','🎤'],                    'mic',    '#9b59b6'],
+    [['🔊'],                         'volOn',  '#00e5ff'],
+    [['🔇'],                         'volOff', '#9aa0a6'],
+    [['😊','🙂','😄','😁','😀','😎','😅','😂','🤣','😜','🙃','😏'], 'smile', '#f1c40f'],
+    [['😢','😞','😔','😭','😠','😡','😤','🤬'], 'sad', '#ff6b4a'],
+    [['😐','🥱','😑'],               'meh',    '#9aa0a6'],
+    [['🤔','❓'],                    'help',   '#00e5ff'],
+    [['❤','💙','💖','💜','💔','💗'], 'heart',  '#ff4d8d'],
+    [['🚀','✈'],                     'send',   '#4a9eff'],
+    [['🌱','🌿','🍃'],               'leaf',   '#4aaa4a'],
+    [['🕒','⏱','⏰','⌛'],           'clock',  '#00e5ff'],
+    [['👍','👏','🙌','🤝'],          'thumb',  '#f1c40f'],
+    [['🔒','🔓'],                    'lock',   '#9aa0a6'],
+    [['🍔','🍎','🥗','🍽'],          'food',   '#ff4d8d'],
+    [['📸','📷'],                    'cam',    '#00e5ff'],
+    [['🛡'],                         'shield', '#9aa0a6'],
+    [['🧠','🧘'],                    'pulse',  '#9b59b6'],
+    [['🏅','🎖'],                    'award',  '#d6a1f0'],
+    [['🚭','⛔','🚫'],               'ban',    '#ff6b4a'],
+    [['🔔'],                         'bell',   '#f1c40f'],
+    [['💬'],                         'chat',   '#00e5ff'],
+    [['🔄'],                         'refresh','#00e5ff'],
+    [['🌍','🌐'],                    'globe',  '#4a9eff'],
+    [['🏁'],                         'flag',   '#f1c40f'],
+    [['⚡'],                         'bolt',   '#f1c40f'],
+    [['💰','💵','💸'],               'coin',   '#2ecc71'],
+    [['🏠'],                         'home',   '#4a9eff'],
+    [['👥','👤'],                    'users',  '#4a9eff'],
+    [['📍'],                         'pin',    '#ff6b4a'],
+    [['☕','🍵'],                    'coffee', '#d4a017'],
+    [['👀'],                         'eye',    '#00e5ff']
+  ];
+
+  const MAP = {};
+  DEF.forEach(([list, p, c]) => list.forEach(e => { MAP[e] = { p: P[p], c }; }));
+  const keys = Object.keys(MAP).sort((a, b) => b.length - a.length);
+  const RE = new RegExp('(' + keys.join('|') + ')[\\uFE0E\\uFE0F]?', 'g');
+
+  // ------------------------------------------------------------
+  // 🎨 CSS
+  // ------------------------------------------------------------
+  const st = document.createElement('style');
+  st.textContent = `
+    svg.svg-icon.emo{width:1.1em;height:1.1em;min-width:1.1em;vertical-align:-0.2em;display:inline-block;
+      flex-shrink:0;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;margin:0 .1em}`;
+  document.head.appendChild(st);
+
+  // ------------------------------------------------------------
+  // 🔁 রিপ্লেস লজিক
+  // ------------------------------------------------------------
+  const SKIP = 'script,style,textarea,input,svg,option,title,[contenteditable="true"],.no-emoji-svg';
+  const tpl = document.createElement('template');
+
+  function iconEl(k) {
+    const m = MAP[k];
+    tpl.innerHTML = `<svg class="svg-icon emo" viewBox="0 0 24 24" style="stroke:${m.c}">${m.p}</svg>`;
+    return tpl.content.firstChild.cloneNode(true);
+  }
+
+  function convertText(node) {
+    const p = node.parentElement;
+    if (!p || p.closest(SKIP)) return;
+    const t = node.nodeValue;
+    RE.lastIndex = 0;
+    if (!RE.test(t)) return;
+    RE.lastIndex = 0;
+    const frag = document.createDocumentFragment();
+    let last = 0, m;
+    while ((m = RE.exec(t))) {
+      if (m.index > last) frag.appendChild(document.createTextNode(t.slice(last, m.index)));
+      frag.appendChild(iconEl(m[1]));
+      last = m.index + m[0].length;
+    }
+    if (last < t.length) frag.appendChild(document.createTextNode(t.slice(last)));
+    node.parentNode.replaceChild(frag, node);
+  }
+
+  function convert(root) {
+    if (root.nodeType === 3) return convertText(root);
+    if (root.nodeType !== 1 || root.closest(SKIP)) return;
+    const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    const list = [];
+    while (w.nextNode()) list.push(w.currentNode);
+    list.forEach(convertText);
+  }
+
+  // নতুন যা-ই DOM এ আসুক (টোস্ট, AI রিপ্লাই, পপআপ) — ধরে ফেলবে
+  const queue = new Set();
+  let scheduled = false;
+  function flush() {
+    scheduled = false;
+    const items = Array.from(queue);
+    queue.clear();
+    items.forEach(n => { if (n.isConnected) convert(n); });
+  }
+  new MutationObserver(ms => {
+    ms.forEach(m => {
+      if (m.type === 'characterData') queue.add(m.target);
+      else m.addedNodes.forEach(n => queue.add(n));
+    });
+    if (!scheduled) { scheduled = true; requestAnimationFrame(flush); }
+  }).observe(document.body, { childList: true, subtree: true, characterData: true });
+
+  convert(document.body);   // এখন যা আছে সব একবার
+  console.log('🔁 Emoji → SVG loaded:', keys.length, 'emojis mapped');
+})();
+</script>
+
+   <!-- ============================================================
+  ✅ FINAL — আগের spinner/AI-add স্ক্রিপ্ট মুছে শুধু এটা বসান
+  (ফাইলের একদম শেষে, </html> এর আগে)
+  ১) Spinner এক ট্যাপে ঘুরবে
+  ২) "Add New Habit" পপআপের কোণে ছোট রোবট বাটন → AI Quick Add
+============================================================ -->
+<script>
+(function spinnerFixAndAiQuickAdd() {
+  'use strict';
+  if (window.__aiQuickAddLoaded) return;
+  window.__aiQuickAddLoaded = true;
+
+  const $ = id => document.getElementById(id);
+
+  const st = document.createElement('style');
+  st.textContent = `
+    :root{--tap-scale:.95}
+    #spinWheelBtn{top:calc(50% - 25px)!important;left:calc(50% - 25px)!important;transform:none!important;touch-action:manipulation}
+    #spinWheelBtn:active{transform:scale(.9)!important}
+
+    /* ছোট রোবট বাটন (Add Habit পপআপের কোণে) */
+    #modalAiAddBtn{position:absolute;top:12px;right:12px;width:32px;height:32px;padding:0;border-radius:10px;
+      background:rgba(0,229,255,.1)!important;border:1px solid #00e5ff;color:#00e5ff!important;
+      display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:5}
+    #modalAiAddBtn svg{width:16px;height:16px}
+
+    #qaBox textarea{width:100%;padding:12px;background:#0f1419;border:1px solid #2a3142;border-radius:12px;color:#e8eaed;font-size:15px;outline:none;resize:none;min-height:70px}
+    #qaBox textarea:focus{border-color:#00e5ff;box-shadow:0 0 10px rgba(0,229,255,.2)}
+    .qa-row{display:flex;align-items:center;gap:10px;padding:10px;background:#0f1419;border:1px solid #2a3142;border-radius:12px;margin-bottom:8px}
+    .qa-row input[type=checkbox]{width:20px;height:20px;accent-color:#00e5ff;flex-shrink:0}
+    .qa-row input[type=text]{flex:1;min-width:0;background:transparent;border:none;border-bottom:1px dashed #2a3142;color:#e8eaed;font-size:14px;outline:none;padding:4px 0}
+    .qa-row input[type=text]:focus{border-bottom-color:#00e5ff}
+    .qa-cat{font-size:9px;font-weight:bold;text-transform:uppercase;color:#9aa0a6;background:#2a3142;padding:2px 6px;border-radius:10px;white-space:nowrap}
+    .qa-row.off{opacity:.45}
+  `;
+  document.head.appendChild(st);
+
+  const BOT = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8.01" y2="16"/><line x1="16" y1="16" x2="16.01" y2="16"/></svg>';
+  const MIC = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>';
+  const CATS = ['General', 'Study', 'Health', 'Fitness', 'Work', 'Mindfulness', 'Social', 'Finance', 'Hobby', 'Sleep', 'Morning Routine'];
+  const iconKeys = () => (typeof habitIconsList !== 'undefined') ? Object.keys(habitIconsList) : ['default'];
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const toast = m => (typeof showToast === 'function' ? showToast(m) : alert(m));
+
+  let items = [];
+
+  function build() {
+    if ($('aiQuickAddModal')) return;
+    const m = document.createElement('div');
+    m.id = 'aiQuickAddModal';
+    m.className = 'modal-overlay';
+    m.style.cssText = 'z-index:9600;padding:0;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);align-items:flex-end';
+    m.innerHTML = `
+      <div id="qaBox" style="background:#1a1f2e;width:100%;max-width:500px;border-radius:24px 24px 0 0;padding:20px;max-height:90vh;overflow-y:auto;border:1px solid rgba(0,229,255,.3);animation:slideUp .3s ease-out">
+        <h3 style="color:#00e5ff;font-size:18px;display:flex;align-items:center;gap:8px;margin-bottom:6px">${BOT} AI Quick Add</h3>
+        <p style="color:#9aa0a6;font-size:12px;margin-bottom:12px;line-height:1.5">
+          Write or speak anything — habits, a list, or just a goal. AI picks the name, category and icon for you.
+        </p>
+        <div style="display:flex;gap:8px;align-items:stretch;margin-bottom:10px">
+          <textarea id="qaInput" rows="2" placeholder="Type...."></textarea>
+          <button id="qaMic" type="button" title="Speak" style="width:46px;flex-shrink:0;background:#1a1f2e;border:1px solid #9b59b6;color:#d6a1f0;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer">${MIC}</button>
+        </div>
+        <label style="display:flex;align-items:center;gap:8px;color:#9aa0a6;font-size:12px;margin-bottom:12px;cursor:pointer">
+          <input type="checkbox" id="qaDirect" style="width:16px;height:16px;accent-color:#00e5ff">
+          Add directly (skip the preview)
+        </label>
+        <button id="qaGo" type="button" style="width:100%;padding:14px;background:linear-gradient(135deg,#00e5ff,#0088cc);color:#05080f;border:none;border-radius:12px;font-weight:800;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">Suggest Habits</button>
+        <div id="qaResult" style="margin-top:14px"></div>
+        <button id="qaAdd" type="button" style="display:none;width:100%;padding:14px;margin-top:4px;background:linear-gradient(135deg,#2ecc71,#27ae60);color:#fff;border:none;border-radius:12px;font-weight:800;font-size:15px;cursor:pointer">Add Habits</button>
+        <button id="qaClose" type="button" style="width:100%;padding:13px;margin-top:10px;background:#2a3142;color:#e8eaed;border:none;border-radius:12px;font-weight:bold;cursor:pointer">Cancel</button>
+      </div>`;
+    document.body.appendChild(m);
+
+    $('qaDirect').checked = localStorage.getItem('gritgo_qa_direct') === 'true';
+    $('qaDirect').onchange = e => localStorage.setItem('gritgo_qa_direct', e.target.checked);
+    $('qaClose').onclick = close;
+    m.addEventListener('click', e => { if (e.target === m) close(); });
+    $('qaGo').onclick = generate;
+    $('qaAdd').onclick = addChecked;
+    $('qaInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); generate(); }
+    });
+    bindMic();
+  }
+
+  function open() {
+    build();
+    $('qaInput').value = '';
+    $('qaResult').innerHTML = '';
+    $('qaAdd').style.display = 'none';
+    items = [];
+    resetGo();
+    $('aiQuickAddModal').classList.add('active');
+    setTimeout(() => $('qaInput').focus(), 250);
+    if (navigator.vibrate) navigator.vibrate(15);
+  }
+  function close() {
+    const m = $('aiQuickAddModal');
+    if (m) m.classList.remove('active');
+  }
+  function resetGo() {
+    const b = $('qaGo');
+    if (!b) return;
+    b.disabled = false;
+    b.textContent = 'Suggest Habits';
+  }
+
+  function bindMic() {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const btn = $('qaMic');
+    if (!SR) { btn.style.display = 'none'; return; }
+    let rec = null, on = false;
+    btn.onclick = () => {
+      if (on) { try { rec.stop(); } catch (e) {} return; }
+      rec = new SR();
+      rec.continuous = false;
+      rec.interimResults = true;
+      rec.lang = ($('voiceLangSelect') && $('voiceLangSelect').value) || 'en-US';
+      const base = $('qaInput').value.trim();
+      rec.onstart = () => { on = true; btn.style.background = '#ff6b4a'; btn.style.color = '#fff'; btn.style.borderColor = '#ff6b4a'; if (navigator.vibrate) navigator.vibrate(30); };
+      rec.onresult = ev => {
+        let t = '';
+        for (let i = 0; i < ev.results.length; i++) t += ev.results[i][0].transcript;
+        $('qaInput').value = (base ? base + ', ' : '') + t;
+      };
+      rec.onend = () => { on = false; btn.style.background = '#1a1f2e'; btn.style.color = '#d6a1f0'; btn.style.borderColor = '#9b59b6'; };
+      rec.onerror = e => { if (e.error !== 'no-speech' && e.error !== 'aborted') toast('Voice: ' + e.error); };
+      try { rec.start(); } catch (e) {}
+    };
+  }
+
+  function norm(x) {
+    const keys = iconKeys();
+    const name = String(x.name || '').trim().slice(0, 80);
+    const category = CATS.includes(x.category) ? x.category : 'General';
+    let icon = keys.includes(x.icon) ? x.icon : (window.guessHabitIcon ? window.guessHabitIcon(name) : 'default');
+    if (!keys.includes(icon)) icon = 'default';
+    return { name, category, icon };
+  }
+
+  function parse(reply) {
+    const a = reply.indexOf('['), b = reply.lastIndexOf(']');
+    if (a < 0 || b <= a) return [];
+    try {
+      const arr = JSON.parse(reply.slice(a, b + 1));
+      return arr.filter(x => x && typeof x.name === 'string' && x.name.trim()).map(norm);
+    } catch (e) { return []; }
+  }
+
+  function fallback(text) {
+    return text.split(/[\n,;।]+/).map(s => s.replace(/^[-*•\d.)\s]+/, '').trim())
+      .filter(s => s.length > 1).slice(0, 20).map(n => norm({ name: n }));
+  }
+
+  async function generate() {
+    const text = $('qaInput').value.trim();
+    if (!text) { toast('Write something first!'); return; }
+
+    const btn = $('qaGo');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="loading-spinner" style="border-top-color:#05080f"></span> Thinking...';
+    $('qaResult').innerHTML = '';
+    $('qaAdd').style.display = 'none';
+
+    const existing = (challengeData.habits || []).map(h => h.name).slice(0, 40).join(' | ') || 'none';
+    const sys = `You turn a user's free text into daily habits for a habit tracker.
+RULES:
+1. Output ONLY a JSON array. No explanation, no markdown, no code fences.
+2. Each item: {"name":"...","category":"...","icon":"..."}
+3. If the text already lists habits, keep them (clean wording, 2-8 words, actionable, repeatable daily).
+4. If the text is a goal or a vague wish, suggest 4 daily habits for it. If the user states a number, produce exactly that many (max 30).
+5. Write each name in the SAME language as the user's text.
+6. category must be exactly one of: ${CATS.join(', ')}
+7. icon must be exactly one of: ${iconKeys().join(', ')}
+8. Do NOT include habits similar to these existing ones: ${existing}`;
+
+    let list = [];
+    try {
+      const reply = await callGroq(
+        [{ role: 'system', content: sys }, { role: 'user', content: text }],
+        { temperature: 0.3, max_tokens: 2000 }
+      );
+      list = parse(reply);
+    } catch (e) { console.log('AI Quick Add error:', e); }
+
+    if (!list.length) { list = fallback(text); toast('AI busy — using your text'); }
+
+    resetGo();
+    items = list;
+    if (!items.length) { toast('Could not understand. Try again.'); return; }
+
+    if ($('qaDirect').checked) addItems(items);
+    else render();
+  }
+
+  function render() {
+    const box = $('qaResult');
+    box.innerHTML = `<div style="font-size:11px;color:#00e5ff;font-weight:bold;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">Tap to untick • edit the name if you like</div>`;
+    items.forEach((it, i) => {
+      const svg = (typeof habitIconsList !== 'undefined' && habitIconsList[it.icon]) ? habitIconsList[it.icon].replace('<svg', '<svg class="habit-small-icon"') : '';
+      const row = document.createElement('div');
+      row.className = 'qa-row';
+      row.innerHTML = `<input type="checkbox" checked data-i="${i}">
+        <span style="display:flex;flex-shrink:0">${svg}</span>
+        <input type="text" value="${esc(it.name)}" data-n="${i}" maxlength="80">
+        <span class="qa-cat">${esc(it.category)}</span>`;
+      row.querySelector('input[type=checkbox]').onchange = e => { row.classList.toggle('off', !e.target.checked); count(); };
+      row.querySelector('input[type=text]').oninput = e => { items[i].name = e.target.value; };
+      box.appendChild(row);
+    });
+    $('qaAdd').style.display = 'block';
+    count();
+  }
+
+  function count() {
+    const n = $('qaResult').querySelectorAll('input[type=checkbox]:checked').length;
+    const b = $('qaAdd');
+    b.textContent = n ? `Add ${n} Habit${n > 1 ? 's' : ''}` : 'Select at least one';
+    b.disabled = !n;
+    b.style.opacity = n ? '1' : '.5';
+  }
+
+  function addChecked() {
+    const chosen = [];
+    $('qaResult').querySelectorAll('input[type=checkbox]').forEach(cb => {
+      if (cb.checked) chosen.push(items[+cb.dataset.i]);
+    });
+    addItems(chosen);
+  }
+
+  function addItems(list) {
+    const have = new Set((challengeData.habits || []).map(h => h.name.trim().toLowerCase()));
+    let added = 0, skipped = 0;
+    list.forEach(it => {
+      const name = (it.name || '').trim();
+      if (!name) return;
+      if (have.has(name.toLowerCase())) { skipped++; return; }
+      have.add(name.toLowerCase());
+      challengeData.habits.push({
+        id: 'h_' + Math.random().toString(36).substr(2, 9),
+        name, category: it.category || 'General', target: 1,
+        icon: it.icon || 'default', days: [0, 1, 2, 3, 4, 5, 6]
+      });
+      added++;
+    });
+
+    if (added) {
+      localStorage.setItem('challengeData', JSON.stringify(challengeData));
+      if (typeof renderHabits === 'function') renderHabits();
+      if (typeof renderTodayHabits === 'function') renderTodayHabits();
+      if (typeof renderHeatmap === 'function') renderHeatmap();
+      if (typeof updateStats === 'function') updateStats();
+      const ex = $('extrasModal');
+      if (ex && ex.classList.contains('active') && typeof renderExtras === 'function') renderExtras();
+      if (typeof playCheckSound === 'function') playCheckSound(false);
+      if (navigator.vibrate) navigator.vibrate([30, 40, 30]);
+    }
+    toast(added
+      ? `${added} habit${added > 1 ? 's' : ''} added!` + (skipped ? ` (${skipped} already existed)` : '')
+      : 'Those habits already exist!');
+    close();
+  }
+
+  // AI চ্যাটের মেনুর "Add Habit" বাটনও এখন এই শিট খুলবে
+  document.addEventListener('click', e => {
+    if (e.target.closest('#quickAiHabitBtn')) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      const menu = $('quickDotMenu');
+      if (menu) menu.classList.remove('open');
+      open();
+    }
+  }, true);
+
+  // "Add New Habit" পপআপের কোণে ছোট রোবট বাটন
+  function addModalBtn() {
+    const box = document.querySelector('#addHabitModal .modal-box');
+    if (!box || $('modalAiAddBtn')) return;
+    box.style.position = 'relative';
+
+    const b = document.createElement('button');
+    b.id = 'modalAiAddBtn';
+    b.type = 'button';
+    b.title = 'Add with AI';
+    b.innerHTML = BOT;
+    b.onclick = () => {
+      $('addHabitModal').classList.remove('active');
+      setTimeout(open, 350);
+    };
+    box.appendChild(b);
+
+    // "Edit Habit" হলে লুকাবে, "Add New Habit" হলে দেখাবে
+    const title = $('addHabitModalTitle');
+    const sync = () => { b.style.display = /edit/i.test(title.textContent) ? 'none' : 'flex'; };
+    new MutationObserver(sync).observe(title, { childList: true, characterData: true, subtree: true });
+    sync();
+  }
+  addModalBtn();
+
+  console.log('✅ Spinner fix + AI Quick Add (small popup button) loaded');
+})();
+</script>
+ 
 </html>
