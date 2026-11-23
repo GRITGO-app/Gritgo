@@ -6777,7 +6777,7 @@ voiceReplyBtn.addEventListener("click", () => {
   isVoiceReplyOn = !isVoiceReplyOn;
   localStorage.setItem("gritgo_voice_reply", isVoiceReplyOn);
   updateVoiceBtnUI();
-  showToast(isVoiceReplyOn ? "AI Voice ON 🔊" : "AI Voice OFF 🔇");
+  showToast(isVoiceReplyOn ? "AI Voice ON" : "AI Voice OFF");
 });
 
 if (window.speechSynthesis) {
@@ -6790,7 +6790,7 @@ if (window.speechSynthesis) {
 let __ttsToken = 0;
 function speakText(text) {
   const synth = window.speechSynthesis;
-  if (!synth) { showToast("এই ব্রাউজারে Voice সাপোর্ট নেই"); return; }
+  if (!synth) { showToast("Voice Not Support in This Browser"); return; }
 
   const clean = String(text || "")
     .replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}]/gu, "")
@@ -19016,5 +19016,1160 @@ RULES:
   console.log('✅ Spinner fix + AI Quick Add (small popup button) loaded');
 })();
 </script>
- 
+ <!-- ============================================================
+  ✅ Day Popup — Check All / Uncheck All (v2)
+  টিক বাড়ার সাথে সাথে নীল বাটন আস্তে আস্তে উজ্জ্বল হয় (ডাশবোর্ডের মতো)
+  আগের day-modal-check-all স্ক্রিপ্টটা মুছে এটা বসান (ফাইলের শেষে, </html> এর আগে)
+============================================================ -->
+<script>
+(function dayModalQuickActions() {
+  'use strict';
+  if (window.__dayQuickLoaded) return;
+  window.__dayQuickLoaded = true;
+
+  const $ = id => document.getElementById(id);
+
+  const CHECK_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+  const RESET_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>';
+
+  // 🌟 ডাশবোর্ডের updateCheckAllBtnUI এর মতোই: যত বেশি টিক, তত বেশি উজ্জ্বল
+  function paintCheckBtn() {
+    const b = $('dayCheckAllBtn');
+    if (!b) return;
+    const key = (typeof viewingDateKey !== 'undefined') ? viewingDateKey : null;
+    const total = challengeData.habits.length;
+    const log = (key && challengeData.habitLogs[key]) || {};
+    let done = 0;
+    challengeData.habits.forEach(h => { if (log[h.id] === true) done++; });
+
+    const c = (typeof currentTheme !== 'undefined' && currentTheme.main) ? currentTheme.main : '#4a9eff';
+    const svg = b.querySelector('svg');
+
+    if (!total || done === 0) {
+      b.style.background = 'rgba(255,255,255,0.05)';
+      b.style.boxShadow = 'none';
+      b.style.opacity = '0.5';
+      b.style.border = '1px solid rgba(255,255,255,0.1)';
+      svg.style.stroke = '#9aa0a6';
+    } else if (done === total) {
+      b.style.background = `linear-gradient(135deg, ${c}, #2a7fdb)`;
+      b.style.boxShadow = `0 0 15px ${c}`;
+      b.style.opacity = '1';
+      b.style.border = 'none';
+      svg.style.stroke = '#ffffff';
+    } else {
+      const ratio = done / total;
+      b.style.background = `linear-gradient(135deg, ${c}, #2a7fdb)`;
+      b.style.boxShadow = `0 0 ${10 * ratio}px ${c}`;
+      b.style.opacity = String(0.5 + ratio * 0.5);
+      b.style.border = 'none';
+      svg.style.stroke = '#ffffff';
+    }
+  }
+
+  function setAll(val) {
+    const key = (typeof viewingDateKey !== 'undefined') ? viewingDateKey : null;
+    if (!key) return;
+    if (!challengeData.habits || !challengeData.habits.length) { showToast('No habits!'); return; }
+
+    if (!challengeData.habitLogs[key]) challengeData.habitLogs[key] = {};
+    challengeData.habits.forEach(h => { challengeData.habitLogs[key][h.id] = val; });
+    localStorage.setItem('challengeData', JSON.stringify(challengeData));
+
+    renderDayModalList();      // লিস্ট + গণনা + (নিচের wrapper এর কারণে) বাটনের রঙও
+    renderHeatmap();
+    updateStats();
+    renderTodayHabits();
+    const ex = $('extrasModal');
+    if (ex && ex.classList.contains('active') && typeof renderExtras === 'function') renderExtras();
+
+    if (val) {
+      if (typeof playCheckSound === 'function') playCheckSound(true);
+      if (typeof showConfetti === 'function') showConfetti();
+      showToast('All checked!');
+    } else {
+      if (typeof playUncheckSound === 'function') playUncheckSound();
+      else if (navigator.vibrate) navigator.vibrate(20);
+      showToast('All unchecked.');
+    }
+  }
+
+  function build() {
+    if ($('dayCheckAllBtn')) return;
+    const sub = $('dayModalSubtitle');
+    if (!sub) return;
+
+    const row = document.createElement('div');
+    row.className = 'quick-actions';
+    row.style.margin = '0 0 14px';
+    row.innerHTML = `
+      <button id="dayCheckAllBtn" type="button" class="quick-btn check-all-btn" title="Check All">${CHECK_SVG}</button>
+      <button id="dayResetAllBtn" type="button" class="quick-btn reset-all-btn" title="Uncheck All">${RESET_SVG}</button>`;
+    sub.insertAdjacentElement('afterend', row);
+
+    $('dayCheckAllBtn').onclick = () => setAll(true);
+    $('dayResetAllBtn').onclick = () => setAll(false);
+    paintCheckBtn();
+  }
+
+  build();
+
+  // প্রতিবার লিস্ট আঁকা হলে (একটা টিক দিলেও) বাটনের উজ্জ্বলতা আপডেট
+  if (typeof renderDayModalList === 'function') {
+    const orig = renderDayModalList;
+    renderDayModalList = function () {
+      orig.apply(this, arguments);
+      paintCheckBtn();
+    };
+  }
+
+  console.log('✅ Day popup Check All (progressive) loaded');
+})();
+</script>
+<!-- ============================================================
+  🎨 THEME SYNC — পুরো অ্যাপ থিমের সাথে মিলে যাবে
+  ফাইলের একদম শেষে (</html> এর আগে) বসান। বাকি সব স্ক্রিপ্টের নিচে থাকলেই ভালো।
+
+  কীভাবে কাজ করে:
+  অ্যাপে হাতে-লেখা যেসব রঙ (#00e5ff, #4a9eff, #0f1419, #1a1f2e ...) আছে,
+  সেগুলো একবার CSS ভ্যারিয়েবলে (var(--t-...)) বদলে নেয়।
+  এরপর থিম পাল্টালে শুধু ভ্যারিয়েবলের মান বদলায় — সব জায়গা নিজে থেকে মিলে যায়।
+  "Default Aqua" থিমে ভ্যারিয়েবলের মান = আগের রঙ, তাই কিছুই বদলায় না।
+============================================================ -->
+<script>
+(function themeSync() {
+  'use strict';
+  if (window.__themeSyncLoaded) return;
+  window.__themeSyncLoaded = true;
+
+  // ------------------------------------------------------------
+  // 🎨 অ্যাপের আসল (ডিফল্ট) রঙের তালিকা
+  // ------------------------------------------------------------
+  const SRC = [
+    ['aqua',  '#00e5ff'],   // মূল অ্যাকসেন্ট
+    ['blue',  '#4a9eff'],   // দ্বিতীয় অ্যাকসেন্ট
+    ['d1',    '#0088cc'],   // গ্রেডিয়েন্টের গাঢ় প্রান্ত
+    ['d2',    '#2a7fdb'],
+    ['d3',    '#00b8d4'],
+    ['bg',    '#0f1419'],   // ব্যাকগ্রাউন্ড
+    ['card',  '#1a1f2e'],   // কার্ড/বক্স
+    ['card2', '#14151f'],
+    ['line',  '#2a3142'],   // বর্ডার
+    ['line2', '#3a4256'],
+    ['line3', '#353d4f'],
+    ['text',  '#e8eaed'],   // লেখা
+    ['on',    '#05080f']    // অ্যাকসেন্ট বাটনের ওপরের লেখা
+  ];
+
+  const h2r = h => {
+    h = h.replace('#', '');
+    if (h.length === 3) h = h.split('').map(c => c + c).join('');
+    return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];
+  };
+  const r2h = (r, g, b) => '#' + [r, g, b].map(v => Math.round(Math.max(0, Math.min(255, v))).toString(16).padStart(2, '0')).join('');
+  const mix = (a, b, t) => {
+    const A = h2r(a), B = h2r(b);
+    return r2h(A[0] + (B[0] - A[0]) * t, A[1] + (B[1] - A[1]) * t, A[2] + (B[2] - A[2]) * t);
+  };
+  const lum = h => { const c = h2r(h); return (0.299 * c[0] + 0.587 * c[1] + 0.114 * c[2]) / 255; };
+
+  // ------------------------------------------------------------
+  // 🎚 থিম অনুযায়ী ভ্যারিয়েবল সেট
+  // ------------------------------------------------------------
+  function setVars(theme) {
+    const root = document.documentElement.style;
+    const isDefault = !theme || !theme.main || theme.name === 'Default Aqua';
+    const P = {};
+
+    if (isDefault) {
+      SRC.forEach(([n, h]) => { P[n] = h; });
+    } else {
+      const m = theme.main, bg = theme.bg, card = theme.card, tx = theme.text;
+      P.aqua = m;
+      P.blue = m;
+      P.d1 = mix(m, '#000000', 0.30);
+      P.d2 = mix(m, '#000000', 0.30);
+      P.d3 = mix(m, '#000000', 0.15);
+      P.bg = bg;
+      P.card = card;
+      P.card2 = mix(card, bg, 0.5);
+      P.line = mix(card, tx, 0.14);
+      P.line2 = mix(card, tx, 0.20);
+      P.line3 = mix(card, tx, 0.17);
+      P.text = tx;
+      P.on = lum(m) > 0.6 ? '#05080f' : '#ffffff';
+    }
+
+    for (const n in P) {
+      root.setProperty('--t-' + n, P[n]);
+      root.setProperty('--t-' + n + '-rgb', h2r(P[n]).join(','));
+    }
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', P.bg);
+  }
+
+  // সবার আগে ভ্যারিয়েবল সেট (যাতে রঙ বদলানোর পর কিছু "খালি" না দেখায়)
+  setVars(typeof currentTheme !== 'undefined' ? currentTheme : null);
+
+  // থিম বদলালেই ভ্যারিয়েবল আপডেট
+  if (typeof applyAppTheme === 'function') {
+    const orig = applyAppTheme;
+    applyAppTheme = function (theme) {
+      orig.apply(this, arguments);
+      setVars(theme);
+    };
+  }
+
+  // ------------------------------------------------------------
+  // 🔁 হার্ডকোড রঙ → var(--t-...) (একবারই)
+  // ------------------------------------------------------------
+  const KEY = {};
+  SRC.forEach(([n, h]) => { KEY[h2r(h).join(',')] = n; });
+
+  const RE = /#([0-9a-f]{6}|[0-9a-f]{3})(?![0-9a-f])|rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*(?:,\s*([\d.]+)\s*)?\)/gi;
+  const NEED = /#[0-9a-f]{3}|rgba?\(/i;
+
+  function rewrite(s) {
+    return s.replace(RE, (m, hex, r, g, b, a) => {
+      const rgb = hex ? h2r(hex) : [+r, +g, +b];
+      const n = KEY[rgb.join(',')];
+      if (!n) return m;
+      if (hex || a === undefined) return `var(--t-${n})`;
+      return `rgba(var(--t-${n}-rgb),${a})`;
+    });
+  }
+
+  // --- CSS ফাইলের নিয়মগুলো ---
+  const doneSheets = new WeakSet();
+
+  function processRules(rules) {
+    for (const r of rules) {
+      if (r.style) {
+        const t = r.style.cssText;
+        const n = rewrite(t);
+        if (n !== t) r.style.cssText = n;
+      }
+      if (r.cssRules && r.cssRules.length) processRules(r.cssRules);
+    }
+  }
+  function processSheets() {
+    for (const sh of document.styleSheets) {
+      if (doneSheets.has(sh)) continue;
+      let rules = null;
+      try { rules = sh.cssRules; } catch (e) { doneSheets.add(sh); continue; }
+      if (!rules) continue;
+      doneSheets.add(sh);
+      processRules(rules);
+    }
+  }
+
+  // --- inline style ও SVG attribute ---
+  // থিম প্রিভিউ/চ্যাট কালার বাছাইয়ের সোয়াচগুলো আসল রঙেই থাকবে
+  const SKIP = '#themePaletteGrid,#themePreviewModal,#chatThemeModal,#colorPaletteModal';
+  const SVG_ATTRS = ['stroke', 'fill', 'stop-color', 'flood-color'];
+
+  function procEl(el) {
+    if (el.nodeType !== 1) return;
+    if (el.closest(SKIP)) return;
+
+    const s = el.getAttribute('style');
+    if (s && NEED.test(s)) {
+      const n = rewrite(s);
+      if (n !== s) el.setAttribute('style', n);
+    }
+    for (const a of SVG_ATTRS) {
+      const v = el.getAttribute(a);
+      if (v && NEED.test(v)) {
+        const n = rewrite(v);
+        if (n !== v) { el.style.setProperty(a, n); el.removeAttribute(a); }
+      }
+    }
+  }
+  function procTree(root) {
+    if (root.nodeType !== 1) return;
+    procEl(root);
+    root.querySelectorAll('*').forEach(procEl);
+  }
+
+  // এখন যা আছে সব
+  processSheets();
+  procTree(document.body);
+
+  // পরে যা-ই আসুক (নতুন পপআপ, AI কার্ড, JS দিয়ে বসানো রঙ) — ধরে ফেলবে
+  new MutationObserver(ms => {
+    for (const m of ms) {
+      if (m.type === 'attributes') procEl(m.target);
+      else m.addedNodes.forEach(procTree);
+    }
+  }).observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['style'] });
+
+  // পরে যোগ হওয়া <style> (প্যাচ স্ক্রিপ্টের CSS)
+  new MutationObserver(() => setTimeout(processSheets, 0))
+    .observe(document.head, { childList: true });
+
+  console.log('🎨 Theme Sync loaded');
+})();
+</script>
+
+<!-- ============================================================
+  GRITGO UPDATE (3 in 1)
+  1) Faith Tracker (replaces the old Amal Tracker script)
+  2) AI Quick Delete for habits
+  3) Country selector on the first setup screen
+
+  HOW TO USE
+  - Delete the OLD Amal Tracker <script> block (the one from amal-tracker.html).
+  - Paste ALL THREE <script> blocks below at the very end of your file, before </html>.
+  - All text inside the app is English.
+============================================================ -->
+
+<!-- ============================================================
+  1) FAITH TRACKER
+============================================================ -->
+<script>
+(function faithTracker() {
+  'use strict';
+  if (window.__faithLoaded) return;
+  window.__faithLoaded = true;
+
+  const KEY = 'gritgo_amal_data'; // same key as before, so old Islam data is kept
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const toast = m => (typeof showToast === 'function' ? showToast(m) : alert(m));
+
+  // remove the old Amal Tracker button if the old script is still around
+  const oldBtn = $('sidebarAmalBtn');
+  if (oldBtn) oldBtn.remove();
+
+  // ------------------------------------------------------------
+  // Icons (generic, neutral)
+  // ------------------------------------------------------------
+  const IC = {
+    pray:  '<path d="M3 21h18M5 21V11l7-7 7 7v10M10 21v-5a2 2 0 0 1 4 0v5"/>',
+    star:  '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+    book:  '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
+    beads: '<circle cx="5" cy="12" r="2.5"/><circle cx="12" cy="12" r="2.5"/><circle cx="19" cy="12" r="2.5"/>',
+    moon:  '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>',
+    heart: '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>',
+    spark: '<path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5L12 3z"/><path d="M19 13l1 3l3 1l-3 1l-1 3l-1-3l-3-1l3-1l1-3z"/>',
+    sun:   '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>',
+    leaf:  '<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>',
+    users: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+    flame: '<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>'
+  };
+
+  // ------------------------------------------------------------
+  // Traditions: groups [id, title, icon]  items [id, group, name, on by default]
+  // ------------------------------------------------------------
+  const R = {
+    islam: {
+      label: 'Islam', btn: 'Amal Tracker', tag: 'Salah, Quran, dhikr, fasting and charity',
+      done: 'MashaAllah! All amals completed.',
+      groups: [['salah', 'Daily Prayers (Fard)', 'pray'], ['sunnah', 'Sunnah and Nafl', 'star'], ['quran', 'Quran', 'book'],
+               ['dhikr', 'Dhikr and Dua', 'beads'], ['fast', 'Fasting', 'moon'], ['charity', 'Charity and Good Deeds', 'heart']],
+      items: [
+        ['fajr', 'salah', 'Fajr', 1], ['dhuhr', 'salah', 'Dhuhr', 1], ['asr', 'salah', 'Asr', 1], ['maghrib', 'salah', 'Maghrib', 1], ['isha', 'salah', 'Isha', 1],
+        ['s_fajr', 'sunnah', 'Fajr Sunnah (2 rakat)', 1], ['s_dhuhr', 'sunnah', 'Dhuhr Sunnah', 0], ['s_maghrib', 'sunnah', 'Maghrib Sunnah', 0],
+        ['s_isha', 'sunnah', 'Isha Sunnah', 0], ['witr', 'sunnah', 'Witr', 1], ['tahajjud', 'sunnah', 'Tahajjud', 0], ['duha', 'sunnah', 'Duha / Ishraq', 0], ['awwabin', 'sunnah', 'Awwabin', 0],
+        ['quran', 'quran', 'Quran recitation', 1], ['tafsir', 'quran', 'Study meaning / Tafsir', 0], ['mulk', 'quran', 'Surah Mulk (before sleep)', 0], ['kahf', 'quran', 'Surah Kahf (Friday)', 0],
+        ['morning', 'dhikr', 'Morning adhkar', 1], ['evening', 'dhikr', 'Evening adhkar', 1], ['tasbih', 'dhikr', 'Tasbih after prayer', 0],
+        ['istighfar', 'dhikr', 'Istighfar (100x)', 0], ['durood', 'dhikr', 'Durood (100x)', 0], ['sleepdua', 'dhikr', 'Dua before sleep', 0],
+        ['fast', 'fast', 'Fasting today', 0],
+        ['sadaqa', 'charity', 'Sadaqah / charity', 0], ['parents', 'charity', 'Care for parents', 0], ['help', 'charity', 'Help someone', 0], ['salam', 'charity', 'Salam and good manners', 0]
+      ]
+    },
+    christianity: {
+      label: 'Christianity', btn: 'Devotion Tracker', tag: 'Prayer, Scripture, worship and service',
+      groups: [['prayer', 'Prayer', 'pray'], ['word', 'Scripture', 'book'], ['worship', 'Worship and Fellowship', 'users'], ['service', 'Service and Charity', 'heart'], ['disc', 'Discipline', 'star']],
+      items: [
+        ['ch_morning', 'prayer', 'Morning prayer', 1], ['ch_evening', 'prayer', 'Evening prayer', 1], ['ch_grace', 'prayer', 'Grace before meals', 1], ['ch_night', 'prayer', 'Night prayer', 0], ['ch_rosary', 'prayer', 'Rosary', 0],
+        ['ch_bible', 'word', 'Read the Bible', 1], ['ch_devo', 'word', 'Daily devotional', 1], ['ch_memo', 'word', 'Memorize a verse', 0], ['ch_psalm', 'word', 'Read a Psalm', 0],
+        ['ch_church', 'worship', 'Attend church / worship service', 0], ['ch_hymn', 'worship', 'Worship music / hymns', 0], ['ch_fellow', 'worship', 'Fellowship / small group', 0],
+        ['ch_give', 'service', 'Give / tithe', 0], ['ch_serve', 'service', 'Serve someone', 0], ['ch_forgive', 'service', 'Forgiveness and kindness', 1],
+        ['ch_fast', 'disc', 'Fasting', 0], ['ch_grat', 'disc', 'Gratitude / thanksgiving', 1], ['ch_conf', 'disc', 'Examine conscience / confession', 0]
+      ]
+    },
+    hinduism: {
+      label: 'Hinduism', btn: 'Sadhana Tracker', tag: 'Puja, mantra, yoga and seva',
+      groups: [['puja', 'Puja and Worship', 'flame'], ['mantra', 'Mantra and Scripture', 'book'], ['yoga', 'Yoga and Meditation', 'leaf'], ['seva', 'Seva and Dharma', 'heart']],
+      items: [
+        ['hi_puja', 'puja', 'Morning puja', 1], ['hi_aarti', 'puja', 'Evening aarti', 1], ['hi_diya', 'puja', 'Light a diya', 0], ['hi_temple', 'puja', 'Temple visit', 0], ['hi_vrat', 'puja', 'Vrat / fast', 0],
+        ['hi_japa', 'mantra', 'Mantra japa', 1], ['hi_gayatri', 'mantra', 'Gayatri mantra', 0], ['hi_gita', 'mantra', 'Read the Bhagavad Gita', 1],
+        ['hi_text', 'mantra', 'Read scripture (Ramayana, Vedas, etc.)', 0], ['hi_kirtan', 'mantra', 'Bhajan / kirtan', 0],
+        ['hi_yoga', 'yoga', 'Yoga / asana', 1], ['hi_prana', 'yoga', 'Pranayama', 1], ['hi_med', 'yoga', 'Meditation', 1],
+        ['hi_seva', 'seva', 'Seva (selfless service)', 1], ['hi_daan', 'seva', 'Daan (charity)', 0], ['hi_feed', 'seva', 'Feed someone in need / animals', 0], ['hi_elders', 'seva', 'Respect and serve elders', 0]
+      ]
+    },
+    buddhism: {
+      label: 'Buddhism', btn: 'Dhamma Tracker', tag: 'Meditation, study, precepts and compassion',
+      groups: [['med', 'Meditation', 'leaf'], ['study', 'Study and Chanting', 'book'], ['ethics', 'Ethics and Precepts', 'star'], ['kind', 'Generosity and Compassion', 'heart']],
+      items: [
+        ['bu_morning', 'med', 'Morning meditation', 1], ['bu_evening', 'med', 'Evening meditation', 1], ['bu_breath', 'med', 'Mindful breathing', 0], ['bu_metta', 'med', 'Loving-kindness (Metta)', 1],
+        ['bu_sutta', 'study', 'Read Dhamma / sutta', 1], ['bu_chant', 'study', 'Chanting', 0], ['bu_reflect', 'study', 'Reflect on the teachings', 0],
+        ['bu_precepts', 'ethics', 'Observe the Five Precepts', 1], ['bu_speech', 'ethics', 'Mindful speech', 0], ['bu_eat', 'ethics', 'Mindful eating', 0], ['bu_uposatha', 'ethics', 'Uposatha day observance', 0],
+        ['bu_dana', 'kind', 'Dana (generosity)', 0], ['bu_grat', 'kind', 'Gratitude', 0], ['bu_comp', 'kind', 'Act of compassion', 1]
+      ]
+    },
+    sikhism: {
+      label: 'Sikhism', btn: 'Nitnem Tracker', tag: 'Nitnem, simran, seva and sangat',
+      groups: [['nitnem', 'Nitnem', 'book'], ['simran', 'Naam Simran and Gurbani', 'beads'], ['seva', 'Seva and Sangat', 'users'], ['values', 'Living the Values', 'heart']],
+      items: [
+        ['si_japji', 'nitnem', 'Japji Sahib (morning)', 1], ['si_jaap', 'nitnem', 'Jaap Sahib', 0], ['si_savaiye', 'nitnem', 'Tav-Prasad Savaiye', 0],
+        ['si_rehras', 'nitnem', 'Rehras Sahib (evening)', 1], ['si_sohila', 'nitnem', 'Kirtan Sohila (before sleep)', 1],
+        ['si_simran', 'simran', 'Naam Simran', 1], ['si_gurbani', 'simran', 'Read or listen to Gurbani', 0], ['si_sukhmani', 'simran', 'Sukhmani Sahib', 0], ['si_hukam', 'simran', 'Hukamnama', 0],
+        ['si_seva', 'seva', 'Seva', 1], ['si_langar', 'seva', 'Langar / share food', 0], ['si_gurdwara', 'seva', 'Gurdwara / sangat', 0],
+        ['si_kirat', 'values', 'Kirat Karni (honest work)', 1], ['si_vand', 'values', 'Vand Chakna (share with others)', 0], ['si_humble', 'values', 'Humility and service', 0]
+      ]
+    },
+    judaism: {
+      label: 'Judaism', btn: 'Mitzvah Tracker', tag: 'Prayer, Torah learning and mitzvot',
+      groups: [['prayer', 'Prayer', 'pray'], ['torah', 'Torah and Learning', 'book'], ['mitzvot', 'Mitzvot and Kindness', 'heart'], ['bless', 'Blessings and Gratitude', 'sun']],
+      items: [
+        ['ju_modeh', 'prayer', 'Modeh Ani (on waking)', 1], ['ju_shach', 'prayer', 'Shacharit (morning prayer)', 1], ['ju_mincha', 'prayer', 'Mincha (afternoon prayer)', 1],
+        ['ju_maariv', 'prayer', 'Maariv (evening prayer)', 1], ['ju_shema', 'prayer', 'Shema (before sleep)', 0],
+        ['ju_torah', 'torah', 'Torah study', 1], ['ju_parsha', 'torah', 'Weekly parsha', 0], ['ju_tehillim', 'torah', 'Tehillim (Psalms)', 0],
+        ['ju_tzedakah', 'mitzvot', 'Tzedakah (charity)', 1], ['ju_chesed', 'mitzvot', 'Acts of kindness (Chesed)', 1], ['ju_shabbat', 'mitzvot', 'Shabbat preparation / observance', 0], ['ju_kosher', 'mitzvot', 'Kosher observance', 0],
+        ['ju_meal', 'bless', 'Blessings over meals', 1], ['ju_grat', 'bless', 'Gratitude', 0]
+      ]
+    },
+    general: {
+      label: 'Other / Prefer not to say', btn: 'Spiritual Tracker', tag: 'A simple, universal set of daily practices',
+      groups: [['inner', 'Inner Life', 'leaf'], ['kind', 'Gratitude and Kindness', 'heart'], ['learn', 'Reading and Reflection', 'book']],
+      items: [
+        ['ge_pray', 'inner', 'Prayer or meditation', 1], ['ge_quiet', 'inner', 'Quiet time / silence', 0], ['ge_breath', 'inner', 'Mindful breathing', 0], ['ge_nature', 'inner', 'Time in nature', 0],
+        ['ge_grat', 'kind', 'Gratitude', 1], ['ge_kind', 'kind', 'Act of kindness', 1], ['ge_give', 'kind', 'Give or help someone', 0],
+        ['ge_read', 'learn', 'Read scripture or a wisdom text', 1], ['ge_journal', 'learn', 'Reflect / journal', 0]
+      ]
+    }
+  };
+  const ORDER = ['islam', 'christianity', 'hinduism', 'buddhism', 'sikhism', 'judaism', 'general'];
+  const DEFAULT_BTN = 'Faith Tracker';
+
+  // ------------------------------------------------------------
+  // Data
+  // ------------------------------------------------------------
+  function load() {
+    try {
+      const d = JSON.parse(localStorage.getItem(KEY));
+      if (d && typeof d === 'object') {
+        const out = { religion: d.religion || null, custom: d.custom || [], enabled: d.enabled || {}, logs: d.logs || {} };
+        // data created by the old Islam-only tracker
+        if (!out.religion && (Object.keys(out.logs).length || out.custom.length)) out.religion = 'islam';
+        return out;
+      }
+    } catch (e) {}
+    return { religion: null, custom: [], enabled: {}, logs: {} };
+  }
+  let D = load();
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(D)); } catch (e) { toast('Storage full!'); } };
+
+  const cur = () => R[D.religion] || null;
+  const itemsOf = () => cur().items.map(([id, group, name, on]) => ({ id, group, name, on: !!on }));
+  const customOf = () => D.custom.filter(c => (c.rel || 'islam') === D.religion).map(c => ({ id: c.id, group: 'mine', name: c.name, custom: true }));
+  const allAmals = () => (cur() ? itemsOf().concat(customOf()) : []);
+  const isOn = a => a.custom ? true : (D.enabled[a.id] !== undefined ? D.enabled[a.id] : a.on);
+  const active = () => allAmals().filter(isOn);
+
+  const T = () => getDateKey();
+  const shift = (k, n) => { const d = new Date(k + 'T00:00:00'); d.setDate(d.getDate() + n); return getDateKey(d); };
+  const isDone = (k, id) => !!(D.logs[k] && D.logs[k][id]);
+  const doneCount = k => active().filter(a => isDone(k, a.id)).length;
+  const isPerfect = k => { const n = active().length; return n > 0 && doneCount(k) === n; };
+  const pctOf = k => { const n = active().length; return n ? Math.round(doneCount(k) / n * 100) : 0; };
+
+  function streak() {
+    let k = T(), s = 0;
+    if (!isPerfect(k)) k = shift(k, -1);
+    while (isPerfect(k) && s < 1000) { s++; k = shift(k, -1); }
+    return s;
+  }
+  function itemStreak(id) {
+    let k = T(), s = 0;
+    if (!isDone(k, id)) k = shift(k, -1);
+    while (isDone(k, id) && s < 1000) { s++; k = shift(k, -1); }
+    return s;
+  }
+  const fmtDate = k => new Date(k + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+  const fmtDay = k => new Date(k + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'short' });
+
+  // ------------------------------------------------------------
+  // CSS
+  // ------------------------------------------------------------
+  const st = document.createElement('style');
+  st.textContent = `
+    #faithModal .fa-nav{width:38px;height:38px;border-radius:10px;background:var(--app-card,#1a1f2e);border:1px solid #2a3142;color:var(--app-accent,#00e5ff);font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;padding:0}
+    #faithModal .fa-nav:disabled{opacity:.3;pointer-events:none}
+    #faithModal .fa-pillbtn{display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:10px;background:transparent;border:1px solid var(--app-accent,#00e5ff);color:var(--app-accent,#00e5ff);font-size:12px;font-weight:bold;cursor:pointer}
+    #faithModal .fa-grp{display:flex;align-items:center;justify-content:space-between;margin:16px 4px 8px;color:var(--app-accent,#00e5ff);font-weight:800;font-size:14px}
+    #faithModal .fa-grp b{display:flex;align-items:center;gap:8px}
+    #faithModal .fa-grp svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    #faithModal .fa-grp span{color:#9aa0a6;font-size:12px;font-weight:bold}
+    #faList .task-item{cursor:pointer}
+    #faList .task-text{white-space:normal}
+    .fa-pill{padding:6px 12px;border-radius:20px;font-size:12px;font-weight:bold;border:1px solid #2a3142;background:transparent;color:#9aa0a6;cursor:pointer;flex-shrink:0}
+    .fa-pill.on{border-color:var(--app-accent,#00e5ff);color:var(--app-accent,#00e5ff);background:rgba(0,229,255,.1)}
+    .fa-chip{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:bold;color:#ff6b4a;background:rgba(255,107,74,.12);border:1px solid rgba(255,107,74,.4);padding:2px 7px;border-radius:10px;white-space:nowrap;flex-shrink:0}
+    .fa-chip svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .fa-add{display:flex;gap:8px;margin-bottom:12px}
+    .fa-add input{flex:1;min-width:0;padding:12px;background:#0f1419;border:1px solid #2a3142;border-radius:10px;color:#e8eaed;font-size:14px;outline:none}
+    .fa-add input:focus{border-color:var(--app-accent,#00e5ff)}
+    .fa-add button{padding:0 16px;background:var(--app-accent,#00e5ff);color:#05080f;border:none;border-radius:10px;font-weight:bold;cursor:pointer}
+    .fa-week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+    .fa-col{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:4px 0;border-radius:8px;border:1px solid transparent}
+    .fa-col.sel{border-color:var(--app-accent,#00e5ff)}
+    .fa-barwrap{height:64px;width:100%;display:flex;align-items:flex-end;justify-content:center}
+    .fa-bar{width:62%;min-height:3px;border-radius:4px;background:var(--app-accent,#00e5ff);opacity:.5}
+    .fa-bar.full{opacity:1;box-shadow:0 0 8px var(--app-accent,#00e5ff)}
+    .fa-col small{font-size:10px;color:#9aa0a6}
+    .fa-opt{display:block;width:100%;text-align:left;padding:14px;margin-bottom:8px;background:#0f1419;border:1px solid #2a3142;border-radius:12px;color:#e8eaed;cursor:pointer}
+    .fa-opt b{display:block;font-size:15px;margin-bottom:2px}
+    .fa-opt small{color:#9aa0a6;font-size:12px}
+    .fa-opt.sel{border-color:var(--app-accent,#00e5ff);background:rgba(0,229,255,.08)}
+  `;
+  document.head.appendChild(st);
+
+  // ------------------------------------------------------------
+  // Faith picker (bottom sheet)
+  // ------------------------------------------------------------
+  function buildPicker() {
+    if ($('faithPickModal')) return;
+    const m = document.createElement('div');
+    m.id = 'faithPickModal';
+    m.className = 'modal-overlay';
+    m.style.cssText = 'z-index:9600;padding:0;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);align-items:flex-end';
+    m.innerHTML = `
+      <div style="background:#1a1f2e;width:100%;max-width:500px;border-radius:24px 24px 0 0;padding:20px;max-height:88vh;overflow-y:auto;border:1px solid rgba(0,229,255,.3);animation:slideUp .3s ease-out">
+        <h3 style="color:var(--app-accent,#00e5ff);font-size:18px;margin-bottom:4px">Choose your path</h3>
+        <p style="color:#9aa0a6;font-size:12px;line-height:1.5;margin-bottom:14px">Pick the tradition you follow. Your tracker will be set up to match it. You can change this any time, and your progress for each one is kept.</p>
+        <div id="faithPickList"></div>
+        <button id="faithPickClose" type="button" style="width:100%;padding:13px;margin-top:4px;background:#2a3142;color:#e8eaed;border:none;border-radius:12px;font-weight:bold;cursor:pointer">Cancel</button>
+      </div>`;
+    document.body.appendChild(m);
+    $('faithPickClose').onclick = closePicker;
+    m.addEventListener('click', e => { if (e.target === m) closePicker(); });
+    $('faithPickList').addEventListener('click', e => {
+      const b = e.target.closest('[data-r]');
+      if (b) choose(b.dataset.r);
+    });
+  }
+  function openPicker() {
+    buildPicker();
+    $('faithPickList').innerHTML = ORDER.map(k =>
+      `<button type="button" class="fa-opt ${D.religion === k ? 'sel' : ''}" data-r="${k}"><b>${R[k].label}</b><small>${R[k].tag}</small></button>`).join('');
+    $('faithPickModal').classList.add('active');
+  }
+  function closePicker() { const m = $('faithPickModal'); if (m) m.classList.remove('active'); }
+  function choose(k) {
+    D.religion = k;
+    save();
+    updateBtn();
+    closePicker();
+    openTracker();
+  }
+
+  // ------------------------------------------------------------
+  // Tracker page
+  // ------------------------------------------------------------
+  const FLAME = `<svg viewBox="0 0 24 24">${IC.flame}</svg>`;
+  const TRASH = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>';
+  const PENCIL = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>';
+  const SWAP = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>';
+
+  function buildModal() {
+    if ($('faithModal')) return;
+    const m = document.createElement('div');
+    m.id = 'faithModal';
+    m.className = 'modal-overlay';
+    m.style.cssText = 'z-index:2100;padding:0';
+    m.innerHTML = `
+      <div class="modal-box" style="height:100dvh;max-height:100dvh;width:100%;max-width:100%;border-radius:0;border:none;padding:16px;margin:0;display:flex;flex-direction:column;overflow:hidden">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px;flex-shrink:0">
+          <h2 style="margin:0;font-size:19px;display:flex;align-items:center;gap:8px;color:var(--app-accent,#00e5ff);min-width:0">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0">${IC.spark}</svg>
+            <span id="faTitle" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
+          </h2>
+          <div style="display:flex;gap:6px;flex-shrink:0">
+            <button id="faSwitch" type="button" class="fa-pillbtn">${SWAP}<span>Faith</span></button>
+            <button id="faEdit" type="button" class="fa-pillbtn">${PENCIL}<span id="faEditTxt">Customize</span></button>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-shrink:0">
+          <button id="faPrev" class="fa-nav" type="button">&lsaquo;</button>
+          <div id="faDate" style="flex:1;text-align:center;font-weight:800;font-size:15px;color:#e8eaed"></div>
+          <button id="faNext" class="fa-nav" type="button">&rsaquo;</button>
+        </div>
+
+        <div class="stats" style="margin-bottom:12px;flex-shrink:0">
+          <div class="stat-card"><span id="faStreak">0</span><span>day streak</span></div>
+          <div class="stat-card"><span id="faPerfect">0</span><span>perfect days</span></div>
+          <div class="stat-card"><span id="faAvg">0%</span><span>7-day average</span></div>
+        </div>
+
+        <div style="margin-bottom:6px;flex-shrink:0">
+          <div style="margin-bottom:6px"><span id="faProgTxt" style="color:var(--app-accent,#00e5ff);font-weight:bold;font-size:13px"></span></div>
+          <div class="progress-bar-bg"><div class="progress-bar-fill" id="faProgFill" style="width:0%"></div></div>
+        </div>
+
+        <div id="faBody" style="flex:1;overflow-y:auto;padding:0 2px 14px">
+          <div id="faAddBox" class="fa-add" style="display:none;margin-top:12px">
+            <input id="faNew" type="text" maxlength="60" placeholder="Add your own practice..." autocomplete="off">
+            <button id="faAddBtn" type="button">Add</button>
+          </div>
+          <div id="faList"></div>
+          <div class="fa-grp" style="margin-top:22px"><b>Last 7 days</b><span>Tap a bar to open that day</span></div>
+          <div id="faWeek" class="fa-week"></div>
+        </div>
+
+        <div class="settings-buttons" style="margin-top:8px;flex-shrink:0">
+          <button id="faClose" type="button" style="background:#2a3142;color:#e8eaed">Close</button>
+        </div>
+      </div>`;
+    document.body.appendChild(m);
+    bind();
+  }
+
+  let sel = null, editMode = false;
+
+  function render() {
+    if (!cur()) return;
+    const today = T(), act = active(), done = doneCount(sel);
+
+    $('faTitle').textContent = cur().btn;
+    $('faDate').textContent = fmtDate(sel) + (sel === today ? ' (Today)' : '');
+    $('faNext').disabled = sel >= today;
+
+    $('faStreak').textContent = streak();
+    $('faPerfect').textContent = Object.keys(D.logs).filter(isPerfect).length;
+    let sum = 0;
+    for (let i = 0; i < 7; i++) sum += pctOf(shift(today, -i));
+    $('faAvg').textContent = Math.round(sum / 7) + '%';
+
+    $('faProgTxt').textContent = `${done} / ${act.length} completed`;
+    $('faProgFill').style.width = (act.length ? Math.round(done / act.length * 100) : 0) + '%';
+
+    $('faAddBox').style.display = editMode ? 'flex' : 'none';
+    $('faEditTxt').textContent = editMode ? 'Done' : 'Customize';
+
+    const groups = cur().groups.concat([['mine', 'My Practices', 'spark']]);
+    let html = '';
+    groups.forEach(([gid, gname, gicon]) => {
+      const items = allAmals().filter(a => a.group === gid && (editMode || isOn(a)));
+      if (!items.length) return;
+      const gDone = items.filter(a => isOn(a) && isDone(sel, a.id)).length;
+      const gTotal = items.filter(isOn).length;
+      html += `<div class="fa-grp"><b><svg viewBox="0 0 24 24">${IC[gicon] || IC.spark}</svg>${gname}</b>${editMode ? '' : `<span>${gDone}/${gTotal}</span>`}</div>`;
+
+      items.forEach((a, i) => {
+        if (editMode) {
+          html += `<div class="task-item" style="cursor:default">
+              <span class="task-text">${esc(a.name)}</span>
+              <button class="fa-pill ${isOn(a) ? 'on' : ''}" type="button" data-act="toggle" data-id="${a.id}">${isOn(a) ? 'On' : 'Off'}</button>
+              ${a.custom ? `<button class="delete-btn" type="button" data-act="del" data-id="${a.id}">${TRASH}</button>` : ''}
+            </div>`;
+        } else {
+          const d = isDone(sel, a.id), s = itemStreak(a.id);
+          html += `<div class="task-item ${d ? 'done' : ''}" data-act="tick" data-id="${a.id}">
+              <div class="custom-checkbox ${d ? 'checked' : ''}"><span class="checkbox-number">${i + 1}</span></div>
+              <span class="task-text">${esc(a.name)}</span>
+              ${s >= 2 ? `<span class="fa-chip">${FLAME}${s}</span>` : ''}
+            </div>`;
+        }
+      });
+    });
+    if (!html) html = '<p style="text-align:center;color:#9aa0a6;padding:24px">Nothing is turned on. Tap Customize to choose your practices.</p>';
+    $('faList').innerHTML = html;
+
+    let w = '';
+    for (let i = 6; i >= 0; i--) {
+      const k = shift(today, -i), p = pctOf(k);
+      w += `<div class="fa-col ${k === sel ? 'sel' : ''}" data-act="go" data-k="${k}">
+          <div class="fa-barwrap"><div class="fa-bar ${p === 100 ? 'full' : ''}" style="height:${Math.max(p, 4)}%"></div></div>
+          <small>${fmtDay(k)}</small>
+        </div>`;
+    }
+    $('faWeek').innerHTML = w;
+  }
+
+  function toggleDone(id) {
+    if (!D.logs[sel]) D.logs[sel] = {};
+    const v = !D.logs[sel][id];
+    if (v) D.logs[sel][id] = true; else delete D.logs[sel][id];
+    save();
+
+    const act = active();
+    const all = act.length > 0 && act.every(a => isDone(sel, a.id));
+    render();
+
+    if (v) {
+      if (all) {
+        if (typeof playCheckSound === 'function') playCheckSound(true);
+        if (typeof showConfetti === 'function') showConfetti();
+        toast(cur().done || 'All done. Well done!');
+      } else if (typeof playCheckSound === 'function') playCheckSound(false);
+    } else if (typeof playUncheckSound === 'function') playUncheckSound();
+  }
+
+  function addCustom() {
+    const inp = $('faNew'), v = inp.value.trim();
+    if (!v) { toast('Type a name first'); return; }
+    if (allAmals().some(a => a.name.toLowerCase() === v.toLowerCase())) { toast('That already exists'); return; }
+    D.custom.push({ id: 'c_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5), name: v.slice(0, 60), rel: D.religion });
+    save();
+    inp.value = '';
+    render();
+    toast('Added!');
+  }
+
+  async function delCustom(id) {
+    const a = D.custom.find(c => c.id === id);
+    if (!a) return;
+    const msg = `Delete "${a.name}"?`;
+    const ok = (typeof showCustomConfirm === 'function') ? await showCustomConfirm(msg) : confirm(msg);
+    if (!ok) return;
+    D.custom = D.custom.filter(c => c.id !== id);
+    save();
+    render();
+  }
+
+  function bind() {
+    $('faClose').onclick = () => $('faithModal').classList.remove('active');
+    $('faSwitch').onclick = openPicker;
+    $('faEdit').onclick = () => { editMode = !editMode; render(); if (editMode) setTimeout(() => $('faNew').focus(), 100); };
+    $('faPrev').onclick = () => { sel = shift(sel, -1); render(); };
+    $('faNext').onclick = () => { if (sel < T()) { sel = shift(sel, 1); render(); } };
+    $('faAddBtn').onclick = addCustom;
+    $('faNew').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); addCustom(); } });
+
+    $('faBody').addEventListener('click', e => {
+      const el = e.target.closest('[data-act]');
+      if (!el) return;
+      const act = el.dataset.act, id = el.dataset.id;
+      if (act === 'tick') toggleDone(id);
+      else if (act === 'toggle') {
+        const a = allAmals().find(x => x.id === id);
+        if (a) { D.enabled[id] = !isOn(a); save(); render(); }
+      }
+      else if (act === 'del') delCustom(id);
+      else if (act === 'go') { sel = el.dataset.k; render(); }
+    });
+  }
+
+  function openTracker() {
+    if (!cur()) { openPicker(); return; }
+    buildModal();
+    sel = T();
+    editMode = false;
+    render();
+    $('faithModal').classList.add('active');
+    if (navigator.vibrate) navigator.vibrate(15);
+  }
+
+  // ------------------------------------------------------------
+  // Sidebar button (name changes with the chosen faith)
+  // ------------------------------------------------------------
+  function updateBtn() {
+    const t = $('sidebarFaithTxt');
+    if (t) t.textContent = cur() ? cur().btn : DEFAULT_BTN;
+  }
+  function addSidebarBtn() {
+    if ($('sidebarFaithBtn')) return;
+    const ref = $('sidebarTaskBtn');
+    if (!ref) return;
+    const b = document.createElement('button');
+    b.id = 'sidebarFaithBtn';
+    b.type = 'button';
+    b.style.cssText = 'width:100%;display:flex;align-items:center;justify-content:center;gap:8px;background:#1a1f2e;color:#2ecc71;border:1px solid #2ecc71;padding:8px;border-radius:10px;font-size:12px;font-weight:bold;cursor:pointer;margin-bottom:8px';
+    b.innerHTML = `<svg style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24">${IC.spark}</svg><span id="sidebarFaithTxt">${DEFAULT_BTN}</span>`;
+    b.onclick = () => {
+      const sb = $('sidebar'), so = $('sidebarOverlay');
+      if (sb) sb.classList.remove('open');
+      if (so) so.classList.remove('active');
+      D = load();
+      if (!D.religion) openPicker(); else openTracker();
+    };
+    ref.parentNode.insertBefore(b, ref);
+    updateBtn();
+  }
+  addSidebarBtn();
+  setTimeout(addSidebarBtn, 1500);
+
+  // ------------------------------------------------------------
+  // Backup / restore support
+  // ------------------------------------------------------------
+  document.addEventListener('click', e => {
+    if (!e.target.closest('#exportData, #sidebarBackupBtn')) return;
+    const ta = $('backupText');
+    if (!ta) return;
+    try {
+      const obj = JSON.parse(ta.value);
+      obj.amalData = load();
+      ta.value = JSON.stringify(obj);
+    } catch (err) {}
+  });
+  document.addEventListener('click', e => {
+    if (!e.target.closest('#restoreFromTextBtn')) return;
+    try {
+      const obj = JSON.parse($('restoreText').value.trim());
+      if (obj && obj.amalData) localStorage.setItem(KEY, JSON.stringify(obj.amalData));
+    } catch (err) {}
+  }, true);
+
+  console.log('Faith Tracker loaded');
+})();
+</script>
+
+
+<!-- ============================================================
+  2) AI QUICK DELETE (habits)
+============================================================ -->
+<script>
+(function aiQuickDelete() {
+  'use strict';
+  if (window.__aiQuickDelLoaded) return;
+  window.__aiQuickDelLoaded = true;
+
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const toast = m => (typeof showToast === 'function' ? showToast(m) : alert(m));
+
+  const TRASH = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>';
+  const BOT = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8.01" y2="16"/><line x1="16" y1="16" x2="16.01" y2="16"/></svg>';
+  const MIC = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>';
+
+  const st = document.createElement('style');
+  st.textContent = `
+    #qdBox textarea{width:100%;padding:12px;background:#0f1419;border:1px solid #2a3142;border-radius:12px;color:#e8eaed;font-size:15px;outline:none;resize:none;min-height:64px}
+    #qdBox textarea:focus{border-color:#ff6b4a}
+    .qd-row{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#0f1419;border:1px solid #2a3142;border-radius:12px;margin-bottom:8px;cursor:pointer}
+    .qd-row input{width:20px;height:20px;accent-color:#ff6b4a;flex-shrink:0}
+    .qd-row .n{color:#9aa0a6;font-size:12px;font-weight:bold;min-width:18px;text-align:center}
+    .qd-row .t{flex:1;font-size:14px;color:#e8eaed;word-break:break-word}
+    .qd-row.on{border-color:#ff6b4a;background:rgba(255,107,74,.08)}
+    #editAiDelBtn{flex-shrink:0;width:44px;display:flex;align-items:center;justify-content:center;background:rgba(255,107,74,.1)!important;border:1px solid #ff6b4a;color:#ff6b4a!important;border-radius:10px;cursor:pointer;padding:0}
+  `;
+  document.head.appendChild(st);
+
+  function build() {
+    if ($('aiQuickDelModal')) return;
+    const m = document.createElement('div');
+    m.id = 'aiQuickDelModal';
+    m.className = 'modal-overlay';
+    m.style.cssText = 'z-index:9600;padding:0;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);align-items:flex-end';
+    m.innerHTML = `
+      <div id="qdBox" style="background:#1a1f2e;width:100%;max-width:500px;border-radius:24px 24px 0 0;padding:20px;max-height:92vh;overflow-y:auto;border:1px solid rgba(255,107,74,.4);animation:slideUp .3s ease-out">
+        <h3 style="color:#ff6b4a;font-size:18px;display:flex;align-items:center;gap:8px;margin-bottom:6px">${TRASH} AI Quick Delete</h3>
+        <p style="color:#9aa0a6;font-size:12px;line-height:1.5;margin-bottom:12px">
+          Tick the habits you want to remove, or just type or speak (for example "delete water and the reading one") and AI will tick them for you.
+        </p>
+        <div style="display:flex;gap:8px;align-items:stretch;margin-bottom:10px">
+          <textarea id="qdInput" rows="2" placeholder="Which habits should I delete?"></textarea>
+          <button id="qdMic" type="button" title="Speak" style="width:46px;flex-shrink:0;background:#1a1f2e;border:1px solid #9b59b6;color:#d6a1f0;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer">${MIC}</button>
+        </div>
+        <button id="qdGo" type="button" style="width:100%;padding:12px;background:rgba(255,107,74,.12);color:#ff6b4a;border:1px solid #ff6b4a;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:14px">${BOT} Find with AI</button>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <span id="qdCount" style="font-size:11px;color:#9aa0a6;font-weight:bold;text-transform:uppercase;letter-spacing:.5px"></span>
+          <button id="qdAll" type="button" style="background:transparent;border:none;color:#00e5ff;font-size:12px;font-weight:bold;cursor:pointer">Select all</button>
+        </div>
+        <div id="qdList"></div>
+
+        <button id="qdDel" type="button" style="width:100%;padding:14px;margin-top:4px;background:linear-gradient(135deg,#ff6b4a,#d35400);color:#fff;border:none;border-radius:12px;font-weight:800;font-size:15px;cursor:pointer">Delete</button>
+        <button id="qdClose" type="button" style="width:100%;padding:13px;margin-top:10px;background:#2a3142;color:#e8eaed;border:none;border-radius:12px;font-weight:bold;cursor:pointer">Cancel</button>
+      </div>`;
+    document.body.appendChild(m);
+
+    $('qdClose').onclick = close;
+    m.addEventListener('click', e => { if (e.target === m) close(); });
+    $('qdGo').onclick = findWithAi;
+    $('qdDel').onclick = doDelete;
+    $('qdAll').onclick = () => {
+      const boxes = [...$('qdList').querySelectorAll('input')];
+      const allOn = boxes.every(b => b.checked);
+      boxes.forEach(b => { b.checked = !allOn; });
+      sync();
+    };
+    $('qdInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); findWithAi(); }
+    });
+    $('qdList').addEventListener('change', sync);
+    bindMic();
+  }
+
+  function renderList() {
+    $('qdList').innerHTML = challengeData.habits.map((h, i) => `
+      <label class="qd-row">
+        <input type="checkbox" data-i="${i}">
+        <span class="n">${i + 1}</span>
+        <span class="t">${esc(h.name)}</span>
+      </label>`).join('');
+    sync();
+  }
+
+  function sync() {
+    const boxes = [...$('qdList').querySelectorAll('input')];
+    const n = boxes.filter(b => b.checked).length;
+    boxes.forEach(b => b.closest('.qd-row').classList.toggle('on', b.checked));
+    $('qdCount').textContent = n ? `${n} selected` : `${boxes.length} habits`;
+    $('qdAll').textContent = (boxes.length && n === boxes.length) ? 'Clear all' : 'Select all';
+    const d = $('qdDel');
+    d.textContent = n ? `Delete ${n} habit${n > 1 ? 's' : ''}` : 'Select habits to delete';
+    d.disabled = !n;
+    d.style.opacity = n ? '1' : '.5';
+  }
+
+  function open() {
+    if (!challengeData.habits || !challengeData.habits.length) { toast('No habits to delete!'); return; }
+    build();
+    $('qdInput').value = '';
+    renderList();
+    $('aiQuickDelModal').classList.add('active');
+    if (navigator.vibrate) navigator.vibrate(15);
+  }
+  function close() {
+    const m = $('aiQuickDelModal');
+    if (m) m.classList.remove('active');
+  }
+
+  function bindMic() {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const btn = $('qdMic');
+    if (!SR) { btn.style.display = 'none'; return; }
+    let rec = null, on = false;
+    btn.onclick = () => {
+      if (on) { try { rec.stop(); } catch (e) {} return; }
+      rec = new SR();
+      rec.continuous = false;
+      rec.interimResults = true;
+      rec.lang = ($('voiceLangSelect') && $('voiceLangSelect').value) || 'en-US';
+      rec.onstart = () => { on = true; btn.style.background = '#ff6b4a'; btn.style.color = '#fff'; btn.style.borderColor = '#ff6b4a'; if (navigator.vibrate) navigator.vibrate(30); };
+      rec.onresult = ev => {
+        let t = '';
+        for (let i = 0; i < ev.results.length; i++) t += ev.results[i][0].transcript;
+        $('qdInput').value = t;
+      };
+      rec.onend = () => {
+        on = false; btn.style.background = '#1a1f2e'; btn.style.color = '#d6a1f0'; btn.style.borderColor = '#9b59b6';
+        if ($('qdInput').value.trim()) findWithAi();   // speak, then it finds automatically
+      };
+      rec.onerror = e => { if (e.error !== 'no-speech' && e.error !== 'aborted') toast('Voice: ' + e.error); };
+      try { rec.start(); } catch (e) {}
+    };
+  }
+
+  // local fallback: numbers, "all", or words that appear in a habit name
+  function localMatch(text) {
+    const t = text.replace(/[\u09E6-\u09EF]/g, d => String(d.charCodeAt(0) - 0x09E6)).toLowerCase();
+    const hs = challengeData.habits;
+    if (/\b(all|everything)\b/.test(t)) return hs.map((_, i) => i);
+    const out = new Set();
+    (t.match(/\d+/g) || []).forEach(n => { const i = +n - 1; if (i >= 0 && i < hs.length) out.add(i); });
+    const words = t.split(/[^\p{L}]+/u).filter(w => w.length >= 3);
+    hs.forEach((h, i) => {
+      const name = h.name.toLowerCase();
+      if (words.some(w => name.includes(w))) out.add(i);
+    });
+    return [...out];
+  }
+
+  async function findWithAi() {
+    const text = $('qdInput').value.trim();
+    if (!text) { toast('Type or speak which habits to delete'); return; }
+
+    const btn = $('qdGo');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="loading-spinner" style="border-top-color:#ff6b4a"></span> Thinking...';
+
+    const list = challengeData.habits.map((h, i) => `${i + 1}: ${h.name}`).join('\n');
+    const sys = `You match a user's request to habits they want to DELETE.
+Habits (number: name):
+${list}
+
+RULES:
+1. Output ONLY a JSON array of habit numbers, like [2,5]. No words, no markdown.
+2. Match by meaning. The request may be in any language and may use numbers or names.
+3. If the user says all or everything, return every number.
+4. If nothing matches, return [].`;
+
+    let idx = null;
+    try {
+      const reply = await callGroq([{ role: 'system', content: sys }, { role: 'user', content: text }], { temperature: 0.1, max_tokens: 300 });
+      const a = reply.indexOf('['), b = reply.lastIndexOf(']');
+      if (a >= 0 && b > a) {
+        const arr = JSON.parse(reply.slice(a, b + 1));
+        idx = arr.map(n => parseInt(n, 10) - 1).filter(i => i >= 0 && i < challengeData.habits.length);
+      }
+    } catch (e) { console.log('AI delete match error:', e); }
+    if (idx === null) idx = localMatch(text);
+
+    btn.disabled = false;
+    btn.innerHTML = BOT + ' Find with AI';
+
+    const boxes = [...$('qdList').querySelectorAll('input')];
+    boxes.forEach(b => { b.checked = false; });
+    idx.forEach(i => { if (boxes[i]) boxes[i].checked = true; });
+    sync();
+
+    if (!idx.length) { toast('No match found. Try different words or tick manually.'); return; }
+    const first = boxes[Math.min(...idx)];
+    if (first) first.closest('.qd-row').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    toast(`${idx.length} habit${idx.length > 1 ? 's' : ''} selected. Check and tap Delete.`);
+  }
+
+  function refresh() {
+    localStorage.setItem('challengeData', JSON.stringify(challengeData));
+    if (typeof renderHabits === 'function') renderHabits();
+    if (typeof renderTodayHabits === 'function') renderTodayHabits();
+    if (typeof renderHeatmap === 'function') renderHeatmap();
+    if (typeof updateStats === 'function') updateStats();
+    const ex = $('extrasModal');
+    if (ex && ex.classList.contains('active') && typeof renderExtras === 'function') renderExtras();
+  }
+
+  function doDelete() {
+    const idxs = [...$('qdList').querySelectorAll('input:checked')].map(b => +b.dataset.i);
+    if (!idxs.length) return;
+
+    const backup = JSON.parse(JSON.stringify(challengeData.habits));
+    challengeData.habits = challengeData.habits.filter((h, i) => !idxs.includes(i));
+    refresh();
+    close();
+    if (navigator.vibrate) navigator.vibrate([30, 40, 30]);
+
+    const msg = `${idxs.length} habit${idxs.length > 1 ? 's' : ''} deleted`;
+    if (typeof showUndoToast === 'function') {
+      showUndoToast(msg, () => { challengeData.habits = backup; refresh(); toast('Restored!'); });
+    } else toast(msg);
+  }
+
+  // hook: the AI menu "Delete Habit" button now opens this sheet
+  document.addEventListener('click', e => {
+    if (e.target.closest('#quickAiDeleteHabitBtn')) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      const menu = $('quickDotMenu');
+      if (menu) menu.classList.remove('open');
+      open();
+    }
+  }, true);
+
+  // small button inside "Edit habits" mode, next to "+Add"
+  function addEditBtn() {
+    const row = document.querySelector('#editMode .add-habit-row');
+    if (!row || $('editAiDelBtn')) return;
+    const b = document.createElement('button');
+    b.id = 'editAiDelBtn';
+    b.type = 'button';
+    b.title = 'Delete with AI';
+    b.innerHTML = TRASH.replace('width="20" height="20"', 'width="18" height="18"');
+    b.onclick = open;
+    row.appendChild(b);
+  }
+  addEditBtn();
+  setTimeout(addEditBtn, 1500);
+
+  console.log('AI Quick Delete loaded');
+})();
+</script>
+
+
+<!-- ============================================================
+  3) COUNTRY SELECTOR ON THE FIRST SETUP SCREEN
+  Same look and same data as the one in the AI chat box.
+============================================================ -->
+<script>
+(function setupCountrySelector() {
+  'use strict';
+  if (window.__setupCountryLoaded) return;
+  window.__setupCountryLoaded = true;
+
+  const $ = id => document.getElementById(id);
+  const scr = $('setupScreen');
+  if (!scr || $('setupLangWrap')) return;
+  const firstLabel = scr.querySelector('label');
+  if (!firstLabel) return;
+
+  const lab = document.createElement('label');
+  lab.textContent = 'Country:';
+
+  const wrap = document.createElement('div');
+  wrap.className = 'custom-lang-wrapper';
+  wrap.id = 'setupLangWrap';
+  wrap.innerHTML = `
+    <button type="button" class="lang-trigger" id="setupLangTrigger">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+        <span id="setupLangText">English (US)</span>
+      </div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </button>
+    <div class="lang-menu" id="setupLangMenu">
+      <div class="lang-search-wrap"><input type="text" id="setupLangSearch" placeholder="Search country..." autocomplete="off"></div>
+      <div id="setupLangGrid" class="lang-flags-grid"></div>
+      <div id="setupLangNo" style="display:none;padding:14px;text-align:center;color:#9aa0a6;font-size:13px;">No country found</div>
+    </div>`;
+  scr.insertBefore(lab, firstLabel);
+  scr.insertBefore(wrap, firstLabel);
+
+  const flag = code => (typeof langFlagEmoji === 'function') ? langFlagEmoji(code) : '';
+  const current = () => localStorage.getItem('gritgo_lang') || 'en-US';
+
+  function setLabel() {
+    const c = current();
+    const info = (typeof langToCountry !== 'undefined') ? langToCountry[c] : null;
+    $('setupLangText').textContent = info ? info.name : c;
+  }
+
+  function renderGrid(query) {
+    if (typeof langToCountry === 'undefined') return;
+    const q = (query || '').trim().toLowerCase();
+    const grid = $('setupLangGrid');
+    grid.innerHTML = '';
+    const cur = current();
+    const rows = Object.entries(langToCountry)
+      .map(([code, d]) => ({ code, name: d.name, cc: d.code, flag: flag(d.code) }))
+      .filter(r => !q || (r.name + ' ' + r.code + ' ' + r.cc + ' ' + r.flag).toLowerCase().includes(q));
+
+    $('setupLangNo').style.display = rows.length ? 'none' : 'block';
+    rows.forEach(r => {
+      const div = document.createElement('div');
+      div.className = 'lang-flag-item' + (r.code === cur ? ' selected' : '');
+      div.innerHTML = `<span class="flag-emoji">${r.flag}</span><span class="flag-name">${r.name}</span>`;
+      div.onclick = () => {
+        localStorage.setItem('gritgo_lang', r.code);
+        const hidden = $('voiceLangSelect');
+        if (hidden) hidden.value = r.code;
+        const chatText = $('selectedLangText');
+        if (chatText) chatText.textContent = r.name;
+        setLabel();
+        $('setupLangMenu').classList.remove('open');
+        if (typeof renderLangMenu === 'function') renderLangMenu();   // keep the AI chat selector in sync
+        if (navigator.vibrate) navigator.vibrate(15);
+      };
+      grid.appendChild(div);
+    });
+  }
+
+  $('setupLangTrigger').addEventListener('click', e => {
+    e.preventDefault();
+    e.stopPropagation();
+    const menu = $('setupLangMenu');
+    menu.classList.toggle('open');
+    if (menu.classList.contains('open')) {
+      $('setupLangSearch').value = '';
+      renderGrid('');
+      setTimeout(() => $('setupLangSearch').focus(), 100);
+    }
+  });
+  $('setupLangSearch').addEventListener('input', e => renderGrid(e.target.value));
+  $('setupLangSearch').addEventListener('click', e => e.stopPropagation());
+  document.addEventListener('click', e => {
+    if (!wrap.contains(e.target)) $('setupLangMenu').classList.remove('open');
+  });
+
+  setLabel();
+  console.log('Setup country selector loaded');
+})();
+</script>
+
 </html>
